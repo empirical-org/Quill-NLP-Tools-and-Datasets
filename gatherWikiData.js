@@ -181,7 +181,7 @@ function removeDuplicateData(){
   cd.on('line', function(line) {
     if(obj[line]===undefined){
       obj[line] = line
-      fs.appendFileSync("allWikipediaSentences1.txt", obj[line]+"\n", "UTF-8",{'flags': 'a'});
+      fs.appendFileSync("allWikipediaSentences.txt", obj[line]+"\n", "UTF-8",{'flags': 'a'});
     }
   });
 }
