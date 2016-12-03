@@ -69,20 +69,30 @@ def print_tup_removed(lst,rem_lst):
                 tups_rem += str(lst[i]) + ' '
     return tups_rem
 
+
+
 def noun_removal(s):
     orig_sent_arr = pos_tup_list(s)
     consec_pos = consec_iden_pos(orig_sent_arr)
     if consec_pos != []:
         upd_sent_arr = delete_arr_elements(orig_sent_arr, consec_pos)
-        return make_str(upd_sent_arr).rstrip('\n') + ' ||| ' + print_tup_removed(orig_sent_arr, consec_pos) + '\n'  ###THESE ARE TUPLES
+        return make_str(upd_sent_arr).rstrip('\n') + ' ||| ' + print_tup_removed(orig_sent_arr, consec_pos) + '\n'
     else:
-        return "ERROR"
+        return "ERROR" + '\n'
 
-#This is for verb removal:
-# def verb_removal(s):
-#     tup_sent_arr = pos_tup_list(s)
-#     for i in range(len(tup_sent_arr)):
-#         if tup_sent_arr[i][3] == "VERB"
+def verb_removal(s):
+    verb_index = -1
+    tup_sent_arr = pos_tup_list(s)
+    for i in range(len(tup_sent_arr)):
+        if tup_sent_arr[i][3] == "VERB":
+            verb_index = i
+            verb_found_tup = tup_sent_arr[i]
+            break
+    if verb_index != -1:
+        del tup_sent_arr[verb_index]
+        return make_str(tup_sent_arr).rstrip('\n') + ' ||| ' + str(verb_found_tup) + '\n'
+    else:
+        return "ERROR" + '\n'
 
 with open('./updatedSentences/nounCompleteSentences.txt','w') as complete:
     with open('./updatedSentences/nounRemovedSentences.txt','w') as remov:
@@ -90,6 +100,13 @@ with open('./updatedSentences/nounCompleteSentences.txt','w') as complete:
             for line in file:
                 complete.write(line)
                 remov.write(noun_removal(line))
+
+with open('./updatedSentences/verbCompleteSentences.txt','w') as v_complete:
+    with open('./updatedSentences/verbRemovedSentences.txt','w') as v_remov:
+        with open('./originalSentences/verbScreening.txt','r') as f:
+            for line in f:
+                v_complete.write(line)
+                v_remov.write(verb_removal(line))
 
 
 #next step is to remove verbs, make sure to commit the code you wrote above! before writing for verbs
