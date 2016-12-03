@@ -2292,7 +2292,8 @@ Also appeared for the Players against the Gentlemen and in a Test trial for the 
 The was ranked India's 13th and Karnataka's second most favourable destination for business.  ||| ('city', '', 'nsubjpass', 'NOUN') 
 Widespread impacted Haiti and the Dominican Republic, leaving a total of 25 people dead.  ||| ('flooding', '', 'nsubj', 'NOUN') 
 Many indigenous have disappeared or become rare owing to destruction of their habitat.  ||| ('birds', '', 'nsubj', 'NOUN') 
-ERROREarly in this of the 57th Foot was wounded by grapeshot from the French artillery.  ||| ('engagement', '', 'pobj', 'NOUN') ('Colonel', '', 'compound', 'PROPN') ('William', 'PERSON', 'compound', 'PROPN') ('Inglis', 'PERSON', 'nsubjpass', 'PROPN') 
+ERROR
+Early in this of the 57th Foot was wounded by grapeshot from the French artillery.  ||| ('engagement', '', 'pobj', 'NOUN') ('Colonel', '', 'compound', 'PROPN') ('William', 'PERSON', 'compound', 'PROPN') ('Inglis', 'PERSON', 'nsubjpass', 'PROPN') 
 With three and two silver medals, Thorpe was the most successful athlete at the 2000 Olympic Games.  ||| ('gold', '', 'pobj', 'NOUN') 
 Chose a relatively new construction method for the monument: limestone bonded to a cast concrete frame.  ||| ('Allward', 'ORG', 'nsubj', 'PROPN') 
 The was recounted in July 1973 by the British Catholic priest, Father Adrian Hastings, and two other Spanish missionary priests.  ||| ('massacre', '', 'nsubjpass', 'NOUN') 
@@ -2680,7 +2681,8 @@ In 1832, the of the British electoral reform, 3 % of the British voted.  ||| ('y
 The boarded Mary and killed her captain.  ||| ('Haitians', 'NORP', 'nsubj', 'PROPN') 
 For his at Essling, Klenau received the Commander's Cross of the Military Order of Maria Theresa.  ||| ('leadership', '', 'pobj', 'NOUN') 
 While in, another video was recorded that showed Shehri reading his last will and testament.  ||| ('Afghanistan', 'GPE', 'pobj', 'PROPN') 
-ERRORA located to the north of the hurricane began to weaken, causing the storm to track in a more westward direction.  ||| ('trough', '', 'nsubj', 'NOUN') 
+ERROR
+A located to the north of the hurricane began to weaken, causing the storm to track in a more westward direction.  ||| ('trough', '', 'nsubj', 'NOUN') 
 His, also named John, was a land agent and miniaturist painter; his mother Elizabeth was from a well- to- do Huntingdonshire family.  ||| ('father', '', 'nsubj', 'NOUN') 
 The naval claimed to have destroyed 251 aircraft in their attacks on 9 August and damaged a further 141.  ||| ('aviators', '', 'nsubj', 'NOUN') 
 Running back rushed for 12 yards on the game's opening play, netting the game's first first down.  ||| ('Michael', 'PERSON', 'compound', 'PROPN') ('Bush', 'PERSON', 'nsubj', 'PROPN') 
@@ -6861,7 +6863,8 @@ In 2011 the had 3,671,032 residents, constituting 0.3 % of the country's populat
 The nearest to most of the area is the community owned Clutha Health First, in Balclutha.  ||| ('hospital', '', 'nsubj', 'NOUN') 
 The attracts large numbers of visitors, contributing significantly to the economy of Cley village.  ||| ('reserve', '', 'nsubj', 'NOUN') 
 Fought a rearguard action at Tempe, retreating down the Volos road and losing several carriers.  ||| ('B', 'ORG', 'compound', 'PROPN') ('Squadron', 'ORG', 'nsubj', 'PROPN') 
-ERRORRushes to her, and hand in hand they sink beneath the water of the pool.  ||| ('Olivero', '', 'nsubj', 'PROPN') 
+ERROR
+Rushes to her, and hand in hand they sink beneath the water of the pool.  ||| ('Olivero', '', 'nsubj', 'PROPN') 
 Long 11-yard run helped set up the Eagles for a field goal attempt early in the second quarter.  ||| ('Callender', '', 'nsubj', 'PROPN') ('game', '', 'npadvmod', 'NOUN') 
 There,- force winds initially blew out of the southeast before shifting to north midday on September 8.  ||| ('gale', '', 'compound', 'NOUN') 
 The did not, however, withdraw his patronage or financial support.  ||| ('king', '', 'nsubj', 'NOUN') 
@@ -8764,7 +8767,8 @@ In Kodagu have a distinct style of wearing the saree, different from the rest of
 His at the time was Heinrich Hoffmann.  ||| ('longtime', '', 'amod', 'NOUN') ('wingman', '', 'nsubj', 'NOUN') 
 The objected to the Defence Production Act, stating that there was no emergency justifying the powers Howe wanted.  ||| ('opposition', '', 'compound', 'NOUN') ('parties', '', 'nsubj', 'NOUN') 
 Played the bulk of his 27 first- class innings between No. 4 and No. 6 in the batting order.  ||| ('He', '', 'nsubj', 'PRON') 
-ERRORRepresented 90 percent of the port's traffic in the 2004 shipping season.  ||| ('Grain', '', 'nsubj', 'NOUN') 
+ERROR
+Represented 90 percent of the port's traffic in the 2004 shipping season.  ||| ('Grain', '', 'nsubj', 'NOUN') 
 By late 1918, around 5,000 were still without shelter.  ||| ('January', 'DATE', 'pobj', 'PROPN') 
 For, all the ships carried sample amounts of fuel and ordnance, plus airplanes.  ||| ('test', '', 'compound', 'NOUN') ('purposes', '', 'pobj', 'NOUN') 
 His full, Robert Chandler, died when he fell from a cherry tree when he was 13 years old.  ||| ('brother', '', 'nsubj', 'NOUN') 
@@ -10735,7 +10739,8 @@ In 1996, by initiative banned the state's use of race as a factor to consider in
 By the early 1950s was troubled on a number of fronts.  ||| ('Waugh', '', 'nsubjpass', 'PROPN') 
 South of Tampico, also suffered heavy damage with many houses and office buildings destroyed.  ||| ('Tuxpan', 'ORG', 'nsubj', 'PROPN') 
 Was delighted to hear of this, but dismayed that Gezina, still in Pretoria, was not well enough to accompany him.  ||| ('Kruger', 'PERSON', 'nsubj', 'PROPN') 
-ERRORThis was the only in Hobbs' career that Surrey were champions.  ||| ('time', '', 'attr', 'NOUN') 
+ERROR
+This was the only in Hobbs' career that Surrey were champions.  ||| ('time', '', 'attr', 'NOUN') 
 The generated high employment to Jarrow, but the industrial works created a harsh environment.  ||| ('shipyard', '', 'nsubj', 'NOUN') 
 The lasted another two days.  ||| ('circulation', '', 'nsubj', 'NOUN') 
 In 2005, she became the chairwoman and chief executive officer of the Kentucky World Trade Center.  ||| ('January', 'DATE', 'pobj', 'PROPN') 
@@ -13346,7 +13351,8 @@ The last provincial general was held on 19 April 2016.  ||| ('election', '', 'ns
 Was also praised for his staff work during Operation Oboe Two, the Battle of Balikpapan, in July.  ||| ('Murdoch', 'PERSON', 'nsubjpass', 'PROPN') 
 The won their heat and qualified fastest, while the Americans qualified second with their second- choice team.  ||| ('quartet', '', 'nsubj', 'NOUN') 
 Because of his as a federal employee, however, he turned down the $ 5,000 consolation money he won in the match.  ||| ('duties', '', 'pobj', 'NOUN') 
-ERROR's platform included federal spending cuts, term limits for Congress and a line- item veto for the president.  ||| ('Cordray', 'ORG', 'poss', 'PROPN') 
+ERROR
+'s platform included federal spending cuts, term limits for Congress and a line- item veto for the president.  ||| ('Cordray', 'ORG', 'poss', 'PROPN') 
 Due to faulty, however, the dam failed to prevent erosion, which has continued to undermine structures throughout the canyon.  ||| ('design', '', 'pobj', 'NOUN') 
 's orders indicated that he would retreat if Soult advanced.  ||| ('Beresford', 'PERSON', 'poss', 'PROPN') 
 The was organised by members of the 9th Brigade.  ||| ('convoy', '', 'nsubjpass', 'NOUN') 
