@@ -61,24 +61,19 @@ def make_str(lst):
 
 def print_tup_removed(lst,rem_lst):
     tups_rem = ''
-    if rem_lst == []:
-        return "NO WORDS REMOVED"
-    else:
-        for i in range(len(lst)):
-            if i in rem_lst:
-                tups_rem += str(lst[i]) + ' '
+    for i in range(len(lst)):
+        if i in rem_lst:
+            tups_rem += str(lst[i]) + ' '
     return tups_rem
-
-
 
 def noun_removal(s):
     orig_sent_arr = pos_tup_list(s)
     consec_pos = consec_iden_pos(orig_sent_arr)
     if consec_pos != []:
         upd_sent_arr = delete_arr_elements(orig_sent_arr, consec_pos)
-        return make_str(upd_sent_arr).rstrip('\n') + ' ||| ' + print_tup_removed(orig_sent_arr, consec_pos) + '\n'
+        return (make_str(upd_sent_arr).rstrip('\n'), print_tup_removed(orig_sent_arr, consec_pos).rstrip('\n'))
     else:
-        return "ERROR" + '\n'
+        return ("ERROR",None)
 
 def verb_removal(s):
     verb_index = -1
@@ -90,23 +85,49 @@ def verb_removal(s):
             break
     if verb_index != -1:
         del tup_sent_arr[verb_index]
-        return make_str(tup_sent_arr).rstrip('\n') + ' ||| ' + str(verb_found_tup) + '\n'
+        return (make_str(tup_sent_arr).rstrip('\n'), str(verb_found_tup).rstrip('\n'))
+
     else:
-        return "ERROR" + '\n'
+        return ("ERROR",None)
 
-with open('./updatedSentences/nounCompleteSentences.txt','w') as complete:
-    with open('./updatedSentences/nounRemovedSentences.txt','w') as remov:
-        with open('./originalSentences/nounScreening.txt','r') as file:
-            for line in file:
-                complete.write(line)
-                remov.write(noun_removal(line))
 
-with open('./updatedSentences/verbCompleteSentences.txt','w') as v_complete:
-    with open('./updatedSentences/verbRemovedSentences.txt','w') as v_remov:
-        with open('./originalSentences/verbScreening.txt','r') as f:
-            for line in f:
-                v_complete.write(line)
-                v_remov.write(verb_removal(line))
+# with open('./updatedSentences/nounCompleteSentences.txt','w') as complete:
+#     with open('./updatedSentences/nounRemovedSentences.txt','w') as remov:
+#         with open('./originalSentences/nounScreening.txt','r') as file:
+#             for line in file:
+#                 complete.write(line)
+#                 n_sentence_rem = noun_removal(line)  ##make sure this works for ERROR
+#                 if n_sentence_rem[0] != "ERROR":
+#                     remov.write(n_sentence_rem[0] + ' ||| ' +  n_sentence_rem[1] + ' ||| ' + line)
+#                 else:
+#                     remov.write("ERROR" + ' ||| ' + line)
+#
+# with open('./updatedSentences/verbCompleteSentences.txt','w') as v_complete:
+#     with open('./updatedSentences/verbRemovedSentences.txt','w') as v_remov:
+#         with open('./originalSentences/verbScreening.txt','r') as f:
+#             for line in f:
+#                 v_complete.write(line)
+#                 v_sentence_rem = verb_removal(line)
+#                 if v_sentence_rem[0] != "ERROR":
+#                     v_remov.write(v_sentence_rem[0] + ' ||| ' +  v_sentence_rem[1] + ' ||| ' + line)
+#                 else:
+#                     v_remov.write("ERROR" + ' ||| ' + line)
+
+#MAKE THIS FASTER TO RUN!!!
+with open('./updatedSentences/nounverbCompleteSentences.txt','w') as nv_complete:
+    with open('./updatedSentences/nounverbRemovedSentences.txt','w') as nv_remov:
+        with open('./originalSentences/nounverbScreening.txt','r') as fi:
+            for line in fi:
+                nv_complete.write(line)
+                noun_removed = noun_removal(line)
+                if noun_removed[0] == "ERROR":
+                    nv_remov.write("ERROR" + ' ||| ' + line)
+                else:
+                    verb_removed = verb_removal(noun_removed[0]) # check if there is an error in verb as well
+                    if verb_removed[0] != "ERROR":
+                        nv_remov.write(verb_removed[0] + ' ||| ' + noun_removed[1] + verb_removed[1] + ' ||| ' + line) ###THERE IS A PROBLEM HERE CHECK FOR POSIBLE ERROR
+                    else:
+                        nv_remov.write("ERROR" + ' ||| ' + line)
 
 
 #next step is to remove verbs, make sure to commit the code you wrote above! before writing for verbs
