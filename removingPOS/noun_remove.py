@@ -13,7 +13,7 @@ def noun_removal(s):
     def noun_bool(tup):
         word_pos = tup[2]
         word_dep = tup[1]
-        if  word_pos == 'NOUN' or word_pos == 'PRON' or word_pos == 'PROPN' or word_dep == 'poss':
+        if  word_pos == 'NOUN' or word_pos == 'PRON' or word_pos == 'PROPN' or word_dep == 'poss' or word_pos == 'NUM':
             return True
         else:
             return False
@@ -37,9 +37,6 @@ def noun_removal(s):
                     elif noun_bool(lst[i]) == True:
                         consec_lst.append(lst[i])
                         indexes_lst.append(i)
-                    elif lst[i][2] == "NUM": #numbers are nouns
-                        consec_lst.append(lst[i])
-                        indexes_lst.append(i)
                     else:
                         return (consec_lst,indexes_lst)
         return []
@@ -49,6 +46,7 @@ def noun_removal(s):
         noun_list_found = consec_noun_list(orig_sent_arr)
         if noun_list_found != []:
             noun = make_str(noun_list_found[0]) #just turn thing into string
+            # print("This was the noun found: " + noun)
             sentence_wo_noun = delete_words_string(string,noun)
             return (sentence_wo_noun[0].upper()+sentence_wo_noun[1:],noun,tup_list_to_string(noun_list_found[0]),tup_list_to_string(orig_sent_arr))
         else:
@@ -78,34 +76,3 @@ def noun_removal(s):
         return normal_noun_removal(s)
     else:
         return hypen_noun_removal(s)
-
-
-with open('./updatedSentences/nounSentences/testing.txt','w') as remov:
-    with open('./originalSentences/nounScreening.txt','r') as file:
-        for line in file:
-            print(line)
-            n_sentence_rem = noun_removal(line)
-            if n_sentence_rem[0] != "ERROR":
-                remov.write(line.rstrip('\n') + ' ||| ' + n_sentence_rem[2] + '\n' )
-
-
-# with open('./updatedSentences/nounSentences/nounErrorSentences.txt','w') as error_n:
-#     with open('./updatedSentences/nounSentences/nounCompleteSentences.txt','w') as details_removed:
-#         with open('./updatedSentences/nounSentences/nounRemovedSentences.txt','w') as final_version:
-#                 with open('./originalSentences/nounScreening.txt','r') as file:
-#                     for line in file:
-#                         n_sentence_rem = noun_removal(line)
-#                         if n_sentence_rem[0] != "ERROR":
-#                             details_removed.write(line.rstrip('\n') + ' ||| ' + n_sentence_rem[1])
-#                             remov.write(n_sentence_rem[0] + ' ||| ' +  n_sentence_rem[2].rstrip('\n') + ' ||| ' + line.rstrip('\n') + ' ||| ' + n_sentence_rem[3])
-#                             remov_clean.write(n_sentence_rem[0]+"\n")
-#                         else:
-#                             error_n.write('ERROR ||| ' + line.rstrip('\n') + ' ||| ' + n_sentence_rem[1] + '\n')
-
-
-#
-# error_nv.close()
-# nv_complete.close()
-# nv_remov.close()
-# nv_remov_clean.close()
-# fi.close()
