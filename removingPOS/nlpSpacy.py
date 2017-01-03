@@ -2,24 +2,29 @@ import re
 import spacy
 nlp = spacy.load('en')
 
-#search if have hadn't etc
-#make a note that the last when have 's we get a weird printed list, delete_words_string add case where verb removed I've  and replace 've with nothing'
-
 '''
 Important Notes:
 POS = Part of Speech
 Need to take into account words that have 's as is
 
 TO-DO:
-clean code and only create three functions
-those functions will have helper functions within them is they are not used anywhere else
+Put each main function into seperate file and import necessary files:
+noun_remove
+verd_remove
+noun_verb_remove
 
-instead of removing words why not return the entire string POS and remove any tuple matches
+For each newly created file start creating final text files:
+First file output: original list of POS || updated list POS || words removed
+Second file output to help people understand: Original sentence, word removed, updated sentence (everything as complete string)
 
+Create a function that can turn a string of tuples into a list of tuples
+
+Random but important:
 take into account ,, and "  "
+have to go through and update any 're ''s (etc.) that are actually verbs
 '''
 
-#turns string into a list of tuples, where each tuple contains a word, word depency, and word pos
+#turns string into a list of tuples, where each tuple contains a word, word depency, and word POS
 def pos_tup_list(s):
     processed = nlp(s)
     tup_list = []
@@ -31,7 +36,7 @@ def pos_tup_list(s):
 def tup_list_to_string(lst):
     return ', '.join('(' + ', '.join(i) + ')' for i in lst)
 
-#turns a list of tuples into a string
+#turns a list of tuples into a sentence or words
 def make_str(lst):
     s = ''
     for i in range(len(lst)):
@@ -45,19 +50,18 @@ def make_str(lst):
     else:
         return s
 
-#returns bool describing if matched word is in the beginning
-def word_at_beginning(sentence,s):
-    regex = re.compile(s)
-    match_span = regex.search(sentence).span()
-    if match_span[0] == 0:
-        return True
-    else:
-        return False
-
 #deletes a word from a sentence
 def delete_words_string(sentence,s):
+    #returns bool describing if matched word is in the beginning
+    def word_at_beginning(sentence,s):
+        regex = re.compile(s)
+        match_span = regex.search(sentence).span()
+        if match_span[0] == 0:
+            return True
+        else:
+            return False
+
     regex1 = re.compile(s+"\'")
-    print(regex1)
     if regex1.search(sentence) != None:
         return sentence.replace(s,"")
     elif word_at_beginning(sentence,s) == True:
@@ -74,71 +78,91 @@ def hypen_in_sentence(s):
     else:
         return False
 
-###this function assumes that there is a hypen in the string
-#and returns the span of the first hypen match
-def hypen_match_range(s):
-    regex = re.compile(r'\w+\-\w+\-\w+|\w+.\-.\w+.\-.\w+|\w+\-\w+|\w+.\-.\w+') #take into account regex in the beggining or at the end i need to check
-    check_found = regex.search(s)
-    if check_found != None:
-        return check_found.span()
+#this returns a list of tuples that are not in the second argument
+def remove_tups_lst(ls_orig,ls_remove,removal_type):
+    upd_tup_lst = []
+    if removal_type == "noun":
+        for i in range(len(ls_orig)):
+            if i != ls_remove[0]:
+                upd_tup_lst.append(ls_orig[i])
+            else:
+                ls_remove.pop(0)
     else:
-        return None
-
-#removes duplicates in a list
-def remove_duplicates(lst):
-    word_dict = {}
-    for i in range(len(lst)):
-        word = lst[i]
-        if word_dict.get(word) == None:
-            word_dict[word] = word
-    return list(word_dict.keys())
-
-#returns a string with all the hypenated words removed
-def remove_hypens_words(st):
-    regex = re.compile(r'\w+\-\w+\-\w+|\w+.\-.\w+.\-.\w+|\w+\-\w+|\w+.\-.\w+')
-    matches_lst = remove_duplicates(regex.findall(st)) #this is essential
-    while matches_lst != []:
-        word = matches_lst.pop()
-        st = delete_words_string(st,word)
-    return st
+        for tup in ls_orig:
+            if tup not in ls_orig:
+                upd_tup_lst.append(tup)
+    return upd_tup_lst
 
 #removes verbs from a sentence
 def verb_removal(st):
-
     #returns a list of words that are consecutive verbs
     def consec_verb_list(lst):
         for i in range(len(lst)):
             if lst[i][2] == "VERB":
                 verb_tup_lst = [lst[i]]
+                indexes_mached = [i]
                 for p in range(i+1,len(lst)):
                     if lst[p][2] == "VERB":
                         verb_tup_lst.append(lst[p])
+                        indexes_mached.append(p)
                     else:
-                        return verb_tup_lst
+                        return (verb_tup_lst,indexes_mached)
         return []
 
-    tup_sent_arr = pos_tup_list(st)
-    tup_string = tup_list_to_string(tup_sent_arr)
-    if hypen_in_sentence(st) == False:
-        verb_list_found = consec_verb_list(tup_sent_arr)
-        if verb_list_found != []:
-            verb = make_str(verb_list_found)
-            sentence_wo_verb = delete_words_string(st,verb)
-            return (sentence_wo_verb[0].upper()+sentence_wo_verb[1:],verb,tup_list_to_string(verb_list_found),tup_string)
-        else:
-            return ("ERROR",tup_string)
-    else:
-        st_wo_hypen_words = remove_hypens_words(st)
+    #returns a string with all the hypenated words removed
+    def remove_hypens_words(st):
+        #removes word duplicates in a list
+        def remove_duplicates(lst):
+            word_dict = {}
+            for i in range(len(lst)):
+                word = lst[i]
+                if word_dict.get(word) == None:
+                    word_dict[word] = word
+            return list(word_dict.keys())
+
+        regex = re.compile(r'\w+\-\w+\-\w+|\w+.\-.\w+.\-.\w+|\w+\-\w+|\w+.\-.\w+')
+        matches_lst = remove_duplicates(regex.findall(st)) #this is essential
+        while matches_lst != []:
+            word = matches_lst.pop()
+            st = delete_words_string(st,word)
+        return st
+
+    def hypen_verb_removal(s):
+        tup_sent_arr = pos_tup_list(s)
+        st_wo_hypen_words = remove_hypens_words(s)
         tup_upd_st = pos_tup_list(st_wo_hypen_words)
         verb_list_found = consec_verb_list(tup_upd_st)
         if verb_list_found != []:
-            verb = make_str(verb_list_found)
-            sentence_wo_verb = delete_words_string(st,verb)
-            return (sentence_wo_verb[0].upper()+sentence_wo_verb[1:],verb,tup_list_to_string(verb_list_found),tup_string)
+            verb = make_str(verb_list_found[0])
+            sentence_wo_verb = delete_words_string(s,verb)
+            return (sentence_wo_verb[0].upper()+sentence_wo_verb[1:],verb,tup_list_to_string(verb_list_found[0]),tup_list_to_string(tup_sent_arr))
         else:
-            return ("ERROR",tup_string)
+            return ("ERROR",tup_list_to_string(tup_sent_arr))
+
+    def normal_verb_removal(s):
+        tup_sent_arr = pos_tup_list(s)
+        verb_list_found = consec_verb_list(tup_sent_arr)
+        if verb_list_found != []:
+            verb = make_str(verb_list_found[0])
+            sentence_wo_verb = delete_words_string(s,verb)
+            return (sentence_wo_verb[0].upper()+sentence_wo_verb[1:],verb,tup_list_to_string(verb_list_found[0]),tup_list_to_string(tup_sent_arr))
+        else:
+            return ("ERROR",tup_list_to_string(tup_sent_arr))
+
+    if hypen_in_sentence(st) == False:
+        return normal_verb_removal(st)
+    else:
+        return hypen_verb_removal(st)
 
 def noun_removal(s):
+    #this function assumes that there is a hypen in the string and returns the span of the first hypen match
+    def hypen_match_range(s):
+        regex = re.compile(r'\w+\-\w+\-\w+|\w+.\-.\w+.\-.\w+|\w+\-\w+|\w+.\-.\w+')
+        check_found = regex.search(s)
+        if check_found != None:
+            return check_found.span()
+        else:
+            return None
     #returns true if the tuple is a noun
     def noun_bool(tup):
         word_pos = tup[2]
@@ -151,30 +175,36 @@ def noun_removal(s):
     #returns a list of the tuples that were removed that are of noun type
     def consec_noun_list(lst): #add case for numbers wehre noun before   ('On', 'prep', 'ADP') ('July', 'pobj', 'PROPN') ('21', 'nummod', 'NUM') ('the', 'det', 'DET')
         consec_lst = []
+        indexes_lst = []
         for index in range(len(lst)):
             if noun_bool(lst[index]) == True:
                 consec_lst.append(lst[index])
+                indexes_lst.append(index)
                 for i in range(index + 1, len(lst)):
                     if lst[i][0] == '.' and i != len(lst)-1: #making sure that the '.' found is not the period of the sentence
                         if noun_bool(lst[i+1]) == True:
                             consec_lst.append(lst[i])
+                            indexes_lst.append(i)
                     elif lst[i][0][0] == "\'" and lst[i][2] != "VERB": #takes into account possesive nouns (Catherine's)
                         consec_lst.append(lst[i])
+                        indexes_lst.append(i)
                     elif noun_bool(lst[i]) == True:
                         consec_lst.append(lst[i])
+                        indexes_lst.append(i)
                     elif lst[i][2] == "NUM": #numbers are nouns
                         consec_lst.append(lst[i])
+                        indexes_lst.append(i)
                     else:
-                        return consec_lst
+                        return (consec_lst,indexes_lst)
         return []
 
     def normal_noun_removal(string): #here include hypen noun removal
         orig_sent_arr = pos_tup_list(string)
         noun_list_found = consec_noun_list(orig_sent_arr)
         if noun_list_found != []:
-            noun = make_str(noun_list_found) #just turn thing into string
+            noun = make_str(noun_list_found[0]) #just turn thing into string
             sentence_wo_noun = delete_words_string(string,noun)
-            return (sentence_wo_noun[0].upper()+sentence_wo_noun[1:],noun,tup_list_to_string(noun_list_found),tup_list_to_string(orig_sent_arr))
+            return (sentence_wo_noun[0].upper()+sentence_wo_noun[1:],noun,tup_list_to_string(noun_list_found[0]),tup_list_to_string(orig_sent_arr))
         else:
             return ("ERROR",tup_list_to_string(orig_sent_arr))
 
@@ -182,7 +212,6 @@ def noun_removal(s):
     def hypen_noun_removal(s):
         orig_tup = pos_tup_list(s)
         hypen_match_ran = hypen_match_range(s)
-        print(hypen_match_ran)
         substring = s[:hypen_match_ran[0]-1] #substring before the hypen word. The space before the hypen match is not included in substring
         token_pos_lst = pos_tup_list(substring)
         last_token = token_pos_lst[len(token_pos_lst)-1]
@@ -216,37 +245,6 @@ def noun_verb_removal(st):
         return (st[0].upper()+st[1:], remove_noun_st[2]+' '+remove_verb_st[2],tup_list_to_string(tup_lst))
     else:
         return ("ERROR", tup_list_to_string(tup_lst))
-
-
-
-# '''
-# These are testing sentences:
-# '''
-# print("----------------------------------------------------------------")
-# # sent4 = "The vulnerable flower, Ute's poop-Ladies'-tresses, can also be found along the river."
-# sent4 = "Want to go to Catherine's?"
-# # print(hypen_match_range(sent4))
-# print(pos_tup_list(sent4))
-# print(noun_removal(sent4))
-# print(verb_removal(sent4))
-# print("----------------------------------------------------------------")
-# sent6 = "We are not running up the stairs."
-# print(pos_tup_list(sent6))
-# print(noun_removal(sent6))
-# print(verb_removal(sent6))
-# print("----------------------------------------------------------------")
-# # sent4 = "The vulnerable flower, Ute's poop-Ladies'-tresses, can also be found along the river."
-# sent7 = "This is Jeffrey's cake."
-# # print(hypen_match_range(sent7))
-# print(pos_tup_list(sent7))
-# print(noun_removal(sent7))
-# print(verb_removal(sent7))
-# print("----------------------------------------------------------------")
-# sent8 = "I love pie!"
-# print(pos_tup_list(sent8))
-# print(noun_removal(sent8))
-# print(verb_removal(sent8))
-
 
 
 
