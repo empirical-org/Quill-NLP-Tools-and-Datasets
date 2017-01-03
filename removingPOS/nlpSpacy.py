@@ -8,10 +8,16 @@ POS = Part of Speech
 
 TO-DO:
 For each newly created file start creating final text files:
-First file output: original list of POS || updated list POS || words removed
-Second file output to help people understand: Original sentence: , Word removed: , Updated sentence: , POS original,POS removed words, POS updated 
+First file output: original list of POS || updated list POS || word removed
+Second file output to help people understand: Original sentence: , Word removed: , Updated sentence: , POS original,POS removed words, POS updated
 
-Create a function that can turn a string of tuples into a list of tuples
+Write to files and keep as type list instead of string:
+Look into import pickle
+
+Include comments in all of the python files. Use Google's python comment guidelines:
+Review comments in noun_remove
+Create comments for verb_remove
+Create comments for noun_verb_remove
 
 Random but important:
 take into account ,, and "  "
@@ -35,7 +41,7 @@ def make_str(lst):
     s = ''
     for i in range(len(lst)):
         curr_word = lst[i][0]
-        if lst[i][2] != 'PUNCT' and lst[i][1] != "case" and lst[i-1][0] != '-':
+        if lst[i][2] != 'PUNCT' and lst[i][1] != "case" and lst[i-1][0] != '-' and lst[i][0] != '%':
             s += ' ' + curr_word
         else:
             s += curr_word
