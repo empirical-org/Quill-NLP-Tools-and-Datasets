@@ -60,34 +60,33 @@ def noun_removal(s):
 
     #Removes a noun or nouns from a string that is a sentence and contains no hypens
     def normal_noun_removal(string): #here include hypen noun removal
-        orig_sent_arr = pos_tup_list(string)
-        noun_list_found = consec_noun_list(orig_sent_arr)
-        if noun_list_found != []:
-            noun = make_str(noun_list_found[0])
-            sentence_wo_noun = delete_words_string(string,noun)
-            return (sentence_wo_noun[0].upper()+sentence_wo_noun[1:],noun,tup_list_to_string(noun_list_found[0]),tup_list_to_string(orig_sent_arr))
+        complete_pos_list = pos_tup_list(string)
+        noun_match = consec_noun_list(complete_pos_list)
+        if noun_match != []:
+            updated_pos_list = remove_POS_matches(complete_pos_list,noun_match[1],"noun")
+            return(complete_pos_list,updated_pos_list,noun_match)
+            # return(complete_pos_list,updated_pos_list,noun_match[0])
         else:
-            return ("ERROR",tup_list_to_string(orig_sent_arr))
+            return ("ERROR",complete_pos_list)
 
     #removes nouns from a string that is a sentence and contains hypens
     def hypen_noun_removal(s):
-        orig_tup = pos_tup_list(s)
-        hypen_match_ran = hypen_match_range(s)
-        substring = s[:hypen_match_ran[0]-1] #substring before the hypen word. The space before the hypen match is not included in substring
-        token_pos_lst = pos_tup_list(substring)
-        last_token = token_pos_lst[len(token_pos_lst)-1]
-        if hypen_match_ran[0] > len(s)/2: #meaning the hypen is at the very end, noun must be before this
+        complete_pos_list = pos_tup_list(s)
+        hypen_match_range = hypen_match_range(s)
+        substring = s[:hypen_match_range[0]-1] #substring before the hypen word. The space before the hypen match is not included in substring
+        substring_pos_list = pos_tup_list(substring)
+        substring_last_word = substring_pos_list[len(substring_pos_list)-1]
+        if hypen_match_range[0] > len(s)/2: #meaning the hypen is at the very end, noun must be before this
             return normal_noun_removal(s)
-        elif last_token[2] != 'NOUN' and last_token[2] != 'PRON' and last_token[2] != 'PROPN' and last_token[2] != "PUNCT" and last_token[1] != 'case' and last_token[1] != 'poss':
-            substring_rem = normal_noun_removal(substring) #finding any nouns before the hypenated word
-            if substring_rem[0] != 'ERROR':
-                noun_removed = substring_rem[1]
-                sentence_noun_removed = delete_words_string(s, noun_removed)
-                return (sentence_noun_removed[0].upper()+sentence_noun_removed[1:],noun_removed,substring_rem[2],substring_rem[3])
+        elif noun_bool(substring_last_word[2]) == False and substring_last_word[2] != "PUNCT" and substring_last_word[1] != 'case':
+            substring_noun_removal = normal_noun_removal(substring) #finding any nouns before the hypenated word
+            if substring_noun_removal[0] != 'ERROR':
+                updated_pos_list = remove_POS_matches(complete_pos_list, substring_noun_removal[2][1], "noun") #removed nouns matched
+                return(complete_pos_list,updated_pos_list,substring_noun_removal[2][0])
             else:
-                return ('ERROR',tup_list_to_string(orig_tup))
+                return ('ERROR',complete_pos_list)
         else:
-            return ('ERROR',tup_list_to_string(orig_tup))
+            return ('ERROR',complete_pos_list)
 
     if hypen_in_sentence(s) == False:
         return normal_noun_removal(s)
