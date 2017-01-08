@@ -3,14 +3,12 @@ from noun_remove import noun_removal
 from verb_remove import verb_removal
 
 def noun_verb_removal(st):
-    tup_lst = pos_tup_list(st)
-    remove_noun_st = noun_removal(st) #i think this order is fine because also recognizes 're as verb
+    complete_pos_list = pos_tup_list(st)
+    remove_noun_st = noun_removal(st)
     remove_verb_st = verb_removal(st)
     if remove_noun_st[0] != "ERROR" and remove_verb_st[0] != "ERROR":
-        noun_removed = remove_noun_st[1]
-        verb_removed = remove_verb_st[1]
-        st = delete_words_string(st,noun_removed)
-        st = delete_words_string(st,verb_removed)
-        return (st[0].upper()+st[1:], remove_noun_st[2]+' '+remove_verb_st[2],tup_list_to_string(tup_lst))
+        updated_pos_list_noun = remove_POS_matches(complete_pos_list,remove_noun_st[2][1],'noun')
+        updated_pos_list_verb =  remove_POS_matches(updated_pos_list_noun,remove_verb_st[2],'verb')
+        return (complete_pos_list, updated_pos_list_verb, (remove_noun_st[2][0], remove_verb_st[2]))
     else:
-        return ("ERROR", tup_list_to_string(tup_lst))
+        return ("ERROR", complete_pos_list)
