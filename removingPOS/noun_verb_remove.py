@@ -1,8 +1,15 @@
 '''
-Comments go in here:
+The main function in this file is called noun_verb_removal and it
+removes the first noun or group of consecutive nouns and verb or group
+of consecutive verbs in a string. A string in this function is a
+complete and correct sentence. This means it contains all of the
+necessary requirements that a sentence needs to be correct.
+
+The function uses several helper function in order to remove nouns
+and verbs. It mainly makes use of the two functions in noun_remove.py
+and verb_remove.py, both functions are found in the same directory as
+this function.
 '''
-
-
 from nlpSpacy import *
 from noun_remove import noun_removal
 from verb_remove import verb_removal

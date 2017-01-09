@@ -1,4 +1,4 @@
-'''                                                                    
+'''
 The main function in this file is called noun_removal and it removes
 the first noun or group of nouns in a string. A string in this function
 is a complete and correct sentence. This means it contains all of the
@@ -34,8 +34,10 @@ Returns:
 from nlpSpacy import *
 
 def noun_removal(s):
+
     def hypen_word_range(s):
-        #Finds the exact beginning and ending position of a hypenated word in a string
+        #finds the beggining and ending index of the first hypenated
+        #word in a string
         reg = re.compile(r'\w+\-\w+\-\w+|\w+.\-.\w+.\-.\w+|\w+\-\w+|\w+.\-.\w+')
         check_found = reg.search(s)
         if check_found != None:
@@ -44,7 +46,7 @@ def noun_removal(s):
             return None
 
     def is_noun(tup):
-        #Determines whether a tuple, with a word as the first input in tuple, is a noun
+        #determines whether a word is a noun
         word_pos = tup[2]
         word_dep = tup[1]
         if  (word_pos == 'NOUN' or
@@ -57,9 +59,10 @@ def noun_removal(s):
             return False
 
     def noun_list_found(lst):
-        #Returns a tuple where the first argument is a list of tuples that are nouns and
-        #the second argument is a list of indexes of all the tuples found from the original
-        #list
+        #Returns a tuple - the first input is a list of tuples
+        #describing the first noun or group of nouns found. The
+        #second input is a list and contains the index for each
+        #noun found in the first input
         consec_lst = []
         indexes_lst = []
         for index in range(len(lst)):
@@ -71,7 +74,8 @@ def noun_removal(s):
                         if (is_noun(lst[i+1])):
                             consec_lst.append(lst[i])
                             indexes_lst.append(i)
-                    elif (lst[i][0][0] == "\'" and lst[i][2] != "VERB"):
+                    elif (lst[i][0][0] == "\'" and
+                          lst[i][2] != "VERB"):
                         consec_lst.append(lst[i])
                         indexes_lst.append(i)
                     elif (is_noun(lst[i])):
@@ -82,22 +86,29 @@ def noun_removal(s):
         return []
 
     def normal_noun_removal(string):
-        #Removes a noun or nouns from a string that is a sentence and contains no hypens
+        #This functions identifies nouns in strings without hypens.
+        #It returns a tuple with three inputs. The first input is a
+        #list tuples that contain dependecies and pos for each word
+        #and puncuation. The second argument is an updated list with
+        #the nouns found removed. The third argument is a tuple with
+        #a list of the nouns found and a list of the indexes for each
         sentence_pos_lst = pos_tup_list(string)
         noun_match = noun_list_found(sentence_pos_lst)
         if (noun_match != []):
             upd_pos_list = remove_POS_matches(sentence_pos_lst,
-                                                  noun_match[1],
-                                                  "noun")
+                                              noun_match[1],
+                                              "noun")
             return(sentence_pos_lst, upd_pos_list, noun_match)
         else:
             return ("ERROR", sentence_pos_lst)
 
     def hypen_noun_removal(s):
-        #removes nouns from a string that is a sentence and contains hypens
+        #Removes a noun or group of nouns from a string that contains
+        #hypenated words. The return statement is similar return
+        #statement for the function above
         sentence_pos_lst = pos_tup_list(s)
         hypen_match_range = hypen_word_range(s)
-        substring = s[:hypen_match_range[0]-1] #substring before the hypen word
+        substring = s[:hypen_match_range[0]-1]
         subs_pos_list = pos_tup_list(substring)
         subs_last_word = subs_pos_list[len(subs_pos_list)-1]
         if (hypen_match_range[0] > len(s)/2):
