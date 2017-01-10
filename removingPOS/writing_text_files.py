@@ -46,7 +46,7 @@ group of consecutive nouns found in the line. Each line is a complete
 sentence. Once a sentence is processed, it writes information to two
 seperate files.
 Args: None
-Return: Nothing is returned, instead nformation is written to other files.
+Return: Nothing is returned, instead information is written to other files.
 
 verb_textfile():
 This function reads from a texfile called verbScreening.txt in the folder
@@ -55,7 +55,7 @@ group of consecutive verbs found in the line. Each line is a complete
 sentence. Once a sentence is processed, it writes information to two
 seperate files.
 Args: None
-Return: Nothing is returned, instead nformation is written to other files.
+Return: Nothing is returned, instead information is written to other files.
 
 noun_verb_textfile():
 This function reads from a texfile called nounverbScreening.txt in the folder
@@ -64,7 +64,16 @@ group of consecutive nouns and the first verb or group of consecutive verbs
 found in the line. Each line is a complete sentence. Once a sentence is
 processed, it writes information to the two seperate files.
 Args: None
-Return: Nothing is returned, instead nformation is written to other files.
+Return: Nothing is returned, instead information is written to other files.
+
+subordinate_textfile():
+This function reads from a textfiles called subScreening.txt in the folder
+originalSentences. All of the sentences in subScreening contain subordinate
+conjunctions. Each line in the function subordinate_textfile() is
+processed and the function subordinate_removal removes subordinate
+conjunctions at the beggining of a sentence or in the middle of a sentence.
+Args: None
+Return: Nothing is returned, instead information is written to other files.
 '''
 import pickle
 from nlpSpacy import *
