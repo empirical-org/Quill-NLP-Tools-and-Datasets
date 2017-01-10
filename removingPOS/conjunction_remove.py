@@ -1,10 +1,27 @@
 '''
------------------------------------------------------------------------   |
-update github with all of the changes you have made!!!
-create a pull request with the branch you made and commited all changes
-delete unnesessary folders from github
-
-
+The main function in this file is subordinate_removal(s). This function
+handles sentences that contain subordinate conjunctions in them. It
+removes the subordinate conjunction from the sentence in the following
+ways: If a subordinate conjunction is in the beginnig of a sentence,
+then it removes that word and all of the words following it until a
+comma is reached. In the sentence "After we went to the park, Billy
+went swimming." the string "After we went to the park," would be
+removed. In the sentence "I think we should go hiking after the
+football game" the words "after the football game" would be removed.
+Args:
+    s: A string that is a complete sentence. I will refer to the string
+    as a sentence below.
+Returns:
+    A tuple with three inputs:
+    The first input is list of tuples describing all of the words in
+    the sentence. Each tuple in this list contains the word,
+    dependency, and pos for every word in the sentence, note that
+    punctuation is also considered a word.
+    The second input contains a similar list as the first input in the
+    return statement, but it does not contain the subordinate conjunction
+    match that was found.
+    The third input is list of a list of tuples that contain the
+    subordinate conjunction match found.
 '''
 import re
 import spacy
@@ -13,6 +30,8 @@ from nlpSpacy import pos_tup_list, remove_POS_matches
 
 def subordinate_removal(s):
     def conjunct_lst_found(lst,type_find,conjunction):
+        #this function returns a list of tuples that make up a
+        #subordinate conjunction
         match_found = []
         if type_find == "Upper":
             match_found.append(lst[0])
@@ -33,6 +52,7 @@ def subordinate_removal(s):
                     return match_found
 
     def subordinate_remove(s):
+        #this removes a subordinate conjunction from a string
         complete_pos_lst = pos_tup_list(s)
         conjunct_upper = re.compile('(After|Although|As|Because|Before|' \
                                     'If|Once|Since|Than|That|Though|' \
