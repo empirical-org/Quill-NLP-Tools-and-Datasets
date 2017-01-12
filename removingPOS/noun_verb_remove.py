@@ -9,6 +9,15 @@ The function uses several helper function in order to remove nouns
 and verbs. It mainly makes use of the two functions in noun_remove.py
 and verb_remove.py, both functions are found in the same directory as
 this function.
+
+Args:
+    st: A complete sentence.
+
+Returns:
+    A tuple with three inputs. The first input is a lst of st. The
+    second input is a lst of st, but with noun and verb matches
+    removed from the lst. The third inpust is all of the noun and
+    verb matched in the same format as lst.
 '''
 from nlpSpacy import *
 from noun_remove import noun_removal
