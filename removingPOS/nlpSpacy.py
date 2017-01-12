@@ -1,8 +1,9 @@
 '''
 This file contains functions used heavily in the following files:
-noun_remove.py, verb_remove.py, and noun_verb_remove.py. Please
-note that most of the functions below rely on the library imported
-called Spacy (https://spacy.io/). Also, in the functions below I will
+noun_remove.py, verb_remove.py, noun_verb_remove.py, and
+conjunctions_remove.py. This file requires that Spacy be installed
+on your computer so please make sure it is installed
+(https://spacy.io/). Also, in the functions below I will
 refer to pos several times, it stands for part of speech. I will
 explain each function in detail below:
 
@@ -12,13 +13,14 @@ of tuples that describes each word and punctuation mark in the string.
 Args:
     s: A string that is a complete sentence.
 Returns:
-    This function returns a list of tuples, where each tuples contains
+    This function returns a list of tuples, where each tuple contains
     three inputs. Each word and punctuation mark in s is given its
     own tuple. The first input in the tuple is the word or punctuation
     mark, the second input is the word dependency, and the third input
-    is the pos of the word or punctuation mark.
-
+    is the pos of the word or punctuation mark. There is an example
+    below this line:
 -----------------------------------------------------------------------
+* lst definition
 For the following functions lst is a list of tuples. Each tuple has
 three inputs. The first input is a word or punctuation mark, the second
 input is the dependecy of the word, and the third input is the pos of
@@ -29,25 +31,27 @@ represented as:
 ('went', 'ROOT', 'VERB'), ('hiking', 'advcl', 'NOUN'),
 ('.', 'punct', 'PUNCT')]
 -----------------------------------------------------------------------
-
 tup_list_to_string(lst):
-This function turns a list of tuples directly into a list.
+This function turns a lst directly into a string.
 Args:
-    lst: A list of tuples with three inputs.
+    lst: A lst, as explained above.
 Returns:
     The lst printed as a string, including the "[", "]" and all of the
     tuples as a string.
 
 make_str(lst):
-This function turns a list of tuples back into a sentence or group
-of words.
+This function turns a lst back into a sentence or group of words.
 Args:
-    lst: A list of tuples with three inputs.
+    lst: A lst, as decribed above.
 Returns:
     A string that is a complete sentence or a group of words.
+Example:
+    Input: [('family', 'nsubj', 'NOUN'),
+            ('went', 'ROOT', 'VERB')]
+    Output: "family went"
 
 delete_words_string(sentence,s):
-This function delete a word from a string.
+This function delete words from a string.
 Args:
     sentence: A string that is a sentence.
     s: A word or words that need to be removed from sentence.
@@ -57,7 +61,7 @@ Returns:
 
 hypen_in_sentence(s):
 This function returns a true if there is a hypen in the string,
-otherwise it returns false.
+otherwise returns false.
 Args:
     s: A string
 Returns:
@@ -98,7 +102,10 @@ def make_str(lst):
         if (lst[i][2] != 'PUNCT' and
             lst[i][1] != "case" and
             lst[i-1][0] != '-' and
-            lst[i][0] != '%'):
+            lst[i-1][0] != '$' and
+            lst[i][0] != '-' and
+            lst[i][0] != '%' and
+            lst[i][0] != "\'"):
             s += ' ' + curr_word
         else:
             s += curr_word
@@ -108,21 +115,21 @@ def make_str(lst):
         return s
 
 def delete_words_string(sentence,s):
-    def word_at_beginning(sentence,s):
+    def word_at_beginning(sent,word):
         #Returns bool describing if matched word is in the beginning
-        regex = re.compile(s)
-        match_span = regex.search(sentence).span()
-        if (match_span[0] == 0):
+        regex = re.compile(word)
+        match_reg = regex.search(sent)
+        if (match_reg != None and match_reg.span()[0] == 0):
             return True
         else:
             return False
     regex1 = re.compile(s+"\'")
     if (regex1.search(sentence) != None):
-        return sentence.replace(s,"")
+        return regex1.sub("\'",sentence,1)
     elif (word_at_beginning(sentence,s) == True):
-        return sentence.replace(s+' ','')
+        return re.sub(s+' ','',sentence,1)
     else:
-        return sentence.replace(' '+s,'')
+        return re.sub(' '+s,'',sentence,1)
 
 def hypen_in_sentence(s):
     regex = re.compile(r'\-')
