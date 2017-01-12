@@ -65,7 +65,6 @@ def noun_textfile():
          open(noun_dir + "nounRemoval.p","wb") as tup_write, \
          open("./originalSentences/nounScreening.txt","r") as f:
             for line in f:
-                print(line)
                 line = line.rstrip("\n")
                 line_wo_n = noun_removal(line)
                 if (line_wo_n[0] != "ERROR"):
@@ -92,14 +91,12 @@ def verb_textfile():
          open(verb_dir + "verbRemoval.p","wb") as tup_write, \
          open("./originalSentences/verbScreening.txt","r") as f:
             for line in f:
-                print(line)
                 line = line.rstrip("\n")
                 line_wo_v = verb_removal(line)
                 if (line_wo_v[0] != "ERROR"):
                     pickle.dump(line_wo_v, tup_write)
                     verb_pos = line_wo_v[2]
                     v_found = make_str(verb_pos)
-                    # print("This is the verb found: " + v_found)
                     det.write(line + " ||| "
                               + v_found.rstrip("\n") + " ||| "
                               + make_upd_sentence(line, v_found,"").rstrip("\n") + " ||| "
@@ -148,7 +145,6 @@ def subordinate_textfile():
          open(sub_dir + "conjunctionRemoval.p","wb") as tup_write, \
          open("./originalSentences/subScreening.txt","r") as f:
             for line in f:
-                print(line)
                 line = line.rstrip("\n")
                 line_wo_sub = subordinate_removal(line)
                 if (line_wo_sub != "ERROR"):
