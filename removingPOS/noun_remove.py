@@ -19,17 +19,15 @@ Args:
     as a sentence below.
 Returns:
     A tuple with three inputs:
-    The first input is list of tuples describing all of the words in
-    the sentence. Each tuple in this list contains the word,
-    dependency, and pos for every word in the sentence, note that
-    punctuation is also considered a word.
-    The second input contains a similar list as the first input in the
-    return statement, but it does not contain the first noun or group of
-    nouns in the sentence.
-    The third input is a tuple with two arguments. The first argument is
-    a list of tuples that contain the noun or group of nouns found. The
-    second argument is a list that contains the respective index for
-    each noun found.
+    The first input is list of tuples describing all of the words,
+    including punctuation marks, in a sentence. Each tuple in this
+    list contains a word, its dependency, and its pos. The second input
+    contains a similar list as the first input in the return statement,
+    but it does not contain the first noun or group of nouns in the
+    sentence. The third input is a tuple with two arguments. The first
+    argument is a list of tuples that contain the noun or group of
+    nouns found. The second argument is a list that contains the
+    respective index for each noun found.
 '''
 from nlpSpacy import *
 
@@ -59,10 +57,9 @@ def noun_removal(s):
             return False
 
     def noun_list_found(lst):
-        #Returns a tuple - the first input is a list of tuples
-        #describing the first noun or group of nouns found. The
-        #second input is a list and contains the index for each
-        #noun found in the first input
+        #finds the first noun or group of nouns in a string and returns
+        #a tuple with the lst of the nouns found and each noun's
+        #respective index
         consec_lst = []
         indexes_lst = []
         for index in range(len(lst)):
@@ -87,11 +84,6 @@ def noun_removal(s):
 
     def normal_noun_removal(string):
         #This functions identifies nouns in strings without hypens.
-        #It returns a tuple with three inputs. The first input is a
-        #list tuples that contain dependecies and pos for each word
-        #and puncuation. The second argument is an updated list with
-        #the nouns found removed. The third argument is a tuple with
-        #a list of the nouns found and a list of the indexes for each
         sentence_pos_lst = pos_tup_list(string)
         noun_match = noun_list_found(sentence_pos_lst)
         if (noun_match != []):
@@ -104,8 +96,7 @@ def noun_removal(s):
 
     def hypen_noun_removal(s):
         #Removes a noun or group of nouns from a string that contains
-        #hypenated words. The return statement is similar return
-        #statement for the function above
+        #hypenated words.
         sentence_pos_lst = pos_tup_list(s)
         hypen_match_range = hypen_word_range(s)
         substring = s[:hypen_match_range[0]-1]
@@ -113,7 +104,7 @@ def noun_removal(s):
         subs_last_word = subs_pos_list[len(subs_pos_list)-1]
         if (hypen_match_range[0] > len(s)/2):
             return normal_noun_removal(s)
-        elif (is_noun(subs_last_word[2]) == False and
+        elif (is_noun(subs_last_word) == False and
               subs_last_word[2] != "PUNCT" and
               subs_last_word[1] != 'case'):
             subs_noun_removal = normal_noun_removal(substring)
@@ -123,7 +114,7 @@ def noun_removal(s):
                                                   "noun")
                 return(sentence_pos_lst,
                        upd_pos_list,
-                       subs_noun_removal[2][0])
+                       subs_noun_removal[2])
             else:
                 return ('ERROR',sentence_pos_lst)
         else:
