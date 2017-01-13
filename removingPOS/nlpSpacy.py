@@ -1,201 +1,330 @@
-import unittest
-# import re
+import re
 import spacy
 nlp = spacy.load('en')
 
-#WE ARE WORKING WITH THE FOLLOWING LIST in most of the functions below:
-#[('There', '', 'expl', 'ADV'), ('was', '', 'ROOT', 'VERB'), ('also', '', 'advmod', 'ADV'), ('a', '', 'det', 'DET'), ('death', '', 'attr', 'NOUN'), ('in', '', 'prep', 'ADP'), ('neighboring', '', 'amod', 'VERB'), ('Vermont', 'GPE', 'pobj', 'PROPN'), ('.', '', 'punct', 'PUNCT')]
+'''
+Important Notes:
+POS = Part of Speech
+Need to take into account words that have 's as is
+
+TO-DO:
+Put each main function into seperate file and import necessary files:
+noun_remove
+verd_remove
+noun_verb_remove
+
+For each newly created file start creating final text files:
+First file output: original list of POS || updated list POS || words removed
+Second file output to help people understand: Original sentence, word removed, updated sentence (everything as complete string)
+
+Create a function that can turn a string of tuples into a list of tuples
+
+Random but important:
+take into account ,, and "  "
+have to go through and update any 're ''s (etc.) that are actually verbs
+'''
+
+#turns string into a list of tuples, where each tuple contains a word, word depency, and word POS
 def pos_tup_list(s):
     processed = nlp(s)
     tup_list = []
     for token in processed:
-        tup_list.append((str(token),token.ent_type_,token.dep_,token.pos_))
+        tup_list.append((str(token),token.dep_,token.pos_))
     return tup_list
 
-def consec_iden_pos(lst):
-    for index in range(len(lst)):
-        iden_tup = lst[index][3]
-        if iden_tup == 'NOUN' or iden_tup == 'PRON' or iden_tup == 'PROPN':
-            consec_lst = [index]
-            for i in range(index + 1, len(lst)):
-                next_iden_found = lst[i][3]
-                next_next_iden = lst[i+1][3]
-                if lst[i][0] == '.' and (next_next_iden == 'NOUN' or next_next_iden == 'PRON' or next_next_iden == 'PROPN'):
-                    consec_lst.append(i)
-                elif next_iden_found == 'NOUN' or next_iden_found == 'PRON' or next_iden_found == 'PROPN':
-                    consec_lst.append(i)
-                else:
-                    return consec_lst
-    return []
+#changes a list of tuples to a string so that it can be printed
+def tup_list_to_string(lst):
+    return ', '.join('(' + ', '.join(i) + ')' for i in lst)
 
-def delete_arr_elements(sent_lst,remove_lst):
-    new_sent_list = []
-    for i in range(len(sent_lst)):
-        if i not in remove_lst:
-            new_sent_list.append(sent_lst[i])
-    return new_sent_list
-
-def capitalize_begin_sent(word):
-    new_s = ''
-    if word[0].islower():
-        new_s += word[0].upper() + word[1:]
-    else:
-        new_s += word
-    return new_s
-
+#turns a list of tuples into a sentence or words
 def make_str(lst):
     s = ''
-    if lst[0][3] == 'PUNCT':
-        s += capitalize_begin_sent(lst[1][0])
-        start_ind = 2
-    else:
-        s+= capitalize_begin_sent(lst[0][0])
-        start_ind = 1
-    for i in range(start_ind,len(lst)):
+    for i in range(len(lst)):
         curr_word = lst[i][0]
-        if lst[i][3] != 'PUNCT' and lst[i][2] != "case":
+        if lst[i][2] != 'PUNCT' and lst[i][1] != "case" and lst[i-1][0] != '-':
             s += ' ' + curr_word
         else:
             s += curr_word
-    return s
+    if s[0] == ' ':
+        return s[1:]
+    else:
+        return s
 
-def print_tup_removed(lst,rem_lst):
-    tups_rem = ''
-    for i in range(len(lst)):
-        if i in rem_lst:
-            tups_rem += str(lst[i]) + ' '
-    return tups_rem
+#deletes a word from a sentence
+def delete_words_string(sentence,s):
+    #returns bool describing if matched word is in the beginning
+    def word_at_beginning(sentence,s):
+        regex = re.compile(s)
+        match_span = regex.search(sentence).span()
+        if match_span[0] == 0:
+            return True
+        else:
+            return False
+
+    regex1 = re.compile(s+"\'")
+    if regex1.search(sentence) != None:
+        return sentence.replace(s,"")
+    elif word_at_beginning(sentence,s) == True:
+        return sentence.replace(s+' ','')
+    else:
+        return sentence.replace(' '+s,'')
+
+#returns true if a hypen is found in a sentence
+def hypen_in_sentence(s):
+    regex = re.compile(r'\-')
+    match_bool = regex.search(s)
+    if match_bool != None:
+        return True
+    else:
+        return False
+
+#this returns a list of tuples that are not in the second argument
+def remove_tups_lst(ls_orig,ls_remove,removal_type):
+    upd_tup_lst = []
+    if removal_type == "noun":
+        for i in range(len(ls_orig)):
+            if i != ls_remove[0]:
+                upd_tup_lst.append(ls_orig[i])
+            else:
+                ls_remove.pop(0)
+    else:
+        for tup in ls_orig:
+            if tup not in ls_orig:
+                upd_tup_lst.append(tup)
+    return upd_tup_lst
+
+#removes verbs from a sentence
+def verb_removal(st):
+    #returns a list of words that are consecutive verbs
+    def consec_verb_list(lst):
+        for i in range(len(lst)):
+            if lst[i][2] == "VERB":
+                verb_tup_lst = [lst[i]]
+                indexes_mached = [i]
+                for p in range(i+1,len(lst)):
+                    if lst[p][2] == "VERB":
+                        verb_tup_lst.append(lst[p])
+                        indexes_mached.append(p)
+                    else:
+                        return (verb_tup_lst,indexes_mached)
+        return []
+
+    #returns a string with all the hypenated words removed
+    def remove_hypens_words(st):
+        #removes word duplicates in a list
+        def remove_duplicates(lst):
+            word_dict = {}
+            for i in range(len(lst)):
+                word = lst[i]
+                if word_dict.get(word) == None:
+                    word_dict[word] = word
+            return list(word_dict.keys())
+
+        regex = re.compile(r'\w+\-\w+\-\w+|\w+.\-.\w+.\-.\w+|\w+\-\w+|\w+.\-.\w+')
+        matches_lst = remove_duplicates(regex.findall(st)) #this is essential
+        while matches_lst != []:
+            word = matches_lst.pop()
+            st = delete_words_string(st,word)
+        return st
+
+    def hypen_verb_removal(s):
+        tup_sent_arr = pos_tup_list(s)
+        st_wo_hypen_words = remove_hypens_words(s)
+        tup_upd_st = pos_tup_list(st_wo_hypen_words)
+        verb_list_found = consec_verb_list(tup_upd_st)
+        if verb_list_found != []:
+            verb = make_str(verb_list_found[0])
+            sentence_wo_verb = delete_words_string(s,verb)
+            return (sentence_wo_verb[0].upper()+sentence_wo_verb[1:],verb,tup_list_to_string(verb_list_found[0]),tup_list_to_string(tup_sent_arr))
+        else:
+            return ("ERROR",tup_list_to_string(tup_sent_arr))
+
+    def normal_verb_removal(s):
+        tup_sent_arr = pos_tup_list(s)
+        verb_list_found = consec_verb_list(tup_sent_arr)
+        if verb_list_found != []:
+            verb = make_str(verb_list_found[0])
+            sentence_wo_verb = delete_words_string(s,verb)
+            return (sentence_wo_verb[0].upper()+sentence_wo_verb[1:],verb,tup_list_to_string(verb_list_found[0]),tup_list_to_string(tup_sent_arr))
+        else:
+            return ("ERROR",tup_list_to_string(tup_sent_arr))
+
+    if hypen_in_sentence(st) == False:
+        return normal_verb_removal(st)
+    else:
+        return hypen_verb_removal(st)
 
 def noun_removal(s):
-    orig_sent_arr = pos_tup_list(s)
-    consec_pos = consec_iden_pos(orig_sent_arr)
-    if consec_pos != []:
-        upd_sent_arr = delete_arr_elements(orig_sent_arr, consec_pos)
-        return (make_str(upd_sent_arr).rstrip('\n'), print_tup_removed(orig_sent_arr, consec_pos).rstrip('\n'))
-    else:
-        return ("ERROR",None)
+    #this function assumes that there is a hypen in the string and returns the span of the first hypen match
+    def hypen_match_range(s):
+        regex = re.compile(r'\w+\-\w+\-\w+|\w+.\-.\w+.\-.\w+|\w+\-\w+|\w+.\-.\w+')
+        check_found = regex.search(s)
+        if check_found != None:
+            return check_found.span()
+        else:
+            return None
+    #returns true if the tuple is a noun
+    def noun_bool(tup):
+        word_pos = tup[2]
+        word_dep = tup[1]
+        if  word_pos == 'NOUN' or word_pos == 'PRON' or word_pos == 'PROPN' or word_dep == 'poss':
+            return True
+        else:
+            return False
 
-def verb_removal(s):
-    verb_index = -1
-    tup_sent_arr = pos_tup_list(s)
-    for i in range(len(tup_sent_arr)):
-        if tup_sent_arr[i][3] == "VERB":
-            verb_index = i
-            verb_found_tup = tup_sent_arr[i]
-            break
-    if verb_index != -1:
-        del tup_sent_arr[verb_index]
-        return (make_str(tup_sent_arr).rstrip('\n'), str(verb_found_tup).rstrip('\n'))
-
-    else:
-        return ("ERROR",None)
-
-
-# with open('./updatedSentences/nounCompleteSentences.txt','w') as complete:
-#     with open('./updatedSentences/nounRemovedSentences.txt','w') as remov:
-#         with open('./originalSentences/nounScreening.txt','r') as file:
-#             for line in file:
-#                 complete.write(line)
-#                 n_sentence_rem = noun_removal(line)  ##make sure this works for ERROR
-#                 if n_sentence_rem[0] != "ERROR":
-#                     remov.write(n_sentence_rem[0] + ' ||| ' +  n_sentence_rem[1] + ' ||| ' + line)
-#                 else:
-#                     remov.write("ERROR" + ' ||| ' + line)
-#
-# with open('./updatedSentences/verbCompleteSentences.txt','w') as v_complete:
-#     with open('./updatedSentences/verbRemovedSentences.txt','w') as v_remov:
-#         with open('./originalSentences/verbScreening.txt','r') as f:
-#             for line in f:
-#                 v_complete.write(line)
-#                 v_sentence_rem = verb_removal(line)
-#                 if v_sentence_rem[0] != "ERROR":
-#                     v_remov.write(v_sentence_rem[0] + ' ||| ' +  v_sentence_rem[1] + ' ||| ' + line)
-#                 else:
-#                     v_remov.write("ERROR" + ' ||| ' + line)
-
-#MAKE THIS FASTER TO RUN!!!
-with open('./updatedSentences/nounverbCompleteSentences.txt','w') as nv_complete:
-    with open('./updatedSentences/nounverbRemovedSentences.txt','w') as nv_remov:
-        with open('./originalSentences/nounverbScreening.txt','r') as fi:
-            for line in fi:
-                nv_complete.write(line)
-                noun_removed = noun_removal(line)
-                if noun_removed[0] == "ERROR":
-                    nv_remov.write("ERROR" + ' ||| ' + line)
-                else:
-                    verb_removed = verb_removal(noun_removed[0]) # check if there is an error in verb as well
-                    if verb_removed[0] != "ERROR":
-                        nv_remov.write(verb_removed[0] + ' ||| ' + noun_removed[1] + verb_removed[1] + ' ||| ' + line) ###THERE IS A PROBLEM HERE CHECK FOR POSIBLE ERROR
+    #returns a list of the tuples that were removed that are of noun type
+    def consec_noun_list(lst): #add case for numbers wehre noun before   ('On', 'prep', 'ADP') ('July', 'pobj', 'PROPN') ('21', 'nummod', 'NUM') ('the', 'det', 'DET')
+        consec_lst = []
+        indexes_lst = []
+        for index in range(len(lst)):
+            if noun_bool(lst[index]) == True:
+                consec_lst.append(lst[index])
+                indexes_lst.append(index)
+                for i in range(index + 1, len(lst)):
+                    if lst[i][0] == '.' and i != len(lst)-1: #making sure that the '.' found is not the period of the sentence
+                        if noun_bool(lst[i+1]) == True:
+                            consec_lst.append(lst[i])
+                            indexes_lst.append(i)
+                    elif lst[i][0][0] == "\'" and lst[i][2] != "VERB": #takes into account possesive nouns (Catherine's)
+                        consec_lst.append(lst[i])
+                        indexes_lst.append(i)
+                    elif noun_bool(lst[i]) == True:
+                        consec_lst.append(lst[i])
+                        indexes_lst.append(i)
+                    elif lst[i][2] == "NUM": #numbers are nouns
+                        consec_lst.append(lst[i])
+                        indexes_lst.append(i)
                     else:
-                        nv_remov.write("ERROR" + ' ||| ' + line)
+                        return (consec_lst,indexes_lst)
+        return []
+
+    def normal_noun_removal(string): #here include hypen noun removal
+        orig_sent_arr = pos_tup_list(string)
+        noun_list_found = consec_noun_list(orig_sent_arr)
+        if noun_list_found != []:
+            noun = make_str(noun_list_found[0]) #just turn thing into string
+            sentence_wo_noun = delete_words_string(string,noun)
+            return (sentence_wo_noun[0].upper()+sentence_wo_noun[1:],noun,tup_list_to_string(noun_list_found[0]),tup_list_to_string(orig_sent_arr))
+        else:
+            return ("ERROR",tup_list_to_string(orig_sent_arr))
+
+    #removes nouns from a string that contains hypens
+    def hypen_noun_removal(s):
+        orig_tup = pos_tup_list(s)
+        hypen_match_ran = hypen_match_range(s)
+        substring = s[:hypen_match_ran[0]-1] #substring before the hypen word. The space before the hypen match is not included in substring
+        token_pos_lst = pos_tup_list(substring)
+        last_token = token_pos_lst[len(token_pos_lst)-1]
+        if hypen_match_ran[0] > len(s)/2: #meaning the hypen is at the very end, noun must be before this
+            return normal_noun_removal(s)
+        elif last_token[2] != 'NOUN' and last_token[2] != 'PRON' and last_token[2] != 'PROPN' and last_token[2] != "PUNCT" and last_token[1] != 'case' and last_token[1] != 'poss':
+            substring_rem = normal_noun_removal(substring) #finding any nouns before the hypenated word
+            if substring_rem[0] != 'ERROR':
+                noun_removed = substring_rem[1]
+                sentence_noun_removed = delete_words_string(s, noun_removed)
+                return (sentence_noun_removed[0].upper()+sentence_noun_removed[1:],noun_removed,substring_rem[2],substring_rem[3])
+            else:
+                return ('ERROR',tup_list_to_string(orig_tup))
+        else:
+            return ('ERROR',tup_list_to_string(orig_tup))
+
+    if hypen_in_sentence(s) == False:
+        return normal_noun_removal(s)
+    else:
+        return hypen_noun_removal(s)
+
+def noun_verb_removal(st):
+    tup_lst = pos_tup_list(st)
+    remove_noun_st = noun_removal(st) #i think this order is fine because also recognizes 're as verb
+    remove_verb_st = verb_removal(st)
+    if remove_noun_st[0] != "ERROR" and remove_verb_st[0] != "ERROR":
+        noun_removed = remove_noun_st[1]
+        verb_removed = remove_verb_st[1]
+        st = delete_words_string(st,noun_removed)
+        st = delete_words_string(st,verb_removed)
+        return (st[0].upper()+st[1:], remove_noun_st[2]+' '+remove_verb_st[2],tup_list_to_string(tup_lst))
+    else:
+        return ("ERROR", tup_list_to_string(tup_lst))
 
 
-#next step is to remove verbs, make sure to commit the code you wrote above! before writing for verbs
-#determine whether to remove ent, dep, pos
 
-#####CHECK:
-# The uncommented code includes my tests and also previous functions I wrote to check word entity and word dependencies
-# class removing_nouns(unittest.TestCase):
-#     def test(self):
-#         self.assertEqual(noun_removal('Washington is my favorite place.'), 'Is my favorite place.')
-#         self.assertEqual(noun_removal("Lt. Colonel Seth Reed and his family moved to the Erie area from Geneva, New York; they were Yankees from Uxbridge, Massachusetts."), "And his family moved to the Erie area from Geneva, New York; they were Yankees from Uxbridge, Massachusetts.")
-#         self.assertEqual(noun_removal('I saw Catherine Yesenia and Karen walk the dog.'), 'Saw Catherine Yesenia and Karen walk the dog.')
-#         self.assertEqual(noun_removal('The cat loves pie.'), 'The loves pie.')
-#         self.assertEqual(noun_removal('Kerry and Nando went hiking.'), 'And Nando went hiking.')
-#         self.assertEqual(noun_removal('There are also research facilities operated through hospitals and private biotechnology companies.'), "There are also operated through hospitals and private biotechnology companies.")
-#         self.assertEqual(noun_removal('He likes to eat.'), 'Likes to eat.')
-#         self.assertEqual(noun_removal('Grand Teton National Park and the surrounding region host over 1000 species of vascular plants.'), 'And the surrounding region host over 1000 species of vascular plants.')
-#         self.assertEqual(noun_removal('Of the primary schools, there are 162 regular, 14 special, 15 art, and 4 adult schools.'), 'Of the primary, there are 162 regular, 14 special, 15 art, and 4 adult schools.')
-#         self.assertEqual(noun_removal('There is no extant literature in the English language in this era.'), 'There is no extant in the English language in this era.')
-#         self.assertEqual(noun_removal("This fact, too, was widely criticized by the state's newspapers."), "This, too, was widely criticized by the state's newspapers.")
-#         self.assertEqual(noun_removal("Within Black Moshannon State Park there is a State Park Natural Area protecting the bogs."), "Within there is a State Park Natural Area protecting the bogs.")
-#         self.assertEqual(noun_removal("C Squadron, leading a brigade group, advanced towards Gambut on the morning of 23 November."), "Leading a brigade group, advanced towards Gambut on the morning of 23 November.")
-#         self.assertEqual(noun_removal("Let's go see the cake tree."), "Let go see the cake tree.") #but the output sentence is incorrect
-#         self.assertEqual(noun_removal("There was also a death in neighboring Vermont."), "There was also a in neighboring Vermont.") #but the output sentence is incorrect
+# with open('./updatedSentences/nounSentences/testing.txt','w') as remov:
+#     with open('./originalSentences/nounScreening.txt','r') as file:
+#         for line in file:
+#             # print(line)
+#             n_sentence_rem = noun_removal(line)
+#             if n_sentence_rem[0] != "ERROR":
+#                 remov.write(line.rstrip('\n') + ' ||| ' + n_sentence_rem[2] + '\n' )
+
+# with open('./updatedSentences/verbSentences/testing.txt','w') as remov:
+#     with open('./originalSentences/verbScreening.txt','r') as file:
+#         for line in file:
+#             print(line)
+#             v_sentence_rem = verb_removal(line)
+#             if v_sentence_rem[0] != "ERROR":
+#                 remov.write(line.rstrip('\n') + ' ||| ' + v_sentence_rem[2] + '\n' )
+
+# with open('./updatedSentences/nounverbSentences/testing.txt','w') as remov:
+#     with open('./originalSentences/nounverbScreening.txt','r') as file:
+#         for line in file:
+#             print(line)
+#             nv_sentence_rem = noun_verb_removal(line)
+#             if nv_sentence_rem[0] != "ERROR":
+#                 remov.write(line.rstrip('\n') + ' ||| ' + nv_sentence_rem[2] + '\n' )
+
+
+#THIS IS FOR NOUNS
+# with open('./updatedSentences/nounSentences/nounErrorSentences.txt','w') as error_n:
+#     with open('./updatedSentences/nounSentences/nounCompleteSentences.txt','w') as complete:
+#         with open('./updatedSentences/nounSentences/nounRemovedSentences.txt','w') as remov:
+#             with open('./updatedSentences/nounSentences/nounRemovedClean.txt','w') as remov_clean:
+#                 with open('./originalSentences/nounScreening.txt','r') as file:
+#                     for line in file:
+#                         n_sentence_rem = noun_removal(line)
+#                         if n_sentence_rem[0] != "ERROR":
+#                             complete.write(line.rstrip('\n') + ' ||| ' + n_sentence_rem[1])
+#                             remov.write(n_sentence_rem[0] + ' ||| ' +  n_sentence_rem[2].rstrip('\n') + ' ||| ' + line.rstrip('\n') + ' ||| ' + n_sentence_rem[3])
+#                             remov_clean.write(n_sentence_rem[0]+"\n")
+#                         else:
+#                             error_n.write('ERROR ||| ' + line.rstrip('\n') + ' ||| ' + n_sentence_rem[1] + '\n')
+
+
+
+
+
+#THIS IS FOR VERBS
+# with open('./updatedSentences/verbSentences/verbErrorSentences.txt','w') as error_v:
+#     with open('./updatedSentences/verbSentences/verbCompleteSentences.txt','w') as v_complete:
+#         with open('./updatedSentences/verbSentences/verbRemovedSentences.txt','w') as v_remov:
+#             with open('./updatedSentences/verbSentences/verbRemovedClean.txt','w') as v_remov_clean:
+#                 with open('./originalSentences/verbScreening.txt','r') as f:
+#                     for line in f:
+#                         v_sentence_rem = verb_removal(line)
+#                         if v_sentence_rem[0] != "ERROR":
+#                             v_complete.write(line)
+#                             v_remov.write(v_sentence_rem[0] + ' ||| ' +  v_sentence_rem[1] + ' ||| ' + line)
+#                             v_remov_clean.write(v_sentence_rem[0])
+#                         else:
+#                             error_v.write('ERROR ||| ' + line.rstrip('\n') + ' ||| ' + v_sentence_rem[1] + '\n')
 #
-# if __name__ == '__main__':
-#     unittest.main()
-
-# def consec_iden_ent_pos(lst,tup_index,f_check,s_check,t_check):
-#     for index in range(len(lst)):
-#         iden_tup = lst[index][tup_index]
-#         if iden_tup == f_check or iden_tup == s_check or iden_tup == t_check: #should i break somewhere here??
-#             consec_lst = [index]
-#             for i in range(index + 1, len(lst)):
-#                 next_iden_found = lst[i][tup_index]
-#                 if next_iden_found == f_check or next_iden_found == s_check or next_iden_found == t_check:
-#                     consec_lst.append(i)
-#                 else:
-#                     return consec_lst
-#     return []
-
-# def dep_consec_iden(lst):
-#     reg = re.compile('.subj')
-#     for i in range(len(lst)):
-#         dep_tup = lst[i][2]
-#         reg_m = reg.match(dep_tup)
-#         if reg_m != None:
-#             return i
-#     return -1
-
-# def ent_noun_removal(s):
-#     processed = nlp(s)
-#     orig_sent_arr = []
-#     for token in processed:
-#         orig_sent_arr.append((str(token),token.ent_type_,token.dep_,token.pos_))
-#     consec_ent = consec_iden_ent_pos(orig_sent_arr,1,'PERSON','FACILITY','ORG')
-#     if consec_ent != []:
-#         upd_sent_arr = delete_arr_elements(orig_sent_arr, consec_ent)
-#         return make_str(upd_sent_arr)
-#     else:
-#         consec_dep = dep_consec_iden(orig_sent_arr)
-#         if consec_dep != -1:
-#             del orig_sent_arr[consec_dep]
-#             return make_str(orig_sent_arr)
-#         else:
-#             consec_pos = consec_iden_ent_pos(orig_sent_arr,3,'NOUN','PRON','PROPN')
-#             if consec_pos != []:
-#                 upd_sent_arr = delete_arr_elements(orig_sent_arr, consec_pos)
-#                 return make_str(upd_sent_arr)
-#             else:
-#                 return "Sorry I can't check for this."
+# # THIS IS FOR NOUNS AND VERBS
+# with open('./updatedSentences//nounverbSentences/nounverbErrorSentences.txt','w') as error_nv:
+#     with open('./updatedSentences/nounverbSentences/nounverbCompleteSentences.txt','w') as nv_complete:
+#         with open('./updatedSentences/nounverbSentences/nounverbRemovedSentences.txt','w') as nv_remov:
+#             with open('./updatedSentences/nounverbSentences/nounverbRemovedSentences.txt','w') as nv_remov_clean:
+#                 with open('./originalSentences/nounverbScreening.txt','r') as fi:
+#                     for line in fi:
+#                         noun_verb_removed = noun_verb_removal(line)
+#                         print(noun_verb_removed)
+#                         if noun_verb_removed[0] != "ERROR":
+#                             nv_complete.write(line)
+#                             nv_remov.write(noun_verb_removed[0] + ' ||| ' + noun_verb_removed[1] + ' ||| ' + line)
+#                             nv_remov_clean.write(noun_verb_removed[0])
+#                         else:
+#                             error_nv.write('ERROR ||| ' + line.rstrip('\n') + noun_verb_removed[1] +'\n')
+#
+# error_nv.close()
+# nv_complete.close()
+# nv_remov.close()
+# nv_remov_clean.close()
+# fi.close()
