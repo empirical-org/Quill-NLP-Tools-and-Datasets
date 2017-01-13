@@ -60,27 +60,3 @@ def verb_removal(st):
         return normal_verb_removal(st)
     else:
         return hypen_verb_removal(st)
-
-with open('./updatedSentences/verbSentences/testing.txt','w') as remov:
-    with open('./originalSentences/verbScreening.txt','r') as file:
-        for line in file:
-            print(line)
-            v_sentence_rem = verb_removal(line)
-            if v_sentence_rem[0] != "ERROR":
-                remov.write(line.rstrip('\n') + ' ||| ' + v_sentence_rem[2] + '\n' )
-#
-
-#THIS IS FOR VERBS
-# with open('./updatedSentences/verbSentences/verbErrorSentences.txt','w') as error_v:
-#     with open('./updatedSentences/verbSentences/verbCompleteSentences.txt','w') as v_complete:
-#         with open('./updatedSentences/verbSentences/verbRemovedSentences.txt','w') as v_remov:
-#             with open('./updatedSentences/verbSentences/verbRemovedClean.txt','w') as v_remov_clean:
-#                 with open('./originalSentences/verbScreening.txt','r') as f:
-#                     for line in f:
-#                         v_sentence_rem = verb_removal(line)
-#                         if v_sentence_rem[0] != "ERROR":
-#                             v_complete.write(line)
-#                             v_remov.write(v_sentence_rem[0] + ' ||| ' +  v_sentence_rem[1] + ' ||| ' + line)
-#                             v_remov_clean.write(v_sentence_rem[0])
-#                         else:
-#                             error_v.write('ERROR ||| ' + line.rstrip('\n') + ' ||| ' + v_sentence_rem[1] + '\n')
