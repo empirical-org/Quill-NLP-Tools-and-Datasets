@@ -25,7 +25,8 @@ $ # ensure you are in the top level of the project before running these commands
 $
 $ source activate <YOUR CONDA ENV>
 $ conda install -c conda-forge nbstripout
-$ nbstripout --install # sets up necessary git filters
+$ nbstripout --install
+$ nbstripout --install --attributes .gitattributes
 ```
 
 Running the above commands will ensure generated output from the notebooks is
