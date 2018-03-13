@@ -18,6 +18,24 @@ import re
 from nltk.util import ngrams, trigrams
 ```
 
+#### Show version control how to deal with ipynb files
+
+```bash
+$ # ensure you are in the top level of the project before running these commands
+$
+$ cp ipynb_output_filter.py /usr/local/bin/ipynb_output_filter.py
+$ echo "*.ipynb    filter=dropoutput_ipynb" >> ~/.gitattributes
+$ git config --global core.attributesfile ~/.gitattributes
+$ git config --global filter.dropoutput_ipynb.clean /usr/local/bin/ipynb_output_filter.py
+$ git config --global filter.dropoutput_ipynb.smudge cat
+```
+
+Running the above commands will ensure generated output from the notebooks is
+not versioned, but that regular code changes will still be reflected.
+
+Note: this means that switching branches could mean changes to notebook state.
+Be aware of this and don't be alarmed.
+
 #### Load Datafiles
 
 
