@@ -23,11 +23,9 @@ from nltk.util import ngrams, trigrams
 ```bash
 $ # ensure you are in the top level of the project before running these commands
 $
-$ cp ipynb_output_filter.py /usr/local/bin/ipynb_output_filter.py
-$ echo "*.ipynb    filter=dropoutput_ipynb" >> ~/.gitattributes
-$ git config --global core.attributesfile ~/.gitattributes
-$ git config --global filter.dropoutput_ipynb.clean /usr/local/bin/ipynb_output_filter.py
-$ git config --global filter.dropoutput_ipynb.smudge cat
+$ source activate <YOUR CONDA ENV>
+$ conda install -c conda-forge nbstripout
+$ nbstripout --install # sets up necessary git filters
 ```
 
 Running the above commands will ensure generated output from the notebooks is
