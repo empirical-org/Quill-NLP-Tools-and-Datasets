@@ -7,7 +7,7 @@ import requests
 
 # Constants
 US_1000_TOP_NAMES_URL = 'https://nameberry.com/popular_names/US'
-OUTPUT_FILE = 'mostPopularNamesUSA.txt'
+OUTPUT_FILE = 'sentence_parts/mostPopularNamesUSA.txt'
 
 r = requests.get(US_1000_TOP_NAMES_URL)
 soup = bs(r.text, 'html.parser')
