@@ -19,10 +19,10 @@ double_letter = re.compile('^[{}][{}][{}]$'.format(CONSONANTS, VOWELS,
                                                    CONSONANTS_NO_XW))
 
 with open(REGULAR_FORMS_IRREGULAR_PAST_PARTICIPLES_FILE, 'r') as ipp:
-    list_of_irregular_verbs = [word for word in ipp]
+    list_of_irregular_verbs = [word.strip() for word in ipp]
 
 with open(IRREGULAR_PAST_PARTICIPLES_FILE, 'r') as ipp2:
-    past_participle_irregular_verbs = [word2 for word2 in ipp2]
+    past_participle_irregular_verbs = [word2.strip() for word2 in ipp2]
 
 with open(PRESENT_TENSE_VERBS_FILE, 'r') as f:
     _of = open(OUTPUT_FILE, 'w')
@@ -45,5 +45,6 @@ with open(PRESENT_TENSE_VERBS_FILE, 'r') as f:
         else:
             line += 'ed'
 
+        line += '\n'
         _of.write(line)
     _of.close()
