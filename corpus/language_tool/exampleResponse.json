@@ -1,0 +1,84 @@
+{
+  "software": {
+    "name": "LanguageTool",
+    "version": "4.1-SNAPSHOT",
+    "buildDate": "2018-03-12 21:01",
+    "apiVersion": 1,
+    "status": ""
+  },
+  "warnings": {
+    "incompleteResults": false
+  },
+  "language": {
+    "name": "English (US)",
+    "code": "en-US"
+  },
+  "matches": [
+    {
+      "message": "“As” at the beginning of a sentence requires a 2nd clause. Maybe a comma, question or exclamation mark is missing, or the sentence is incomplete and should be joined with the following sentence. ",
+      "shortMessage": "Punctuation error, sentence looks like a fragment",
+      "replacements": [],
+      "offset": 63,
+      "length": 2,
+      "context": {
+        "text": "...r, Juan wove through the heavy traffic. As his ex-girlfriend Gigi chased him down ...",
+        "offset": 43,
+        "length": 2
+      },
+      "sentence": "As his ex-girlfriend Gigi chased him down the interstate.",
+      "rule": {
+        "id": "SENTENCE_FRAGMENT",
+        "subId": "1",
+        "description": "Sentence is a fragment",
+        "issueType": "grammar",
+        "urls": [
+          {
+            "value": "http://www.chompchomp.com/rules/fragrules.htm"
+          }
+        ],
+        "category": {
+          "id": "GRAMMAR",
+          "name": "Grammar"
+        }
+      }
+    },
+    {
+      "message": "Possible spelling mistake found",
+      "shortMessage": "Spelling mistake",
+      "replacements": [
+        {
+          "value": "Gig"
+        },
+        {
+          "value": "Gigs"
+        },
+        {
+          "value": "GIGO"
+        },
+        {
+          "value": "GIGN"
+        },
+        {
+          "value": "IGI"
+        }
+      ],
+      "offset": 84,
+      "length": 4,
+      "context": {
+        "text": "...the heavy traffic. As his ex-girlfriend Gigi chased him down the interstate.",
+        "offset": 43,
+        "length": 4
+      },
+      "sentence": "As his ex-girlfriend Gigi chased him down the interstate.",
+      "rule": {
+        "id": "MORFOLOGIK_RULE_EN_US",
+        "description": "Possible spelling mistake",
+        "issueType": "misspelling",
+        "category": {
+          "id": "TYPOS",
+          "name": "Possible Typo"
+        }
+      }
+    }
+  ]
+}
