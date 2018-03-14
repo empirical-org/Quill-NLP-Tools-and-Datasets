@@ -16,6 +16,11 @@ LIST_OF_COORDINATING_CONJUNCTIONS = ['for', 'and', 'nor', 'or', 'but', 'yet',
                                     ]
 
 
+def generate_participle_phrase_fragments():
+    pass
+
+
+
 def generate_subordinate_clause_fragment():
     """
     - A subordinate clause contains a subordinate conjunction, a subject, and a
