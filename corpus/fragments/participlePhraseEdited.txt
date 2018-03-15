@@ -1,0 +1,959 @@
+At exactly half-past eleven Mr. Fogg would, according to his daily habit, quit Saville Row, and repair to the Reform.
+according to his daily habit, quit Saville Row, and repair to the Reform.
+according
+True
+
+
+
+
+Hearing that Mr. Phileas Fogg was looking for a servant, and that his life was one of unbroken regularity, that he neither travelled nor stayed from home overnight, he felt sure that this would be the place he was after.
+Hearing that Mr. Phileas Fogg was looking for a servant
+Hearing
+True
+
+
+
+
+A keen observer of English customs relates that, being in one of the rooms of the Bank one day, he had the curiosity to examine a gold ingot weighing some seven or eight pounds.
+being in one of the rooms of the Bank one day, he had the curiosity to examine a gold ingot weighing some seven or eight pounds.
+being
+True
+
+
+
+
+"A true Englishman doesn't joke when he is talking about so serious a thing as a wager," replied Phileas Fogg, solemnly.
+talking about so serious a thing as a wager," replied Phileas Fogg, solemnly.
+talking
+True
+
+
+
+
+They were going to Dover; good!
+going to Dover; good!
+going
+False
+
+
+
+
+Just as the train was whirling through Sydenham, Passepartout suddenly uttered a cry of despair.
+whirling through Sydenham, Passepartout suddenly uttered a cry of despair.
+whirling
+False
+
+
+
+
+FIX, THE DETECTIVE, BETRAYSe steamer Mongolia, belonging to the Peninsular and Oriental Company, built of iron, of two thousand eight hundred tons burden, and five hundred horse-power, was due at eleven o'clock a.m. on Wednesday, the 9th of October, at Suez.
+belonging to the Peninsular and Oriental Company, built of iron, of two thousand eight hundred tons burden, and five hundred horse-power, was due at eleven o'clock a.m. on Wednesday, the 9th of October, at Suez.
+belonging
+True
+
+
+
+
+Mr. Fix evidently was not wanting in a tinge of self-conceit.
+wanting in a tinge of self-conceit.
+wanting
+False
+
+
+
+
+I assure you it will be quite the thing for him to do; but I hope you will not visa the passport."
+thing for him to do; but I hope you will not visa the passport."
+thing
+False
+
+
+
+
+"And you are looking about you?"
+looking about you?"
+looking
+False
+
+
+
+
+"Yes; but we travel so fast that I seem to be journeying in a dream.
+journeying in a dream.
+journeying
+False
+
+
+
+
+"My gas-burner, which I forgot to turn off, and which is at this moment burning at my expense.
+burning at my expense.
+burning
+True
+
+
+
+
+the fact by any outward sign.s unvarying as the ship's chronometers, and seldom having the curiosity even to go upon the deck, he passed through the memorable scenes of the Red Sea with cold indifference; did not care to recognise the historic towns and villages which, along its borders, raised their picturesque outlines against the sky; and betrayed no fear of the dangers of the Arabic Gulf, which the old historians always spoke of with horror, and upon which the ancient navigators never ventured without propitiating the gods by ample sacrifices.
+unvarying as the ship's chronometers, and seldom having the curiosity even to go upon the deck, he passed through the memorable scenes of the Red Sea with cold indifference; did not care to recognise the historic towns and villages which, along its borders, raised their picturesque outlines against the sky; and betrayed no fear of the dangers of the Arabic Gulf, which the old historians always spoke of with horror, and upon which the ancient navigators never ventured without propitiating the gods by ample sacrifices.
+unvarying
+True
+
+
+
+
+You see, a man of sound sense ought not to spend his life jumping from a steamer upon a railway train, and from a railway train upon a steamer again, pretending to make the tour of the world in eighty days!
+jumping from a steamer upon a railway train, and from a railway train upon a steamer again, pretending to make the tour of the world in eighty days!
+jumping
+True
+
+
+
+
+Then they came upon vast tracts extending to the horizon, with jungles inhabited by snakes and tigers, which fled at the noise of the train; succeeded by forests penetrated by the railway, and still haunted by elephants which, with pensive eyes, gazed at the train as it passed.
+extending to the horizon, with jungles inhabited by snakes and tigers, which fled at the noise of the train; succeeded by forests penetrated by the railway, and still haunted by elephants which, with pensive eyes, gazed at the train as it passed.
+extending
+True
+
+
+
+
+It was thereabouts that Feringhea, the Thuggee chief, king of the stranglers, held his sway.
+king of the stranglers, held his sway.
+king
+True
+
+
+
+
+The conductor, passing along the carriages, shouted, "Passengers will get out here!"
+passing along the carriages, shouted, "Passengers will get out here!"
+passing
+True
+
+
+
+
+Phileas Fogg, without getting in the least flurried, then proposed to purchase the animal outright, and at first offered a thousand pounds for him.
+getting in the least flurried, then proposed to purchase the animal outright, and at first offered a thousand pounds for him.
+getting
+True
+
+
+
+
+Returning to the Indian, whose small, sharp eyes, glistening with avarice, betrayed that with him it was only a question of how great a price he could obtain.
+Returning to the Indian
+Returning
+True
+
+
+
+
+This line, owing to the capricious turnings of the Vindhia Mountains, did not pursue a straight course.
+owing to the capricious turnings of the Vindhia Mountains, did not pursue a straight course.
+owing
+True
+
+
+
+
+The conversation, beginning with a few disconnected phrases, soon gave place to loud and steady snores.
+beginning with a few disconnected phrases
+beginning
+Good
+
+
+
+Several years ago, when I was living at Bombay, a young widow asked permission of the governor to be burned along with her husband's body; but, as you may imagine, he refused.
+living at Bombay, a young widow asked permission of the governor to be burned along with her husband's body; but, as you may imagine, he refused.
+living
+True
+
+
+
+
+Several years ago, when I was living at Bombay, a young widow asked permission of the governor to be burned along with her husband's body; but, as you may imagine, he refused.n, took refuge with an independent rajah, and there carried out her self-devoted purpose."
+living at Bombay, a young widow asked permission of the governor to be burned along with her husband's body; but, as you may imagine, he refused.n, took refuge with an independent rajah, and there carried out her self-devoted purpose."
+living
+True
+
+
+
+
+It was not enough to reach the walls; an opening in them must be accomplished, and to attain this purpose the party only had their pocket-knives.
+opening in them must be accomplished, and to attain this purpose the party only had their pocket-knives.
+opening
+False
+
+
+
+
+It was not enough to reach the walls; an opening in them must be accomplished, and to attain this purpose the party only had their pocket-knives.r one brick had been taken out, the rest would yield easily.
+opening in them must be accomplished, and to attain this purpose the party only had their pocket-knives.r one brick had been taken out, the rest would yield easily.
+opening
+True
+
+
+
+
+What was this cool Englishman thinking of?
+thinking of?
+thinking
+False
+
+
+
+
+Phileas Fogg and his companions, mingling in the rear ranks of the crowd, followed; and in two minutes they reached the banks of the stream, and stopped fifty paces from the pyre, upon which still lay the rajah's corpse.
+mingling in the rear ranks of the crowd, followed; and in two minutes they reached the banks of the stream, and stopped fifty paces from the pyre, upon which still lay the rajah's corpse.
+mingling
+True
+
+
+
+
+The Ganges, according to the legends of the Ramayana, rises in heaven, whence, owing to Brahma's agency, it descends to the earth.
+according to the legends of the Ramayana, rises in heaven, whence, owing to Brahma's agency, it descends to the earth.
+according
+True
+
+
+
+
+The parting of Aouda, who did not forget what she owed to Sir Francis, betrayed more warmth; and, as for Passepartout, he received a hearty shake of the hand from the gallant general.
+parting of Aouda, who did not forget what she owed to Sir Francis, betrayed more warmth; and, as for Passepartout, he received a hearty shake of the hand from the gallant general.
+parting
+True
+
+
+
+
+Elephants were bathing in the waters of the sacred river, and groups of Indians, despite the advanced season and chilly air, were performing solemnly their pious ablutions.
+bathing in the waters of the sacred river, and groups of Indians, despite the advanced season and chilly air, were performing solemnly their pious ablutions.
+bathing
+True
+
+
+
+
+Elephants were bathing in the waters of the sacred river, and groups of Indians, despite the advanced season and chilly air, were performing solemnly their pious ablutions.
+bathing in the waters of the sacred river, and groups of Indians, despite the advanced season and chilly air, were performing solemnly their pious ablutions.
+bathing
+True
+
+
+
+
+According to his journal, he was due at Calcutta on the 25th of October, and that was the exact date of his actual arrival.
+According to his journal
+According
+True
+
+
+
+
+We are not talking of the pagoda of Pillaji, but of the pagoda of Malabar Hill, at Bombay.
+talking of the pagoda of Pillaji, but of the pagoda of Malabar Hill, at Bombay.
+talking
+True
+
+
+
+
+Owing to the delay caused by the rescue of the young widow, Fix and the priests reached the Indian capital before Mr. Fogg and his servant, the magistrates having been already warned by a dispatch to arrest them should they arrive.
+Owing to the delay caused by the rescue of the young widow
+Owing
+True
+
+
+
+
+HIM   The Rangoon--one of the Peninsular and Oriental Company's boats plying in the Chinese and Japanese seas--was a screw steamer, built of iron, weighing about seventeen hundred and seventy tons, and with engines of four hundred horse-power.
+plying in the Chinese and Japanese seas--was a screw steamer, built of iron, weighing about seventeen hundred and seventy tons, and with engines of four hundred horse-power.
+plying
+True
+
+
+
+
+HIM   The Rangoon--one of the Peninsular and Oriental Company's boats plying in the Chinese and Japanese seas--was a screw steamer, built of iron, weighing about seventeen hundred and seventy tons, and with engines of four hundred horse-power.ably provided for on board of her as Phileas Fogg could have wished.
+plying in the Chinese and Japanese seas--was a screw steamer, built of iron, weighing about seventeen hundred and seventy tons, and with engines of four hundred horse-power.ably provided for on board of her as Phileas Fogg could have wished.
+plying
+True
+
+
+
+
+The island of Singapore is not imposing in aspect, for there are no mountains; yet its appearance is not without attractions.
+imposing in aspect, for there are no mountains; yet its appearance is not without attractions.
+imposing
+False
+
+
+
+
+sensation--was waiting for them on deck.
+waiting for them on deck.
+waiting
+False
+
+
+
+
+Owing to the defective construction of the Rangoon, however, unusual precautions became necessary in unfavourable weather; but the loss of time which resulted from this cause, while it nearly drove Passepartout out of his senses, did not seem to affect his master in the least.
+Owing to the defective construction of the Rangoon
+Owing
+True
+
+
+
+
+Yet, in speaking as he did, the man evidently meant more than he expressed.
+speaking as he did, the man evidently meant more than he expressed.
+speaking
+True
+
+
+
+
+You were only going to Bombay, and here you are in China.
+going to Bombay, and here you are in China.
+going
+False
+
+
+
+
+What part was he playing in all this: was he an accomplice or not?
+playing in all this: was he an accomplice or not?
+playing
+False
+
+
+
+
+Either the servant was the accomplice of his master, and in this case the master knew of his operations, and he should fail; or else the servant knew nothing about the robbery, and then his interest would be to abandon the robber.
+nothing about the robbery, and then his interest would be to abandon the robber.
+nothing
+True
+
+
+
+
+One day he was leaning on the railing of the engine-room, and was observing the engine, when a sudden pitch of the steamer threw the screw out of the water.
+leaning on the railing of the engine-room, and was observing the engine, when a sudden pitch of the steamer threw the screw out of the water.
+leaning
+True
+
+
+
+
+The steam came hissing out of the valves; and this made Passepartout indignant.
+hissing out of the valves; and this made Passepartout indignant.
+hissing
+False
+
+
+
+
+The wind, obstinately remaining in the north-west, blew a gale, and retarded the steamer.
+remaining in the north-west, blew a gale, and retarded the steamer.
+remaining
+True
+
+
+
+
+The wind, obstinately remaining in the north-west, blew a gale, and retarded the steamer.e Rangoon rolled heavily and the passengers became impatient of the long, monstrous waves which the wind raised before their path.
+remaining in the north-west, blew a gale, and retarded the steamer.e Rangoon rolled heavily and the passengers became impatient of the long, monstrous waves which the wind raised before their path.
+remaining
+True
+
+
+
+
+On going into a barber's to get shaved he learned that these ancient men were all at least eighty years old, at which age they are permitted to wear yellow, which is the Imperial colour.
+going into a barber's to get shaved he learned that these ancient men were all at least eighty years old, at which age they are permitted to wear yellow, which is the Imperial colour.
+going
+True
+
+
+
+
+You know scarcely anything about him.
+anything about him.
+anything
+False
+
+
+
+
+Fix, seeing that he must, at all hazards, be separated from his master, wished to entirely overcome him.
+seeing that he must, at all hazards, be separated from his master, wished to entirely overcome him.
+seeing
+True
+
+
+
+
+IN WHICH FIX COMES FACE TO FACE WITH PHILEAS FOGG   While these events were passing at the opium-house, Mr. Fogg, unconscious of the danger he was in of losing the steamer, was quietly escorting Aouda about the streets of the English quarter, making the necessary purchases for the long voyage before them.
+passing at the opium-house, Mr. Fogg, unconscious of the danger he was in of losing the steamer, was quietly escorting Aouda about the streets of the English quarter, making the necessary purchases for the long voyage before them.
+passing
+True
+
+
+
+
+But, knowing that the steamer was not to leave for Yokohama until the next morning, he did not disturb himself about the matter.
+knowing that the steamer was not to leave for Yokohama until the next morning, he did not disturb himself about the matter.
+knowing
+True
+
+
+
+
+"Is your honour looking for a boat?"
+looking for a boat?"
+looking
+False
+
+
+
+
+"By going to Nagasaki, at the extreme south of Japan, or even to Shanghai, which is only eight hundred miles from here.
+going to Nagasaki, at the extreme south of Japan, or even to Shanghai, which is only eight hundred miles from here.
+going
+True
+
+
+
+
+In going to Shanghai we should not be forced to sail wide of the Chinese coast, which would be a great advantage, as the currents run northward, and would aid us.
+going to Shanghai we should not be forced to sail wide of the Chinese coast, which would be a great advantage, as the currents run northward, and would aid us.
+going
+True
+
+
+
+
+Phileas Fogg, with body erect and legs wide apart, standing like a sailor, gazed without staggering at the swelling waters.
+standing like a sailor, gazed without staggering at the swelling waters.
+standing
+True
+
+
+
+
+Phileas Fogg was also thinking of Passepartout, who had so strangely disappeared.
+thinking of Passepartout, who had so strangely disappeared.
+thinking
+False
+
+
+
+
+Looking at the matter from every point of view, it did not seem to him impossible that, by some mistake, the man might have embarked on the Carnatic at the last moment; and this was also Aouda's opinion, who regretted very much the loss of the worthy fellow to whom she owed so much.
+Looking at the matter from every point of view
+Looking
+True
+
+
+
+
+Looking at the matter from every point of view, it did not seem to him impossible that, by some mistake, the man might have embarked on the Carnatic at the last moment; and this was also Aouda's opinion, who regretted very much the loss of the worthy fellow to whom she owed so much.
+Looking at the matter from every point of view
+Looking
+True
+
+
+
+
+sea was less boisterous, since the wind came off land--a fortunate circumstance for the boat, which would suffer, owing to its small tonnage, by a heavy surge on the sea.
+owing to its small tonnage, by a heavy surge on the sea.
+owing
+True
+
+
+
+
+The boat, now lying in the trough of the waves, shook and rolled terribly; the sea struck her with fearful violence.
+lying in the trough of the waves, shook and rolled terribly; the sea struck her with fearful violence.
+lying
+True
+
+
+
+
+John Bunsby saw the approach of darkness and the rising of the storm with dark misgivings.
+rising of the storm with dark misgivings.
+rising
+False
+
+
+
+
+The next morning at dawn they espied the coast, and John Bunsby was able to assert that they were not one hundred miles from Shanghai.
+morning at dawn they espied the coast, and John Bunsby was able to assert that they were not one hundred miles from Shanghai.
+morning
+False
+
+
+
+
+It was the American steamer, leaving for Yokohama at the appointed time.
+leaving for Yokohama at the appointed time.
+leaving
+False
+
+
+
+
+And the booming of the little cannon resounded in the air.
+booming of the little cannon resounded in the air.
+booming
+False
+
+
+
+
+The steamer lay puffing alongside the quay, on the point of starting.
+puffing alongside the quay, on the point of starting.
+puffing
+False
+
+
+
+
+Priests were passing in processions, beating their dreary tambourines; police and custom-house officers with pointed hats encrusted with lac and carrying two sabres hung to their waists; soldiers, clad in blue cotton with white stripes, and bearing guns; the Mikado's guards, enveloped in silken doubles, hauberks and coats of mail; and numbers of military folk of all ranks--for the military profession is as much respected in Japan as it is despised in China--went hither and thither in groups and pairs.
+passing in processions, beating their dreary tambourines; police and custom-house officers with pointed hats encrusted with lac and carrying two sabres hung to their waists; soldiers, clad in blue cotton with white stripes, and bearing guns; the Mikado's guards, enveloped in silken doubles, hauberks and coats of mail; and numbers of military folk of all ranks--for the military profession is as much respected in Japan as it is despised in China--went hither and thither in groups and pairs.
+passing
+True
+
+
+
+
+another Japanese embassy departing for Europe!"
+departing for Europe!"
+departing
+False
+
+
+
+
+As he was reflecting in this wise, his eyes fell upon an immense placard which a sort of clown was carrying through the streets.
+reflecting in this wise, his eyes fell upon an immense placard which a sort of clown was carrying through the streets.
+reflecting
+False
+
+
+
+
+That gentleman was a sort of Barnum, the director of a troupe of mountebanks, jugglers, clowns, acrobats, equilibrists, and gymnasts, who, according to the placard, was giving his last performances before leaving the Empire of the Sun for the States of the Union.
+according to the placard, was giving his last performances before leaving the Empire of the Sun for the States of the Union.
+according
+True
+
+
+
+
+The musicians took up a position inside, and were vigorously performing on their gongs, tam-tams, flutes, bones, tambourines, and immense drums.
+performing on their gongs, tam-tams, flutes, bones, tambourines, and immense drums.
+performing
+True
+
+
+
+
+Nothing of moment happened on the voyage; the steamer, sustained on its large paddles, rolled but little, and the Pacific almost justified its name.
+Nothing of moment happened on the voyage; the steamer
+Nothing
+True
+
+
+
+
+Passepartout, in his joy on reaching at last the American continent, thought he would manifest it by executing a perilous vault in fine style; but, tumbling upon some worm-eaten planks, he fell through them.
+reaching at last the American continent, thought he would manifest it by executing a perilous vault in fine style; but, tumbling upon some worm-eaten planks, he fell through them.
+reaching
+True
+
+
+
+
+Men were going about carrying large posters, and flags and streamers were floating in the wind; while loud cries were heard on every hand.
+going about carrying large posters, and flags and streamers were floating in the wind; while loud cries were heard on every hand.
+going
+False
+
+
+
+
+Aouda, leaning upon Mr. Fogg's arm, observed the tumultuous scene with surprise, while Fix asked a man near him what the cause of it all was.
+leaning upon Mr. Fogg's arm, observed the tumultuous scene with surprise, while Fix asked a man near him what the cause of it all was.
+leaning
+True
+
+
+
+
+Aouda, leaning upon Mr. Fogg's arm, observed the tumultuous scene with surprise, while Fix asked a man near him what the cause of it all was.
+leaning upon Mr. Fogg's arm, observed the tumultuous scene with surprise, while Fix asked a man near him what the cause of it all was.
+leaning
+True
+
+
+
+
+Boots and shoes went whirling through the air, and Mr. Fogg thought he even heard the crack of revolvers mingling in the din, the rout approached the stairway, and flowed over the lower step.
+whirling through the air, and Mr. Fogg thought he even heard the crack of revolvers mingling in the din, the rout approached the stairway, and flowed over the lower step.
+whirling
+True
+
+
+
+
+The clothing of both Mr. Fogg and Fix was in rags, as if they had themselves been actively engaged in the contest between Camerfield and Mandiboy.
+clothing of both Mr. Fogg and Fix was in rags, as if they had themselves been actively engaged in the contest between Camerfield and Mandiboy.
+clothing
+False
+
+
+
+
+Passepartout was waiting for his master, armed with half a dozen six-barrelled revolvers.
+waiting for his master, armed with half a dozen six-barrelled revolvers.
+waiting
+False
+
+
+
+
+Passepartout was waiting for his master, armed with half a dozen six-barrelled revolvers.brows; but Aouda having, in a few words, told him of their adventure, his countenance resumed its placid expression.
+waiting for his master, armed with half a dozen six-barrelled revolvers.brows; but Aouda having, in a few words, told him of their adventure, his countenance resumed its placid expression.
+waiting
+True
+
+
+
+
+It was clear that Mr. Fogg was one of those Englishmen who, while they do not tolerate duelling at home, fight abroad when their honour is attacked.
+duelling at home, fight abroad when their honour is attacked.
+duelling
+True
+
+
+
+
+A locomotive, running on the rails laid down the evening before, brought the rails to be laid on the morrow, and advanced upon them as fast as they were put in position.
+running on the rails laid down the evening before, brought the rails to be laid on the morrow, and advanced upon them as fast as they were put in position.
+running
+True
+
+
+
+
+A locomotive, running on the rails laid down the evening before, brought the rails to be laid on the morrow, and advanced upon them as fast as they were put in position.
+running on the rails laid down the evening before, brought the rails to be laid on the morrow, and advanced upon them as fast as they were put in position.
+running
+True
+
+
+
+
+The last ranks of the herd were now passing over the rails, while the first had already disappeared below the southern horizon.
+passing over the rails, while the first had already disappeared below the southern horizon.
+passing
+False
+
+
+
+
+He knew nothing of Mormonism except the custom of polygamy, which is its foundation.
+nothing of Mormonism except the custom of polygamy, which is its foundation.
+nothing
+False
+
+
+
+
+They are free to marry or not, as they please; but it is worth noting that it is mainly the female citizens of Utah who are anxious to marry, as, according to the Mormon religion, maiden ladies are not admitted to the possession of its highest joys.
+noting that it is mainly the female citizens of Utah who are anxious to marry, as, according to the Mormon religion, maiden ladies are not admitted to the possession of its highest joys.
+noting
+True
+
+
+
+
+We must, if possible, prevent his stirring out of it."
+stirring out of it."
+stirring
+True
+
+
+
+
+According to the signal-man, it was in a ruinous condition, several of the iron wires being broken; and it was impossible to risk the passage.
+According to the signal-man
+According
+True
+
+
+
+
+"But they can't prevent me from thinking that it would be more natural for us to cross the bridge on foot, and let the train come after!"
+thinking that it would be more natural for us to cross the bridge on foot, and let the train come after!"
+thinking
+False
+
+
+
+
+"Will you appoint a meeting for six months hence?"
+meeting for six months hence?"
+meeting
+False
+
+
+
+
+You are going to New York?
+going to New York?
+going
+False
+
+
+
+
+They were to begin firing at the first whistle of the locomotive.
+firing at the first whistle of the locomotive.
+firing
+False
+
+
+
+
+They were listening for the whistle agreed upon, when suddenly savage cries resounded in the air, accompanied by reports which certainly did not issue from the car where the duellists were.
+listening for the whistle agreed upon, when suddenly savage cries resounded in the air, accompanied by reports which certainly did not issue from the car where the duellists were.
+listening
+True
+
+
+
+
+The conductor was fighting beside Mr. Fogg, when he was shot and fell.
+fighting beside Mr. Fogg, when he was shot and fell.
+fighting
+False
+
+
+
+
+The last Sioux were disappearing in the south, along the banks of Republican River.
+disappearing in the south, along the banks of Republican River.
+disappearing
+False
+
+
+
+
+Aouda, standing near him, looked at him without speaking, and he understood her look.
+standing near him, looked at him without speaking, and he understood her look.
+standing
+True
+
+
+
+
+Decidedly, I am nothing but an ass!"
+nothing but an ass!"
+nothing
+False
+
+
+
+
+The locomotive, which was slowly approaching with deafening whistles, was that which, having been detached from the train, had continued its route with such terrific rapidity, carrying off the unconscious engineer and stoker.
+approaching with deafening whistles, was that which, having been detached from the train, had continued its route with such terrific rapidity, carrying off the unconscious engineer and stoker.
+approaching
+True
+
+
+
+
+The locomotive, which was slowly approaching with deafening whistles, was that which, having been detached from the train, had continued its route with such terrific rapidity, carrying off the unconscious engineer and stoker.e steam had slackened; and it had finally stopped an hour after, some twenty miles beyond Fort Kearney.
+approaching with deafening whistles, was that which, having been detached from the train, had continued its route with such terrific rapidity, carrying off the unconscious engineer and stoker.e steam had slackened; and it had finally stopped an hour after, some twenty miles beyond Fort Kearney.
+approaching
+True
+
+
+
+
+Neither the engineer nor the stoker was dead, and, after remaining for some time in their swoon, had come to themselves.
+remaining for some time in their swoon, had come to themselves.
+remaining
+True
+
+
+
+
+it was which was whistling in the mist.
+whistling in the mist.
+whistling
+False
+
+
+
+
+A little while before, when there was no prospect of proceeding on the journey, he had made up his mind to leave Fort Kearney; but now that the train was there, ready to start,
+proceeding on the journey, he had made up his mind to leave Fort Kearney; but now that the train was there, ready to start,
+proceeding
+True
+
+
+
+
+The buzzing of the over-heated boiler was heard, and the steam was escaping from the valves.
+buzzing of the over-heated boiler was heard, and the steam was escaping from the valves.
+buzzing
+False
+
+
+
+
+Neither flight of bird nor passing of beast troubled the perfect calm.
+passing of beast troubled the perfect calm.
+passing
+False
+
+
+
+
+Mr. Fogg was marching at their head, and just behind him were
+marching at their head, and just behind him were
+marching
+False
+
+
+
+
+Meanwhile, Passepartout was looking about for the train; he thought he should find it there, ready to start for Omaha, and he hoped that the time lost might be regained.
+looking about for the train; he thought he should find it there, ready to start for Omaha, and he hoped that the time lost might be regained.
+looking
+True
+
+
+
+
+Kearney, the servant taking upon himself to escort her to Europe by a better route and under more favourable conditions.
+taking upon himself to escort her to Europe by a better route and under more favourable conditions.
+taking
+False
+
+
+
+
+The prairie, across which the sledge was moving in a straight line, was as flat as a sea.
+moving in a straight line, was as flat as a sea.
+moving
+True
+
+
+
+
+Going in ballast.
+Going in ballast.
+Going
+False
+
+
+
+
+Ever since the evening before the barometer, suddenly falling, had indicated an approaching change in the atmosphere; and during the night the temperature varied, the cold became sharper, and the wind veered to the south-east.
+evening before the barometer, suddenly falling, had indicated an approaching change in the atmosphere; and during the night the temperature varied, the cold became sharper, and the wind veered to the south-east.
+evening
+True
+
+
+
+
+He could not help imparting to Fix what he had overheard.
+imparting to Fix what he had overheard.
+imparting
+False
+
+
+
+
+"Then you believe that we really are going to Liverpool?"
+going to Liverpool?"
+going
+False
+
+
+
+
+He went to the poop, saying to himself, "He will be like a madman!"
+saying to himself, "He will be like a madman!"
+saying
+True
+
+
+
+
+You must know that I shall lose twenty thousand pounds, unless I arrive in London by a quarter before nine on the evening of the 21st of December.
+evening of the 21st of December.
+evening
+False
+
+
+
+
+Did he think of escaping from it?
+escaping from it?
+escaping
+False
+
+
+
+
+Admitting that he was at this moment taking an express train, he could reach London and the Reform Club by a quarter before nine, p.m.
+Admitting that he was at this moment taking an express train
+Admitting
+True
+
+
+
+
+And by the blundering of the detective!
+blundering of the detective!
+blundering
+False
+
+
+
+
+Knowing that Englishmen governed by a fixed idea sometimes resort to the desperate expedient of suicide,
+Knowing that Englishmen governed by a fixed idea sometimes resort to the desperate expedient of suicide
+Knowing
+False
+
+
+
+
+Phileas Fogg, like a racehorse, was drawing near his last turning-point.
+drawing near his last turning-point.
+drawing
+True
+
+
+
+
+Perhaps so; nothing but a charming woman, who, strange as it may appear, made him the happiest of men!
+nothing but a charming woman, who, strange as it may appear, made him the happiest of men!
+nothing
+True
+
+
+
+
