@@ -1,0 +1,7 @@
+venv*
+___generated___*
+*.pyc
+*output*.txt
+*.db
+books
+
