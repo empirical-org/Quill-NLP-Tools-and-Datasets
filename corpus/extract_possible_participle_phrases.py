@@ -33,7 +33,8 @@ def is_participle(word):
         result = True
     return result
 
-def participle_phrase_conditions_apply(possible_participle_phrase, participle):
+def participle_phrase_conditions_apply(possible_participle_phrase, participle,
+        sentence):
     """Return True if this phrase might be a participle phrase"""
     doc = nlp(possible_participle_phrase)
 
@@ -45,10 +46,42 @@ def participle_phrase_conditions_apply(possible_participle_phrase, participle):
             if participle.endswith('ing'):
                 return True
 
-    # concludes a main clause
+    # concludes a main clause modifying a word farther up the sentence
+    elif sentence.split(participle)[0].endswith(', '):
+        # ie. Cooper enjoyed dinner at Audrey's house, agreeing to a large slice of
+        # cherry pie even though he was full to the point of bursting.
+        if len(doc) > 1 and doc[1].tag_ == 'IN':
+            # participles ending with 'ed' require more attention
+            if participle.endswith('ing'):
+                return True
+
+    # concludes a main clause modifying word directly in front of it
     else:
+        # ie. Mariah risked petting the pit bull wagging its stub tail.
+        # NOTE: we ignore these because they are rarely participle clauses
         pass
     return False
+
+def split_text_at_verb_or_adverb_follwing_comma(sentence):
+    """Given a sentence that might include a paticiple phrase in the middle,
+    determine where the participle phrase ends, and return the phrase"""
+    result = sentence.split(',')[0]
+    if len(sentence.split(',')) < 2:
+        return result
+
+    for part in sentence.split(',')[1:]:
+        doc = nlp(part.strip())
+        # do not include vbg or vbn as those are participles
+        if (doc and len(doc) > 0 and doc[0].tag_ in ['RB', 'RBR', 'RBS', 'VB',
+            'VBD', 'VBP', 'VBZ']) or (doc and len(doc) > 0 and
+                    str(doc[0])[0].isupper()):
+            break
+        else:
+            # append more to the phrase
+            result += ',' + part
+
+    return result
+
 
 def split_text_at_noun_pronoun_determiner_following_comma(sentence):
     """Given a sentence that might begin with a participle phrase,
@@ -66,6 +99,7 @@ def split_text_at_noun_pronoun_determiner_following_comma(sentence):
         else:
             # append more to the phrase
             result += ',' + part
+
     return result
 
 
@@ -101,14 +135,16 @@ def has_participle_phrase(sentence):
         else:
             """" All included," returned Phileas Fogg, continuing to play despite
             the discussion."""
-            phrase = participle + sentence.split(participle, 1)[1]
+            phrase = split_text_at_verb_or_adverb_follwing_comma(sentence)
+            # phrase = participle + sentence.split(participle, 1)[1]
             # this method risks including too much when a participle phrase
             # stretches on for a while so these are flagged
             # see test sentence 1
             if len(sentence.split(',')) > 2:
                 flagged = True
 
-    if phrase and participle_phrase_conditions_apply(phrase, participle):
+    if phrase and participle_phrase_conditions_apply(phrase, participle,
+            sentence):
         return {'phrase': phrase, 'participle':participle, 'flagged': flagged}
     return None
 

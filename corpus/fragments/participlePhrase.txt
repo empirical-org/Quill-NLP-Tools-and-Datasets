@@ -1,3 +1,11 @@
+At exactly half-past eleven Mr. Fogg would, according to his daily habit, quit Saville Row, and repair to the Reform.
+according to his daily habit, quit Saville Row, and repair to the Reform.
+according
+True
+
+
+
+
 Hearing that Mr. Phileas Fogg was looking for a servant, and that his life was one of unbroken regularity, that he neither travelled nor stayed from home overnight, he felt sure that this would be the place he was after.
 Hearing that Mr. Phileas Fogg was looking for a servant, and that his life was one of unbroken regularity, that he neither travelled nor stayed from home overnight
 Hearing
@@ -6,9 +14,73 @@ True
 
 
 
+A keen observer of English customs relates that, being in one of the rooms of the Bank one day, he had the curiosity to examine a gold ingot weighing some seven or eight pounds.
+being in one of the rooms of the Bank one day, he had the curiosity to examine a gold ingot weighing some seven or eight pounds.
+being
+True
+
+
+
+
+FIX, THE DETECTIVE, BETRAYSe steamer Mongolia, belonging to the Peninsular and Oriental Company, built of iron, of two thousand eight hundred tons burden, and five hundred horse-power, was due at eleven o'clock a.m. on Wednesday, the 9th of October, at Suez.
+belonging to the Peninsular and Oriental Company, built of iron, of two thousand eight hundred tons burden, and five hundred horse-power, was due at eleven o'clock a.m. on Wednesday, the 9th of October, at Suez.
+belonging
+True
+
+
+
+
+It was thereabouts that Feringhea, the Thuggee chief, king of the stranglers, held his sway.
+king of the stranglers, held his sway.
+king
+True
+
+
+
+
+The conductor, passing along the carriages, shouted, "Passengers will get out here!"
+passing along the carriages, shouted, "Passengers will get out here!"
+passing
+True
+
+
+
+
 Returning to the Indian, whose small, sharp eyes, glistening with avarice, betrayed that with him it was only a question of how great a price he could obtain.
 Returning to the Indian, whose small
 Returning
+True
+
+
+
+
+This line, owing to the capricious turnings of the Vindhia Mountains, did not pursue a straight course.
+owing to the capricious turnings of the Vindhia Mountains, did not pursue a straight course.
+owing
+True
+
+
+
+
+The conversation, beginning with a few disconnected phrases, soon gave place to loud and steady snores.
+beginning with a few disconnected phrases, soon gave place to loud and steady snores.
+beginning
+True
+
+
+
+
+Phileas Fogg and his companions, mingling in the rear ranks of the crowd, followed; and in two minutes they reached the banks of the stream, and stopped fifty paces from the pyre, upon which still lay the rajah's corpse.
+mingling in the rear ranks of the crowd, followed; and in two minutes they reached the banks of the stream, and stopped fifty paces from the pyre, upon which still lay the rajah's corpse.
+mingling
+True
+
+
+
+
+The Ganges, according to the legends of the Ramayana, rises in heaven, whence, owing to Brahma's agency, it descends to the earth.
+according to the legends of the Ramayana, rises in heaven, whence, owing to Brahma's agency, it descends to the earth.
+according
 True
 
 
@@ -38,6 +110,30 @@ True
 
 
 
+Fix, seeing that he must, at all hazards, be separated from his master, wished to entirely overcome him.
+seeing that he must, at all hazards, be separated from his master, wished to entirely overcome him.
+seeing
+True
+
+
+
+
+But, knowing that the steamer was not to leave for Yokohama until the next morning, he did not disturb himself about the matter.
+knowing that the steamer was not to leave for Yokohama until the next morning, he did not disturb himself about the matter.
+knowing
+True
+
+
+
+
+Phileas Fogg, with body erect and legs wide apart, standing like a sailor, gazed without staggering at the swelling waters.
+standing like a sailor, gazed without staggering at the swelling waters.
+standing
+True
+
+
+
+
 Looking at the matter from every point of view, it did not seem to him impossible that, by some mistake, the man might have embarked on the Carnatic at the last moment; and this was also Aouda's opinion, who regretted very much the loss of the worthy fellow to whom she owed so much.
 Looking at the matter from every point of view
 Looking
@@ -49,6 +145,30 @@ True
 Looking at the matter from every point of view, it did not seem to him impossible that, by some mistake, the man might have embarked on the Carnatic at the last moment; and this was also Aouda's opinion, who regretted very much the loss of the worthy fellow to whom she owed so much.
 Looking at the matter from every point of view
 Looking
+True
+
+
+
+
+sea was less boisterous, since the wind came off land--a fortunate circumstance for the boat, which would suffer, owing to its small tonnage, by a heavy surge on the sea.
+owing to its small tonnage, by a heavy surge on the sea.
+owing
+True
+
+
+
+
+It was the American steamer, leaving for Yokohama at the appointed time.
+leaving for Yokohama at the appointed time.
+leaving
+False
+
+
+
+
+That gentleman was a sort of Barnum, the director of a troupe of mountebanks, jugglers, clowns, acrobats, equilibrists, and gymnasts, who, according to the placard, was giving his last performances before leaving the Empire of the Sun for the States of the Union.
+according to the placard, was giving his last performances before leaving the Empire of the Sun for the States of the Union.
+according
 True
 
 
@@ -62,9 +182,49 @@ True
 
 
 
+Aouda, leaning upon Mr. Fogg's arm, observed the tumultuous scene with surprise, while Fix asked a man near him what the cause of it all was.
+leaning upon Mr. Fogg's arm, observed the tumultuous scene with surprise, while Fix asked a man near him what the cause of it all was.
+leaning
+True
+
+
+
+
+Aouda, leaning upon Mr. Fogg's arm, observed the tumultuous scene with surprise, while Fix asked a man near him what the cause of it all was.
+leaning upon Mr. Fogg's arm, observed the tumultuous scene with surprise, while Fix asked a man near him what the cause of it all was.
+leaning
+True
+
+
+
+
+A locomotive, running on the rails laid down the evening before, brought the rails to be laid on the morrow, and advanced upon them as fast as they were put in position.
+running on the rails laid down the evening before, brought the rails to be laid on the morrow, and advanced upon them as fast as they were put in position.
+running
+True
+
+
+
+
+A locomotive, running on the rails laid down the evening before, brought the rails to be laid on the morrow, and advanced upon them as fast as they were put in position.
+running on the rails laid down the evening before, brought the rails to be laid on the morrow, and advanced upon them as fast as they were put in position.
+running
+True
+
+
+
+
 According to the signal-man, it was in a ruinous condition, several of the iron wires being broken; and it was impossible to risk the passage.
 According to the signal-man
 According
+True
+
+
+
+
+Aouda, standing near him, looked at him without speaking, and he understood her look.
+standing near him, looked at him without speaking, and he understood her look.
+standing
 True
 
 
@@ -74,6 +234,14 @@ Going in ballast.
 Going in ballast.
 Going
 False
+
+
+
+
+He went to the poop, saying to himself, "He will be like a madman!"
+saying to himself, "He will be like a madman!"
+saying
+True
 
 
 
