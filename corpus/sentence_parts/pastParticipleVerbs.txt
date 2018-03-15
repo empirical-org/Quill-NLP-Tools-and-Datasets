@@ -119,7 +119,7 @@ built
 bumped
 burned
 burnished
-buryburied
+buried
 bought
 buzzed
 cajoled
@@ -127,7 +127,7 @@ calculated
 called
 camped
 cared
-carrycarried
+carried
 carved
 caused
 cautioned
@@ -184,7 +184,7 @@ contained
 contended
 continued
 cooked
-copycopied
+copied
 corrected
 cost
 coughed
@@ -203,7 +203,7 @@ croaked
 cross-examined
 crowded
 crushed
-crycried
+cried
 cured
 curled
 cursed
@@ -226,7 +226,7 @@ delayed
 delighted
 delivered
 demanded
-denydenied
+denied
 depended
 described
 deserted
@@ -264,7 +264,7 @@ driven
 droned
 dropped
 drowned
-drydried
+dried
 duped
 dumped
 dusted
@@ -280,7 +280,7 @@ emigrated
 emitted
 emphasized
 employed
-emptyemptied
+emptied
 enchanted
 encoded
 encouraged
@@ -290,7 +290,7 @@ enjoyed
 entered
 entertained
 enunciated
-envyenvied
+envied
 equivocated
 escaped
 evacuated
@@ -355,7 +355,7 @@ framed
 frozen
 fretted
 frightened
-fryfried
+fried
 fumed
 gardened
 gasped
@@ -422,14 +422,14 @@ howled
 hugged
 hummed
 hunted
-hurryhurried
+hurried
 hurt
 iced
-identifyidentified
+identified
 ignored
 imagined
 immigrated
-implyimplied
+implied
 implored
 impressed
 improved
@@ -521,7 +521,7 @@ managed
 marred
 marched
 marked
-marrymarried
+married
 marveled
 mated
 mattered
@@ -544,7 +544,7 @@ molted
 moved
 mowed
 mugged
-multiplymultiplied
+multiplied
 mumbled
 murdered
 muttered
@@ -644,7 +644,7 @@ proposed
 protected
 protested
 provided
-prypried
+pried
 pulled
 pumped
 punched
@@ -686,7 +686,7 @@ rejoiced
 related
 relaxed
 released
-relyrelied
+relied
 remained
 remembered
 reminded
@@ -694,7 +694,7 @@ removed
 repaired
 repeated
 replaced
-replyreplied
+replied
 reported
 reprimanded
 reproduced
@@ -724,7 +724,7 @@ run
 rushed
 sacked
 sailed
-satisfysatisfied
+satisfied
 saved
 savored
 sawed
@@ -864,7 +864,7 @@ succeeded
 suffered
 suggested
 suited
-supplysupplied
+supplied
 supported
 supposed
 surmised
@@ -891,9 +891,9 @@ teased
 telephoned
 told
 tempted
-terrifyterrified
+terrified
 tested
-testifytestified
+testified
 thanked
 thawed
 theorized
@@ -930,7 +930,7 @@ trotted
 troubled
 trusted
 trounced
-trytried
+tried
 tugged
 tumbled
 turned
@@ -993,7 +993,7 @@ wished
 wobbled
 wondered
 worked
-worryworried
+worried
 wrapped
 wrecked
 wrestled
