@@ -7,8 +7,11 @@ import spacy
 IRREGULAR_PAST_PARTICIPLES_FILE = \
 'sentence_parts/irregularPastParticipleVerbs.txt'
 INPUT_TEXT_FILE = 'books/around-the-world-in-80-days.txt'
+INPUT_TEXT_FILE = 'books/the-black-arrow.txt'
+INPUT_TEXT_FILE = 'books/the-princess-of-the-school.txt'
 # INPUT_TEXT_FILE = 'books/test.txt'
-OUTPUT_TEXT_FILE = 'fragments/participlePhrase.txt'
+OUTPUT_TEXT_FILE_BASE = 'fragments/participlePhrasesFrom{}'
+OUTPUT_TEXT_FILE = OUTPUT_TEXT_FILE_BASE.format(INPUT_TEXT_FILE.split('/')[-1])
 CHUNK_SIZE = 1024
 nlp = spacy.load('en')
 
@@ -157,7 +160,7 @@ def write_sentences_with_participle_prhases():
         # final sentence may not be a complete sentence, save and prepend to next chunk
         leftovers = ''
         sentence_no = 0
-        output = open(OUTPUT_TEXT_FILE, 'w+')
+        output = open(OUTPUT_TEXT_FILE.format(INPUT_TEXT_FILE), 'w+')
         for chunk in read_in_chunks(f): # lazy way of reading our file in case it's large
             # prepend leftovers to chunk
             chunk = leftovers + chunk
