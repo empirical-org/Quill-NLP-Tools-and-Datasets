@@ -1,5 +1,5 @@
 At exactly half-past eleven Mr. Fogg would, according to his daily habit, quit Saville Row, and repair to the Reform.
-according to his daily habit, quit Saville Row, and repair to the Reform.
+according to his daily habit
 according
 True
 
@@ -23,7 +23,7 @@ True
 
 
 FIX, THE DETECTIVE, BETRAYSe steamer Mongolia, belonging to the Peninsular and Oriental Company, built of iron, of two thousand eight hundred tons burden, and five hundred horse-power, was due at eleven o'clock a.m. on Wednesday, the 9th of October, at Suez.
-belonging to the Peninsular and Oriental Company, built of iron, of two thousand eight hundred tons burden, and five hundred horse-power, was due at eleven o'clock a.m. on Wednesday, the 9th of October, at Suez.
+belonging to the Peninsular and Oriental Company
 belonging
 True
 
@@ -31,7 +31,7 @@ True
 
 
 It was thereabouts that Feringhea, the Thuggee chief, king of the stranglers, held his sway.
-king of the stranglers, held his sway.
+king of the stranglers
 king
 True
 
@@ -39,7 +39,7 @@ True
 
 
 The conductor, passing along the carriages, shouted, "Passengers will get out here!"
-passing along the carriages, shouted, "Passengers will get out here!"
+passing along the carriages
 passing
 True
 
@@ -55,7 +55,7 @@ True
 
 
 This line, owing to the capricious turnings of the Vindhia Mountains, did not pursue a straight course.
-owing to the capricious turnings of the Vindhia Mountains, did not pursue a straight course.
+owing to the capricious turnings of the Vindhia Mountains
 owing
 True
 
@@ -63,7 +63,7 @@ True
 
 
 The conversation, beginning with a few disconnected phrases, soon gave place to loud and steady snores.
-beginning with a few disconnected phrases, soon gave place to loud and steady snores.
+beginning with a few disconnected phrases
 beginning
 True
 
@@ -71,7 +71,7 @@ True
 
 
 Phileas Fogg and his companions, mingling in the rear ranks of the crowd, followed; and in two minutes they reached the banks of the stream, and stopped fifty paces from the pyre, upon which still lay the rajah's corpse.
-mingling in the rear ranks of the crowd, followed; and in two minutes they reached the banks of the stream, and stopped fifty paces from the pyre, upon which still lay the rajah's corpse.
+mingling in the rear ranks of the crowd
 mingling
 True
 
@@ -79,7 +79,7 @@ True
 
 
 The Ganges, according to the legends of the Ramayana, rises in heaven, whence, owing to Brahma's agency, it descends to the earth.
-according to the legends of the Ramayana, rises in heaven, whence, owing to Brahma's agency, it descends to the earth.
+according to the legends of the Ramayana
 according
 True
 
@@ -111,7 +111,7 @@ True
 
 
 Fix, seeing that he must, at all hazards, be separated from his master, wished to entirely overcome him.
-seeing that he must, at all hazards, be separated from his master, wished to entirely overcome him.
+seeing that he must, at all hazards
 seeing
 True
 
@@ -127,7 +127,7 @@ True
 
 
 Phileas Fogg, with body erect and legs wide apart, standing like a sailor, gazed without staggering at the swelling waters.
-standing like a sailor, gazed without staggering at the swelling waters.
+standing like a sailor
 standing
 True
 
@@ -167,7 +167,7 @@ False
 
 
 That gentleman was a sort of Barnum, the director of a troupe of mountebanks, jugglers, clowns, acrobats, equilibrists, and gymnasts, who, according to the placard, was giving his last performances before leaving the Empire of the Sun for the States of the Union.
-according to the placard, was giving his last performances before leaving the Empire of the Sun for the States of the Union.
+according to the placard
 according
 True
 
@@ -183,7 +183,7 @@ True
 
 
 Aouda, leaning upon Mr. Fogg's arm, observed the tumultuous scene with surprise, while Fix asked a man near him what the cause of it all was.
-leaning upon Mr. Fogg's arm, observed the tumultuous scene with surprise, while Fix asked a man near him what the cause of it all was.
+leaning upon Mr. Fogg's arm
 leaning
 True
 
@@ -191,7 +191,7 @@ True
 
 
 Aouda, leaning upon Mr. Fogg's arm, observed the tumultuous scene with surprise, while Fix asked a man near him what the cause of it all was.
-leaning upon Mr. Fogg's arm, observed the tumultuous scene with surprise, while Fix asked a man near him what the cause of it all was.
+leaning upon Mr. Fogg's arm
 leaning
 True
 
@@ -199,7 +199,7 @@ True
 
 
 A locomotive, running on the rails laid down the evening before, brought the rails to be laid on the morrow, and advanced upon them as fast as they were put in position.
-running on the rails laid down the evening before, brought the rails to be laid on the morrow, and advanced upon them as fast as they were put in position.
+running on the rails laid down the evening before
 running
 True
 
@@ -207,7 +207,7 @@ True
 
 
 A locomotive, running on the rails laid down the evening before, brought the rails to be laid on the morrow, and advanced upon them as fast as they were put in position.
-running on the rails laid down the evening before, brought the rails to be laid on the morrow, and advanced upon them as fast as they were put in position.
+running on the rails laid down the evening before
 running
 True
 
@@ -223,7 +223,7 @@ True
 
 
 Aouda, standing near him, looked at him without speaking, and he understood her look.
-standing near him, looked at him without speaking, and he understood her look.
+standing near him
 standing
 True
 

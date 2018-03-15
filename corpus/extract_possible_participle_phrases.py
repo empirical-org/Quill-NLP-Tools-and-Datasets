@@ -7,6 +7,7 @@ import spacy
 IRREGULAR_PAST_PARTICIPLES_FILE = \
 'sentence_parts/irregularPastParticipleVerbs.txt'
 INPUT_TEXT_FILE = 'books/around-the-world-in-80-days.txt'
+#INPUT_TEXT_FILE = 'books/test.txt'
 OUTPUT_TEXT_FILE = 'fragments/participlePhrase.txt'
 CHUNK_SIZE = 1024
 nlp = spacy.load('en')
@@ -62,19 +63,19 @@ def participle_phrase_conditions_apply(possible_participle_phrase, participle,
         pass
     return False
 
-def split_text_at_verb_or_adverb_follwing_comma(sentence):
+def split_text_at_verb_or_adverb_follwing_comma(sentence, participle):
     """Given a sentence that might include a paticiple phrase in the middle,
     determine where the participle phrase ends, and return the phrase"""
-    result = sentence.split(',')[0]
-    if len(sentence.split(',')) < 2:
-        return result
+    full = participle + sentence.split(participle, 1)[1]
+    result = participle + sentence.split(participle, 1)[1].split(',')[0]
+    if len(full.split(',')) < 2:
+        return result # this one is easy
 
-    for part in sentence.split(',')[1:]:
+    for part in full.split(',')[1:]:
         doc = nlp(part.strip())
-        # do not include vbg or vbn as those are participles
+        # do not include vbg verbs 
         if (doc and len(doc) > 0 and doc[0].tag_ in ['RB', 'RBR', 'RBS', 'VB',
-            'VBD', 'VBP', 'VBZ']) or (doc and len(doc) > 0 and
-                    str(doc[0])[0].isupper()):
+            'VBD', 'VBN', 'VBP', 'VBZ']):
             break
         else:
             # append more to the phrase
@@ -135,7 +136,8 @@ def has_participle_phrase(sentence):
         else:
             """" All included," returned Phileas Fogg, continuing to play despite
             the discussion."""
-            phrase = split_text_at_verb_or_adverb_follwing_comma(sentence)
+            phrase = split_text_at_verb_or_adverb_follwing_comma(sentence,
+                    participle)
             # phrase = participle + sentence.split(participle, 1)[1]
             # this method risks including too much when a participle phrase
             # stretches on for a while so these are flagged
@@ -162,8 +164,9 @@ def write_sentences_with_participle_prhases():
 
             # last sentence may not be sentence, move to next chunk
             sents = [sent.string.strip() for sent in doc.sents]
-            sents = sents[:-1]
-            leftovers = sents[-1]
+            if len(sents) > 1:
+                sents = sents[:-1]
+                leftovers = sents[-1]
             for sent in sents:
                 sent = sent.replace('\n', ' ')
                 phrase = has_participle_phrase(sent)
