@@ -15,7 +15,7 @@ True
 
 
 A keen observer of English customs relates that, being in one of the rooms of the Bank one day, he had the curiosity to examine a gold ingot weighing some seven or eight pounds.
-being in one of the rooms of the Bank one day, he had the curiosity to examine a gold ingot weighing some seven or eight pounds.
+being in one of the rooms of the Bank one day
 being
 True
 
@@ -119,7 +119,7 @@ True
 
 
 But, knowing that the steamer was not to leave for Yokohama until the next morning, he did not disturb himself about the matter.
-knowing that the steamer was not to leave for Yokohama until the next morning, he did not disturb himself about the matter.
+knowing that the steamer was not to leave for Yokohama until the next morning
 knowing
 True
 

@@ -7,7 +7,7 @@ import spacy
 IRREGULAR_PAST_PARTICIPLES_FILE = \
 'sentence_parts/irregularPastParticipleVerbs.txt'
 INPUT_TEXT_FILE = 'books/around-the-world-in-80-days.txt'
-#INPUT_TEXT_FILE = 'books/test.txt'
+# INPUT_TEXT_FILE = 'books/test.txt'
 OUTPUT_TEXT_FILE = 'fragments/participlePhrase.txt'
 CHUNK_SIZE = 1024
 nlp = spacy.load('en')
@@ -75,7 +75,8 @@ def split_text_at_verb_or_adverb_follwing_comma(sentence, participle):
         doc = nlp(part.strip())
         # do not include vbg verbs 
         if (doc and len(doc) > 0 and doc[0].tag_ in ['RB', 'RBR', 'RBS', 'VB',
-            'VBD', 'VBN', 'VBP', 'VBZ']):
+            'VBD', 'VBN', 'VBP', 'VBZ', 'NN', 'NNPS', 'NNS', 'NNP', 'PRP',
+            'PRP$', 'DET', 'JJ']):
             break
         else:
             # append more to the phrase
