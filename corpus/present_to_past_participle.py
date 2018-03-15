@@ -37,7 +37,7 @@ with open(PRESENT_TENSE_VERBS_FILE, 'r') as f:
             line += 'd'
         # consonant followed by y
         elif consonant_then_y.match(line[-2:]):
-            line += line[:-1] + 'ied'
+            line = line[:-1] + 'ied'
         # one syl words ending in c-v-c: double last letter add ed
         elif len(line) < 5 and double_letter.match(line[-3:]):
             line += line[-1]
