@@ -192,8 +192,10 @@ def print_help():
 if __name__ == '__main__':
     if len(sys.argv) >= 3 and sys.argv[1] == '-d':
         existing_books = [OUTPUT_FOLDER + '/' + os.fsdecode(f1) for f1 in os.listdir(OUTPUT_FOLDER)]
-        for f in os.listdir(sys.argv[2]):
-            input_filename = os.fsdecode(f)
+        directory_name = sys.argv[2]
+        for f in os.listdir(directory_name):
+            # TODO: below line should use a proper path joiner
+            input_filename = directory_name + '/' + os.fsdecode(f)
             output_filename = OUTPUT_TEXT_FILE_BASE.format(input_filename.split('/')[-1])
             if output_filename not in existing_books:
                 try:
