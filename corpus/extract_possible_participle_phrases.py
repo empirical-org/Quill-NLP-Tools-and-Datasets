@@ -1,8 +1,8 @@
 """Given a text, find sentences that might have a participle phrase in them and
 write them to a new file."""
 import os
-import spacy
 import sys
+import spacy
 
 # Constants
 IRREGULAR_PAST_PARTICIPLES_FILE = \
@@ -35,7 +35,7 @@ def is_participle(word):
     return result
 
 def participle_phrase_conditions_apply(possible_participle_phrase, participle,
-        sentence):
+                                       sentence):
     """Return True if this phrase might be a participle phrase"""
     doc = nlp(possible_participle_phrase)
 
@@ -49,8 +49,8 @@ def participle_phrase_conditions_apply(possible_participle_phrase, participle,
 
     # concludes a main clause modifying a word farther up the sentence
     elif sentence.split(participle)[0].endswith(', '):
-        # ie. Cooper enjoyed dinner at Audrey's house, agreeing to a large slice of
-        # cherry pie even though he was full to the point of bursting.
+        # ie. Cooper enjoyed dinner at Audrey's house, agreeing to a large slice
+        # of cherry pie even though he was full to the point of bursting.
         if len(doc) > 1 and doc[1].tag_ == 'IN':
             # participles ending with 'ed' require more attention
             if participle.endswith('ing'):
@@ -73,7 +73,7 @@ def split_text_at_verb_or_adverb_follwing_comma(sentence, participle):
 
     for part in full.split(',')[1:]:
         doc = nlp(part.strip())
-        # do not include vbg verbs 
+        # do not include vbg verbs
         if (doc and len(doc) > 0 and doc[0].tag_ in ['RB', 'RBR', 'RBS', 'VB',
             'VBD', 'VBN', 'VBP', 'VBZ', 'NN', 'NNPS', 'NNS', 'NNP', 'PRP',
             'PRP$', 'DET', 'JJ']):
@@ -199,13 +199,15 @@ if __name__ == '__main__':
                 try:
                     write_sentences_with_participle_prhases(input_filename,
                        output_filename)
+                    print('Done extracting participle phrases from \
+                            {}'.format(input_filename))
                 except Exception as e:
                     print('error on {}'.format(input_filename))
                     print(e)
                     print('closing file and continuing')
                     os.rename(output_filename + '.working', output_filename)
                     print('...')
-                    
+
     elif len(sys.argv) >= 3 and sys.argv[1] == '-f':
         input_filename = sys.argv[2]
         output_filename = OUTPUT_TEXT_FILE_BASE.format(input_filename.split('/')[-1])
