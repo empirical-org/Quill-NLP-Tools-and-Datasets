@@ -2,16 +2,13 @@
 write them to a new file."""
 import os
 import spacy
+import sys
 
 # Constants
 IRREGULAR_PAST_PARTICIPLES_FILE = \
 'sentence_parts/irregularPastParticipleVerbs.txt'
-INPUT_TEXT_FILE = 'books/around-the-world-in-80-days.txt'
-INPUT_TEXT_FILE = 'books/the-black-arrow.txt'
-INPUT_TEXT_FILE = 'books/the-princess-of-the-school.txt'
-# INPUT_TEXT_FILE = 'books/test.txt'
-OUTPUT_TEXT_FILE_BASE = 'fragments/participlePhrasesFrom{}'
-OUTPUT_TEXT_FILE = OUTPUT_TEXT_FILE_BASE.format(INPUT_TEXT_FILE.split('/')[-1])
+OUTPUT_FOLDER = 'fragments'
+OUTPUT_TEXT_FILE_BASE = OUTPUT_FOLDER + '/participlePhrasesFrom{}'
 CHUNK_SIZE = 1024
 nlp = spacy.load('en')
 
@@ -154,13 +151,13 @@ def has_participle_phrase(sentence):
         return {'phrase': phrase, 'participle':participle, 'flagged': flagged}
     return None
 
-def write_sentences_with_participle_prhases():
+def write_sentences_with_participle_prhases(input_file, output_file):
     """Write participle phrase file"""
-    with open(INPUT_TEXT_FILE, 'r') as f:
+    with open(input_file, 'r') as f:
         # final sentence may not be a complete sentence, save and prepend to next chunk
         leftovers = ''
         sentence_no = 0
-        output = open(OUTPUT_TEXT_FILE.format(INPUT_TEXT_FILE), 'w+')
+        output = open(output_file, 'w+')
         for chunk in read_in_chunks(f): # lazy way of reading our file in case it's large
             # prepend leftovers to chunk
             chunk = leftovers + chunk
@@ -180,6 +177,28 @@ def write_sentences_with_participle_prhases():
                         phrase['participle'], phrase['flagged']))
         output.close()
 
+def print_help():
+    print('./extract_possible_participle_phrases.py -f filename')
+    print('to index a file')
+    print('to extract participle phrases a file,')
+    print('or')
+    print('./extract_possible_participle_phrases.py -d directory')
+    print('to extract participle phrases from each file in a directory')
+    print('')
 
 if __name__ == '__main__':
-    write_sentences_with_participle_prhases()
+    if len(sys.argv) >= 3 and sys.argv[1] == '-d':
+        existing_books = [OUTPUT_FOLDER + '/' + os.fsdecode(f1) for f1 in os.listdir(OUTPUT_FOLDER)]
+        for f in os.listdir(sys.argv[2]):
+            input_filename = os.fsdecode(f)
+            output_filename = OUTPUT_TEXT_FILE_BASE.format(input_filename.split('/')[-1])
+            if output_filename not in existing_books:
+                write_sentences_with_participle_prhases(input_filename,
+                       output_filename)
+    elif len(sys.argv) >= 3 and sys.argv[1] == '-f':
+        input_filename = sys.argv[2]
+        output_filename = OUTPUT_TEXT_FILE_BASE.format(input_filename.split('/')[-1])
+        print(input_filename, output_filename)
+        write_sentences_with_participle_prhases(input_filename, output_filename)
+    else:
+        print_help()
