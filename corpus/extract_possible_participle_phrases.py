@@ -153,11 +153,12 @@ def has_participle_phrase(sentence):
 
 def write_sentences_with_participle_prhases(input_file, output_file):
     """Write participle phrase file"""
+    # open a working copy of the file to show its currently being written to
     with open(input_file, 'r') as f:
         # final sentence may not be a complete sentence, save and prepend to next chunk
         leftovers = ''
         sentence_no = 0
-        output = open(output_file, 'w+')
+        output = open(output_file + '.working', 'w+')
         for chunk in read_in_chunks(f): # lazy way of reading our file in case it's large
             # prepend leftovers to chunk
             chunk = leftovers + chunk
@@ -176,6 +177,8 @@ def write_sentences_with_participle_prhases(input_file, output_file):
                     "{}\n\n\n\n\n".format(sent, phrase['phrase'],
                         phrase['participle'], phrase['flagged']))
         output.close()
+        # remove the .working extention to show the file is finished
+        os.rename(output_file + '.working', output_file)
 
 def print_help():
     print('./extract_possible_participle_phrases.py -f filename')
@@ -193,8 +196,16 @@ if __name__ == '__main__':
             input_filename = os.fsdecode(f)
             output_filename = OUTPUT_TEXT_FILE_BASE.format(input_filename.split('/')[-1])
             if output_filename not in existing_books:
-                write_sentences_with_participle_prhases(input_filename,
+                try:
+                    write_sentences_with_participle_prhases(input_filename,
                        output_filename)
+                except Exception as e:
+                    print('error on {}'.format(input_filename))
+                    print(e)
+                    print('closing file and continuing')
+                    os.rename(output_filename + '.working', output_filename)
+                    print('...')
+                    
     elif len(sys.argv) >= 3 and sys.argv[1] == '-f':
         input_filename = sys.argv[2]
         output_filename = OUTPUT_TEXT_FILE_BASE.format(input_filename.split('/')[-1])
