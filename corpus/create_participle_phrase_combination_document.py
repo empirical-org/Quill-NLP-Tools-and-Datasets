@@ -18,6 +18,12 @@ with open('participlePhraseSentencesAndTheirFragments.txt', 'w+') as \
                     line = " ".join(line.split()) # replace all whitespace w
                     line = line.replace('_', '') # gutenberg underlines words
                     line = line.strip() # trailing whitespace
+                    if line and line[-1] not in list('.!?'): # punctuate 
+                        line += '.'
+                       
+                    if line:
+                        line = line[0].capitalize() + line[1:] # capitalize 
+
                     if skip_next_line:
                         skip_next_line = False
                         continue
