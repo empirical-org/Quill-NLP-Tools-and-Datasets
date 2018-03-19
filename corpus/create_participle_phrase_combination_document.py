@@ -6,13 +6,13 @@ acceptable_characters = set(
         'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ \
                 -.,!?()\'$ *1234567890:&')
 
-with open('participlePhraseSentencesAndTheirFragments.txt', 'w+') as \
+with open('sciFiParticiplePhraseSentencesAndTheirFragments.txt', 'w+') as \
         output_file:
-    for f in os.listdir('fragments'):
+    for f in os.listdir('sciFiFrags'):
         input_filename = os.fsdecode(f)
         if input_filename.startswith('participlePhrasesFrom') and \
                 input_filename.endswith('.txt'):
-            with open('fragments/' + input_filename, 'r') as input_file:
+            with open('sciFiFrags/' + input_filename, 'r') as input_file:
                 skip_next_line = False
                 for i, line in enumerate(input_file):
                     line = " ".join(line.split()) # replace all whitespace w

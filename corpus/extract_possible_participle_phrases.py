@@ -8,6 +8,7 @@ import spacy
 IRREGULAR_PAST_PARTICIPLES_FILE = \
 'sentence_parts/irregularPastParticipleVerbs.txt'
 OUTPUT_FOLDER = 'fragments'
+OUTPUT_FOLDER = 'sciFiFrags'
 OUTPUT_TEXT_FILE_BASE = OUTPUT_FOLDER + '/participlePhrasesFrom{}'
 CHUNK_SIZE = 1024
 nlp = spacy.load('en')
