@@ -7,3 +7,5 @@ venv*
 .gitattributes
 models/*.tfl.*
 data/documents
+*.egg-info
+dist
