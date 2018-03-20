@@ -12,10 +12,11 @@ Quill recognizes 6 main types of fragments,
 
 
 Therefore, this fragments directory contains 6 folders, one for each of the 6
-fragment types.  They contain arbitrary numbers of text files that have the
-pattern of a sentence followed by a fragment where the fragment is derived from
-the sentence above. The text files can be nested in folders within the top level
-folder. The below is an example.
+fragment types.  They contain arbitrary numbers of text files The text files can
+be nested in folders within the top level folder. At the top of each folder
+there should be a script called combine.py.  The script should be able to run
+and produce an output file from the contents of the directory that contains
+sentences followed by a fragment derived from them. The below is an example.
 
 ```txt
 The man ate the red pear.

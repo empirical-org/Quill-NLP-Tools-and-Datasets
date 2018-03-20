@@ -1,6 +1,12 @@
 # Notebooks
 
-Jupyter notebooks with varying functionality.
+Jupyter notebooks with varying functionality. To start,
+
+```bash
+jupyter notebook
+```
+
+
 
 ## Participle Phrase Fragment detection
 

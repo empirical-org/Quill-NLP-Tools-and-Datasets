@@ -9,3 +9,5 @@ models/*.tfl.*
 data/documents
 *.egg-info
 dist
+*.combined.txt
+checkpoint
