@@ -12,3 +12,4 @@ sciFiFrags
 *.tfl*
 .ipynb_checkpoints
 .gitattributes
+models
