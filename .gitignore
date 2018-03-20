@@ -9,3 +9,6 @@ fragments
 sci-fi
 .DS_Store
 sciFiFrags
+*.tfl*
+.ipynb_checkpoints
+.gitattributes
