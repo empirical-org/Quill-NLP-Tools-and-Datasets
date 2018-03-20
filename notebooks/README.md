@@ -35,23 +35,6 @@ import re
 from nltk.util import ngrams, trigrams
 ```
 
-#### Show version control how to deal with ipynb files
-
-```bash
-$ # ensure you are in the top level of the project before running these commands
-$
-$ source activate <YOUR CONDA ENV>
-$ conda install -c conda-forge nbstripout
-$ nbstripout --install
-$ nbstripout --install --attributes .gitattributes
-```
-
-Running the above commands will ensure generated output from the notebooks is
-not versioned, but that regular code changes will still be reflected.
-
-Note: this means that switching branches could mean changes to notebook state.
-Be aware of this and don't be alarmed.
-
 #### Load Datafiles
 
 
