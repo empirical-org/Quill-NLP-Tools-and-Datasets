@@ -1,0 +1,40 @@
+There's Ericsson dead center in the screen, waiting for you to plop down beside the domes.
+waiting for you to plop down beside the domes.
+waiting
+False
+
+
+
+
+Going to Luna."
+Going to Luna."
+Going
+False
+
+
+
+
+You're the next Mars pilot, according to the schedule, aren't you?"
+according to the schedule
+according
+True
+
+
+
+
+Something about dinner tonight.
+Something about dinner tonight.
+Something
+False
+
+
+
+
+It was the only restaurant, according to the boast of its staff, where one could actually dine under the stars.
+according to the boast of its staff, where one could actually dine under the stars.
+according
+True
+
+
+
+

@@ -1,0 +1,96 @@
+Bill Sanderson, looking like a slim, blond ballet dancer and muscled like an apache expert, had him in one hand and was stuffing the latest batch of whole wheat biscuits down his throat.
+looking like a slim
+looking
+True
+
+
+
+
+Hal was already back, fussing over things with the hunk of tin and lenses he treated like a newborn baby.
+fussing over things with the hunk of tin and lenses he treated like a newborn baby.
+fussing
+False
+
+
+
+
+Nothing but whole wheat bread!
+Nothing but whole wheat bread!
+Nothing
+False
+
+
+
+
+But it was Captain Muller, coming down the rail.
+coming down the rail.
+coming
+False
+
+
+
+
+But Dr. Lomax was with me in my darkroom, working on some spectroanalysis slides.
+working on some spectroanalysis slides.
+working
+False
+
+
+
+
+It was Jenny, running toward us.
+running toward us.
+running
+False
+
+
+
+
+Besides, knowing that Pietro's injunction had robbed him of a chance like that was enough to rankle in any man's guts and make him work up something pretty close to insanity.
+knowing that Pietro's injunction had robbed him of a chance like that was enough to rankle in any man's guts and make him work up something pretty close to insanity.
+knowing
+False
+
+
+
+
+He went through the door at an awkward shuffle, heading for his galley.
+heading for his galley.
+heading
+False
+
+
+
+
+They drew back sullenly, staring at us like animals studying a human hunter, and they didn't like it when Peters took Grundy to lock him into his room.
+staring at us like animals studying a human hunter, and they didn't like it when Peters took Grundy to lock him into his room.
+staring
+True
+
+
+
+
+Something about eating hearty, because he'd saved us all, forever and ever.
+Something about eating hearty, because he'd saved us all, forever and ever.
+Something
+True
+
+
+
+
+He fell back, beating at the sheet with his hand and sobbing hysterically.
+beating at the sheet with his hand and sobbing hysterically.
+beating
+False
+
+
+
+
+Then I was in it, heading for Grundy.
+heading for Grundy.
+heading
+False
+
+
+
+

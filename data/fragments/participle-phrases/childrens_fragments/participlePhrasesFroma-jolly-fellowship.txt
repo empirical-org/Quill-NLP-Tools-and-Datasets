@@ -1,0 +1,64 @@
+I was all right the next day, and we staid on deck most of the time, standing around the smoke-stack when our noses got a little blue with the cold.
+standing around the smoke-stack when our noses got a little blue with the cold.
+standing
+True
+
+
+
+
+According to my calculations," said he, pointing to a spot on his map, which he held in his hand, "we must be down about here, off the Georgia coast."
+According to my calculations," said he, pointing to a spot on his map, which he held in his hand, "we must be down about here, off the Georgia coast."
+According
+True
+
+
+
+
+"Judging from her looks," said Rectus, "I don't believe she likes it at all."
+Judging from her looks," said Rectus, "I don't believe she likes it at all."
+Judging
+True
+
+
+
+
+The queen was hard at work, sitting on her door-stone by the side of her bits of sugar-cane and pepper-pods.
+sitting on her door-stone by the side of her bits of sugar-cane and pepper-pods.
+sitting
+False
+
+
+
+
+A variety-show, consisting of about a dozen young darkeys with their baskets and strings of sponges, accompanied her up the steps; but she was ordered to rout them, and she did it in short order.
+consisting of about a dozen young darkeys with their baskets and strings of sponges
+consisting
+True
+
+
+
+
+When we came down stairs to breakfast, talking to each other like common people, it was better than most shows to see Corny's face.
+talking to each other like common people
+talking
+True
+
+
+
+
+Now, nothing of the kind happened to me.
+nothing of the kind happened to me.
+nothing
+False
+
+
+
+
+These ropes were roots or young trunks from banyan-trees, growing on the ground above, and which came through the cracks in the rocks, and stretched themselves down so as to root in the floor of the cave, and make a lot of underground trunks for the tree above.
+growing on the ground above, and which came through the cracks in the rocks, and stretched themselves down so as to root in the floor of the cave, and make a lot of underground trunks for the tree above.
+growing
+True
+
+
+
+

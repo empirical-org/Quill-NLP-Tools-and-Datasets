@@ -1,0 +1,304 @@
+Travelling as we are, we are going two knots an hour faster than the brig.
+Travelling as we are
+Travelling
+False
+
+
+
+
+"It is more like a gentleman's house, standing in its own park."
+standing in its own park."
+standing
+False
+
+
+
+
+We shall excite no special observation, travelling as English, as it will only be supposed that we are on our way to pay a visit to some of our officers, at Arcot.
+travelling as English, as it will only be supposed that we are on our way to pay a visit to some of our officers, at Arcot.
+travelling
+True
+
+
+
+
+We shall excite no special observation, travelling as English, as it will only be supposed that we are on our way to pay a visit to some of our officers, at Arcot.oad from Madras south.
+travelling as English, as it will only be supposed that we are on our way to pay a visit to some of our officers, at Arcot.oad from Madras south.
+travelling
+True
+
+
+
+
+he went on, turning to Dick, and holding out both his hands to him.
+turning to Dick, and holding out both his hands to him.
+turning
+True
+
+
+
+
+Dick, finding that the conversation now turned to the time when his mother and uncle were girl and boy together, left them and went downstairs.
+finding that the conversation now turned to the time when his mother and uncle were girl and boy together
+finding
+True
+
+
+
+
+"Colonel Baillie, finding that there was no possibility of reaching Conjeveram without fighting, took up a position at a village, and on the 6th was attacked by Tippoo.
+finding that there was no possibility of reaching Conjeveram without fighting
+finding
+True
+
+
+
+
+"Colonel Baillie, finding that there was no possibility of reaching Conjeveram without fighting, took up a position at a village, and on the 6th was attacked by Tippoo.the enemy were four times more numerous than we were, the English beat off the attacks.
+finding that there was no possibility of reaching Conjeveram without fighting
+finding
+True
+
+
+
+
+But, learning from the commandant at Vellore that, unless he were relieved, he would be driven to surrender for want of provisions, Sir Eyre Coote marched to his help.
+learning from the commandant at Vellore that, unless he were relieved
+learning
+True
+
+
+
+
+"Seeing that Tippoo was bent upon hostilities, Lord Cornwallis and his council at Calcutta directed, as I learnt from an official at Madras, the authorities there to begin at once to make preparations for war.
+Seeing that Tippoo was bent upon hostilities
+Seeing
+True
+
+
+
+
+I will write to the Nabob, saying that you were about to join him, but that, in the interest of the general defence, I have thought it better, at present, to attach you to the Bengal contingent.
+saying that you were about to join him, but that, in the interest of the general defence
+saying
+True
+
+
+
+
+There are some peasants, with three bullocks, coming down the valley, and there are four armed horsemen riding behind them.
+coming down the valley, and there are four armed horsemen riding behind them.
+coming
+True
+
+
+
+
+Looking along the barrels, each could see one of the group in front, and fired at the same moment.
+Looking along the barrels, each could see one of the group in front, and fired at the same moment.
+Looking
+True
+
+
+
+
+Therefore, anything like a thorough conquest of Mysore was impossible, and there was only time to march to Seringapatam, to capture Tippoo's capital, and to dictate terms to him.
+anything like a thorough conquest of Mysore was impossible, and there was only time to march to Seringapatam, to capture Tippoo's capital, and to dictate terms to him.
+anything
+True
+
+
+
+
+Finding that Purseram Bhow's army was the first that would be engaged in active service, he asked permission from the general to join it.
+Finding that Purseram Bhow's army was the first that would be engaged in active service
+Finding
+False
+
+
+
+
+The centre column, consisting of 3,700 men, under Lord Cornwallis himself, was to burst through the hedge at the centre of the enemy's position, to drive the enemy before them, and, if possible, to cross the ford to the island with the fugitives.
+consisting of 3,700 men, under Lord Cornwallis himself
+consisting
+True
+
+
+
+
+Unfortunately, owing to a misunderstanding as to the order, the officer guiding General Meadow's column, instead of taking it to a point between the northwestern redoubt and the river, led it directly at the fort.
+owing to a misunderstanding as to the order, the officer guiding General Meadow's column
+owing
+True
+
+
+
+
+Surajah and I will wander about, enlisting in the garrisons of forts.
+enlisting in the garrisons of forts.
+enlisting
+False
+
+
+
+
+To these they always gave a very wide berth, as although, according to the terms of peace, they should all have been evacuated, they might still be occupied by parties of Tippoo's troops.
+according to the terms of peace
+according
+True
+
+
+
+
+To these they always gave a very wide berth, as although, according to the terms of peace, they should all have been evacuated, they might still be occupied by parties of Tippoo's troops.my and fortresses, and to prepare for a renewal of the war.
+according to the terms of peace
+according
+True
+
+
+
+
+Then, to prevent the possibility of error, the one asks the other a question--on what subject it matters not, providing that before he speaks, he coughs slightly.
+providing that before he speaks
+providing
+True
+
+
+
+
+Wandering about, unquestioned, they came presently upon a scene that filled Dick with indignation and fury.
+Wandering about
+Wandering
+True
+
+
+
+
+At each meal, every officer has so many dishes, according to his rank.
+according to his rank.
+according
+True
+
+
+
+
+This they did, going at a foot pace, and scanning the cliffs and slopes as they passed.
+going at a foot pace, and scanning the cliffs and slopes as they passed.
+going
+True
+
+
+
+
+Of course, according to our English notions, she is still but a young girl, but as your people out here marry when the girls are but of the age of this child, it is different altogether."
+according to our English notions
+according
+True
+
+
+
+
+Riding as we shall do, as two of the officers of the Palace, it is not likely that any questions whatever will be asked, and certainly we shall have no difficulty until it comes to crossing the frontier."
+Riding as we shall do, as two of the officers of the Palace
+Riding
+True
+
+
+
+
+Nothing save the rescue of my daughter from the harem would induce me to move now, and of that there is little chance.
+Nothing save the rescue of my daughter from the harem would induce me to move now, and of that there is little chance.
+Nothing
+False
+
+
+
+
+They rode at a walk, now, till they came to a very large baobab tree, growing by the path they were following.
+growing by the path they were following.
+growing
+True
+
+
+
+
+They rode at a walk, now, till they came to a very large baobab tree, growing by the path they were following.off."
+growing by the path they were following.off."
+growing
+True
+
+
+
+
+.  "I could not sleep, thinking of you, Sahib," the latter said, as they came up. "
+thinking of you
+thinking
+True
+
+
+
+
+Skirting round the foot, they came, in the course of an hour and a half's ride, on to the direct road which they had left at Anicull, in order to avoid passing through the town of Oussoor.
+Skirting round the foot
+Skirting
+True
+
+
+
+
+Skirting round the foot, they came, in the course of an hour and a half's ride, on to the direct road which they had left at Anicull, in order to avoid passing through the town of Oussoor.aly.
+Skirting round the foot
+Skirting
+True
+
+
+
+
+Dick, seeing that Annie was growing very nervous, as they neared their destination, had ridden all the way by the side of the cart, chatting cheerfully with her.
+seeing that Annie was growing very nervous, as they neared their destination
+seeing
+True
+
+
+
+
+Fearing that some such act of treachery might be attempted, he had told his men to conceal a few cartridges under their clothes, when they marched out with empty cartridge pouches.
+Fearing that some such act of treachery might be attempted
+Fearing
+True
+
+
+
+
+Half an hour later a party of twelve men, travelling in the same direction as themselves, also halted and turned in among the trees.
+travelling in the same direction as themselves
+travelling
+True
+
+
+
+
+Consequently, he did not step over any one's head, owing to his commission being dated nearly three years previously.
+owing to his commission being dated nearly three years previously.
+owing
+True
+
+
+
+
+As the advance brigade, consisting of three native battalions, under Colonel Montresor, reached Sedaseer; Tippoo, with 12,000 of his best troops, fell upon it suddenly.
+consisting of three native battalions, under Colonel Montresor
+consisting
+True
+
+
+
+
+Thus Mysore, one of the most ancient and powerful of the kingdoms of India, fell into the hands of the English, owing to the ambition, bigotry, and besotted cruelty of the son of a usurper.
+owing to the ambition
+owing
+True
+
+
+
+

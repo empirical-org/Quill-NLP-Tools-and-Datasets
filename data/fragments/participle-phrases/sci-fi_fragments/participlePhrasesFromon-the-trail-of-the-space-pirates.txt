@@ -1,0 +1,280 @@
+Standing in the aisle, he counted the credits Tom had given him and turned to the front of the car.
+Standing in the aisle
+Standing
+False
+
+
+
+
+Turning into the Tower, the three cadets went directly to the office of their unit commander.
+Turning into the Tower, the three cadets went directly to the office of their unit commander.
+Turning
+False
+
+
+
+
+Turning into the Tower, the three cadets went directly to the office of their unit commander.my consisted of three cadets to a unit, with a Solar Guard officer as their teacher and instructor.
+Turning into the Tower, the three cadets went directly to the office of their unit commander.my consisted of three cadets to a unit, with a Solar Guard officer as their teacher and instructor.
+Turning
+True
+
+
+
+
+Resting on her four stabilizer fins, her nose pointed toward the stars, the ship looked like a giant projectile poised and ready to blast its target.
+Resting on her four stabilizer fins
+Resting
+True
+
+
+
+
+"Closing in fast, sir," said Tom to Strong, who had come up from below and now stood at the cadet's shoulder watching as Tom maneuvered the big ship through the Venusian atmosphere, his keen eyes sweeping the great panel of recording gauges and dials.
+Closing in fast
+Closing
+True
+
+
+
+
+Nodding toward the men seated in front of Hawks' desk, he apologized, "Sorry to bust in on you like this, old man.
+Nodding toward the men seated in front of Hawks' desk
+Nodding
+True
+
+
+
+
+Arriving at the spaceport, they found the _Polaris_ stripped of her guns and her galley stocked with food.
+Arriving at the spaceport
+Arriving
+False
+
+
+
+
+The three members of the _Polaris_ unit, standing to one side of the platform, joined in the cheers as their skipper shook hands with the delegates and waved again and again at the roaring crowd.
+standing to one side of the platform
+standing
+True
+
+
+
+
+Glancing at the air lock, Tom saw three young and pretty girls file into the ship. "
+Glancing at the air lock
+Glancing
+False
+
+
+
+
+Working on the _Polaris_ twelve hours a day and staying up all night to watch those two jokers has me all in."
+Working on the _Polaris_ twelve hours a day and staying up all night to watch those two jokers has me all in."
+Working
+False
+
+
+
+
+Pure dirt!", reaching for the paper.
+reaching for the paper.
+reaching
+False
+
+
+
+
+Nothing but the echo of Astro's voice.     CHAPTER 6   "Easy, Astro," said Strong, standing behind the big cadet. "
+Nothing but the echo of Astro's voice.     CHAPTER 6   "Easy
+Nothing
+True
+
+
+
+
+Arriving at the shack, they were immediately challenged by an enlisted Solar Guardsman.
+Arriving at the shack
+Arriving
+False
+
+
+
+
+Proceeding to the shack they were again challenged by a guard and again had to produce their identification disks before entering.
+Proceeding to the shack they were again challenged by a guard and again had to produce their identification disks before entering.
+Proceeding
+False
+
+
+
+
+Relaxing from the three arduous days on the Moon and able to be themselves once more, Strong and the three cadets rested and discussed every detail of their stay in Luna City.
+Relaxing from the three arduous days on the Moon and able to be themselves once more
+Relaxing
+False
+
+
+
+
+Turning to Wallace, he pleaded, "I can't listen to it again!
+Turning to Wallace
+Turning
+True
+
+
+
+
+"Follow me, please."ding for a tiny planetoid in the distance.
+please."ding for a tiny planetoid in the distance.
+please."ding
+False
+
+
+
+
+Standing on the control deck of his ship, Coxine waited as the men gradually quieted down.
+Standing on the control deck of his ship
+Standing
+False
+
+
+
+
+Gasping for breath, Tom stood over the sprawled man and just looked at him.
+Gasping for breath
+Gasping
+False
+
+
+
+
+Gasping for breath, Tom stood over the sprawled man and just looked at him.
+Gasping for breath
+Gasping
+False
+
+
+
+
+Wondering if he should burst into the room and attempt to overpower the men on duty, or wait for a better chance later, he was suddenly startled by a sharp voice in back of him.
+Wondering if he should burst into the room and attempt to overpower the men on duty, or wait for a better chance later
+Wondering
+True
+
+
+
+
+Turning to the astrogation panel, the Solar Guard captain quickly plotted a course that would bring them to Tom's position.
+Turning to the astrogation panel, the Solar Guard captain quickly plotted a course that would bring them to Tom's position.
+Turning
+False
+
+
+
+
+Glancing around the few indicators on the control board of the small vessel, Tom's smile changed to a grimace of sudden terror.
+Glancing around the few indicators on the control board of the small vessel
+Glancing
+False
+
+
+
+
+This is Manning aboard the _Polaris_!
+Manning aboard the _Polaris_!
+Manning
+False
+
+
+
+
+Meanwhile, Strong, coming from the other direction, saw the boat and relayed the position to Astro.
+coming from the other direction
+coming
+True
+
+
+
+
+Everything under the stars that they could use.
+Everything under the stars that they could use.
+Everything
+False
+
+
+
+
+Shuddering under the sudden surge of power, the ship rose from the ground, accelerated at the rate of seven miles per second, and arrowed into the sky, space-borne!
+Shuddering under the sudden surge of power, the ship rose from the ground, accelerated at the rate of seven miles per second, and arrowed into the sky
+Shuddering
+True
+
+
+
+
+"We're to blast off later to-night and take a course through the asteroid belt, traveling on the plane of the ecliptic.
+traveling on the plane of the ecliptic.
+traveling
+False
+
+
+
+
+All eyes were on the tiny rocket scout as its jets, roaring into life, lifted free of the pirate planetoid.
+roaring into life
+roaring
+True
+
+
+
+
+All eyes were on the tiny rocket scout as its jets, roaring into life, lifted free of the pirate planetoid.pace, Coxine turned to his crew and ordered an immediate alert.
+roaring into life
+roaring
+True
+
+
+
+
+There in front of him was a blip, traveling at amazing speed, straight for his ship.
+traveling at amazing speed
+traveling
+True
+
+
+
+
+Rocketing through the asteroid belt with the Titan pay roll, the three space cadets, under strict orders to maintain communications silence, were unaware that Bull Coxine had outsmarted Captain Strong.
+Rocketing through the asteroid belt with the Titan pay roll, the three space cadets, under strict orders to maintain communications silence, were unaware that Bull Coxine had outsmarted Captain Strong.
+Rocketing
+True
+
+
+
+
+Sending in the rocket scout, he had sprung the Solar Guard trap and had cagily scanned the belt for another ship.
+Sending in the rocket scout
+Sending
+False
+
+
+
+
+Pressing with all his might, Tom managed to see more of the scanner which suddenly showed the people of Ganymede scurrying out to the spaceport in panic.
+Pressing with all his might
+Pressing
+False
+
+
+
+
+Racing from scanner to the control panel and back again, Coxine watched the battle rage around him.
+Racing from scanner to the control panel and back again
+Racing
+False
+
+
+
+

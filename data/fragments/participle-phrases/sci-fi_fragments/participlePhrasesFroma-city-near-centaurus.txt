@@ -1,0 +1,40 @@
+The city lay now in darkness, dead and still, waiting for morning so it could lie dead and still in the sun.
+waiting for morning so it could lie dead and still in the sun.
+waiting
+True
+
+
+
+
+The gash in his head was painful, throbbing with quick, short hammer-blows synchronized with his heart beats.
+throbbing with quick
+throbbing
+True
+
+
+
+
+It was an inexpert fist, belonging to an archeologist, not a fighter.
+belonging to an archeologist
+belonging
+True
+
+
+
+
+"Something like a fourth dimension?"
+Something like a fourth dimension?"
+Something
+False
+
+
+
+
+It was a door of some kind, leading to a path of some kind where distance was non-existent.
+leading to a path of some kind where distance was non-existent.
+leading
+False
+
+
+
+

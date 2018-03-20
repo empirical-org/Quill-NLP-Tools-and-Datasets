@@ -1,0 +1,40 @@
+An espioneur, working for Side A, who finds a bit of important information about Side B must obviously communicate that bit of information to Side A or it is of no use whatsoever.
+working for Side A, who finds a bit of important information about Side B must obviously communicate that bit of information to Side A or it is of no use whatsoever.
+working
+True
+
+
+
+
+It was obvious to the Secretary of Defense and to Colonel Spaulding that the President was suppressing some inward excitement.
+Spaulding that the President was suppressing some inward excitement.
+Spaulding
+False
+
+
+
+
+According to the specifications, it is supposed to be painted emerald green, but there's no indication of what it is."
+According to the specifications
+According
+True
+
+
+
+
+Following that, there was a sputtering and crackling from the innards of the device itself, and a cloud of smoke arose suddenly, obscuring things in the room.
+Following that, there was a sputtering and crackling from the innards of the device itself, and a cloud of smoke arose suddenly, obscuring things in the room.
+Following
+True
+
+
+
+
+Thinking on two levels at once, while not impossible, required a nicety of control that made wire-walking over Niagara look easy.
+Thinking on two levels at once, while not impossible, required a nicety of control that made wire-walking over Niagara look easy.
+Thinking
+True
+
+
+
+

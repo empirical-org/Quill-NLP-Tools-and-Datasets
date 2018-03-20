@@ -1,0 +1,64 @@
+"The Cap'n says," began Nat, glancing in his eager, quick, bird-like way at his brother--"the Cap'n says--"
+glancing in his eager
+glancing
+True
+
+
+
+
+He wants you to call him a good feller; he wants you to be werry particular kind to him, seeing as he won't stir hand nor foot to save Will Scarlett until you takes yer oath as you'd wed with him.
+seeing as he won't stir hand nor foot to save Will Scarlett until you takes yer oath as you'd wed with him.
+seeing
+False
+
+
+
+
+You'll help me, won't you, Hetty, seeing as you're more of a scholard than me?"
+seeing as you're more of a scholard than me?"
+seeing
+True
+
+
+
+
+Rising from her seat, she pushed her writing materials away, and stooped over the hearth.
+Rising from her seat
+Rising
+True
+
+
+
+
+Nothing but that passionate hunger would have caused her to forsake the children at this supreme moment.
+Nothing but that passionate hunger would have caused her to forsake the children at this supreme moment.
+Nothing
+False
+
+
+
+
+"Down Castle Street, making for Lime Street and the railway station, I expect.
+making for Lime Street and the railway station
+making
+True
+
+
+
+
+There was no part of Liverpool where she would not know what to do and how to act; but here, standing on this lonely, deserted platform, with scarcely any money in her pocket, her head aching, her tired brain dull and confused, she scarcely knew where to turn.
+standing on this lonely
+standing
+True
+
+
+
+
+And I'd rather be Will, lying in prison this minute, than I'd be you.
+lying in prison this minute, than I'd be you.
+lying
+True
+
+
+
+

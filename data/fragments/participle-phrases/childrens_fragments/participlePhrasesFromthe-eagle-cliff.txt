@@ -1,0 +1,312 @@
+In front of the door he describes an airy circlet, dismounting while yet in motion, leans the lightning express against the wall, and enters.
+dismounting while yet in motion
+dismounting
+True
+
+
+
+
+Passing through one of the less-frequented streets in the neighbourhood of Finchley Road, he ventured to give the rein to his willing charger.
+Passing through one of the less-frequented streets in the neighbourhood of Finchley Road
+Passing
+False
+
+
+
+
+Passing through one of the less-frequented streets in the neighbourhood of Finchley Road, he ventured to give the rein to his willing charger.ed to smile--and Fortune was to be commended for her severity.
+Passing through one of the less-frequented streets in the neighbourhood of Finchley Road
+Passing
+False
+
+
+
+
+They float, they sail and row, they steer--"  "Rather badly sometimes, according to your own showing!" remarked Barret.
+according to your own showing!" remarked Barret.
+according
+True
+
+
+
+
+They float, they sail and row, they steer--"  "Rather badly sometimes, according to your own showing!"
+according to your own showing!"
+according
+True
+
+
+
+
+But neither the skipper nor Tips was very visible at the distance of three yards, owing to a dense fog which prevailed.
+owing to a dense fog which prevailed.
+owing
+False
+
+
+
+
+But neither the skipper nor Tips was very visible at the distance of three yards, owing to a dense fog which prevailed.generally, if not always, accompanied by profound calm.
+owing to a dense fog which prevailed.generally, if not always
+owing
+True
+
+
+
+
+Springing towards her, he knelt and raised her head.
+Springing towards her
+Springing
+False
+
+
+
+
+Running to one of the many streams of water which trickled from the cliff, he filled the top of his wideawake therewith, and, returning, laved the girl's face, and poured a little into her mouth.
+Running to one of the many streams of water which trickled from the cliff
+Running
+True
+
+
+
+
+Returning at a swift pace by the road they had come, they soon reached Kinlossie, where the laird drove into the back yard, so as to deliver the still dripping MacRummle at the back door, and thus prevent his leaving a moist track from the front hall to his bedroom.
+Returning at a swift pace by the road they had come
+Returning
+True
+
+
+
+
+In the present case it was neither impossible nor dangerous, but it was difficult; and the way in which Giles Jackman went after that fish, staggering among pebbles, leaping obstructions, crashing through bushes and bounding over boulders, causing Quin to hold his sides with laughter, and little Junkie to stand transfixed and staring with admiration, was indescribable.
+staggering among pebbles, leaping obstructions, crashing through bushes and bounding over boulders, causing Quin to hold his sides with laughter, and little Junkie to stand transfixed and staring with admiration
+staggering
+True
+
+
+
+
+Staring at her was bad enough, but to awake her would be still worse; so he turned slowly about, as a cat turns when afraid of being pounced on by a glaring adversary.
+Staring at her was bad enough, but to awake her would be still worse; so he turned slowly about, as a cat turns when afraid of being pounced on by a glaring adversary.
+Staring
+True
+
+
+
+
+Seeing that there was no likelihood of their coming nearer, he raised his rifle, took steady but quick aim, and fired.
+Seeing that there was no likelihood of their coming nearer
+Seeing
+True
+
+
+
+
+Seeing that there was no likelihood of their coming nearer, he raised his rifle, took steady but quick aim, and fired.hinds dropped at once; the other followed her terrified lord as he dashed wildly up the slope.
+Seeing that there was no likelihood of their coming nearer
+Seeing
+True
+
+
+
+
+As he spoke the other hind, doubling round a mass of fallen rock, almost leaped into McGregor's arms.
+doubling round a mass of fallen rock
+doubling
+True
+
+
+
+
+Seeing that most of those present had lighted their pipes, and that the laird seemed to wish it, Jackman washed down his lunch with a glass of sparkling water, cleared his throat, and began.
+Seeing that most of those present had lighted their pipes, and that the laird seemed to wish it
+Seeing
+True
+
+
+
+
+JACKMAN'S WONDERFUL ELEPHANT STORY.cing at Junkie and Robin Tips, who sat before him open-mouthed and open-eyed, as if ready to swallow anything...
+STORY.cing at Junkie and Robin Tips, who sat before him open-mouthed and open-eyed, as if ready to swallow anything...
+STORY.cing
+True
+
+
+
+
+Nothing in the forests had yet been found which could stand before his onset.
+Nothing in the forests had yet been found which could stand before his onset.
+Nothing
+False
+
+
+
+
+And when we saw him stalk solemnly into camp with his mahowt, or guide, looking like a small monkey on his great neck, and remembered his fame as a fighter and his eager thirst at all times for battle, we felt that the keystone had been put to the arch of our arrangements.
+looking like a small monkey on his great neck, and remembered his fame as a fighter and his eager thirst at all times for battle
+looking
+True
+
+
+
+
+Finding that he could not accomplish his purpose, the infuriated animal rushed towards the camp, where the khedda or hunting elephants were, and where, as I have said, our Director had pitched his tent.
+Finding that he could not accomplish his purpose, the infuriated animal rushed towards the camp, where the khedda or hunting elephants were, and where, as I have said
+Finding
+True
+
+
+
+
+It was very small, consisting of only one apartment with a box bed and a few articles of old furniture, the most cherished of which was a little clock with a staring face, and a poor landscape on it.
+consisting of only one apartment with a box bed and a few articles of old furniture, the most cherished of which was a little clock with a staring face, and a poor landscape on it.
+consisting
+True
+
+
+
+
+Winding in the line in a way which proved that the divit had done him no harm, he gave utterance to an exclamation of huge disgust as he drew an eel to the bank, with the line entangled hopelessly about its shiny body.
+Winding in the line in a way which proved that the divit had done him no harm
+Winding
+True
+
+
+
+
+Running into the water, they seized him by the hair and the collar of his coat, and dragged him into the shallow part easily enough, but they had not strength to haul him ashore.
+Running into the water
+Running
+True
+
+
+
+
+Nothing but an unbroken flat for a hundred yards lay around him in all directions, unrelieved by bush, rock, or tree, and bounded by a five-foot wall, with only one gate, near to where the bull stood pawing the earth and apparently working itself into a rage.
+Nothing but an unbroken flat for a hundred yards lay around him in all directions, unrelieved by bush
+Nothing
+True
+
+
+
+
+Separating as they drew near, they attacked him on three sides at once.
+Separating as they drew near
+Separating
+False
+
+
+
+
+Dashing at the new foe he was caught by the tail by Junkie, who applied the butt of his rod vigorously, the reel adding considerable weight to his blows.
+Dashing at the new foe he was caught by the tail by Junkie, who applied the butt of his rod vigorously, the reel adding considerable weight to his blows.
+Dashing
+True
+
+
+
+
+Of course, going as they were at such a rate, the traversing of six or eight miles of water occupied but little time, and they were soon close to the bay, at the head of which Kinlossie House nestled among its trees.
+going as they were at such a rate, the traversing of six or eight miles of water occupied but little time, and they were soon close to the bay, at the head of which Kinlossie House nestled among its trees.
+going
+True
+
+
+
+
+Of course, going as they were at such a rate, the traversing of six or eight miles of water occupied but little time, and they were soon close to the bay, at the head of which Kinlossie House nestled among its trees.in the bow owing to the roaring of the gale; "she's trinkin' too much; come aft, an' look sherp!"
+going as they were at such a rate, the traversing of six or eight miles of water occupied but little time, and they were soon close to the bay, at the head of which Kinlossie House nestled among its trees.in the bow owing to the roaring of the gale; "she's trinkin' too much; come aft, an' look sherp!"
+going
+True
+
+
+
+
+A great cry arose from the shore, and Ivor, plunging into the surf, was seen to breast the billows with the force of a Hercules.
+plunging into the surf
+plunging
+True
+
+
+
+
+Then, swimming on his own back, he gently drew her upon his breast, so that her head rested close to his chin.
+swimming on his own back
+swimming
+True
+
+
+
+
+Rising to the surface
+Rising to the surface
+Rising
+False
+
+
+
+
+Whether it was the mysterious attraction or the occult discernment of love that drew him, we cannot tell, but certain it is that when Barret, standing on the upper edge of the cliff, glanced from the eagle--which
+standing on the upper edge of the cliff
+standing
+True
+
+
+
+
+Whether it was the mysterious attraction or the occult discernment of love that drew him, we cannot tell, but certain it is that when Barret, standing on the upper edge of the cliff, glanced from the eagle--whichs watching him suspiciously--downward to the base of the cliff, where the sheep appeared like little buff spots on the green grass, his startled eyes alighted on Milly, lying on her back, contemplating the heavens!
+standing on the upper edge of the cliff
+standing
+True
+
+
+
+
+Far away on a shoulder of the mountain, which rose on the other side of the valley, lying between it and the Eagle Cliff, a grey speck might have been seen perched on a rock.
+lying between it and the Eagle Cliff, a grey speck might have been seen perched on a rock.
+lying
+True
+
+
+
+
+When she did see him at last, lying on a sofa in a dressing-gown, and with his head and face as we have described, his appearance did not call to her remembrance the faintest resemblance to the confused, wild, and altogether incomprehensible youth, who had tumbled her over in the streets of London, and almost run her down in the Eagle Pass.
+lying on a sofa in a dressing-gown, and with his head and face as we have described
+lying
+True
+
+
+
+
+When she did see him at last, lying on a sofa in a dressing-gown, and with his head and face as we have described, his appearance did not call to her remembrance the faintest resemblance to the confused, wild, and altogether incomprehensible youth, who had tumbled her over in the streets of London, and almost run her down in the Eagle Pass.hat she did not recognise either his face or his voice, he felt uncertain whether it would not be, perhaps, better to say nothing at all about the matter in the meantime.
+lying on a sofa in a dressing-gown, and with his head and face as we have described
+lying
+True
+
+
+
+
+"Talking of insolence, my dear--"  "_Were_ we talking of insolence, mother?" said Milly, with a surprised smile.
+Talking of insolence
+Talking
+True
+
+
+
+
+Roderick, the groom, being in the harness-room on the lee side of the nursery at the time, made a remark with the same opening words.
+being in the harness-room on the lee side of the nursery at the time
+being
+True
+
+
+
+
+Striding towards a pitcher of water which stood in a corner of the room, the keeper seized it, put it to his lips, and almost drained it.
+Striding towards a pitcher of water which stood in a corner of the room, the keeper seized it, put it to his lips, and almost drained it.
+Striding
+True
+
+
+
+

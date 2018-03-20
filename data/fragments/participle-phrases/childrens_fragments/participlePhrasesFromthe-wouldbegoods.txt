@@ -1,0 +1,80 @@
+Of course Oswald knew from Kipling that an infantry soldier is called that.
+Kipling that an infantry soldier is called that.
+Kipling
+False
+
+
+
+
+Of course Oswald knew from Kipling that an infantry soldier is called that. '
+Kipling that an infantry soldier is called that. '
+Kipling
+False
+
+
+
+
+And we saw the tops of trees and hedges, looking like the map of the United States, and villages, and a tower that did not look very far away standing by itself on the top of a hill.
+looking like the map of the United States, and villages, and a tower that did not look very far away standing by itself on the top of a hill.
+looking
+True
+
+
+
+
+We took the animals in their right order, according to Denny's list.
+according to Denny's list.
+according
+False
+
+
+
+
+Then she came towards us, prancing with happiness, but we said 'Down!'
+prancing with happiness, but we said 'Down!'
+prancing
+True
+
+
+
+
+Pettigrew, screaming like a steam-siren and waving a broom, occupied the foreground.
+screaming like a steam-siren and waving a broom
+screaming
+True
+
+
+
+
+'Anything for a quiet life,' said Dicky, and Oswald said--  'Oh, yes, if you like.
+Anything for a quiet life,' said Dicky, and Oswald said--  'Oh, yes, if you like.
+Anything
+True
+
+
+
+
+Acting with the deepest disguise, we made an awning to cover the Benevolent Bar keepers from the searching rays of the monarch of the skies.
+Acting with the deepest disguise
+Acting
+False
+
+
+
+
+He did once, tumbling over it. '
+tumbling over it. '
+tumbling
+False
+
+
+
+
+He did once, tumbling over it. '
+tumbling over it. '
+tumbling
+False
+
+
+
+

@@ -1,0 +1,56 @@
+Being on the spot is going to make a lot of difference.
+Being on the spot is going to make a lot of difference.
+Being
+False
+
+
+
+
+Rushing to the door, Ted threw it open.
+Rushing to the door
+Rushing
+False
+
+
+
+
+Stumbling over the rough and slippery ground on he went.
+Stumbling over the rough and slippery ground on he went.
+Stumbling
+False
+
+
+
+
+I can see him now, thrashing about in the water.
+thrashing about in the water.
+thrashing
+False
+
+
+
+
+But fortunately just now, owing to the dull season, there are no night gangs on duty.
+owing to the dull season, there are no night gangs on duty.
+owing
+True
+
+
+
+
+Mr. Clarence Fernald, being of a younger generation, had perhaps learned greater wisdom.
+being of a younger generation
+being
+True
+
+
+
+
+It was a wonderful playground, bordering on the river and having swings and sand boxes for the children; seats for tired mothers; and a large ball-field with bleachers for the men and boys.
+bordering on the river and having swings and sand boxes for the children; seats for tired mothers; and a large ball-field with bleachers for the men and boys.
+bordering
+False
+
+
+
+

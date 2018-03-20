@@ -1,0 +1,168 @@
+government is, therefore, kind and parental, and my pupils are often homesick in vacation, longing for the time to come when they can return to their studies at Smith Institute.
+longing for the time to come when they can return to their studies at Smith Institute.
+longing
+True
+
+
+
+
+There comes Master Guy, returning from his ride.
+returning from his ride.
+returning
+False
+
+
+
+
+You appear to think you are on the playground, judging by your hasty motions.
+judging by your hasty motions.
+judging
+False
+
+
+
+
+Smithville was accessible by railroad, being on the same line as the town of Plympton in which Roscoe Castle was situated.
+being on the same line as the town of Plympton in which Roscoe Castle was situated.
+being
+False
+
+
+
+
+Assuming by brother's communication to be true, and I think you will not question his word, you have no claim to the name.
+Assuming by brother's communication to be true, and I think you will not question his word
+Assuming
+True
+
+
+
+
+They were of different ages and sizes, ranging from ten to nineteen.
+ranging from ten to nineteen.
+ranging
+False
+
+
+
+
+Mr. Smith was at his desk, looking over his accounts, and estimating the profits of the half year, when his nephew made his appearance.
+looking over his accounts, and estimating the profits of the half year, when his nephew made his appearance.
+looking
+True
+
+
+
+
+He wrote to a boy of his acquaintance, living in New York, who, he had heard, was in want of a private tutor, and recommended Mr. Crabb, in strong terms, for that position.
+living in New York, who
+living
+True
+
+
+
+
+It would be natural to suppose that Jim Smith, relying upon his influence with his uncle, would have reported this last "outrage," as he chose to consider it, to the principal, thus securing the punishment of Hector.
+relying upon his influence with his uncle, would have reported this last "outrage," as he chose to consider it, to the principal
+relying
+True
+
+
+
+
+Hanging on nails were several garments belonging to the inmates of the room.
+Hanging on nails were several garments belonging to the inmates of the room.
+Hanging
+False
+
+
+
+
+Hanging on nails were several garments belonging to the inmates of the room.rust the wallet into one of the side pockets.
+Hanging on nails were several garments belonging to the inmates of the room.rust the wallet into one of the side pockets.
+Hanging
+False
+
+
+
+
+Yet, searching in the chambers of his memory, Mr. Smith felt sure that he had left the wallet on the bureau.
+searching in the chambers of his memory
+searching
+True
+
+
+
+
+He sprang to his feet, and not only that, but he strode forward, blazing with passion, till he stood before Mr. Smith's desk and confronted him.
+blazing with passion, till he stood before Mr. Smith's desk and confronted him.
+blazing
+True
+
+
+
+
+There was a little murmur among the pupils, showing that their sympathy was with the boy who had been so causelessly accused by the principal.
+showing that their sympathy was with the boy who had been so causelessly accused by the principal.
+showing
+False
+
+
+
+
+with the money for half an hour, according to your own confession," said Socrates.
+according to your own confession," said Socrates.
+according
+True
+
+
+
+
+Nothing in his manner ever would have led me to imagine that I was not his own son."
+Nothing in his manner ever would have led me to imagine that I was not his own son."
+Nothing
+False
+
+
+
+
+Standing on the sidewalk having his boots blacked, he recognized the schoolfellow he had least reason to like--Jim Smith.  "What brings Jim here?"
+Standing on the sidewalk having his boots blacked
+Standing
+False
+
+
+
+
+"Walking about the city, just at present."
+Walking about the city
+Walking
+False
+
+
+
+
+"Going to school, I take it."
+Going to school
+Going
+False
+
+
+
+
+"Wandering about the city."
+Wandering about the city."
+Wandering
+False
+
+
+
+
+"Pardon me, but, judging from your appearance, I should not suppose that it was a matter of importance to you."
+judging from your appearance
+judging
+True
+
+
+
+

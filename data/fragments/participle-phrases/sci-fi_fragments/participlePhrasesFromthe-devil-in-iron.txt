@@ -1,0 +1,72 @@
+Yezdigerd, king of Turan, was the mightiest monarch in the world.
+king of Turan
+king
+True
+
+
+
+
+Dwelling on the wild, open steppes, owning no law but their own peculiar code, they had become a people capable of defying the Grand Monarch.
+Dwelling on the wild
+Dwelling
+True
+
+
+
+
+Quivering with the abhorrence of being dragged back to the revolting destiny planned for her by Jelal
+Quivering with the abhorrence of being dragged back to the revolting destiny planned for her by Jelal
+Quivering
+False
+
+
+
+
+Standing in utter darkness, he heard a shuffling tread halt just outside the door, and a faint chill trickled along his spine.
+Standing in utter darkness
+Standing
+True
+
+
+
+
+Standing in utter darkness, he heard a shuffling tread halt just outside the door, and a faint chill trickled along his spine. nor that of any beast he had ever encountered.
+Standing in utter darkness
+Standing
+True
+
+
+
+
+Crouching on a heap of silk cushions, golden hair streaming over her naked shoulders, eyes blank with terror, was the woman for whom he had dared so much.
+Crouching on a heap of silk cushions
+Crouching
+True
+
+
+
+
+Halting before the great bronze-valved door, Conan caught Octavia by her shoulders and shook her in his intensity.
+Halting before the great bronze-valved door
+Halting
+False
+
+
+
+
+Then it fell, shearing through the scales and flesh and vertebrae.
+shearing through the scales and flesh and vertebrae.
+shearing
+False
+
+
+
+
+Groping in a dark mist he clutched Octavia and shook her until she gasped for breath.  '
+Groping in a dark mist he clutched Octavia and shook her until she gasped for breath.  '
+Groping
+False
+
+
+
+

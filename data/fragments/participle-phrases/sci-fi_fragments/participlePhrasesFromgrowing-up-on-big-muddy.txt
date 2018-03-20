@@ -1,0 +1,40 @@
+Nothing of what he had been doing recently.
+Nothing of what he had been doing recently.
+Nothing
+False
+
+
+
+
+Tentacles and antennae, extending from the yard-high box of its body, tested and recorded temperature, atmosphere, soil, and all other pertinent planetary conditions.
+extending from the yard-high box of its body
+extending
+True
+
+
+
+
+Walking to the rear of the scout, he tried reading the printed words on the instrument panel.
+Walking to the rear of the scout
+Walking
+False
+
+
+
+
+Concentrating on the discomfort of the high humidity and exaggerating his own displeasure with it, he waited.
+Concentrating on the discomfort of the high humidity and exaggerating his own displeasure with it
+Concentrating
+False
+
+
+
+
+Lying on his air mattress, he felt thoroughly at peace with this world.
+Lying on his air mattress
+Lying
+False
+
+
+
+

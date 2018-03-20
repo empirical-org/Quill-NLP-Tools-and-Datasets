@@ -1,0 +1,24 @@
+Floating before him in memory was the vertical hoop and the horizontal hoop, both of shining steel-impervium alloy.
+Floating before him in memory was the vertical hoop and the horizontal hoop, both of shining steel-impervium alloy.
+Floating
+False
+
+
+
+
+*       *       *  Running down the streets that were tunnels of shining tar, running into the knifing ice bristles of the rain, Henry Infield realized that he was very frightened of the lightning.
+Running down the streets that were tunnels of shining tar, running into the knifing ice bristles of the rain
+Running
+True
+
+
+
+
+Staggering to his feet, he remembered what he must do and slashed at the waiter's head.
+Staggering to his feet
+Staggering
+False
+
+
+
+

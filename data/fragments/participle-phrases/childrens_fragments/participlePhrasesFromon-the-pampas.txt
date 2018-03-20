@@ -1,0 +1,144 @@
+"Yes, boys, settling in the backwoods or in the prairies."
+settling in the backwoods or in the prairies."
+settling
+True
+
+
+
+
+When we are once all together we shall be able to decide, according to the number of the enemy, as to whether we shall sally out and pepper them, or stand upon the defensive."
+according to the number of the enemy, as to whether we shall sally out and pepper them, or stand upon the defensive."
+according
+True
+
+
+
+
+This lane was of the shape of a funnel, narrowing at one end to little more than the width of a cow.
+narrowing at one end to little more than the width of a cow.
+narrowing
+False
+
+
+
+
+Judging by the progress that they at first made with it, they really began to despair of ever finishing it, but with practice they became more adroit.
+Judging by the progress that they at first made with it
+Judging
+True
+
+
+
+
+I was not long, as you may guess, climbing into my saddle, and bolted like a shot.
+climbing into my saddle, and bolted like a shot.
+climbing
+True
+
+
+
+
+I was not long, as you may guess, climbing into my saddle, and bolted like a shot.
+climbing into my saddle, and bolted like a shot.
+climbing
+True
+
+
+
+
+Seeing that no one else was near him, he again looked at the boys, and Charley earnestly repeated the gesture.
+Seeing that no one else was near him
+Seeing
+True
+
+
+
+
+Mr. Hardy, feeling that something strange was happening, ran down the steps and hurried toward them.
+feeling that something strange was happening
+feeling
+True
+
+
+
+
+Then, looking about carefully, I could see no one, and I jumped up, and never stopped running until you met me."
+looking about carefully
+looking
+True
+
+
+
+
+Allowing for the loss of time I have mentioned, we should allow five hours.
+Allowing for the loss of time I have mentioned
+Allowing
+False
+
+
+
+
+I intend, with my sons and my friends from Canterbury, going in search of her into the Indian country.
+going in search of her into the Indian country.
+going
+True
+
+
+
+
+Looking over their shoulders, the sky now appeared on fire.
+Looking over their shoulders, the sky now appeared on fire.
+Looking
+False
+
+
+
+
+A regular noise, something between a hiss and a roar, was plainly audible; and when the wind lifted the smoke the flames could be seen running along in an unbroken wall of fire.
+something between a hiss and a roar
+something
+True
+
+
+
+
+A regular noise, something between a hiss and a roar, was plainly audible; and when the wind lifted the smoke the flames could be seen running along in an unbroken wall of fire.t smell of burning was very plainly distinguishable.
+something between a hiss and a roar
+something
+True
+
+
+
+
+Starting about halfway along the side of the cleared piece of ground, Mr. Hardy set the dry grass alight.
+Starting about halfway along the side of the cleared piece of ground
+Starting
+False
+
+
+
+
+Finding that it was not more than half an hour's ride, Mr. Hardy, after a brief consultation, determined to go over there to water the horses and breakfast, before retracing their footsteps across the burned prairie.
+Finding that it was not more than half an hour's ride
+Finding
+True
+
+
+
+
+Finding that it was not more than half an hour's ride, Mr. Hardy, after a brief consultation, determined to go over there to water the horses and breakfast, before retracing their footsteps across the burned prairie.
+Finding that it was not more than half an hour's ride
+Finding
+True
+
+
+
+
+Rosario was, according to his anticipation, rising into a large and important town; the country was fairly settled for leagues beyond the estate; land was rapidly rising in value; and there was now no fear whatever of Indian attacks.
+according to his anticipation, rising into a large and important town; the country was fairly settled for leagues beyond the estate; land was rapidly rising in value; and there was now no fear whatever of Indian attacks.
+according
+True
+
+
+
+

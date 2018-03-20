@@ -1,0 +1,304 @@
+Pausing at the head of one of those narrow lanes which--running down between warehouses, filthy little rag and bone shops, and low poverty-stricken dwellings--appear to terminate their career, not unwillingly, in the Thames, the sailor gazed before him with nautical earnestness for a few seconds, then glanced at the corner house for a name; found no name; cast his eyes up to the strip of blue sky overhead, as if for inspiration; obtained none; planted his legs wide apart as if he had observed a squall coming, and expected the lane to lurch heavily--wrinkled his eyebrows, and pursed his lips.
+Pausing at the head of one of those narrow lanes which--running down between warehouses
+Pausing
+True
+
+
+
+
+"He did, ma'am, hoping that it would be of use in the way of making your home more comfortable, and enabling you to keep a better table."
+hoping that it would be of use in the way of making your home more comfortable, and enabling you to keep a better table."
+hoping
+True
+
+
+
+
+"He did, ma'am, hoping that it would be of use in the way of making your home more comfortable, and enabling you to keep a better table."e.
+hoping that it would be of use in the way of making your home more comfortable, and enabling you to keep a better table."e.
+hoping
+True
+
+
+
+
+Going to the end of the passage, he ordered that imp to "come aloft."
+Going to the end of the passage
+Going
+False
+
+
+
+
+of a great glacial world; but not one of the party betrays the smallest amount of interest, or expresses the faintest emotion of surprise, owing to the melancholy fact that all is shrouded in an impenetrable veil of mist through which a thick fine rain percolates as if the mountain monarch himself were bewailing their misfortunes.
+owing to the melancholy fact that all is shrouded in an impenetrable veil of mist through which a thick fine rain percolates as if the mountain monarch himself were bewailing their misfortunes.
+owing
+True
+
+
+
+
+Sinking into a couch in her private sitting-room, Mrs Stoutley resigned herself to Susan's care, and, while she was having her boots taken off, said with a sigh:--  "
+Sinking into a couch in her private sitting-room
+Sinking
+True
+
+
+
+
+The great ice-fountain of those regions, commencing at the summit of Mont Blanc, flings its ample waves over mountain and vale in all directions, forming a throne on which perpetual winter reigns, and this glacier des Bossons, which filled the breasts of our travellers with such feelings of awe, was
+commencing at the summit of Mont Blanc
+commencing
+True
+
+
+
+
+Can you, Captain Wopper?", thinking of the fickle Lawrence; "it takes the wind out of my sails entirely."  "
+thinking of the fickle Lawrence; "it takes the wind out of my sails entirely."  "
+thinking
+True
+
+
+
+
+Owing to somewhat similar feelings, the artist had flung himself into a chair, and sat glaring at the black fireplace with a degree of concentration that ought to have lighted the firewood therein.
+Owing to somewhat similar feelings, the artist had flung himself into a chair, and sat glaring at the black fireplace with a degree of concentration that ought to have lighted the firewood therein.
+Owing
+True
+
+
+
+
+It has a grand volume and sweep, varying from one to four miles in width, and is about twelve miles long, with a depth of many hundreds of feet.
+varying from one to four miles in width, and is about twelve miles long, with a depth of many hundreds of feet.
+varying
+True
+
+
+
+
+Finding that the spot which he had first chosen for his observations was not a very good one, the Professor changed his position to a point farther down on the steep sloping rocks that form the left bank of the Glacier des Bois.
+Finding that the spot which he had first chosen for his observations was not a very good one, the Professor changed his position to a point farther down on the steep sloping rocks that form the left bank of the Glacier des Bois.
+Finding
+False
+
+
+
+
+It was by no means a "dangerous" place, according to the ideas of Alpine mountaineers, nevertheless a slip, or the loss of balance, would have been followed by contain death.
+according to the ideas of Alpine mountaineers
+according
+True
+
+
+
+
+It was by no means a "dangerous" place, according to the ideas of Alpine mountaineers, nevertheless a slip, or the loss of balance, would have been followed by contain death.
+according to the ideas of Alpine mountaineers
+according
+True
+
+
+
+
+Owing to various causes several members of it had become oblivious of time.
+Owing to various causes several members of it had become oblivious of time.
+Owing
+False
+
+
+
+
+Owing to various causes several members of it had become oblivious of time. and usually grew in the midst of beautiful scenery.
+Owing to various causes several members of it had become oblivious of time. and usually grew in the midst of beautiful scenery.
+Owing
+False
+
+
+
+
+chiefly because he--he--well, we cannot say precisely why, seeing that he did not inform us, and did not himself appear clearly to know.
+seeing that he did not inform us, and did not himself appear clearly to know.
+seeing
+True
+
+
+
+
+chiefly because he--he--well, we cannot say precisely why, seeing that he did not inform us, and did not himself appear clearly to know.
+seeing that he did not inform us, and did not himself appear clearly to know.
+seeing
+True
+
+
+
+
+w'y, you are the cooriousest of us all, Susan, seeing that you're only a lady's-maid when you're pretty enough to have been a lady--a dutchess, in fact, or somethin' o' that sort."
+seeing that you're only a lady's-maid when you're pretty enough to have been a lady--a dutchess, in fact, or somethin' o' that sort."
+seeing
+True
+
+
+
+
+Owing to the great height from which the descending mass was pouring, the inexperienced were deceived as to the dimensions of the avalanche.
+Owing to the great height from which the descending mass was pouring, the inexperienced were deceived as to the dimensions of the avalanche.
+Owing
+False
+
+
+
+
+Passing from the dark fringe of pines they emerged upon a more open country where the royal robe was wrought with larch and hazel, bilberry, and varied underwood, and speckled with rhododendrons and other flowers on a ground of rich brown, green, and grey.
+Passing from the dark fringe of pines they emerged upon a more open country where the royal robe was wrought with larch and hazel
+Passing
+True
+
+
+
+
+Passing from the dark fringe of pines they emerged upon a more open country where the royal robe was wrought with larch and hazel, bilberry, and varied underwood, and speckled with rhododendrons and other flowers on a ground of rich brown, green, and grey.nt, luring them on, and other giant Aiguilles around watching them.
+Passing from the dark fringe of pines they emerged upon a more open country where the royal robe was wrought with larch and hazel
+Passing
+True
+
+
+
+
+Coming to one of the crevasses which was too wide to leap, the ladder was put in requisition.
+Coming to one of the crevasses which was too wide to leap, the ladder was put in requisition.
+Coming
+False
+
+
+
+
+Walking at the time was comparatively easy, for a sharp frost had hardened the surface of the snow, and the gem-like lights of heaven enabled them to traverse valleys of ice, clamber up snow-slopes and cross crevasses without danger, except in one or two places, where the natural snow-bridges were frail and the chasms unusually wide.
+Walking at the time was comparatively easy, for a sharp frost had hardened the surface of the snow, and the gem-like lights of heaven enabled them to traverse valleys of ice, clamber up snow-slopes and cross crevasses without danger, except in one or two places, where the natural snow-bridges were frail and the chasms unusually wide.
+Walking
+True
+
+
+
+
+Owing to the increasing height and power of the sun, the snow beyond the Petit Plateau soon became soft, and the steepness of the ascent increasing, their advance became slower, and their work much more laborious.
+Owing to the increasing height and power of the sun, the snow beyond the Petit Plateau soon became soft, and the steepness of the ascent increasing
+Owing
+True
+
+
+
+
+Piercing through it are the more prominent of the Alpine peaks--the dark tremendous obelisk of the Matterhorn towering in one direction, the not less tremendous and far grander head of Mont Blanc looming in another.
+Piercing through it are the more prominent of the Alpine peaks--the dark tremendous obelisk of the Matterhorn towering in one direction, the not less tremendous and far grander head of Mont Blanc looming in another.
+Piercing
+False
+
+
+
+
+Turning at last to his companion, he said--
+Turning at last to his companion
+Turning
+False
+
+
+
+
+A puff of smoke, hanging like a cloudlet, guided his eyes.
+hanging like a cloudlet
+hanging
+True
+
+
+
+
+It sprang high into the air, and, rolling over several times, lay stretched at full length on the rocks.
+rolling over several times
+rolling
+True
+
+
+
+
+It sprang high into the air, and, rolling over several times, lay stretched at full length on the rocks.
+rolling over several times
+rolling
+True
+
+
+
+
+Crouching under a slight projection of rock, the explorers remained until the first fury of the squall was over.
+Crouching under a slight projection of rock, the explorers remained until the first fury of the squall was over.
+Crouching
+False
+
+
+
+
+Nothing but decision, however, and prompt action could serve him now.
+Nothing but decision, however, and prompt action could serve him now.
+Nothing
+True
+
+
+
+
+That sapient blue spider, sitting in his wonted chair, resplendent with brass buttons and brazen impudence, availed himself of every opportunity to perform an operation which he styled "pumping;" but Susan, although ready enough to converse freely on things in general, was judicious in regard to things particular.
+sitting in his wonted chair
+sitting
+True
+
+
+
+
+White is up to the elbows in soap-suds, taking at least ocular and vocal charge of the babe in the mud, and her husband is--"drunk, as usual?"
+taking at least ocular and vocal charge of the babe in the mud, and her husband is--"drunk, as usual?"
+taking
+True
+
+
+
+
+Something between the flapping of a main top-sail in a shifting squall and the currying of a hippopotamus indicated that the Captain was drying himself.
+Something between the flapping of a main top-sail in a shifting squall and the currying of a hippopotamus indicated that the Captain was drying himself.
+Something
+False
+
+
+
+
+Something between the flapping of a main top-sail in a shifting squall and the currying of a hippopotamus indicated that the Captain was drying himself.hand basin, and a double thump, followed by heavy dabs, told that the Captain was on his knees swabbing it up.
+Something between the flapping of a main top-sail in a shifting squall and the currying of a hippopotamus indicated that the Captain was drying himself.hand basin, and a double thump, followed by heavy dabs, told that the Captain was on his knees swabbing it up.
+Something
+True
+
+
+
+
+Beaming under the influence of this hopeful view of the case, the Captain proceeded to make another move in the complicated game which he had resolved to play out and win; but this move, which he had considered one of the easiest of all, proved to be the most unfortunate, or rather unmanageable.
+Beaming under the influence of this hopeful view of the case, the Captain proceeded to make another move in the complicated game which he had resolved to play out and win; but this move, which he had considered one of the easiest of all, proved to be the most unfortunate, or rather unmanageable.
+Beaming
+True
+
+
+
+
+"Everything in life seems to go wrong at times," muttered the Captain, as he and the satellite lay-to at one of these crossings.
+Everything in life seems to go wrong at times," muttered the Captain, as he and the satellite lay-to at one of these crossings.
+Everything
+True
+
+
+
+
+Something like the old one, ain't it?"
+Something like the old one, ain't it?"
+Something
+False
+
+
+
+

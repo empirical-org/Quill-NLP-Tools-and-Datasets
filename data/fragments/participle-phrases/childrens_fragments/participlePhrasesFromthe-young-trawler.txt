@@ -1,0 +1,136 @@
+Rising with an amused smile, she kissed Ruth's forehead and went to prepare for a visit to the poor.
+Rising with an amused smile
+Rising
+False
+
+
+
+
+We present her now, after a two months' trip, sailing to the west, homeward bound.
+sailing to the west
+sailing
+True
+
+
+
+
+Judging from their appearance just then there did not seem much prospect of that!
+Judging from their appearance just then there did not seem much prospect of that!
+Judging
+False
+
+
+
+
+Returning to London, we will follow Captain Bream, who, one fine morning, walked up to Mrs Dotropy's mansion at the west end, and applied the knocker vigorously.
+Returning to London
+Returning
+True
+
+
+
+
+"Give 'em money, of course."  "But suppose that, owing to some delicacy of feeling, or, perhaps, some sort of mistaken pride, they would not accept money, and flushed very much and felt hurt, if you ventured to offer it to them?"
+owing to some delicacy of feeling, or
+owing
+True
+
+
+
+
+"Give 'em money, of course."  "But suppose that, owing to some delicacy of feeling, or, perhaps, some sort of mistaken pride, they would not accept money, and flushed very much and felt hurt, if you ventured to offer it to them?"ulties in the way of doing that, and they felt as much objection to receive gratuitous victuals as money, what would you do then?
+owing to some delicacy of feeling, or
+owing
+True
+
+
+
+
+--isn't that what you call it--and steer nor'-east, pretending that you are going _
+pretending that you are going _
+pretending
+False
+
+
+
+
+"Talking of the early morning reminds me of good Captain Bream, who is one of the most singular and incomprehensible creatures I ever met with.
+Talking of the early morning reminds me of good Captain Bream, who is one of the most singular and incomprehensible creatures I ever met with.
+Talking
+False
+
+
+
+
+Apologising for not being more punctual in calling for the chest, he explained that pressing-business had detained him.
+Apologising for not being more punctual in calling for the chest
+Apologising
+False
+
+
+
+
+Breaking from those who sought to restrain him he ran down to the beach.
+Breaking from those who sought to restrain him he ran down to the beach.
+Breaking
+False
+
+
+
+
+Turning at once, Maggie rushed wildly from the house intending to make straight for the shore.
+Turning at once
+Turning
+False
+
+
+
+
+Returning to her own lodging, she found her mother, and told her all that had happened.
+Returning to her own lodging
+Returning
+True
+
+
+
+
+The captain became silent again, but after a few minutes, fearing that the mate might think him unsociable, he said--
+fearing that the mate might think him unsociable
+fearing
+True
+
+
+
+
+Shaking of hands, salutations, question and reply, were going briskly on all round, with here and there a little mild chaffing, and occasionally a hearty laugh, while now and then the fervent "thank God" and "praise the Lord" revealed the spirits of the speakers.
+Shaking of hands
+Shaking
+True
+
+
+
+
+Feeling that, with such a possibility unsettled, he would be utterly unfit for his duties with the fleet, he resolved to go straight to Yarmouth.
+Feeling that, with such a possibility unsettled
+Feeling
+True
+
+
+
+
+Explaining to the surprised and rather disappointed skipper of the mission vessel that an unexpected turn of affairs required his immediate presence in Yarmouth, the captain asked what means there were of getting to land.
+Explaining to the surprised and rather disappointed skipper of the mission vessel that an unexpected turn of affairs required his immediate presence in Yarmouth, the captain asked what means there were of getting to land.
+Explaining
+False
+
+
+
+
+Explaining to the surprised and rather disappointed skipper of the mission vessel that an unexpected turn of affairs required his immediate presence in Yarmouth, the captain asked what means there were of getting to land.
+Explaining to the surprised and rather disappointed skipper of the mission vessel that an unexpected turn of affairs required his immediate presence in Yarmouth, the captain asked what means there were of getting to land.
+Explaining
+False
+
+
+
+

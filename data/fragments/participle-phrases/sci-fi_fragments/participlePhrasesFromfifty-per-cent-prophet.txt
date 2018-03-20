@@ -1,0 +1,40 @@
+The Metaphysicist_--something about dowsing rods.
+Metaphysicist_--something about dowsing rods.
+Metaphysicist_--something
+False
+
+
+
+
+The Metaphysicist_--something about dowsing rods.ship had one thing in common: _understanding_.  Consider plutonium.
+Metaphysicist_--something about dowsing rods.ship had one thing in common: _understanding_.  Consider plutonium.
+Metaphysicist_--something
+False
+
+
+
+
+Taggert, glancing at his watch, interrupted.
+glancing at his watch
+glancing
+True
+
+
+
+
+According to reports from Space Force intelligence, Chinese Moon cars have been prowling around Moonbase One, trying to find out what's going on."
+According to reports from Space Force intelligence
+According
+True
+
+
+
+
+"When they do get to Mars and Venus and the planets of Alpha Centauri and Sirius and Procyon, they'll find us there, waiting for them."
+waiting for them."
+waiting
+True
+
+
+
+

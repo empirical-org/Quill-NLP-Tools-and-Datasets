@@ -1,0 +1,72 @@
+Snapping down the faceplate of his parka hood, he ran through the protective updraft of the air curtain and charged into the deadly chill of the Antarctic blizzard.
+Snapping down the faceplate of his parka hood
+Snapping
+False
+
+
+
+
+Mike's fingers, groping behind him, touched the door handle.
+groping behind him
+groping
+True
+
+
+
+
+Sorry, sir."standing at attention.
+sir."standing at attention.
+sir."standing
+False
+
+
+
+
+"Looking for data," answered Snookums, slowing a little.
+Looking for data," answered Snookums, slowing a little.
+Looking
+True
+
+
+
+
+"Nothing to it, sir," he said.
+Nothing to it
+Nothing
+True
+
+
+
+
+Something about a bit of learning being an inelastic rebound."
+Something about a bit of learning being an inelastic rebound."
+Something
+False
+
+
+
+
+"According to the Physician's Mate, Mellon is worse than just nuts," said Jeffers quietly. "
+According to the Physician's Mate
+According
+True
+
+
+
+
+Treadmore, looking like a tortured bloodhound, said: "But we'll make it, won't we?"
+looking like a tortured bloodhound
+looking
+True
+
+
+
+
+"So the killer, realizing that he had failed twice, decided to do the job himself.
+realizing that he had failed twice
+realizing
+True
+
+
+
+

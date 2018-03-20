@@ -1,0 +1,120 @@
+Sitting by the open window Nat thought of many things--of the death of his parents, and of the taking off of his aunt--and of how his miserly uncle had treated him ever since.
+Sitting by the open window Nat thought of many things--of the death of his parents, and of the taking off of his aunt--and of how his miserly uncle had treated him ever since.
+Sitting
+False
+
+
+
+
+Coming to the door, he threw it open and took a step toward the bed.
+Coming to the door
+Coming
+False
+
+
+
+
+Coming to an alley way, Nat darted through it to a side street, and then around a corner to a thoroughfare leading down to the docks.
+Coming to an alley way
+Coming
+True
+
+
+
+
+Trembling with excitement, Nat entered the cabin, and from the window looked back to the dock they had just left.
+Trembling with excitement
+Trembling
+True
+
+
+
+
+Trembling with excitement, Nat entered the cabin, and from the window looked back to the dock they had just left.ore
+Trembling with excitement
+Trembling
+True
+
+
+
+
+Sitting on a rock he got to thinking of his financial affairs, and felt in his clothing for his bills, to count them over.
+Sitting on a rock he got to thinking of his financial affairs, and felt in his clothing for his bills, to count them over.
+Sitting
+True
+
+
+
+
+At half-past three I drove within a few yards of the house, when, according to agreement, I saw a white handkerchief waving from a window.
+according to agreement
+according
+True
+
+
+
+
+"Yes."  "Looking for work?"
+Looking for work?"
+Looking
+False
+
+
+
+
+The first was a bright young man, hailing from Newark, New Jersey.
+hailing from Newark
+hailing
+True
+
+
+
+
+That night Nat wrote Abner Balberry a long letter, telling of his meeting with the tramp.
+telling of his meeting with the tramp.
+telling
+False
+
+
+
+
+Coming to the city to earn his living had evidently hit Fred hard.
+Coming to the city to earn his living had evidently hit Fred hard.
+Coming
+False
+
+
+
+
+Arriving at Springfield, Nat found he would have to wait until evening before he could see Mr. Perry Robertson.
+Arriving at Springfield
+Arriving
+False
+
+
+
+
+Arriving at Springfield, Nat found he would have to wait until evening before he could see Mr. Perry Robertson.k to New York until ten o'clock the next morning.
+Arriving at Springfield
+Arriving
+False
+
+
+
+
+"According to the terms of my father's will my uncle was to have sole charge of my property until I was twenty-five, unless I should before that time get--get married."
+According to the terms of my father's will my uncle was to have sole charge of my property until I was twenty-five, unless I should before that time get--get married."
+According
+False
+
+
+
+
+Arriving in New York, he went to his boarding house for breakfast, and then hurried down to the office.
+Arriving in New York
+Arriving
+True
+
+
+
+

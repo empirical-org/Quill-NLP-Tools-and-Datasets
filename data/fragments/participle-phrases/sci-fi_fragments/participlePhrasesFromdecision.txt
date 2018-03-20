@@ -1,0 +1,32 @@
+Fifty miles north, lolling in the North Sea and holding maneuvers, was the _Josef Dzugashvili
+lolling in the North Sea and holding maneuvers
+lolling
+True
+
+
+
+
+Approaching from the south, the Captain thought.
+Approaching from the south, the Captain thought.
+Approaching
+False
+
+
+
+
+A dozen different outbreaks, starting with Korea so long ago ...
+starting with Korea so long ago ...
+starting
+False
+
+
+
+
+A dozen different outbreaks, starting with Korea so long ago ...upposed to admit that they were blood brothers after all, and that in the face of a mutual threat you should forget your differences and pool your resources against the common enemy.
+starting with Korea so long ago ...upposed to admit that they were blood brothers after all, and that in the face of a mutual threat you should forget your differences and pool your resources against the common enemy.
+starting
+True
+
+
+
+

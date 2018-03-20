@@ -1,0 +1,128 @@
+'Eighteenpence to five bob, according to the breed.'  'And the lizards?'  'Ninepence each.'  'And toads?'  'Fourpence.
+according to the breed.'  'And the lizards?'  'Ninepence each.'  'And toads?'  'Fourpence.
+according
+False
+
+
+
+
+'Eighteenpence to five bob, according to the breed.'  'And the lizards?'  'Ninepence each.'  'And toads?'  'Fourpence.e,' said the greasy owner of all this caged life with a sudden ferocity which made the whole party back hurriedly on to the wainscoting of hutches with which the shop was lined. '
+according to the breed.'  'And the lizards?'  'Ninepence each.'  'And toads?'  'Fourpence.e,' said the greasy owner of all this caged life with a sudden ferocity which made the whole party back hurriedly on to the wainscoting of hutches with which the shop was lined. '
+according
+True
+
+
+
+
+You must hold me up, and speak the word of power, and one by one, beginning with the first-born, you shall pass through me into the Past.
+beginning with the first-born
+beginning
+True
+
+
+
+
+Then, passing through me, you shall return to this time and it shall be the present to you.'  '
+passing through me
+passing
+True
+
+
+
+
+A beast may scare one heron, coming upon it suddenly, but no beast will scare a whole flock of herons.
+coming upon it suddenly, but no beast will scare a whole flock of herons.
+coming
+True
+
+
+
+
+They all lay still, breathing in the safe, quiet air of Regent's Park.
+breathing in the safe
+breathing
+True
+
+
+
+
+Beyond the wall were more towers and houses, gleaming with gold and bright colours.
+gleaming with gold and bright colours.
+gleaming
+False
+
+
+
+
+'Is it any good, do you think, calling on the name when we haven't got the charm?' suggested Anthea.
+calling on the name when we haven't got the charm?' suggested Anthea.
+calling
+True
+
+
+
+
+that came to marry the King in Babylon.
+King in Babylon.
+King
+False
+
+
+
+
+The children could never go out all at once, because they never knew when the King of Babylon would go out lion hunting and leave his Queen free to pay them that surprise visit to which she was, without doubt, eagerly looking forward.
+King of Babylon would go out lion hunting and leave his Queen free to pay them that surprise visit to which she was, without doubt
+King
+True
+
+
+
+
+The Amulet grew smaller again, and there they all were, standing on the deck of a ship whose sailors were busy making her fast with chains to rings on a white quay-side.
+standing on the deck of a ship whose sailors were busy making her fast with chains to rings on a white quay-side.
+standing
+True
+
+
+
+
+And Imogen, clinging with black-clothed arms to the bare neck,
+clinging with black-clothed arms to the bare neck,
+clinging
+True
+
+
+
+
+And, finding that though she did not at once take his advice she did not seem to resent it, he put his arm awkwardly across her shoulders and rubbed his head against her ear.  '
+finding that though she did not at once take his advice she did not seem to resent it
+finding
+True
+
+
+
+
+'Nothing of the kind!'
+Nothing of the kind!'
+Nothing
+False
+
+
+
+
+The others, standing on the dining-room carpet in Fitzroy Street, turned and saw her still in the arch. '
+standing on the dining-room carpet in Fitzroy Street
+standing
+True
+
+
+
+
+There's big pillars outside, something like Carter's seed place in Holborn, as used to be Day and Martin's blacking when I was a gell.
+something like Carter's seed place in Holborn, as used to be Day and Martin's blacking when I was a gell.
+something
+True
+
+
+
+

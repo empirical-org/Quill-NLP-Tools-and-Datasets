@@ -1,0 +1,64 @@
+Escaping at least gave him a power of choice, of decision.
+Escaping at least gave him a power of choice, of decision.
+Escaping
+False
+
+
+
+
+Standing behind Maggie, in an open doorway, was a gray, scaly, toadlike monster--a six-and-a-half-foot Venusian.
+Standing behind Maggie, in an open doorway, was a gray, scaly
+Standing
+True
+
+
+
+
+The third room, opening into the airlock, housed a small hydroponics garden, sunlamp, short-wave visi-radio, and such emergency equipment as oxygen tanks, windsuits, and vita-rations.
+opening into the airlock
+opening
+True
+
+
+
+
+The third room, opening into the airlock, housed a small hydroponics garden, sunlamp, short-wave visi-radio, and such emergency equipment as oxygen tanks, windsuits, and vita-rations.tside the dome.
+opening into the airlock
+opening
+True
+
+
+
+
+And her laughter was like laughter on Earth, floating through comfortable houses and over green fields and through clear blue sky.
+floating through comfortable houses and over green fields and through clear blue sky.
+floating
+False
+
+
+
+
+Crouching against the wind, he stepped to his left, away from the rocket.
+Crouching against the wind
+Crouching
+True
+
+
+
+
+Simple Simon followed.aton, functioning with awkward, methodical slowness.
+functioning with awkward
+functioning
+True
+
+
+
+
+Would the scaly hands find him even now, descending on him from out of the blackness?
+descending on him from out of the blackness?
+descending
+False
+
+
+
+

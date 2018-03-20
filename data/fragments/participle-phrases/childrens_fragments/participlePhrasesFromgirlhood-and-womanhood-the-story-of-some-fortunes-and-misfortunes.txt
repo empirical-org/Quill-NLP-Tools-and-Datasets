@@ -1,0 +1,96 @@
+The breakfast was late at the Ewes, owing to Mr. Crawfurd's delicate health, and because Mrs. Crawfurd had her fancies like Mrs. Primrose.
+owing to Mr. Crawfurd's delicate health, and because Mrs. Crawfurd had her fancies like Mrs. Primrose.
+owing
+True
+
+
+
+
+Failing in this attempt, she, with a covert sigh, half-pain, half-pleasure, resumed the old oversight of larder and dairy.
+Failing in this attempt
+Failing
+True
+
+
+
+
+Travelling with difficulty, she removed to Edinburgh, to the aspiring tenement in the busy Canongate, which she had quitted in her distraction.
+Travelling with difficulty
+Travelling
+True
+
+
+
+
+Some anniversary, some combination of present associations and past recollections--a tendency to fly from himself, besetting at times the most self-controlled--might have caused this change in his appearance.
+besetting at times the most self-controlled--might have caused this change in his appearance.
+besetting
+True
+
+
+
+
+It was a little of a fag, being in fact rather like a dish heated up a second time, as a duty twice done mostly always is.
+being in fact rather like a dish heated up a second time, as a duty twice done mostly always is.
+being
+True
+
+
+
+
+Gervase, returning for the bottle she grasped, stood in the doorway.
+returning for the bottle she grasped
+returning
+True
+
+
+
+
+Gervase, going on a visit to his faithful old Aunt Tabby, looked behind him, to say, half-shamefacedly, half-yearningly, "I wish you would come with me, Die; I do not think I can pay the visit without you."
+going on a visit to his faithful old Aunt Tabby
+going
+True
+
+
+
+
+Gervase, going on a visit to his faithful old Aunt Tabby, looked behind him, to say, half-shamefacedly, half-yearningly, "I wish you would come with me, Die; I do not think I can pay the visit without you."ittle laugh, beneath which ran an undercurrent of feeling, still and deep, "Ah! you see you cannot do without me, sir."
+going on a visit to his faithful old Aunt Tabby
+going
+True
+
+
+
+
+The visitors were so vulgar, according to fine people, that they were not even sensible of their own vulgarity.
+according to fine people, that they were not even sensible of their own vulgarity.
+according
+True
+
+
+
+
+Now, when I can do her no wrong, I think of     another to whom I did wrong; than whom there was never another to me     the same--no, nothing like it.
+nothing like it.
+nothing
+True
+
+
+
+
+Learning that Mad has been true--oh!
+Learning that Mad has been true--oh!
+Learning
+False
+
+
+
+
+Nothing but that the sword had worn the scabbard.
+Nothing but that the sword had worn the scabbard.
+Nothing
+False
+
+
+
+

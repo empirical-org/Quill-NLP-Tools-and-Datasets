@@ -1,0 +1,168 @@
+Returning to the room above, he procured a lantern, and proceeded to the cellar again to renew his investigations.
+Returning to the room above
+Returning
+True
+
+
+
+
+He may be at the store, talking about the war with Captain Barney and the rest of the folks."
+talking about the war with Captain Barney and the rest of the folks."
+talking
+False
+
+
+
+
+In each side of the chamber there was a small door, opening into the space near the eaves of the house, which was used to store old trunks, old boxes, the disused spinning-wheel, and other lumber of this description.
+opening into the space near the eaves of the house, which was used to store old trunks
+opening
+True
+
+
+
+
+Springing to the window, he raised it with a prompt and vigorous hand, and before the squire could ascend the stairs, he was upon the roof of the portico.
+Springing to the window
+Springing
+True
+
+
+
+
+Bending over the dead man, he resolutely cut the haversack from his body, and then returned to the log whose friendly shelter had screened him from the eyes of the rebel horsemen.
+Bending over the dead man
+Bending
+True
+
+
+
+
+Bending over the dead man, he resolutely cut the haversack from his body, and then returned to the log whose friendly shelter had screened him from the eyes of the rebel horsemen.
+Bending over the dead man
+Bending
+True
+
+
+
+
+"Nothing but my jackknife."
+Nothing but my jackknife."
+Nothing
+False
+
+
+
+
+Leaning against the door, Tom discovered a musket, which the careless guard had left there.
+Leaning against the door
+Leaning
+True
+
+
+
+
+Climbing up to the top of his prison house, he looked over, and saw the officer and one private disappear in the woods which lay between the house and the railroad.
+Climbing up to the top of his prison house
+Climbing
+True
+
+
+
+
+Looking over the other way, he saw the coveted recruit approaching the house from beyond the garden.     CHAPTER XVIII.
+Looking over the other way
+Looking
+False
+
+
+
+
+Sitting upon the top stones of the chimney, he gesticulated violently, hoping to attract his attention; but the man did not look up, and consequently could not see the signals.
+Sitting upon the top stones of the chimney
+Sitting
+True
+
+
+
+
+Passing from the front room to an apartment in the rear, he found a lamp and matches, and concluded that he would have some light on the subject, which was duly obtained.
+Passing from the front room to an apartment in the rear
+Passing
+True
+
+
+
+
+Jumping into the bateau again, he waited till he was satisfied no carriage or body of troops was in the vicinity; and then plying the paddle with the utmost vigor, he passed the ford.
+Jumping into the bateau again
+Jumping
+True
+
+
+
+
+Returning to the door, he knocked vigorously for admission.
+Returning to the door
+Returning
+False
+
+
+
+
+Returning to the door, he knocked vigorously for admission.hrew the door wide open.
+Returning to the door
+Returning
+False
+
+
+
+
+The graybacks in the water, realizing that they were engaged on an errand of peace and humanity, had left their muskets on shore.
+realizing that they were engaged on an errand of peace and humanity
+realizing
+True
+
+
+
+
+The men, burning with indignation at the treachery of the rebel horde, sprang forward to wreak their righteous vengeance upon the cowardly traitors.
+burning with indignation at the treachery of the rebel horde
+burning
+True
+
+
+
+
+The rebels, seeing by how small a force they were pursued, rallied and formed line again.
+seeing by how small a force they were pursued
+seeing
+True
+
+
+
+
+Leaping to his feet, faint and sick as he was, he took up the cry, and shouted in unison with the victors upon the field.
+Leaping to his feet
+Leaping
+True
+
+
+
+
+Leaping from the vehicle, he rushed into the house, and bolted into the kitchen, even before the family had seen the horse at the front gate.
+Leaping from the vehicle
+Leaping
+True
+
+
+
+
+Shifting for Himself.
+Shifting for Himself.
+Shifting
+False
+
+
+
+

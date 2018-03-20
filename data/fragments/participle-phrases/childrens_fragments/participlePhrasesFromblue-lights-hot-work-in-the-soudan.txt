@@ -1,0 +1,464 @@
+Running at full speed, he came suddenly to a disused quarry that was full of water.
+Running at full speed
+Running
+False
+
+
+
+
+Running to the nearest door-way he found it to be the wrong one, and before he found the right one and reached the street the two soldiers had vanished from the scene.
+Running to the nearest door-way he found it to be the wrong one, and before he found the right one and reached the street the two soldiers had vanished from the scene.
+Running
+False
+
+
+
+
+Paying for the drink, he returned and put the pot on the table.
+Paying for the drink
+Paying
+False
+
+
+
+
+Paying for the drink, he returned and put the pot on the table.d with an intelligent look--  "Come outside for a bit, messmate.
+Paying for the drink
+Paying
+True
+
+
+
+
+Being by that time rather hungry as well as fatigued, Miles agreed to remain for supper.
+Being by that time rather hungry as well as fatigued
+Being
+False
+
+
+
+
+Being by that time rather hungry as well as fatigued, Miles agreed to remain for supper.rently with tremendous appetite and much satisfaction.
+Being by that time rather hungry as well as fatigued
+Being
+False
+
+
+
+
+Turning from his companions while they conversed, he looked into a shop-window.
+Turning from his companions while they conversed
+Turning
+False
+
+
+
+
+"But he wouldn't expect me to meet him, you see, knowing that I'm so poor, and live far from Portsmouth.
+knowing that I'm so poor, and live far from Portsmouth.
+knowing
+True
+
+
+
+
+Hurrying from the shed, with her basket on her arm, she made for the gangway, which had just been placed in position.
+Hurrying from the shed, with her basket on her arm
+Hurrying
+True
+
+
+
+
+Shrinking from that locality, Miles pursued his investigations, and gradually became aware that sundry parrots and other pets which the soldiers and sailors had brought home were adding their notes of discord to the chorus of sounds.
+Shrinking from that locality
+Shrinking
+True
+
+
+
+
+Shrinking from that locality, Miles pursued his investigations, and gradually became aware that sundry parrots and other pets which the soldiers and sailors had brought home were adding their notes of discord to the chorus of sounds.advances with looks of astonished indignation, he became conscious of the fact that a number of eyes were looking down on him through a crevice at the top of a partition close to his side.
+Shrinking from that locality
+Shrinking
+True
+
+
+
+
+However, hungry soldiers, rejoicing in the fact of having at last reached home, are not particular.
+rejoicing in the fact of having at last reached home
+rejoicing
+True
+
+
+
+
+Proceeding to the Embarkation Jetty, the detachment was marched on board the troop-ship, where the men were at once told off to their respective messes, and proceeded without delay to make themselves at home by taking possession of their allotted portion of the huge white-painted fabric that was to bear them over the waves to distant lands.
+Proceeding to the Embarkation Jetty, the detachment was marched on board the troop-ship, where the men were at once told off to their respective messes, and proceeded without delay to make themselves at home by taking possession of their allotted portion of the huge white-painted fabric that was to bear them over the waves to distant lands.
+Proceeding
+True
+
+
+
+
+Hasting to the apartment of her friend, she knocked, and was bidden enter.
+Hasting to the apartment of her friend
+Hasting
+True
+
+
+
+
+Puzzling over this difficulty, he advanced to the side of another hammock, from which heavy groans were issuing.
+Puzzling over this difficulty
+Puzzling
+True
+
+
+
+
+Puzzling over this difficulty, he advanced to the side of another hammock, from which heavy groans were issuing.ed in his usual tone of sympathy.
+Puzzling over this difficulty
+Puzzling
+True
+
+
+
+
+But if the Channel was bad, the Bay of Biscay was, according to Flynn, "far badder."
+according to Flynn, "far badder."
+according
+True
+
+
+
+
+But if the Channel was bad, the Bay of Biscay was, according to Flynn, "far badder.
+according to Flynn, "far badder.
+according
+True
+
+
+
+
+"Going for our soup."
+Going for our soup."
+Going
+False
+
+
+
+
+Speculating in a listless way as to what sort of faces they had, he whiled away the few minutes before the service began.
+Speculating in a listless way as to what sort of faces they had
+Speculating
+False
+
+
+
+
+Flushing to the roots of his hair, Miles stepped hastily aside.
+Flushing to the roots of his hair
+Flushing
+False
+
+
+
+
+But by that time most of the soldiers, according to Molloy, had got their sea-legs on, and rather enjoyed the tossing than otherwise.
+according to Molloy
+according
+True
+
+
+
+
+Concluding that, on the whole, the conversation of his friends did not tend to edification, Miles left them and went to one of the starboard gangways, from which he could take a contemplative view of Nature in her beautiful robe of night.
+Concluding that, on the whole, the conversation of his friends did not tend to edification
+Concluding
+True
+
+
+
+
+work with a shovel, shouting to the fellows to help me.
+shouting to the fellows to help me.
+shouting
+False
+
+
+
+
+Waiting about in front of the hotel for an hoar or two proved to be too much for our hero's nerves; he therefore made up his mind to exhaust his nervous system by means of a smart walk.
+Waiting about in front of the hotel for an hoar or two proved to be too much for our hero's nerves; he therefore made up his mind to exhaust his nervous system by means of a smart walk.
+Waiting
+False
+
+
+
+
+Everything on board was dirty: the tin pannikins were rusty, the biscuit was mouldy and full of creatures that the captain called weevils and Macleod styled wee-deevils.
+Everything on board was dirty: the tin pannikins were rusty, the biscuit was mouldy and full of creatures that the captain called weevils and Macleod styled wee-deevils.
+Everything
+False
+
+
+
+
+You were in luck, being on police-duty.
+being on police-duty.
+being
+False
+
+
+
+
+Turning at once, they galloped back, and could be seen, through the field-glasses, turning now and then gallantly to engage the pursuing foe.
+Turning at once
+Turning
+True
+
+
+
+
+Miles, being off duty at the time, went to see the funeral, and found that Eastern and Western ideas on this point, as on many others, are wide as the poles asunder.
+being off duty at the time
+being
+True
+
+
+
+
+Miles, being off duty at the time, went to see the funeral, and found that Eastern and Western ideas on this point, as on many others, are wide as the poles asunder.near relations was as real as it was demonstrative, but it required more credulity than he possessed to enable him to believe that the howling, shouting, and singing of many mourners was indicative of genuine feeling.
+being off duty at the time
+being
+True
+
+
+
+
+As deaths in Suakim were very numerous at this time, owing to much sickness among natives as well as troops, the sounds of mourning, whether by volley or voice, became so frequent that orders were at last given to cease firing over the soldiers' graves when they were buried.
+owing to much sickness among natives as well as troops, the sounds of mourning, whether by volley or voice
+owing
+True
+
+
+
+
+"But you forget I'm only a landlubber who, according to you, is fit for only half-an-half measures," said Miles, who, not being addicted to much wine, felt disinclined to bind himself.
+according to you
+according
+True
+
+
+
+
+Seeing that the Arabs were in such force, Captain Apthorp at once made for their flank, in the direction of the sea-coast.
+Seeing that the Arabs were in such force
+Seeing
+True
+
+
+
+
+Owing to the postponement of meetings and the press of duty he had not been able to do it sooner.
+Owing to the postponement of meetings and the press of duty he had not been able to do it sooner.
+Owing
+False
+
+
+
+
+Last of all came the telegraph detachment, unrolling as they went the wire that kept open communication with head-quarters.
+unrolling as they went the wire that kept open communication with head-quarters.
+unrolling
+False
+
+
+
+
+Owing to the suddenness of the attack, and the occupation of the troops at the moment, there was some mixing up of men of different regiments.
+Owing to the suddenness of the attack, and the occupation of the troops at the moment, there was some mixing up of men of different regiments.
+Owing
+True
+
+
+
+
+Seeing that they were severely repulsed at the corner of the square, where Molloy and his tars worked the Gardner gun, while Miles and his comrades plied bullet and bayonet, the Arab chief sent a body of his followers to reinforce this point.
+Seeing that they were severely repulsed at the corner of the square, where Molloy and his tars worked the Gardner gun, while Miles and his comrades plied bullet and bayonet, the Arab chief sent a body of his followers to reinforce this point.
+Seeing
+True
+
+
+
+
+At that moment a strong force of the enemy came down with an impetuous rush on that corner of the zereba, and, coming between it and the little knot of combatants, hid them from view.
+coming between it and the little knot of combatants
+coming
+True
+
+
+
+
+Finding that the sergeant was an earnest Christian, she had many interesting talks with him on the subject nearest his heart.
+Finding that the sergeant was an earnest Christian
+Finding
+False
+
+
+
+
+Observing that he lagged behind a little on one occasion while they were traversing a somewhat level valley, Stevenson offered him his arm.
+Observing that he lagged behind a little on one occasion while they were traversing a somewhat level valley
+Observing
+False
+
+
+
+
+To be sure, there was not much reason for wonder, seeing that the Arabs forced the Herculean man to carry nearly double the weight borne by any of his companions, but then, as Miles once confidentially remarked to Armstrong, "
+seeing that the Arabs forced the Herculean man to carry nearly double the weight borne by any of his companions, but then, as Miles once confidentially remarked to Armstrong, "
+seeing
+True
+
+
+
+
+To be sure, there was not much reason for wonder, seeing that the Arabs forced the Herculean man to carry nearly double the weight borne by any of his companions, but then, as Miles once confidentially remarked to Armstrong, "ed than have groaned on account of the weight of his burden; but, after all, it _is_ a tremendously heavy one--poor fellow!"
+seeing that the Arabs forced the Herculean man to carry nearly double the weight borne by any of his companions, but then, as Miles once confidentially remarked to Armstrong, "ed than have groaned on account of the weight of his burden; but, after all
+seeing
+True
+
+
+
+
+Turning out of what appeared to be a sort of market-place, they were driven, rather than conducted, to a whitewashed building, into which they entered through a low strong door, studded with large iron-headed nails.
+Turning out of what appeared to be a sort of market-place
+Turning
+True
+
+
+
+
+At first, owing to their sudden entrance out of intensely bright day, they seemed to be in profound darkness, but when they became accustomed to the dim light, they found that they were in the presence of several powerful men, who carried long Eastern-like pistols in their girdles, and curved naked swords in their hands.
+owing to their sudden entrance out of intensely bright day
+owing
+True
+
+
+
+
+But Stevenson, pushing past him, at once descended, saying, as he went, "Don't be foolish, Jack; we _must_ learn to submit."
+pushing past him, at once descended, saying, as he went, "Don't be foolish
+pushing
+True
+
+
+
+
+But Stevenson, pushing past him, at once descended, saying, as he went, "Don't be foolish, Jack; we _must_ learn to submit."ut fifteen feet square, to enlighten which there was a small hole high up in one of the walls.
+pushing past him, at once descended, saying, as he went, "Don't be foolish
+pushing
+True
+
+
+
+
+Entering at the bidding of his conductors, he found himself in an open court, and heard the heavy door closed and bolted behind him.
+Entering at the bidding of his conductors
+Entering
+True
+
+
+
+
+Advancing to the captive, the latter, producing a key, unlocked and removed his manacles.
+Advancing to the captive, the latter, producing a key
+Advancing
+True
+
+
+
+
+Looking round the cell, he observed, on becoming accustomed to the dim light, that only one other prisoner was there.
+Looking round the cell
+Looking
+True
+
+
+
+
+Then, turning to the interpreter, he spoke in a tone that seemed to Miles to imply the giving of some strict orders, after which, with a wave of his hand, and a majestic inclination of the head, he dismissed them.
+turning to the interpreter
+turning
+True
+
+
+
+
+"I saw him once, about a week ago, staggering under a great log--whether in connection with house-builders or not I can't tell.
+staggering under a great log--whether in connection with house-builders or not I can't tell.
+staggering
+True
+
+
+
+
+Coming to a large mimosa bush in the course of the morning they halted and sat down to rest a little, and hold what the sailor called a "palaver."
+Coming to a large mimosa bush in the course of the morning they halted and sat down to rest a little, and hold what the sailor called a "palaver."
+Coming
+False
+
+
+
+
+Agreeing with Stevenson's advice to "bide their time," the little band was soon on the top of the hillock, and took up the best position for defending the place, also for observing the fight, which, they could now see, was drawing gradually nearer to them.
+Agreeing with Stevenson's advice to "bide their time," the little band was soon on the top of the hillock, and took up the best position for defending the place, also for observing the fight, which
+Agreeing
+True
+
+
+
+
+The consequent depression, acting on his already exhausted powers after he reached Alexandria, brought him to the verge of the grave.
+acting on his already exhausted powers after he reached Alexandria
+acting
+True
+
+
+
+
+As Miles became stronger he began to go about the hospital, chatting with the convalescent patients and trying to make himself generally useful.
+chatting with the convalescent patients and trying to make himself generally useful.
+chatting
+False
+
+
+
+
+Drifting with a rather rapid tide of mingled human beings, Miles and his mother soon found themselves stranded beside the coffee-shed.
+Drifting with a rather rapid tide of mingled human beings
+Drifting
+False
+
+
+
+
+Retiring behind this they continued their conference there, disturbed only by wind and weather, while the distribution of hot coffee was going on in front.
+Retiring behind this they continued their conference there, disturbed only by wind and weather, while the distribution of hot coffee was going on in front.
+Retiring
+True
+
+
+
+
+Retiring behind this they continued their conference there, disturbed only by wind and weather, while the distribution of hot coffee was going on in front.p-ship was going on.
+Retiring behind this they continued their conference there, disturbed only by wind and weather, while the distribution of hot coffee was going on in front.p-ship was going on.
+Retiring
+True
+
+
+
+

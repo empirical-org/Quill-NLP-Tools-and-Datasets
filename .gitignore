@@ -1,15 +1,9 @@
 venv*
-___generated___*
 *.pyc
-*output*.txt
-*.db
-books
 *.swp
-fragments
-sci-fi
 .DS_Store
-sciFiFrags
 *.tfl*
 .ipynb_checkpoints
 .gitattributes
-models
+models/*.tfl.*
+data/documents
