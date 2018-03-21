@@ -8,6 +8,12 @@ from nltk.util import ngrams, trigrams
 import csv
 from .feedback import *
 
+#_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
+#_PARTICIPLE_TRIGRAM_INDEX = os.path.join(_DIRECTORY, 'participlevocabindex.csv')
+#_PARTICIPLE_MODEL = os.path.join(_DIRECTORY, 'models/participle_model.tft')
+_PARTICIPLE_MODEL = 'qfragment/models/participle_model.tfl'
+_PARTICIPLE_TRIGRAM_INDEX = 'qfragment/participlevocabindex.csv'
+
 class Feedback(object):
     """Result feedback class"""
     def __init__(self):
@@ -26,7 +32,7 @@ def _build_trigram_indices():
     """Build a dictionary of trigrams and their indices from a csv"""
     result = {}
     trigram_count = 0
-    for key, val in csv.reader(open('participlevocabindex.csv')):
+    for key, val in csv.reader(open(_PARTICIPLE_TRIGRAM_INDEX)):
         result[key] = int(val)
         trigram_count += 1
     return result, trigram_count
@@ -81,7 +87,7 @@ def _text_to_vector(text, trigram_count):
 ## initializations
 word2idx, trigram_count = _build_trigram_indices()
 model = _build_model(trigram_count)
-model.load('models/participle_model.tfl')
+model.load(_PARTICIPLE_MODEL)
 
 
 def check(sentence):

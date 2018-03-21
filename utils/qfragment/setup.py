@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='qfragment',
-      version='0.0.3',
+      version='0.0.5',
       description='Sentence fragment detection and feedback',
       url='https://github.com/empirical-org/Quill-NLP-Tools-and-Datasets',
       author='Quill.org',
@@ -16,4 +16,5 @@ setup(name='qfragment',
           'tensorflow',
           'tflearn'
       ],
+      include_package_data=True,
       zip_safe=False)
