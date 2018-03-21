@@ -12,7 +12,10 @@ added often!
 
 ```bash
 pip install qfragment
+python -m spacy download en
 ```
+
+
 
 ## Usage
 
