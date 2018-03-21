@@ -12,7 +12,21 @@ def has_subordinate_clause(text):
     '''If this has a subordiate clause return an object with the clause,
     subordinate conjuction, and whether or not it is 'flagged' for review'''
     result = {'clause':'', 'subordinating_conj':'', 'flagged':False}
-    # do things here
+    text = text.strip()
+    # Short circuit questions
+    if text[-1] = '?':
+        return None
+    
+    # If the text begins with subordinating conjunction (IN) and doesn't have a
+    # second clause that is complete... ug, will we have to go on a by clause
+    # basis
+
+    # TODO: pick up here tm
+
+    # IN, WP --> https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
+    # WP words are harder because they have more
+
+
     return result
 
 def write_sentences_with_subordinate_clauses(input_filename, output_filename):
