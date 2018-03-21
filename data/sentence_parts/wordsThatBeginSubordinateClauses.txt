@@ -22,7 +22,7 @@ once
 provided that
 rather than
 since
-so [that implied]
+so
 so that
 than
 that
