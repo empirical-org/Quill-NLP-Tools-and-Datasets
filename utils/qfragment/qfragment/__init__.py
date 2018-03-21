@@ -8,11 +8,12 @@ from nltk.util import ngrams, trigrams
 import csv
 from .feedback import *
 
-#_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
-#_PARTICIPLE_TRIGRAM_INDEX = os.path.join(_DIRECTORY, 'participlevocabindex.csv')
-#_PARTICIPLE_MODEL = os.path.join(_DIRECTORY, 'models/participle_model.tft')
-_PARTICIPLE_MODEL = 'qfragment/models/participle_model.tfl'
-_PARTICIPLE_TRIGRAM_INDEX = 'qfragment/participlevocabindex.csv'
+# relative path resolution 
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
+_PARTICIPLE_TRIGRAM_INDEX = os.path.join(__location__, 'participlevocabindex.csv')
+_PARTICIPLE_MODEL = os.path.join(__location__, 'models', 'participle_model.tfl')
+
 
 class Feedback(object):
     """Result feedback class"""
