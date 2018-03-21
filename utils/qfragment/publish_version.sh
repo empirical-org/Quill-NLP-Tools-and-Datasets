@@ -9,7 +9,7 @@ fi
 
 
 # confirm necessary tensorflow models are included 
-echo 'does your package have all the necessary tensorflow models in it? y/N'
+echo 'does your MANIFEST.in have all the necessary tensorflow models in it? y/N'
 read answer
 if [ "$answer" != "y" ];
 then
