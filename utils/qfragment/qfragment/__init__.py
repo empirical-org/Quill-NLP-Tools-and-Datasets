@@ -7,6 +7,7 @@ import re
 from nltk.util import ngrams, trigrams
 import csv
 from .feedback import *
+import os
 
 # relative path resolution 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
