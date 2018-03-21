@@ -6,7 +6,7 @@ nlp = spacy.load('en')
 import re
 from nltk.util import ngrams, trigrams
 import csv
-from feedback import *
+from .feedback import *
 
 class Feedback(object):
     """Result feedback class"""
@@ -26,7 +26,7 @@ def _build_trigram_indices():
     """Build a dictionary of trigrams and their indices from a csv"""
     result = {}
     trigram_count = 0
-    for key, val in csv.reader(open('./participlevocabindex.csv')):
+    for key, val in csv.reader(open('participlevocabindex.csv')):
         result[key] = int(val)
         trigram_count += 1
     return result, trigram_count
@@ -81,7 +81,7 @@ def _text_to_vector(text, trigram_count):
 ## initializations
 word2idx, trigram_count = _build_trigram_indices()
 model = _build_model(trigram_count)
-model.load('./models/participle_model.tfl')
+model.load('models/participle_model.tfl')
 
 
 def check(sentence):
