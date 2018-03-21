@@ -23,7 +23,14 @@ the environment variable GUTENFETCH_OUTPUT_DIR,
 
 ```bash
 export GUTENFETCH_OUTPUT_DIR=/Users/you/Documents/gutenberg/books
+
 ```
 
 if this variable is not set the output folder will end up in your current
 directory.
+
+To specify a max filename length, set GUTENFETCH_MAX_FILENAME_LEN
+```bash
+export GUTENFETCH_MAX_FILENAME_LEN=30
+```
+the default is 30. *Going very high can cause errors to occur!*

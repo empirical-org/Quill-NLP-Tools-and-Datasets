@@ -8,6 +8,10 @@ import requests
 import sys
 from bs4 import BeautifulSoup as bs
 
+MAX_FILENAME_LEN = os.environ.get('GUTENFETCH_MAX_FILENAME_LEN')
+if not MAX_FILENAME_LEN:
+    MAX_FILENAME_LEN = 30 
+
 OUTPUT_DIR = os.environ.get('GUTENFETCH_OUTPUT_DIR')
 if not OUTPUT_DIR:
     OUTPUT_DIR = './'
@@ -53,7 +57,7 @@ def fetch_bookshelf(start_url, output_dir):
         for char in new_filename:
             if char in 'abcdefghijklmnopqrstuvwxyz-':
                 new_new_filename += char
-        new_filename = new_new_filename + '.txt'
+        new_filename = new_new_filename[:MAX_FILENAME_LEN] + '.txt'
         with open(OUTPUT_DIR + output_dir + '/' + new_filename, 'w+') as output_file:
             output_file.write(r1.text)
 
