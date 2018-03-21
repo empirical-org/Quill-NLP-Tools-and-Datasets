@@ -16,5 +16,4 @@ setup(name='qfragment',
           'tensorflow',
           'tflearn'
       ],
-      include_package_data=True,
       zip_safe=False)
