@@ -1,0 +1,6064 @@
+﻿The Project Gutenberg EBook of Hector's Inheritance, by Horatio Alger
+by Horatio Alger
+by
+False
+
+
+
+
+Mr. Roscoe rang the bell, and, in answer, a servant entered the library, where he sat before a large and commodious desk.
+in answer, a servant entered the library, where he sat before a large and commodious desk.
+in
+True
+
+
+
+
+"Yes, sir; John has just come back from the village."  "Go at once and bring me the letters and papers, if there are any."
+if there are any."
+if
+False
+
+
+
+
+Mr. Roscoe walked to the window, and looked thoughtfully out upon a smooth, luxuriant lawn and an avenue of magnificent trees, through which carriages were driven to what was popularly known as Castle Roscoe.
+through which carriages were driven to what was popularly known as Castle Roscoe.
+through
+False
+
+
+
+
+For pupils of fifteen or over, I charge five hundred dollars per year, which is not a large sum considering the exceptional advantages presented by Inglewood School.
+For pupils of fifteen or over
+For
+False
+
+
+
+
+The second letter was contained in a yellow envelope, of cheap texture, and was much more plebeian in appearance than the first.
+of cheap texture, and was much more plebeian in appearance than the first.
+of
+True
+
+
+
+
+Though I say it myself, it will be hard to find any school where more thorough instruction is given.
+Though I say it myself
+Though
+False
+
+
+
+
+It is the dearest wish of Mrs. Smith and myself to make our young charges happy, and to advance them, by pleasant roads over flowery meads, to the inner courts of knowledge.
+by pleasant roads over flowery meads, to the inner courts of knowledge.
+by
+True
+
+
+
+
+That is more reasonable," said Mr. Roscoe, to himself, as he laid down the letter.
+to himself, as he laid down the letter.
+to
+True
+
+
+
+
+At any rate, I do not propose to pay any more for Hector.
+At any rate
+At
+False
+
+
+
+
+At any rate, I do not propose to pay any more for Hector.t believe in pampering the appetites of boys.
+At any rate
+At
+False
+
+
+
+
+If he were the master of Roscoe Hall, as he thinks he is, there might be some propriety in it; but upon that head I shall soon undeceive him.
+If he were the master of Roscoe Hall, as he thinks he is, there might be some propriety in it; but upon that head I shall soon undeceive him.
+If
+True
+
+
+
+
+I subjoin the letter, as it throws some light upon the character of the writer:  "ROSCOE HALL, Sept. 10th.
+as it throws some light upon the character of the writer:  "ROSCOE HALL, Sept. 10th.
+as
+True
+
+
+
+
+Nephew he is not, in a strict sense of the term.
+in a strict sense of the term.
+in
+False
+
+
+
+
+Undoubtedly he meant to provide for him in his will, but, as often happens, put off will-making till it was too late.
+as often happens
+as
+False
+
+
+
+
+This does not so much matter, since I am willing to educate him, and give him a fair start in life, if he acts in a manner to suit me.
+since I am willing to educate him, and give him a fair start in life, if he acts in a manner to suit me.
+since
+True
+
+
+
+
+"I must then adhere to my story, at whatever cost.
+at whatever cost.
+at
+False
+
+
+
+
+"I must then adhere to my story, at whatever cost."
+at whatever cost."
+at
+False
+
+
+
+
+It ran thus;  "SOCRATES SMITH, A. M.  "DEAR Sir:-Your letter is at hand, and I find it, on the whole, satisfactory.
+on the whole, satisfactory.
+on
+True
+
+
+
+
+I do not want Hector too much indulged or pampered, though he may expect it, my poor brother having been indulgent to excess.
+though he may expect it, my poor brother having been indulgent to excess.
+though
+True
+
+
+
+
+"Let me add, by the bye, that Hector is not my nephew, though I may inadvertently have mentioned him as such, and had no real claims upon my brother, though he has been brought up in that belief.
+by the bye, that Hector is not my nephew, though I may inadvertently have mentioned him as such, and had no real claims upon my brother, though he has been brought up in that belief.
+by
+True
+
+
+
+
+He was adopted, in an informal way, by my brother, when he was but, an infant.
+in an informal way, by my brother, when he was but, an infant.
+in
+True
+
+
+
+
+Under the circumstances, I am willing to take care of him, and prepare him to earn his own living when his education is completed.
+Under the circumstances
+Under
+False
+
+
+
+
+"There, that clinches it!" said Mr. Roscoe, in a tone of satisfaction.
+in a tone of satisfaction.
+in
+False
+
+
+
+
+One of the latter was an old-fashioned coach; while there was, besides, a light buggy, which Hector was accustomed to consider his own.
+besides, a light buggy, which Hector was accustomed to consider his own.
+besides
+True
+
+
+
+
+It was he, generally, who used this, for his father preferred to take a driver, and generally took an airing, either alone or with Hector, in the more stately carriage, drawn by two horses.
+for his father preferred to take a driver, and generally took an airing, either alone or with Hector, in the more stately carriage
+for
+True
+
+
+
+
+As the former is to be our hero, we may pause to describe him.
+As the former is to be our hero
+As
+False
+
+
+
+
+He was fifteen, slenderly but strongly made, with a clear skin and dark eyes and a straightforward look.
+with a clear skin and dark eyes and a straightforward look.
+with
+False
+
+
+
+
+He was fifteen, slenderly but strongly made, with a clear skin and dark eyes and a straightforward look.fferent expression if need be.
+with a clear skin and dark eyes and a straightforward look.fferent expression if need be.
+with
+False
+
+
+
+
+As he entered the carriage house, he looked about him in some surprise.
+As he entered the carriage house
+As
+False
+
+
+
+
+He might, at least, have asked whether I intended to use it."
+at least
+at
+False
+
+
+
+
+As your uncle is your guardian, of course he has power over you, and he thinks everything of that boy of his, though, to my mind, he is an unmannerly cub."
+As your uncle is your guardian, of course he has power over you, and he thinks everything of that boy of his, though, to my mind
+As
+True
+
+
+
+
+I am willing that Guy should enjoy as many privileges as I do, though the estate is mine; but he mustn't interfere with my rights."
+though the estate is mine; but he mustn't interfere with my rights."
+though
+False
+
+
+
+
+I would, if I were you."
+if I were you."
+if
+False
+
+
+
+
+"So I will, if it is necessary.
+if it is necessary.
+if
+False
+
+
+
+
+If I had seen him, I would have stopped him."
+If I had seen him
+If
+False
+
+
+
+
+To tell the truth, Master Hector, I refused to get the buggy ready for him, till he brought out a paper from his father commanding me to do it.
+till he brought out a paper from his father commanding me to do it.
+till
+False
+
+
+
+
+Then, of course, I had no choice."
+of course, I had no choice."
+of
+True
+
+
+
+
+He drew out a small scrap of notepaper, on which was written, "My son, Guy, has my permission to ride out in the buggy.
+on which was written, "My son, Guy
+on
+True
+
+
+
+
+In fact, Hector had only to look down the avenue to see the rapid approach of the buggy.
+In fact
+In
+False
+
+
+
+
+"You have driven out in my buggy, without asking my permission."
+without asking my permission."
+without
+False
+
+
+
+
+said Guy, with another sneer.
+with another sneer.
+with
+False
+
+
+
+
+He did not look like the Roscoes, though in many respects he was in disposition and character similar to his father.
+though in many respects he was in disposition and character similar to his father.
+though
+False
+
+
+
+
+He did not look like the Roscoes, though in many respects he was in disposition and character similar to his father.oo much upon yourself, Hector Roscoe.
+though in many respects he was in disposition and character similar to his father.oo much upon yourself, Hector Roscoe.
+though
+True
+
+
+
+
+laughed Guy, with malicious glee.
+with malicious glee.
+with
+False
+
+
+
+
+There was something in this that attracted Hector's attention, though he was not disposed to attach much importance to what Guy said.
+though he was not disposed to attach much importance to what Guy said.
+though
+False
+
+
+
+
+"Go and ask father," said Guy, with a tantalizing grin.
+with a tantalizing grin.
+with
+False
+
+
+
+
+He had no sooner uttered these words, than Hector resented the insult.
+than Hector resented the insult.
+than
+False
+
+
+
+
+"There," said he, with eyes aflame, "take that, Guy Roscoe, and look out how you insult me in future!"
+with eyes aflame, "take that, Guy Roscoe, and look out how you insult me in future!"
+with
+True
+
+
+
+
+"There," said he, with eyes aflame, "take that, Guy Roscoe, and look out how you insult me in future!"
+with eyes aflame, "take that, Guy Roscoe, and look out how you insult me in future!"
+with
+True
+
+
+
+
+Allan Roscoe looked up, and remarked, with slight sarcasm:  "This is not a bear garden, Hector.
+with slight sarcasm:  "This is not a bear garden, Hector.
+with
+True
+
+
+
+
+"My boy," said his uncle, with simulated feeling, "my son has spoken to you of a secret which I would willingly keep from you if I could.
+with simulated feeling, "my son has spoken to you of a secret which I would willingly keep from you if I could.
+with
+True
+
+
+
+
+If you were his son you would inherit under the law."
+If you were his son you would inherit under the law."
+If
+False
+
+
+
+
+"I beg your pardon; I should have said Mr. Allan Roscoe," said Hector, bowing proudly, for his heart was sore, and he was deeply indignant with the man who sat, smooth and sleek, in his father's chair, harrowing up his feelings without himself being ruffled.
+for his heart was sore, and he was deeply indignant with the man who sat, smooth and sleek, in his father's chair
+for
+True
+
+
+
+
+Call me uncle, if you like, since the truth is understood.
+if you like, since the truth is understood.
+if
+True
+
+
+
+
+"I make the statement on your father's authority--I should say, on my brother's authority."
+on my brother's authority."
+on
+False
+
+
+
+
+In the same boarding house was a widow, with a child of some months old.
+In the same boarding house was a widow, with a child of some months old.
+In
+True
+
+
+
+
+No formalities were necessary, for there was no one to claim you.
+for there was no one to claim you.
+for
+False
+
+
+
+
+No formalities were necessary, for there was no one to claim you.
+for there was no one to claim you.
+for
+False
+
+
+
+
+at once taken in charge by my brother and his wife, therefore, and very soon they came to look upon you with as much affection as if you were their own child.
+at once taken in charge by my brother and his wife, therefore, and very soon they came to look upon you with as much affection as if you were their own child.
+at
+True
+
+
+
+
+All the more, perhaps, because he was left alone, my brother became attached to you, and, I think, he came to love you as much as if you were his own son."
+because he was left alone, my brother became attached to you, and, I think, he came to love you as much as if you were his own son."
+because
+True
+
+
+
+
+"I think he did," said Hector, with emotion.
+with emotion.
+with
+False
+
+
+
+
+"Yet he was not your father," said Allan Roscoe, with sharp emphasis.
+with sharp emphasis.
+with
+False
+
+
+
+
+"Do you think it probable that, with all this affection for me, he would have left me penniless?" asked the boy.
+with all this affection for me, he would have left me penniless?" asked the boy.
+with
+True
+
+
+
+
+"Do you think it probable that, with all this affection for me, he would have left me penniless?"
+with all this affection for me, he would have left me penniless?"
+with
+True
+
+
+
+
+By that will he would no doubt have provided for you in a satisfactory manner.
+By that will he would no doubt have provided for you in a satisfactory manner.
+By
+False
+
+
+
+
+But I think my poor brother had a superstitious fear of will making, lest it might hasten death.
+lest it might hasten death.
+lest
+False
+
+
+
+
+At any rate, he omitted it till it was too late."
+At any rate
+At
+False
+
+
+
+
+"It was a cruel omission, if your story is a true one."
+if your story is a true one."
+if
+False
+
+
+
+
+In his last sickness, when too weak to sign his name, he asked me, as the legal heir of his estate, to see that you were well provided for.
+In his last sickness, when too weak to sign his name
+In
+True
+
+
+
+
+Of one thing you may be assured, Hector, he never lost his affection for you."
+Of one thing you may be assured
+Of
+False
+
+
+
+
+Allan Roscoe took from his pocket a letter, without an envelope.
+without an envelope.
+without
+False
+
+
+
+
+One glance served to show Hector that it was in the handwriting of his late father, or, at any rate, in a handwriting surprisingly like it.
+at any rate, in a handwriting surprisingly like it.
+at
+True
+
+
+
+
+I accept, as a sacred charge, the duty he imposed upon me.
+as a sacred charge, the duty he imposed upon me.
+as
+True
+
+
+
+
+As a first step, I intend, on Monday next, to place you in an excellent boarding school, where you will have exceptional privileges."
+As a first step
+As
+False
+
+
+
+
+After what he had heard, his interest in other matters was but faint.
+After what he had heard
+After
+False
+
+
+
+
+Yet, if he had, after all, left him unprovided for, he had certainly treated Hector with great cruelty.
+if he had, after all, left him unprovided for, he had certainly treated Hector with great cruelty.
+if
+True
+
+
+
+
+"I won't believe it," said Hector, to himself.
+to himself.
+to
+False
+
+
+
+
+"I won't so wrong my dear father's memory at the bidding of this man, whose interest it is to trump up this story, since he and his son become the owners of a great estate in my place."
+since he and his son become the owners of a great estate in my place."
+since
+False
+
+
+
+
+He knew very well what a blow poor Hector had received, for he was in his father's confidence, and he was mean enough, and malicious enough, to rejoice at it.
+for he was in his father's confidence, and he was mean enough, and malicious enough, to rejoice at it.
+for
+True
+
+
+
+
+He knew very well what a blow poor Hector had received, for he was in his father's confidence, and he was mean enough, and malicious enough, to rejoice at it.
+for he was in his father's confidence, and he was mean enough, and malicious enough, to rejoice at it.
+for
+True
+
+
+
+
+" he asked, with a grin. "
+with a grin. "
+with
+False
+
+
+
+
+As he spoke he drew off, and in an instant Guy measured his length upon the greensward.
+As he spoke he drew off, and in an instant Guy measured his length upon the greensward.
+As
+True
+
+
+
+
+Guy rose, his face livid with passion, in a frame of mind far from funny.
+in a frame of mind far from funny.
+in
+False
+
+
+
+
+If this story of your father's is true, which I don't believe, you might have the decency to let me alone, even if you don't sympathize with me.
+If this story of your father's is true, which I don't believe
+If
+True
+
+
+
+
+If you dare to say or hint anything against my birth, I'll treat you worse than I have yet."
+If you dare to say or hint anything against my birth
+If
+False
+
+
+
+
+"I am ready to suffer now, if you are able to make me," said Hector.
+if you are able to make me, " said Hector.
+if
+True
+
+
+
+
+He had a wholesome fear of Hector's strong, muscular arms, aided, as they were, by some knowledge of boxing.
+as they were, by some knowledge of boxing.
+as
+True
+
+
+
+
+In size, Guy was his equal, but in strength he was quite inferior.
+In size
+In
+False
+
+
+
+
+In size, Guy was his equal, but in strength he was quite inferior.ce.
+In size
+In
+False
+
+
+
+
+In Hector's present mood, he would not, perhaps, have cared much if this threat had been carried into execution, but he was not altogether reckless, and he felt that it was best to remain under Mr. Roscoe's protection until he had had time to investigate the remarkable story which he suspected his reputed uncle had trumped up to serve his own interests.
+In Hector's present mood
+In
+False
+
+
+
+
+"Tell your father, if you like," said Hector, quietly.
+if you like, " said Hector
+if
+True
+
+
+
+
+"Does that mean that you will attack my father?" demanded Guy, hoping for an affirmative answer, as it would help him to prejudice his father against our hero.
+as it would help him to prejudice his father against our hero.
+as
+False
+
+
+
+
+"No," answered Hector, smiling, "I don't apprehend there will be any necessity, for he won't insult me as you have done."
+for he won't insult me as you have done."
+for
+False
+
+
+
+
+"No," answered Hector, smiling, "I don't apprehend there will be any necessity, for he won't insult me as you have done."ter before him, inveighing against Hector with great bitterness.
+for he won't insult me as you have done."ter before him
+for
+False
+
+
+
+
+"No; but still, I think it, was natural, under the circumstances.
+under the circumstances.
+under
+False
+
+
+
+
+Henceforth he will be dependent upon me, and later, upon you.
+upon you.
+upon
+False
+
+
+
+
+He has been hurled down from his proud place as owner of Castle Roscoe, and I have taken his place, as you will hereafter do."
+as you will hereafter do."
+as
+False
+
+
+
+
+"You seem to forget, Guy, that you do not succeed till I am dead!"
+that you do not succeed till I am dead!"
+that
+False
+
+
+
+
+"Then, since you are so much better off than Hector, you had better be more considerate, and leave him to get over his disappointment as well as he can."
+since you are so much better off than Hector, you had better be more considerate, and leave him to get over his disappointment as well as he can."
+since
+True
+
+
+
+
+"Then, since you are so much better off than Hector, you had better be more considerate, and leave him to get over his disappointment as well as he can.", as he at length turned to leave the room.  "
+since you are so much better off than Hector, you had better be more considerate, and leave him to get over his disappointment as well as he can.", as he at length turned to leave the room.  "
+since
+True
+
+
+
+
+With a firm, resolute step, he entered the presence of Allan Roscoe.
+With a firm
+With
+False
+
+
+
+
+"That was the substance of what he said, though he did not admit the insult."
+though he did not admit the insult."
+though
+False
+
+
+
+
+"I do not care to interfere in boys' quarrels, except in extreme cases," said Mr. Roscoe.
+except in extreme cases, " said Mr. Roscoe.
+except
+True
+
+
+
+
+"I hate that boy," he said, to himself; "I temporize from motives of policy, but I mean to tame his haughty spirit yet."
+to himself; "I temporize from motives of policy, but I mean to tame his haughty spirit yet."
+to
+True
+
+
+
+
+Guy did not think it prudent to taunt Hector, unless backed up by his father, and he felt that the change in their relative positions was satisfaction enough at present.
+unless backed up by his father, and he felt that the change in their relative positions was satisfaction enough at present.
+unless
+True
+
+
+
+
+Besides, his father, in a subsequent conversation, had told Guy that it was his purpose to place Hector in a boarding school, where the discipline would be strict, and where he would be thrashed if he proved rebellious.
+Besides, his father, in a subsequent conversation, had told Guy that it was his purpose to place Hector in a boarding school, where the discipline would be strict, and where he would be thrashed if he proved rebellious.
+Besides
+True
+
+
+
+
+Besides, his father, in a subsequent conversation, had told Guy that it was his purpose to place Hector in a boarding school, where the discipline would be strict, and where he would be thrashed if he proved rebellious.he added, "that the boy needs a strong hand, and that I am not only perfectly willing that he should be punished whenever occasion may call for it, but really desire it."
+Besides, his father, in a subsequent conversation, had told Guy that it was his purpose to place Hector in a boarding school, where the discipline would be strict, and where he would be thrashed if he proved rebellious.he added, "that the boy needs a strong hand, and that I am not only perfectly willing that he should be punished whenever occasion may call for it, but really desire it."
+Besides
+True
+
+
+
+
+"I don't see how you can, unless you also enter the school.
+unless you also enter the school.
+unless
+False
+
+
+
+
+"Yes; but I wish to avoid forcible measures, if possible.
+if possible.
+if
+False
+
+
+
+
+Tell him to show him no mercy, if he doesn't behave himself."
+if he doesn't behave himself."
+if
+False
+
+
+
+
+"I only wish you to avoid coming into collision with him.nday morning, Hector?" asked Allan Roscoe, on Saturday afternoon.
+on Saturday afternoon.
+on
+False
+
+
+
+
+Though in such a case he was sure to come off victorious, he did not care to contend, especially as no advantage could come of it in the end.
+Though in such a case he was sure to come off victorious
+Though
+False
+
+
+
+
+Of the boarding school kept by Mr. Socrates Smith he had never heard, but felt that he would, at any rate, prefer to find himself amid new scenes.
+Of the boarding school kept by Mr. Socrates Smith he had never heard, but felt that he would, at any rate, prefer to find himself amid new scenes.
+Of
+True
+
+
+
+
+If the school were a good one, he meant to derive benefit from it, for he was fond of books and study, and thought school duties no task.
+If the school were a good one
+If
+False
+
+
+
+
+If the school were a good one, he meant to derive benefit from it, for he was fond of books and study, and thought school duties no task.follow out my poor brother's wishes to the letter.
+If the school were a good one
+If
+False
+
+
+
+
+A good education will fit you to maintain yourself, and attain a creditable station in life, which is very important, since you will have to carve your own future."
+since you will have to carve your own future."
+since
+False
+
+
+
+
+Still, it did grate upon Hector's feelings, to be so often reminded of his penniless position, when till recently he had regarded himself, and had been regarded by others, as a boy of large property.
+as a boy of large property.
+as
+False
+
+
+
+
+This was felt to be the proper train to take, as it would enable Hector to reach school before the morning session began.
+as it would enable Hector to reach school before the morning session began.
+as
+False
+
+
+
+
+In truth, he was anxious to get Hector out of the house.
+In truth
+In
+False
+
+
+
+
+In truth, he was anxious to get Hector out of the house.d contracted a dislike for him.
+In truth
+In
+False
+
+
+
+
+At any rate, when Hector descended to the breakfast room, he found Mr. Roscoe already there.
+At any rate, when Hector descended to the breakfast room
+At
+True
+
+
+
+
+I look upon myself in the light of your guardian, though you are not my nephew, as was originally supposed."
+though you are not my nephew, as was originally supposed."
+though
+True
+
+
+
+
+I have written "uncle" inadvertently, that being the character in which Mr. Roscoe appeared to the world.
+that being the character in which Mr. Roscoe appeared to the world.
+that
+False
+
+
+
+
+"As I know no other name to which I have a claim, I shall certainly keep the name of the kindest friend I ever had, whether he was my father or not," said Hector, firmly.
+whether he was my father or not, " said Hector
+whether
+True
+
+
+
+
+If my word is not sufficient--"  "You are an interested party.
+If my word is not sufficient--"  "You are an interested party.
+If
+False
+
+
+
+
+This story, if true, gives you my property."
+if true
+if
+False
+
+
+
+
+"You have it in black and white, in the paper I showed you.
+in the paper I showed you.
+in
+False
+
+
+
+
+By the advice of a brother preacher, he dropped the plebeian name, and bloomed forth as Socrates Smith, A. M.  I may say, in confidence, that no one knew from what college Mr. Smith obtained the degree of Master of Arts.
+By the advice of a brother preacher
+By
+False
+
+
+
+
+At any rate, he was allowed to wear the title, since no one thought it worth while to make the necessary examination into its genuineness.
+At any rate
+At
+False
+
+
+
+
+These young men were generally poor scholars in more than one sense of the word, as Mr. Smith did not care to pay the high salary demanded by a first-class scholar.
+as Mr. Smith did not care to pay the high salary demanded by a first-class scholar.
+as
+False
+
+
+
+
+Mr. Smith was shrewd enough not to attempt to instruct the classes in advanced classics or mathematics, as he did not care to have his deficiencies understood by his pupils.
+as he did not care to have his deficiencies understood by his pupils.
+as
+False
+
+
+
+
+Though his price was less than that of many other schools, his profits were liberal, as he kept down expenses.
+Though his price was less than that of many other schools
+Though
+False
+
+
+
+
+Though his price was less than that of many other schools, his profits were liberal, as he kept down expenses.upils could have testified, and the salaries he paid to under teachers were pitifully small.
+Though his price was less than that of many other schools
+Though
+False
+
+
+
+
+So it was that, year by year, Socrates Smith, A. M., found himself growing richer, while his teachers grew more shabby, and his pupils rarely became fat.
+while his teachers grew more shabby, and his pupils rarely became fat.
+while
+True
+
+
+
+
+The school building was a long, rambling, irregular structure, of no known order of architecture, bearing some resemblance to a factory.
+of no known order of architecture
+of
+False
+
+
+
+
+So long as the institute, as he often called it, afforded room for the school and scholars
+as he often called it
+as
+False
+
+
+
+
+As Mr. Roscoe entered, Mr. Smith beamed upon him genially.
+As Mr. Roscoe entered
+As
+False
+
+
+
+
+As he always asked half a term's tuition and board in advance, every such visitor represented to him so much ready cash, and for ready cash Socrates had a weakness.
+As he always asked half a term's tuition and board in advance
+As
+False
+
+
+
+
+That the reader may judge whether he had reason to be, let me describe Mr. Smith.
+That the reader may judge whether he had reason to be, let me describe Mr. Smith.
+That
+True
+
+
+
+
+He was a trifle over six feet in height, with yellowish, sandy hair, high cheek bones, a rough and mottled skin, a high but narrow forehead, a pair of eyes somewhat like those of a ferret, long, ungainly limbs, and a shambling walk.
+with yellowish, sandy hair, high cheek bones, a rough and mottled skin, a high but narrow forehead, a pair of eyes somewhat like those of a ferret, long
+with
+True
+
+
+
+
+A coat of rusty black, with very long tails, magnified his apparent height, and nothing that he wore seemed made for him.
+with very long tails, magnified his apparent height, and nothing that he wore seemed made for him.
+with
+True
+
+
+
+
+Perhaps, as the first Socrates was said to have been the homeliest of all the Athenians, it was fitting that the man who assumed his name
+as the first Socrates was said to have been the homeliest of all the Athenians, it was fitting that the man who assumed his name
+as
+True
+
+
+
+
+Perhaps, as the first Socrates was said to have been the homeliest of all the Athenians, it was fitting that the man who assumed his namealso have the slightest possible claim to beauty.
+as the first Socrates was said to have been the homeliest of all the Athenians, it was fitting that the man who assumed his namealso have the slightest possible claim to beauty.
+as
+True
+
+
+
+
+He rang a hand bell, and a lank boy, of fifteen, appeared.
+of fifteen, appeared.
+of
+True
+
+
+
+
+Plain, wholesome diet, without luxury, and a kind, but strict discipline--
+without luxury, and a kind, but strict discipline--
+without
+True
+
+
+
+
+I may remark that the boy, though reared in luxury by my brother, is really penniless."
+though reared in luxury by my brother
+though
+False
+
+
+
+
+After a little more conversation, Allan Roscoe took his leave.
+After a little more conversation
+After
+False
+
+
+
+
+So, under auspices not the most pleasant, Hector's school life began.     CHAPTER VII.
+under auspices not the most pleasant, Hector's school life began.     CHAPTER VII.
+under
+True
+
+
+
+
+Under the guidance of the lank boy, named Wilkins, Hector left Mr. Smith's office, and walked to a barren-looking plot of ground behind the house, which served as a playground for the pupils of Smith Institute.
+Under the guidance of the lank boy, named Wilkins
+Under
+True
+
+
+
+
+"You'll get over that soon," answered Wilkins, in the tone of one who could boast of a large experience.
+in the tone of one who could boast of a large experience.
+in
+False
+
+
+
+
+"No, indeed!" answered Hector, quickly, for he had no desire to be considered the son of Allan Roscoe.
+for he had no desire to be considered the son of Allan Roscoe.
+for
+False
+
+
+
+
+The oldest and largest bore such a strong personal resemblance to Socrates Smith, that Hector asked if he were his son.
+that Hector asked if he were his son.
+that
+False
+
+
+
+
+"Smith, of course.
+of course.
+of
+False
+
+
+
+
+Nothing more need be said, as, in appearance, he closely resembled his uncle.
+as, in appearance, he closely resembled his uncle.
+as
+True
+
+
+
+
+By this time Jim Smith had observed the new arrival.
+By this time Jim Smith had observed the new arrival.
+By
+False
+
+
+
+
+asked Jim, in the tone of a superior.
+in the tone of a superior.
+in
+False
+
+
+
+
+asked Jim, in the tone of a superior.d this tone, and, though he had no objection, under ordinary circumstances, to answering the question, he did not choose to gratify his present questioner.
+in the tone of a superior.d this tone, and, though he had no objection, under ordinary circumstances, to answering the question, he did not choose to gratify his present questioner.
+in
+True
+
+
+
+
+retorted Jim, scenting insubordination with undisguised pleasure, for he always liked the task of subduing a new boy.
+for he always liked the task of subduing a new boy.
+for
+False
+
+
+
+
+"The bully of the school, I should suppose, from your style of behavior.
+from your style of behavior.
+from
+False
+
+
+
+
+"  "Do you hear that, boys?" demanded Jim, in a theatrical tone, turning to the other boys.
+in a theatrical tone
+in
+False
+
+
+
+
+A boy's guardian is presumed to be his friend, and it would not be exactly prudent, while the guardian was closeted with the principal, to make an assault upon the pupil.
+while the guardian was closeted with the principal, to make an assault upon the pupil.
+while
+True
+
+
+
+
+Hector looked up, and saw advancing a young man, dressed in rusty black, with a meek and long-suffering expression, as one who was used to being browbeaten.
+with a meek and long-suffering expression, as one who was used to being browbeaten.
+with
+True
+
+
+
+
+IN THE SCHOOLROOM.    "
+IN THE SCHOOLROOM.    "
+IN
+False
+
+
+
+
+"No; I teach the first class," said Crabb, with a modest cough.
+with a modest cough.
+with
+False
+
+
+
+
+In fact, Mr. Crabb had serious doubts as to the fact assumed.
+In fact
+In
+False
+
+
+
+
+The schoolroom was a moderate-sized, dreary-looking room, with another smaller room opening out of it, which was used as a separate recitation room.
+with another smaller room opening out of it, which was used as a separate recitation room.
+with
+True
+
+
+
+
+around him patronizingly.
+around him patronizingly.
+around
+False
+
+
+
+
+Both ushers and all the pupils stood in fear of him, as he well knew.
+as he well knew.
+as
+False
+
+
+
+
+Only to his uncle did he look up as his superior, and he took care to be on good terms with him, as it was essential to the maintenance of his personal authority.
+as it was essential to the maintenance of his personal authority.
+as
+False
+
+
+
+
+"And now, boys, you will commence your daily exercises, under the direction of my learned associates, Mr. Crabb and Mr. Jones."
+under the direction of my learned associates, Mr. Crabb and Mr. Jones."
+under
+True
+
+
+
+
+Mr. Crabb looked feebly complacent at this compliment, though he knew it was only because a visitor was present.
+though he knew it was only because a visitor was present.
+though
+False
+
+
+
+
+In private, Socrates was rather apt to speak slightingly of his attainments.
+In private
+In
+False
+
+
+
+
+"Thank you, Mr. Smith," answered Mr. Roscoe, with an inward shudder; "but I have important engagements that call me away immediately."
+with an inward shudder; "but I have important engagements that call me away immediately."
+with
+False
+
+
+
+
+"I leave him, with confidence, in your hands, my dear sir."
+with confidence, in your hands, my dear sir."
+with
+True
+
+
+
+
+Let us look in upon the aspiring and ambitious scholars, after Mr. Smith left them in charge of the ushers.
+after Mr. Smith left them in charge of the ushers.
+after
+False
+
+
+
+
+Let us look in upon the aspiring and ambitious scholars, after Mr. Smith left them in charge of the ushers.
+after Mr. Smith left them in charge of the ushers.
+after
+False
+
+
+
+
+he asked, in a vexed tone.
+in a vexed tone.
+in
+False
+
+
+
+
+"I think it was the new scholar," said Jim Smith, with a malicious look at Hector.
+with a malicious look at Hector.
+with
+False
+
+
+
+
+"Master Roscoe," said Mr. Crabb, with a pained look, "I hope you have not started so discreditably in your school life.
+with a pained look, "I hope you have not started so discreditably in your school life.
+with
+True
+
+
+
+
+As he has chosen to lay it to me, I have no hesitation in exposing him."
+As he has chosen to lay it to me
+As
+False
+
+
+
+
+said Mr. Crabb, feebly.remonstrate at all, though he had no doubt that Hector's charge was rightly made.
+though he had no doubt that Hector's charge was rightly made.
+though
+False
+
+
+
+
+To this class Hector had been assigned, though it had only advanced about half through the third book of the AEneid, while Hector was in the fifth.
+To this class Hector had been assigned, though it had only advanced about half through the third book of the AEneid, while Hector was in the fifth.
+To
+True
+
+
+
+
+Besides Jim Smith, Wilkins, Bates and Johnson belonged to it.
+Besides Jim Smith
+Besides
+False
+
+
+
+
+As twenty-five lines had been assigned for a lesson, Hector had no difficulty in preparing himself, and that in a brief time.
+As twenty-five lines had been assigned for a lesson
+As
+False
+
+
+
+
+By the way, Jim was the only pupil to whose name he prefixed the title "Mr."  "I couldn't make anything else out of it," muttered Jim.
+By the way
+By
+False
+
+
+
+
+Roscoe, as you have commenced, you may continue.
+as you have commenced, you may continue.
+as
+True
+
+
+
+
+Here Jim Smith showed himself quite at sea; though the usher, as it was evident, selected the easiest words for him, he made a mistake in every one.
+as it was evident, selected the easiest words for him, he made a mistake in every one.
+as
+True
+
+
+
+
+Here Jim Smith showed himself quite at sea; though the usher, as it was evident, selected the easiest words for him, he made a mistake in every one.s were nouns, and which verbs, and as to the relations which they sustained to other words in the sentence
+as it was evident, selected the easiest words for him, he made a mistake in every one.s were nouns, and which verbs, and as to the relations which they sustained to other words in the sentence
+as
+True
+
+
+
+
+At length the recitation was over.
+At length the recitation was over.
+At
+False
+
+
+
+
+It had demonstrated one thing, that in Latin scholarship Hector was far more accurate and proficient than any of his classmates, while Jim Smith stood far below all the rest.
+that in Latin scholarship Hector was far more accurate and proficient than any of his classmates, while Jim Smith stood far below all the rest.
+that
+True
+
+
+
+
+The fact was, that Jim Smith was unwilling to give up his place as a member of the highest class in Latin, because he knew it would detract from his rank in the school.
+that Jim Smith was unwilling to give up his place as a member of the highest class in Latin, because he knew it would detract from his rank in the school.
+that
+True
+
+
+
+
+After a time came recess.
+After a time came recess.
+After
+False
+
+
+
+
+Besides, he is backed up by the principal.
+Besides, he is backed up by the principal.
+Besides
+True
+
+
+
+
+"That's just exactly what I expect to do; at any rate, for supper.
+for supper.
+for
+False
+
+
+
+
+At the end of that time the schoolbell rang, and the boys trooped back into the schoolroom.
+At the end of that time the schoolbell rang, and the boys trooped back into the schoolroom.
+At
+True
+
+
+
+
+At the end of that time the schoolbell rang, and the boys trooped back into the schoolroom.
+At the end of that time the schoolbell rang, and the boys trooped back into the schoolroom.
+At
+True
+
+
+
+
+At twelve o'clock the morning session closed.
+At twelve o'clock the morning session closed.
+At
+False
+
+
+
+
+Then came an intermission of an hour, during which the day scholars either ate lunch brought with them, or went to their homes in the village to partake of a warm repast.
+during which the day scholars either ate lunch brought with them, or went to their homes in the village to partake of a warm repast.
+during
+True
+
+
+
+
+At ten minutes past twelve, a red-armed servant girl made her appearance at the back door looking out on the playground, and rang a huge dinner bell.
+At ten minutes past twelve
+At
+False
+
+
+
+
+asked Hector, for he felt the hunger of a healthy boy who had taken an early breakfast.
+for he felt the hunger of a healthy boy who had taken an early breakfast.
+for
+False
+
+
+
+
+In the center stood a long table, but there didn't seem to be much on it except empty plates.
+In the center stood a long table, but there didn't seem to be much on it except empty plates.
+In
+True
+
+
+
+
+At a side table stood Mrs. Smith, ladling out soup from a large tureen.
+At a side table stood Mrs. Smith, ladling out soup from a large tureen.
+At
+True
+
+
+
+
+It was a thin, unwholesome-looking mixture, with one or two small pieces of meat, about the size of a chestnut, in each plate, and fragments of potatoes and carrots.
+with one or two small pieces of meat, about the size of a chestnut, in each plate, and fragments of potatoes and carrots.
+with
+True
+
+
+
+
+Don't be in a hurry," said Wilkins, in a low tone.
+in a low tone.
+in
+False
+
+
+
+
+Don't be in a hurry," said Wilkins, in a low tone.head of the table, said:  "Boys, we are now about to partake of the bounties of Providence, let me hope, with grateful hearts."
+in a low tone.head of the table, said:  "Boys, we are now about to partake of the bounties of Providence
+in
+True
+
+
+
+
+he asked, in a whisper.
+in a whisper.
+in
+False
+
+
+
+
+At home he was accustomed to a luxurious table, and this meal seemed to be a mere mockery.
+At home he was accustomed to a luxurious table, and this meal seemed to be a mere mockery.
+At
+True
+
+
+
+
+So he took up the piece of bread at the side of his plate, and, though it was dry, he succeeded in eating it.
+though it was dry, he succeeded in eating it.
+though
+True
+
+
+
+
+By this time his left-hand neighbor, a boy named Colburn, had finished his soup.
+By this time his left-hand neighbor
+By
+False
+
+
+
+
+By this time his left-hand neighbor, a boy named Colburn, had finished his soup.asted plate.
+By this time his left-hand neighbor
+By
+False
+
+
+
+
+he asked, in a hoarse whisper  "
+in a hoarse whisper  "
+in
+False
+
+
+
+
+In a trice, Colburn had appropriated Hector's plate and put his own empty one in its place.
+In a trice
+In
+False
+
+
+
+
+In their places were set dinner plates, containing a small section each of corned beef, with a consumptive-looking potato, very probably "soggy."
+In their places were set dinner plates, containing a small section each of corned beef, with a consumptive-looking potato, very probably "soggy."
+In
+True
+
+
+
+
+At any rate, this was the case with Hector's.
+At any rate
+At
+False
+
+
+
+
+He was a thin, pale boy, who looked as if he had been growing rapidly, as, indeed, he had.
+as
+as
+False
+
+
+
+
+It consisted of some pale, flabby apple pie, about half baked.
+about half baked.
+about
+False
+
+
+
+
+It consisted of some pale, flabby apple pie, about half baked.pplied at private tables and restaurants.
+about half baked.pplied at private tables and restaurants.
+about
+False
+
+
+
+
+He noticed, however, that his fellow pupils were not so fastidious.
+that his fellow pupils were not so fastidious.
+that
+False
+
+
+
+
+As we sit down to our plain but wholesome diet, I wonder how many of us are sensible of our good fortune.
+As we sit down to our plain but wholesome diet
+As
+False
+
+
+
+
+You have been refreshed, and have reinforced your strength; you will soon be ready to resume your studies, and thus, also, take in a supply of mental food, for, as you are all aware, or ought to be aware, the mind needs to be fed as well as the body.
+for, as you are all aware, or ought to be aware, the mind needs to be fed as well as the body.
+for
+True
+
+
+
+
+"Really, Wilkins," said Hector, in a low tone, "this is getting serious.
+in a low tone, "this is getting serious.
+in
+True
+
+
+
+
+He wouldn't like our dinner any better than we did; but he is better off, for he needn't eat it."
+for he needn't eat it."
+for
+False
+
+
+
+
+Just then pleasant fumes were wafted to the boys' nostrils, and they saw through the open window, with feelings that cannot well be described, a pair of roast chickens carried from the kitchen to the dining-room.
+with feelings that cannot well be described, a pair of roast chickens carried from the kitchen to the dining-room.
+with
+True
+
+
+
+
+During the life of Mr. Roscoe, whom he regarded as his father, he had a liberal allowance--liberal beyond his needs--and out of it had put by somewhat over a hundred dollars.
+During the life of Mr. Roscoe, whom he regarded as his father
+During
+True
+
+
+
+
+At the time he was saving his money, he regarded himself as the heir and future possessor of the estate, and had no expectation of ever needing it.
+At the time he was saving his money
+At
+False
+
+
+
+
+At the time he was saving his money, he regarded himself as the heir and future possessor of the estate, and had no expectation of ever needing
+At the time he was saving his money
+At
+False
+
+
+
+
+No sooner was school out, than he asked Wilkins to accompany him to the baker's, that he might make up for the deficiencies of Mr. Smith's meager table.
+than he asked Wilkins to accompany him to the baker's, that he might make up for the deficiencies of Mr. Smith's meager table.
+than
+True
+
+
+
+
+"I suppose, if I guide you, you'll stand treat, Roscoe?" said Wilkins.
+if I guide you, you'll stand treat, Roscoe?" said Wilkins.
+if
+True
+
+
+
+
+"Then let us go," said his schoolfellow, with alacrity.
+with alacrity.
+with
+False
+
+
+
+
+Thank you, Roscoe, for inviting me."
+for inviting me."
+for
+False
+
+
+
+
+As they approached the school grounds, John Bates came running to meet them.
+As they approached the school grounds
+As
+False
+
+
+
+
+"For a walk," answered Wilkins, with a warning glance at Hector.
+with a warning glance at Hector.
+with
+False
+
+
+
+
+What, defy the wishes, the mandates, of Jim Smith, the king of the school and the tyrant of all the small boys!
+of Jim Smith, the king of the school and the tyrant of all the small boys!
+of
+True
+
+
+
+
+With a look that seemed to say, "Your fate be on your own head!"
+With a look that seemed to say, "Your fate be on your own head!"
+With
+True
+
+
+
+
+"Has the boy no self-respect?" asked Hector, in a tone of disgust.
+in a tone of disgust.
+in
+False
+
+
+
+
+On account of eating at different tables, they had not met during the noon intermission.
+On account of eating at different tables
+On
+False
+
+
+
+
+At any rate, there had not been time to settle the question of subserviency.
+At any rate, there had not been time to settle the question of subserviency.
+At
+True
+
+
+
+
+Through the afternoon session Jim had been anticipating the signal punishment which he intended to inflict upon the newcomer.
+Through the afternoon session Jim had been anticipating the signal punishment which he intended to inflict upon the newcomer.
+Through
+False
+
+
+
+
+"Where's that new boy?" asked Jim, as he left the schoolroom.
+as he left the schoolroom.
+as
+False
+
+
+
+
+"They seemed to be in a hurry," said Jim, with a sneer.
+with a sneer.
+with
+False
+
+
+
+
+"When you see them coming, Bates, go and tell Roscoe I want to see him," said Jim, with the air of an autocrat.
+with the air of an autocrat.
+with
+False
+
+
+
+
+In the present instance, there was hardly a boy who had not at some time or other felt the weight of Jim's fist, and, as there is an old saying that "misery loves company," it was not, perhaps, a matter of wonder that they looked forward with interest to seeing another suffer the same ill-treatment which they had on former occasions received!
+In the present instance, there was hardly a boy who had not at some time or other felt the weight of Jim's fist, and, as there is an old saying that "misery loves company, " it was not, perhaps
+In
+True
+
+
+
+
+"Where's the new boy?" he demanded, with a frown.
+with a frown.
+with
+False
+
+
+
+
+" repeated Jim, with an ominous frown.
+with an ominous frown.
+with
+False
+
+
+
+
+"What would you advise me to do, boys?" asked Jim, with the air of a monarch asking the opinion of his counselors.
+with the air of a monarch asking the opinion of his counselors.
+with
+False
+
+
+
+
+If he is going to side with this young rascal he must take the consequences.
+If he is going to side with this young rascal he must take the consequences.
+If
+False
+
+
+
+
+Carver's field was a tract, several acres in extent, of pasture land, sloping down to one corner, where a brook trickled along quietly.
+of pasture land
+of
+False
+
+
+
+
+Here three large trees were located, under whose spreading branches the boys, in the intervals of study, used often to stretch themselves for a chat or engage in some schoolboy games, such as nimble peg or quoits.
+under whose spreading branches the boys, in the intervals of study
+under
+True
+
+
+
+
+As this suggestion was flattering to the pride of the "boss," it was graciously received.
+As this suggestion was flattering to the pride of the "boss, " it was graciously received.
+As
+True
+
+
+
+
+Boys, follow me, if you want to see some fun."
+if you want to see some fun."
+if
+False
+
+
+
+
+Jim started with his loose stride for the field, where he expected to meet his adversary, or, rather, victim, for so he considered him, and the smaller boys followed him with alacrity.
+for so he considered him, and the smaller boys followed him with alacrity.
+for
+True
+
+
+
+
+Upon him immediately Jim frowned ominously.
+Upon him immediately Jim frowned ominously.
+Upon
+False
+
+
+
+
+"Be careful what you say in future, young fellow!" said Jim, sternly; "that is, if you are a friend of mine.
+if you are a friend of mine.
+if
+False
+
+
+
+
+If you are going over to Roscoe, you can go, and I shall know how to treat you."
+If you are going over to Roscoe
+If
+False
+
+
+
+
+In future be careful what you say.
+In future be careful what you say.
+In
+False
+
+
+
+
+By this time Wilkins and Roscoe had reached the clump of big trees, and had seated themselves under their ample branches.
+By this time Wilkins and Roscoe had reached the clump of big trees, and had seated themselves under their ample branches.
+By
+True
+
+
+
+
+Then, for the first time, glancing backward toward the school, they became aware of the advancing troop of boys.
+for the first time
+for
+False
+
+
+
+
+He was, on the whole, well disposed toward Hector, and he certainly disliked Jim heartily, but he did not allow his judgment to be swayed by his preferences, and he could foresee but one issue to the impending conflict.
+on the whole
+on
+False
+
+
+
+
+There was no time for any further conversation, for Jim and his followers were close at hand.
+for Jim and his followers were close at hand.
+for
+False
+
+
+
+
+"I mean this, Jim Smith, that you have no authority over me and never will have.
+that you have no authority over me and never will have.
+that
+False
+
+
+
+
+"You'll pay for this," he howled, pulling off his coat, in furious haste.     CHAPTER XIII.
+in furious haste.     CHAPTER XIII.
+in
+False
+
+
+
+
+Hector was three inches shorter, and more than as many years younger, than Jim.
+than Jim.
+than
+False
+
+
+
+
+But his figure was well proportioned and strongly put together, as the boys could see.
+as the boys could see.
+as
+False
+
+
+
+
+On the other hand; Jim Smith was loosely put together, and, though tall, he was not well proportioned.
+On the other hand; Jim Smith was loosely put together, and, though tall
+On
+True
+
+
+
+
+He reeled, and came near falling.ly be said, also, that his astonishment was as great as his indignation, and that was unbounded.
+that his astonishment was as great as his indignation, and that was unbounded.
+that
+True
+
+
+
+
+Already the matter had come to a sterner arbitrament, and he stood on the alert, all his senses under absolute control, watching his big antagonist, and, from the expression of his face, seeking to divine his next mode of attack.
+from the expression of his face
+from
+False
+
+
+
+
+He had this advantage over Jim, that he was cool and collected, while Jim was angry and rendered imprudent by his anger.
+that he was cool and collected, while Jim was angry and rendered imprudent by his anger.
+that
+True
+
+
+
+
+Notwithstanding his first repulse, he did not fully understand that the new boy was a much more formidable opponent than he anticipated.
+Notwithstanding his first repulse
+Notwithstanding
+False
+
+
+
+
+He, therefore, rushed forward again, with the same impetuosity as before, and was received in precisely the same way.
+with the same impetuosity as before, and was received in precisely the same way.
+with
+True
+
+
+
+
+He, therefore, rushed forward again, with the same impetuosity as before, and was received in precisely the same way.ntenance, while Hector was still absolutely unhurt.
+with the same impetuosity as before, and was received in precisely the same way.ntenance, while Hector was still absolutely unhurt.
+with
+True
+
+
+
+
+Carried away by the excitement of the moment, Wilkins, who, as we have said, was disposed to espouse the side of Hector, broke into a shout of encouragement.
+as we have said, was disposed to espouse the side of Hector, broke into a shout of encouragement.
+as
+True
+
+
+
+
+If there was anything that could increase the anger and mortification of the tyrant it was these signs of failing allegiance.
+If there was anything that could increase the anger and mortification of the tyrant it was these signs of failing allegiance.
+If
+False
+
+
+
+
+Somewhere in his Greek reader, Hector had met with a saying attributed to Pindar, that "boldness is the beginning of victory."
+that "boldness is the beginning of victory."
+that
+False
+
+
+
+
+He did not content himself, therefore, with parrying, or simply repelling the blow of his antagonist, but he on his part assumed the offensive.
+with parrying, or simply repelling the blow of his antagonist, but he on his part assumed the offensive.
+with
+True
+
+
+
+
+When, for the third time, he fell back, with his young opponent standing erect and vigorous, the enthusiasm of the boys overcame the limits of prudence.
+for the third time, he fell back, with his young opponent standing erect and vigorous, the enthusiasm of the boys overcame the limits of prudence.
+for
+True
+
+
+
+
+When, for the third time, he fell back, with his young opponent standing erect and vigorous, the enthusiasm of the boys overcame the limits of prudence.
+for the third time, he fell back, with his young opponent standing erect and vigorous, the enthusiasm of the boys overcame the limits of prudence.
+for
+True
+
+
+
+
+I'll thrash you one by one, as I have often done before."
+as I have often done before."
+as
+False
+
+
+
+
+he said, with what was intended to be withering sarcasm.
+with what was intended to be withering sarcasm.
+with
+False
+
+
+
+
+Jim Smith, as he walked back to the institute, nursing his wrath, felt very much like a dethroned king.
+as he walked back to the institute
+as
+False
+
+
+
+
+Should he complain to his uncle?tting his defeat, unless he could gloss over the story in some way.
+unless he could gloss over the story in some way.
+unless
+False
+
+
+
+
+On reaching the school he sought his dormitory, and carefully wiped away the blood from his face.
+On reaching the school he sought his dormitory, and carefully wiped away the blood from his face.
+On
+True
+
+
+
+
+As a general thing, his nephew brought few complaints, for he took the responsibility of punishing boys he did not like himself.
+As a general thing
+As
+False
+
+
+
+
+"What has he been doing?" asked Socrates, in surprise.
+in surprise.
+in
+False
+
+
+
+
+"What has he been doing?" asked Socrates, in surprise.
+in surprise.
+in
+False
+
+
+
+
+ago," said Jim, in some embarrassment.
+in some embarrassment.
+in
+False
+
+
+
+
+"Ye-es, of course."
+of course."
+of
+False
+
+
+
+
+"He will find that I do not tolerate any defiance of authority.k of it after vespers."  "Thank you, uncle."  "He'll get a raking down!" thought Jim, with gratification.
+with gratification.
+with
+False
+
+
+
+
+During this time they were expected to be preparing their lessons for the next day.
+During this time they were expected to be preparing their lessons for the next day.
+During
+False
+
+
+
+
+The service was generally read by Socrates Smith, A. M., in person.
+in person.
+in
+False
+
+
+
+
+I hoped he would be an acquisition, that by his obedience and his fidelity to duty he would shed luster on our school."
+that by his obedience and his fidelity to duty he would shed luster on our school."
+that
+False
+
+
+
+
+On the very first day of his residence here he brutally assaults one of our numbers, my nephew, and displays the savage instincts of a barbarian.
+On the very first day of his residence here he brutally assaults one of our numbers
+On
+False
+
+
+
+
+Hector rose calmly, and faced the principal, by no means awe-stricken at the grave arraignment to which he had listened.
+by no means awe-stricken at the grave arraignment to which he had listened.
+by
+False
+
+
+
+
+Hector rose calmly, and faced the principal, by no means awe-stricken at the grave arraignment to which he had listened.
+by no means awe-stricken at the grave arraignment to which he had listened.
+by
+False
+
+
+
+
+This he did without the slightest provocation, and I defended myself, as I had a right to do."
+as I had a right to do."
+as
+False
+
+
+
+
+muttered Jim, in a tone audible to his uncle.
+in a tone audible to his uncle.
+in
+False
+
+
+
+
+"I regret to say, sir, that he has made a false statement.
+that he has made a false statement.
+that
+False
+
+
+
+
+On my return from a walk he sent a boy summoning me to his presence.
+On my return from a walk he sent a boy summoning me to his presence.
+On
+False
+
+
+
+
+As he was not a teacher, and had no more authority over me than I over him, I declined to obey, but sent word that if he wished to see me he could come where I was.
+As he was not a teacher, and had no more authority over me than I over him
+As
+True
+
+
+
+
+I regret, however, that you have exhibited such a quarrelsome disposition."
+that you have exhibited such a quarrelsome disposition."
+that
+False
+
+
+
+
+"Probably you will not be in a hurry to attack him again," said Socrates, under the impression that Hector had got the worst of it.
+under the impression that Hector had got the worst of it.
+under
+False
+
+
+
+
+On the other hand, Hector felt grateful for his intercession, and an intimacy sprang up between them.
+On the other hand
+On
+False
+
+
+
+
+A few days afterward, on a half holiday, Mr. Crabb said: "Roscoe, I am going out for a walk.
+on a half holiday, Mr. Crabb said: "Roscoe, I am going out for a walk.
+on
+True
+
+
+
+
+"Mr. Crabb," he said, after they were fairly on their way,
+after they were fairly on their way
+after
+False
+
+
+
+
+"I wonder, Mr. Crabb, you are willing to stay at Smith Institute, as usher to such a man as Mr. Smith."
+as usher to such a man as Mr. Smith."
+as
+False
+
+
+
+
+My lad," he said, after a pause, "I have a great mind to confide in you; I want one friend to whom I can talk unreservedly."
+after a pause, "I have a great mind to confide in you; I want one friend to whom I can talk unreservedly."
+after
+True
+
+
+
+
+I sometimes see the boys looking at my poor suit, as if they wondered why I dressed so badly.
+as if they wondered why I dressed so badly.
+as
+False
+
+
+
+
+It is not penuriousness, as some of the boys may think--it is poverty that prevents me from attiring myself more becomingly."
+as some of the boys may think--it is poverty that prevents me from attiring myself more becomingly."
+as
+False
+
+
+
+
+Of that I am sure.
+Of that I am sure.
+Of
+False
+
+
+
+
+"Is that all?" asked Hector, in amazement.
+in amazement.
+in
+False
+
+
+
+
+"You are not married?" asked Hector, in surprise.
+in surprise.
+in
+False
+
+
+
+
+To her I devote three-quarters of my salary, and this leaves me very little for myself.
+To her I devote three-quarters of my salary, and this leaves me very little for myself.
+To
+True
+
+
+
+
+"Yes, I understand," said Hector, in a tone of sympathy.
+in a tone of sympathy.
+in
+False
+
+
+
+
+For myself, I might take the risk, but I should not feel justified in exposing my sister to the hazard of possible want."
+For myself
+For
+False
+
+
+
+
+Indeed, he would hesitate to turn me adrift, for he would not be sure of getting another teacher to take my place for the same beggarly salary."
+for he would not be sure of getting another teacher to take my place for the same beggarly salary."
+for
+False
+
+
+
+
+He wrote to a boy of his acquaintance, living in New York, who, he had heard, was in want of a private tutor, and recommended Mr. Crabb, in strong terms, for that position.
+in strong terms, for that position.
+in
+True
+
+
+
+
+He did this sincerely, for he had found the usher to be a good teacher, and well versed in the studies preparatory to college.
+for he had found the usher to be a good teacher, and well versed in the studies preparatory to college.
+for
+True
+
+
+
+
+He did not think it best to mention this to Mr. Crabb, for the answer might be unfavorable, and then his hopes would have been raised only to be dashed to the earth.
+for the answer might be unfavorable, and then his hopes would have been raised only to be dashed to the earth.
+for
+True
+
+
+
+
+"I say, though, Roscoe, I wouldn't go to walk with him again."
+though, Roscoe, I wouldn't go to walk with him again."
+though
+True
+
+
+
+
+"The boys will say that, you are trying to get into his good graces, so he'll let you off easy in your lessons."
+so he'll let you off easy in your lessons."
+so
+False
+
+
+
+
+Hector did not reply, but he felt more than ever glad that he had written a letter which might possibly bring the poor usher more profitable and, at the same time, agreeable employment.
+at the same time, agreeable employment.
+at
+True
+
+
+
+
+Just then a sharp cry was heard, as of a boy in pain.
+as of a boy in pain.
+as
+False
+
+
+
+
+His name was Tommy Cooper, as he was called at home.
+as he was called at home.
+as
+False
+
+
+
+
+In fact, the poor boy was suffering from that most distressing malady, homesickness.
+In fact
+In
+False
+
+
+
+
+I am sorry to say that a homesick boy in a boarding school does not meet with much sympathy.ose boys who have once experienced the same malady are half ashamed of it, and, if they remember it at all, remember it as a mark of weakness.
+if they remember it at all
+if
+False
+
+
+
+
+It will never seem like home, of course, but you will get acquainted with some of the boys, and will join in their games, and then time will pass more pleasantly."
+of course, but you will get acquainted with some of the boys, and will join in their games, and then time will pass more pleasantly."
+of
+True
+
+
+
+
+It will never seem like home, of course, but you will get acquainted with some of the boys, and will join in their games, and then time will pass more pleasantly."ys are very rough," said the little boy.
+of course, but you will get acquainted with some of the boys, and will join in their games, and then time will pass more pleasantly."ys are very rough, " said the little boy.
+of
+True
+
+
+
+
+asked Tommy, looking up, with interest.
+with interest.
+with
+False
+
+
+
+
+"I didn't like the school very well; but I was much older than you when I came here, and, besides, I didn't leave behind me so pleasant a home.
+besides, I didn't leave behind me so pleasant a home.
+besides
+True
+
+
+
+
+"Yes, if that's his name."
+if that's his name."
+if
+False
+
+
+
+
+"Yes, if he needs it."
+if he needs it."
+if
+False
+
+
+
+
+We now come to the few minutes preceding the return of Hector from his walk, as indicated in the last chapter.
+as indicated in the last chapter.
+as
+False
+
+
+
+
+Tommy Cooper was sitting in the school yard, with a disconsolate look, when Jim Smith, who was never happier than when he was bullying other boys, espied him.
+with a disconsolate look, when Jim Smith, who was never happier than when he was bullying other boys, espied him.
+with
+True
+
+
+
+
+"It's a shame!" said one, in a low voice.
+in a low voice.
+in
+False
+
+
+
+
+But, of course, there was no chance for him.
+of course, there was no chance for him.
+of
+True
+
+
+
+
+He came rushing round the corner of the building, and comprehended, at a glance, what was going on.
+at a glance, what was going on.
+at
+True
+
+
+
+
+If there was anyone whom Jim Smith did not want to see at this moment, it was Hector Roscoe.
+If there was anyone whom Jim Smith did not want to see at this moment
+If
+False
+
+
+
+
+As he spoke he gave another toss.
+As he spoke he gave another toss.
+As
+False
+
+
+
+
+The blow was returned with interest, and, in the heat of his indignation, Hector followed it up with such a volley that the bully retreated in discomfiture, and was glad to withdraw from the contest.
+in the heat of his indignation, Hector followed it up with such a volley that the bully retreated in discomfiture, and was glad to withdraw from the contest.
+in
+True
+
+
+
+
+If you annoy Tommy Cooper again, you'll hear from me."
+If you annoy Tommy Cooper again
+If
+False
+
+
+
+
+It would be natural to suppose that Jim Smith, relying upon his influence with his uncle, would have reported this last "outrage," as he chose to consider it, to the principal, thus securing the punishment of Hector.
+to the principal
+to
+False
+
+
+
+
+But he was crafty, and considered that no punishment Hector was likely to receive would satisfy him.ll-used boy, Hector was probably too spirited to submit to, and, under these circumstances, it would hardly have been inflicted.
+under these circumstances, it would hardly have been inflicted.
+under
+True
+
+
+
+
+Besides, Jim was aware that the offense for which Hector had attacked him was not likely, if made known, to secure sympathy.
+Besides, Jim was aware that the offense for which Hector had attacked him was not likely, if made known, to secure sympathy.
+Besides
+True
+
+
+
+
+Even his uncle would be against him, for he was fond of money, and had no wish to lose the new pupil, whose friends were well able to pay for him.
+for he was fond of money, and had no wish to lose the new pupil, whose friends were well able to pay for him.
+for
+True
+
+
+
+
+Jim was going upstairs one day when, through the door of his uncle's chamber, which chanced to be open, he saw a wallet lying on the bureau.
+through the door of his uncle's chamber, which chanced to be open, he saw a wallet lying on the bureau.
+through
+True
+
+
+
+
+On the impulse of the moment, he walked in on tiptoes, secured the wallet, and slipped it hurriedly into his pocket.
+On the impulse of the moment
+On
+False
+
+
+
+
+On the impulse of the moment, he walked in on tiptoes, secured the wallet, and slipped it hurriedly into his pocket.d bolted himself into his own room.
+On the impulse of the moment
+On
+False
+
+
+
+
+There were eight five-dollar bills and ten dollars in small bills, besides a few papers, which may be accurately described as of no value to anyone but the owner.
+besides a few papers, which may be accurately described as of no value to anyone but the owner.
+besides
+True
+
+
+
+
+He, as well as his uncle, was fond of money--a taste which, unfortunately, as he regarded it, he was unable to gratify.
+as he regarded it, he was unable to gratify.
+as
+True
+
+
+
+
+He made up the deficiency, in part, by compelling them to contribute to his pleasures.
+in part, by compelling them to contribute to his pleasures.
+in
+True
+
+
+
+
+If any boy purchased candy, or any other delicacy, Jim, if he learned the fact, required him to give him a portion, just as the feudal lords exacted tribute from their serfs and dependents.
+If any boy purchased candy, or any other delicacy
+If
+True
+
+
+
+
+If any boy purchased candy, or any other delicacy, Jim, if he learned the fact, required him to give him a portion, just as the feudal lords exacted tribute from their serfs and dependents.ead, for a supply of money to spend as he chose.
+If any boy purchased candy, or any other delicacy
+If
+True
+
+
+
+
+As he or one of the two boys who roomed with him might be in the room, he looked first through the keyhole.
+As he or one of the two boys who roomed with him might be in the room
+As
+False
+
+
+
+
+he said to himself, in a tone of satisfaction.
+in a tone of satisfaction.
+in
+False
+
+
+
+
+Then, with a look of satisfaction, he left the room, shutting the door carefully behind him.
+with a look of satisfaction, he left the room
+with
+True
+
+
+
+
+"There," he said to himself, with exultation.
+with exultation.
+with
+False
+
+
+
+
+He was rather annoyed, as he walked along the corridor, back to his own room, to encounter Wilkins.
+as he walked along the corridor
+as
+False
+
+
+
+
+Perhaps Jim Smith would not have felt quite so complacent, if he had known that at the time he entered Hector's room it was occupied, though he could not see the occupant.
+if he had known that at the time he entered Hector's room it was occupied, though he could not see the occupant.
+if
+True
+
+
+
+
+Perhaps Jim Smith would not have felt quite so complacent, if he had known that at the time he entered Hector's room it was occupied, though he could not see the occupant.s, was in the closet, concealed from the view of anyone entering the room, yet so placed that he could see through the partially open door what wras passing in the room.
+if he had known that at the time he entered Hector's room it was occupied, though he could not see the occupant.s, was in the closet
+if
+True
+
+
+
+
+When he saw Jim Smith enter he was surprised, for he knew that that young man was not on visiting terms with the boy who had discomfited and humiliated him.
+for he knew that that young man was not on visiting terms with the boy who had discomfited and humiliated him.
+for
+False
+
+
+
+
+He did not have long to wait for an answer though not a real one; but actions, as men have often heard, speak louder than words.
+as men have often heard
+as
+False
+
+
+
+
+The wallet he recognized at once, for he had more than once seen Socrates take it out of his pocket.
+for he had more than once seen Socrates take it out of his pocket.
+for
+False
+
+
+
+
+Within five minutes Jim Smith has been here and left a wallet of money."
+Within five minutes Jim Smith has been here and left a wallet of money."
+Within
+False
+
+
+
+
+As he spoke, Ben went to Hector's pants and drew out the wallet.
+As he spoke
+As
+False
+
+
+
+
+As he spoke, Ben went to Hector's pants and drew out the wallet.ismay.
+As he spoke
+As
+False
+
+
+
+
+"All I can say is, that it's a very mean way," said Wilkins in disgust.
+that it's a very mean way, " said Wilkins in disgust.
+that
+True
+
+
+
+
+Socrates Smith was, ordinarily, so careful of his money, that it was a very remarkable inadvertence to leave it on the bureau.
+that it was a very remarkable inadvertence to leave it on the bureau.
+that
+False
+
+
+
+
+With an ill grace--for Socrates hated to part with his money--he put his hand into the pocket where he usually kept his wallet.
+With an ill grace--for Socrates hated to part with his money--he put his hand into the pocket where he usually kept his wallet.
+With
+False
+
+
+
+
+"Really, Mrs. Smith," he was saying, "it seems to me you are always wanting money--why, bless my soul!" and such an expression of consternation and dismay swept over his face, that his wife hurriedly inquired:  "What is the matter, Mr. Smith?"  "
+that his wife hurriedly inquired:  "What is the matter, Mr. Smith?"  "
+that
+True
+
+
+
+
+"Gone!" echoed his wife, in alarm.
+in alarm.
+in
+False
+
+
+
+
+If I don't find it, Sophronia, I am a ruined man!"
+If I don't find it
+If
+False
+
+
+
+
+This was, of course, an exaggeration, but it showed the poignancy of the loser's regret.
+of course, an exaggeration, but it showed the poignancy of the loser's regret.
+of
+True
+
+
+
+
+"I remember where I left it, now," he said; "I was up in the chamber an hour since, and, while changing my coat, took out my wallet, and laid it on the bureau.
+while changing my coat, took out my wallet, and laid it on the bureau.
+while
+True
+
+
+
+
+There was not a square inch of the cheap Kidderminster carpet that he did not scan earnestly, greedily, but, alas!if it had ever been there, had mysteriously taken to itself locomotive powers, and wandered away into the realm of the unknown and the inaccessible.
+alas!if it had ever been there, had mysteriously taken to itself locomotive powers, and wandered away into the realm of the unknown and the inaccessible.
+alas!if
+True
+
+
+
+
+He snapped his teeth together in stern anger, as he determined that he would ferret out the miserable thief, and subject him to condign punishment.
+as he determined that he would ferret out the miserable thief, and subject him to condign punishment.
+as
+True
+
+
+
+
+"Sure!" he repeated, in a hollow tone. "
+in a hollow tone. "
+in
+False
+
+
+
+
+Think, rather, of the wallet, with nearly fifty dollars in bills."
+of the wallet, with nearly fifty dollars in bills."
+of
+True
+
+
+
+
+exclaimed Jim, in innocent wonder; "what is it?"
+in innocent wonder; "what is it?"
+in
+False
+
+
+
+
+"A wallet, with a large amount of money in it!"
+with a large amount of money in it!"
+with
+False
+
+
+
+
+Of course Socrates told the story, now familiar to us, and already familiar to his nephew, though he did not suspect that.
+though he did not suspect that.
+though
+False
+
+
+
+
+Jim struck his forehead, as if a sudden thought had occurred to him.
+as if a sudden thought had occurred to him.
+as
+False
+
+
+
+
+he said, slowly, as if to himself; "no, I can't believe it."
+as if to himself; "no, I can't believe it."
+as
+True
+
+
+
+
+"I hardly like to tell, Uncle Socrates, for it implicates one of the boys."
+for it implicates one of the boys."
+for
+False
+
+
+
+
+"I will tell you, though I don't like to.
+though I don't like to.
+though
+False
+
+
+
+
+Half an hour since, I was coming upstairs, when I heard a door close, as I thought, and, directly afterward, saw Hector Roscoe hurrying up the stairs to the third floor.
+as I thought, and
+as
+True
+
+
+
+
+repeated Mr. Smith, in amazement.
+in amazement.
+in
+False
+
+
+
+
+"I will!" answered Socrates, with eagerness, "Come up, James, and you, Mrs. Smith, come up, too!"
+with eagerness, "Come up, James, and you, Mrs. Smith
+with
+True
+
+
+
+
+It was not unoccupied, for Ben Platt and Wilkins were there.
+for Ben Platt and Wilkins were there.
+for
+False
+
+
+
+
+he said, in a tone of disappointment; "the boy may have it about him.
+in a tone of disappointment; "the boy may have it about him.
+in
+False
+
+
+
+
+"Aha, Master Roscoe!" said Jim, gleefully, to himself; "I rather think I shall get even with you, and that very soon."     CHAPTER XIX.
+to himself; "I rather think I shall get even with you, and that very soon."     CHAPTER XIX.
+to
+True
+
+
+
+
+If he had noticed the peculiar and triumphantly malicious looks with which Jim Smith, the bully and tyrant, whom he had humiliated and deposed, regarded him, he might have been led to infer that some misfortune was in store for him.
+If he had noticed the peculiar and triumphantly malicious looks with which Jim Smith
+If
+False
+
+
+
+
+These were Ben Platt and Wil-kins, who had very good reasons, as we know, for doing so.
+as we know, for doing so.
+as
+True
+
+
+
+
+"I believe old Sock is going to pitch into Roscoe at vespers," said Ben, in a whisper, to his roommate.
+in a whisper, to his roommate.
+in
+True
+
+
+
+
+There was, indeed, about Socrates Smith an air of mystery, portentous and suggestive.
+about Socrates Smith an air of mystery, portentous and suggestive.
+about
+True
+
+
+
+
+He looked like one meditating a coup d'etat, or, perhaps, it might better be said, a coup de main, as the hand is with schoolmasters, generally, the instrument of attack.
+as the hand is with schoolmasters
+as
+False
+
+
+
+
+When the proper time arrived, Mr. Smith cleared his throat, as he always did before beginning to speak.
+as he always did before beginning to speak.
+as
+False
+
+
+
+
+"I have been proud of my pupils," continued the principal, "and it has given me pleasure to reflect that you all reflected credit, more or less, upon my teaching.
+upon my teaching.
+upon
+False
+
+
+
+
+In a word, while from time to time you may have indulged in little escapades, slightly-culpable, I have felt that you were all gentlemen."
+In a word, while from time to time you may have indulged in little escapades, slightly-culpable
+In
+True
+
+
+
+
+"What is all this leading to?"all this long preamble was to introduce an attack upon him.  "But," proceeded Socrates, after a pause, "I have this afternoon been painfully undeceived.
+after a pause, "I have this afternoon been painfully undeceived.
+after
+True
+
+
+
+
+I have learned, with inexpressible pain, that Smith Institute has received an ineffaceable stigma."
+with inexpressible pain, that Smith Institute has received an ineffaceable stigma."
+with
+True
+
+
+
+
+"I have learned," continued Socrates, with tragic intensity, "that I have nourished a viper in my bosom!
+with tragic intensity, "that I have nourished a viper in my bosom!
+with
+True
+
+
+
+
+Each one, except the three who were behind the scenes.
+except the three who were behind the scenes.
+except
+False
+
+
+
+
+Of these, Jim Smith, with an air of supreme satisfaction, looked in a sidelong way at Hector, unconscious the while that two pairs of eyes--those of Wilkins and Ben Platt--were fixed upon him.
+Of these
+Of
+False
+
+
+
+
+"I thought you would be surprised," said the principal, "except, of course, the miserable criminal.
+of course, the miserable criminal.
+of
+True
+
+
+
+
+But I will not keep you in suspense.ntaining a considerable sum of money, on the bureau in my chamber.
+on the bureau in my chamber.
+on
+False
+
+
+
+
+His tone was so impressive, and his statement so detailed, that no one could doubt that he had most convincing evidence of the absolute accuracy of what he said.
+that no one could doubt that he had most convincing evidence of the absolute accuracy of what he said.
+that
+False
+
+
+
+
+"I waited, however, till I was somewhat more calm before laying the matter before you.
+till I was somewhat more calm before laying the matter before you.
+till
+False
+
+
+
+
+If a flash of lightning had struck him where he sat, Hector could not have been more astonished.
+If a flash of lightning had struck him where he sat
+If
+False
+
+
+
+
+For a moment he was struck dumb, and did not move.
+For a moment he was struck dumb, and did not move.
+For
+True
+
+
+
+
+For a moment he was struck dumb, and did not move.coe!" repeated the principal. "
+For a moment he was struck dumb, and did not move.coe!" repeated the principal. "
+For
+True
+
+
+
+
+He sprang to his feet, and not only that, but he strode forward, blazing with passion, till he stood before Mr. Smith's desk and confronted him.
+till he stood before Mr. Smith's desk and confronted him.
+till
+False
+
+
+
+
+he said, in a ringing tone, "do I understand you to charge me with stealing a wallet of yours containing money?"
+in a ringing tone, "do I understand you to charge me with stealing a wallet of yours containing money?"
+in
+True
+
+
+
+
+Socrates Smith was staggered, for he had not expected this query from the accused.
+for he had not expected this query from the accused.
+for
+False
+
+
+
+
+shouted the boys, with one exception.
+with one exception.
+with
+False
+
+
+
+
+shouted the boys, with one exception.y distinctly, "I believe it!"
+with one exception.y distinctly, "I believe it!"
+with
+True
+
+
+
+
+Hector turned to the principal, and said, calmly:  "You see, Mr. Smith, that, in spite of your proof, these boys will not believe that your charge is well founded."
+that, in spite of your proof, these boys will not believe that your charge is well founded."
+that
+True
+
+
+
+
+In the second row back a boy was seen to rise.
+In the second row back a boy was seen to rise.
+In
+False
+
+
+
+
+The latter was surprised, for he was fully persuaded that the charge he had made was a true one, and Hector was a thief.
+for he was fully persuaded that the charge he had made was a true one, and Hector was a thief.
+for
+True
+
+
+
+
+As for Jim, his surprise was of a very disagreeable nature.
+As for Jim
+As
+False
+
+
+
+
+As for Jim, his surprise was of a very disagreeable nature.had digged for another should prove to be provided for himself.
+As for Jim
+As
+False
+
+
+
+
+"It's a base lie!" cried Jim, but his face was blanched, his manner was nervous and confused, and he looked guilty, if he were not so.
+if he were not so.
+if
+False
+
+
+
+
+"I beg your pardon, Uncle Socrates," said Jim, with contrition, "but I can't be silent when I am accused of things I don't do."
+with contrition, "but I can't be silent when I am accused of things I don't do."
+with
+True
+
+
+
+
+"So it appears, Platt, that you have brought a false charge against your fellow-pupil," said Mr. Smith, severely.
+that you have brought a false charge against your fellow-pupil, " said Mr. Smith
+that
+True
+
+
+
+
+If he took the wallet he would, of course, deny it."
+If he took the wallet he would, of course, deny it."
+If
+True
+
+
+
+
+"Mr. Smith," he said, "I have some evidence to offer."  "Out with it, sir," said the principal, angrily, for he was fighting against an inward conviction that his nephew was really the guilty party.
+for he was fighting against an inward conviction that his nephew was really the guilty party.
+for
+False
+
+
+
+
+"Out with it, sir," said the principal, angrily, for he was fighting against an inward conviction that his nephew was really the guilty party.ur nephew walking in the opposite direction.
+for he was fighting against an inward conviction that his nephew was really the guilty party.ur nephew walking in the opposite direction.
+for
+False
+
+
+
+
+If a look would have annihilated Wilkins, the look directed towards him by Jim Smith would have had that effect.
+If a look would have annihilated Wilkins
+If
+False
+
+
+
+
+The boys were by this time so incensed at Mr. Smith's evident effort to clear his nephew at the expense of Roscoe, that there was a very audible hiss, in which at least half a dozen joined.
+that there was a very audible hiss, in which at least half a dozen joined.
+that
+True
+
+
+
+
+If you do not at once exonerate me from this charge, which you know to be false, and write to my guardian retracting it, I will bring the matter before the nearest magistrate."
+If you do not at once exonerate me from this charge, which you know to be false, and write to my guardian retracting it
+If
+True
+
+
+
+
+into the matter," he said, hurriedly, "and report to the school hereafter.
+into the matter, " he said, hurriedly, "and report to the school hereafter.
+into
+True
+
+
+
+
+Among the boys of Smith Institute there was but one opinion on the subject of the principal's wallet.
+Among the boys of Smith Institute there was but one opinion on the subject of the principal's wallet.
+Among
+False
+
+
+
+
+As this phrase, which is well understood in English schools, may not be so clear to my readers, I will explain that Jim was to be refused notice by his schoolfellows, unless he should become aggressive, when he was to be noticed in a manner far from agreeable.
+As this phrase, which is well understood in English schools, may not be so clear to my readers
+As
+True
+
+
+
+
+They knew that Jim would seize the opportunity of attacking them singly, and in the absence of Hector, of whom he was afraid, and with good reason.
+of whom he was afraid, and with good reason.
+of
+True
+
+
+
+
+They concerted measures, accordingly, for defeating the common enemy.
+for defeating the common enemy.
+for
+False
+
+
+
+
+This naturally chafed him, for, having no intellectual resources, he found solitude oppressive.
+for
+for
+False
+
+
+
+
+In a rustic lane, much to his delight, he saw approaching him one of the boys who had so seriously offended him.
+In a rustic lane
+In
+False
+
+
+
+
+"I'm not," said Jim, in his old tone, "and it makes no difference whether you are or not."
+in his old tone, "and it makes no difference whether you are or not."
+in
+True
+
+
+
+
+"I can't think of any reason, unless because it was true," said Ben.
+unless because it was true, " said Ben.
+unless
+True
+
+
+
+
+"Well, if you want an answer I will give you one.
+if you want an answer I will give you one.
+if
+False
+
+
+
+
+"Well, he isn't here, though if he were it wouldn't make any difference.
+though if he were it wouldn't make any difference.
+though
+False
+
+
+
+
+From a clump of bushes, where he had lurked, unobserved hitherto, sprang Wilkins, and joined his friend.
+From a clump of bushes, where he had lurked
+From
+True
+
+
+
+
+he said, with a wicked glance.
+with a wicked glance.
+with
+False
+
+
+
+
+They regarded the usher with new respect for this display of courage, for which they had not given him credit.
+for which they had not given him credit.
+for
+False
+
+
+
+
+"Well, sir?"had nerved himself for the worst, and did not cower or show signs of fear, as Socrates expected he would.  "James tells me that you attacked him savagely this afternoon when he was having a little sport with two of his schoolfellows."
+as Socrates expected he would.  "James tells me that you attacked him savagely this afternoon when he was having a little sport with two of his schoolfellows."
+as
+False
+
+
+
+
+"Yes, if you choose to put it so.
+if you choose to put it so.
+if
+False
+
+
+
+
+I predict that the stupid folly which has characterized your course will, within six months, drive from you every scholar you have in your school!"
+within six months
+within
+False
+
+
+
+
+How was he to obtain another situation?ult immediately with Hector Roscoe, in whose judgment, boy as he was, he reposed great confidence.     CHAPTER XXII.
+in whose judgment, boy as he was, he reposed great confidence.     CHAPTER XXII.
+in
+True
+
+
+
+
+May I ask, Mr. Crabb, if you have formed any plans?"
+if you have formed any plans?"
+if
+False
+
+
+
+
+"No, except to seek a new position!" answered Crabb.
+except to seek a new position!" answered Crabb.
+except
+False
+
+
+
+
+If you can secure the position of his private tutor--"  "If I can, I will hail it as providential.
+If you can secure the position of his private tutor--"  "If I can
+If
+False
+
+
+
+
+I doubt whether he has since written to correct the false charge, as I required him to do.
+as I required him to do.
+as
+False
+
+
+
+
+If not, I shall owe it to myself to leave the school."
+If not
+If
+False
+
+
+
+
+I knew you had great faults, but I did not dream that you would stoop so low as to purloin money, as it seems you have done.
+as it seems you have done.
+as
+False
+
+
+
+
+I confess I am, for I thought better of you.
+for I thought better of you.
+for
+False
+
+
+
+
+As it is short, I subjoin it:
+As it is short
+As
+False
+
+
+
+
+I read to papa what you said of Mr. Crabb, and he says it is very apropos, as he had made up his mind to get me a tutor.
+as he had made up his mind to get me a tutor.
+as
+False
+
+
+
+
+He will give him sixty dollars a month and board, and he will have considerable time for himself, if he wants to study law or any other profession.
+if he wants to study law or any other profession.
+if
+False
+
+
+
+
+I don't know but a cousin may join me in my studies, in which case he will pay a hundred dollars per month, if that will be sastisfactory.
+in which case he will pay a hundred dollars per month, if that will be sastisfactory.
+in
+True
+
+
+
+
+For two years that has been my lot."
+For two years that has been my lot."
+For
+False
+
+
+
+
+Why can't you accompany me, Hector? from my kind and considerate guardian, as he styles himself," said Hector.
+as he styles himself, " said Hector.
+as
+True
+
+
+
+
+I shall find friends, and I am willing to work for my living, if need be."
+if need be."
+if
+False
+
+
+
+
+At this point one of the boys came to Mr. Crabb with a message from Socrates, desiring the usher to wait upon him at once.
+At this point one of the boys came to Mr. Crabb with a message from Socrates, desiring the usher to wait upon him at once.
+At
+True
+
+
+
+
+Socrates Smith appreciated the difficulty, and decided to take Mr. Crabb back, on condition that he would make an apology to Jim.
+on condition that he would make an apology to Jim.
+on
+False
+
+
+
+
+He did observe, however, that the usher entered his presence calm, erect and appearing by no means depressed, as he had expected.
+that the usher entered his presence calm
+that
+False
+
+
+
+
+"I remember, Mr. Smith, that you showed anger, and found fault with me."
+that you showed anger, and found fault with me."
+that
+True
+
+
+
+
+"I take it for granted, Mr. Crabb, that your means are limited," proceeded Socrates.
+that your means are limited, " proceeded Socrates.
+that
+True
+
+
+
+
+If I had not been poor I should not have accepted the position of teacher in Smith Institute for the pitiful salary of twenty dollars a month."
+If I had not been poor I should not have accepted the position of teacher in Smith Institute for the pitiful salary of twenty dollars a month."
+If
+False
+
+
+
+
+"Twenty dollars a month and your board, Mr. Crabb," said Socrates, with dignity, "I consider a very fair remuneration.
+with dignity, "I consider a very fair remuneration.
+with
+True
+
+
+
+
+"Twenty dollars a month and your board, Mr. Crabb," said Socrates, with dignity, "I consider a very fair remuneration..
+with dignity, "I consider a very fair remuneration..
+with
+True
+
+
+
+
+But, of course, this could not be.
+of course, this could not be.
+of
+True
+
+
+
+
+It was absolutely necessary for him, poor as he was, that he should be reinstated.
+that he should be reinstated.
+that
+False
+
+
+
+
+"The first is, that you shall apologize to my nephew for your unjustifiable attack upon him day before yesterday."
+that you shall apologize to my nephew for your unjustifiable attack upon him day before yesterday."
+that
+False
+
+
+
+
+At the end of this week you must leave me."
+At the end of this week you must leave me."
+At
+False
+
+
+
+
+"I am offered sixty dollars a month and board, with the possibility of a larger sum, in the event of extra service being demanded."
+with the possibility of a larger sum, in the event of extra service being demanded."
+with
+True
+
+
+
+
+This Mr. Crabb, whom he had considered to be under his thumb, as being wholly dependent upon him, was to receive a salary which he considered princely.
+as being wholly dependent upon him, was to receive a salary which he considered princely.
+as
+True
+
+
+
+
+Before closing this chapter I must take notice of one circumstance which troubled Mr. Smith, and in the end worked him additional loss.
+Before closing this chapter I must take notice of one circumstance which troubled Mr. Smith, and in the end worked him additional loss.
+Before
+True
+
+
+
+
+I have already said that Jim Smith, in appropriating his uncle's wallet, abstracted therefrom a five-dollar bill before concealing it in Hector's pocket.
+in appropriating his uncle's wallet
+in
+False
+
+
+
+
+Without stigmatizing him as a thief, he concluded that Jim meant to get Hector into trouble.
+Without stigmatizing him as a thief
+Without
+False
+
+
+
+
+"Then it may have been Ben Platt or Wilkins," said Jim, with a bright idea.
+with a bright idea.
+with
+False
+
+
+
+
+"Then it may have been Ben Platt or Wilkins," said Jim, with a bright idea.l, with a feeling of relief.
+with a bright idea.l, with a feeling of relief.
+with
+True
+
+
+
+
+"To be sure," answered Jim, with unblushing assurance.
+with unblushing assurance.
+with
+False
+
+
+
+
+"If I were you I would find out who did it, that is, if you don't think Roscoe did it."
+if you don't think Roscoe did it."
+if
+False
+
+
+
+
+he called out, in a voice ef authority.
+in a voice ef authority.
+in
+False
+
+
+
+
+"My uncle wants you," answered Jim, with malicious satisfaction.
+with malicious satisfaction.
+with
+False
+
+
+
+
+"Mr. Smith," said Ben Platt, in a spirited tone, "no one ever suspected me of dishonesty before.
+in a spirited tone, "no one ever suspected me of dishonesty before.
+in
+True
+
+
+
+
+Money doesn't generally walk off itself," he added, with a sneer.
+with a sneer.
+with
+False
+
+
+
+
+with the money for half an hour, according to your own confession," said Socrates.
+with the money for half an hour, according to your own confession, " said Socrates.
+with
+True
+
+
+
+
+"You seem to forget, sir, that there is another person who had an excellent chance to take the money," said Ben Platt.
+that there is another person who had an excellent chance to take the money, " said Ben Platt.
+that
+True
+
+
+
+
+"The discovery might not please you," said Socrates, with a sneer.
+with a sneer.
+with
+False
+
+
+
+
+If I can in any way help you discover the missing note, I will do so."
+If I can in any way help you discover the missing note
+If
+False
+
+
+
+
+At any rate, I am going to find out.
+At any rate
+At
+False
+
+
+
+
+If we can only prove the theft upon Jim, so that old Sock can't help believing that he stole the money, we shall be cleared; though, as to that, there isn't a scholar in school who would believe the charge against us."
+If we can only prove the theft upon Jim, so that old Sock can't help believing that he stole the money
+If
+True
+
+
+
+
+"Yes," answered the jeweler, in surprise.
+in surprise.
+in
+False
+
+
+
+
+It was a five-dollar bill on the Park Bank of New York, as he had already told the boys.
+as he had already told the boys.
+as
+False
+
+
+
+
+It was a five-dollar bill on the Park Bank of New York, as he had already told the boys.to repress his excitement, "will you examine the back of the bill, and see if there is any mark on it."
+as he had already told the boys.to repress his excitement, "will you examine the back of the bill, and see if there is any mark on it."
+as
+True
+
+
+
+
+The jeweler did as requested, and announced, after slight examination, that there was a cross on the back of the bill in the upper right hand corner.
+after slight examination, that there was a cross on the back of the bill in the upper right hand corner.
+after
+True
+
+
+
+
+To the wondering jeweler he explained his precise object in the inquiry he had made, and the boys were complimented by Mr. Washburn for their shrewdness.
+To the wondering jeweler he explained his precise object in the inquiry he had made, and the boys were complimented by Mr. Washburn for their shrewdness.
+To
+True
+
+
+
+
+The boys, upon their return to the school, sought out the principal.
+upon their return to the school, sought out the principal.
+upon
+True
+
+
+
+
+"I was sure you knew something about it," said Socrates, with a sneer.
+with a sneer.
+with
+False
+
+
+
+
+"Well, out with your information!" said the principal, roughly.
+out with your information!" said the principal
+out
+False
+
+
+
+
+I send you a statement, signed by two of my schoolmates, showing that the charge which Mr. Smith was in such a hurry to bring against me, in order to screen his nephew, who is the real thief, is wholly unfounded.
+in order to screen his nephew, who is the real thief
+in
+True
+
+
+
+
+I send you a statement, signed by two of my schoolmates, showing that the charge which Mr. Smith was in such a hurry to bring against me, in order to screen his nephew, who is the real thief, is wholly unfounded.
+in order to screen his nephew, who is the real thief
+in
+True
+
+
+
+
+In so doing, I have incurred his enmity, and that of his uncle, who, for more than one reason, is utterly unfit to conduct a school of this kind.
+In so doing
+In
+False
+
+
+
+
+As he had no affection for Hector, and did not care what became of him, this may, perhaps, excite surprise.
+As he had no affection for Hector, and did not care what became of him
+As
+True
+
+
+
+
+"Oh, of course!" sneered Guy.
+of course!" sneered Guy.
+of
+False
+
+
+
+
+On the whole, I am sorry he is going to leave my protection, for friends of the family may, perhaps, blame me."
+On the whole
+On
+False
+
+
+
+
+Mr. Roscoe thought so much on the subject, however, that the next day he went to Smith Institute to see Hector, without telling Guy where he was going.
+that the next day he went to Smith Institute to see Hector, without telling Guy where he was going.
+that
+True
+
+
+
+
+I took him, sir, when he was in danger of starving, and now he leaves me at a day's notice, after doing all he can to break up my school."
+after doing all he can to break up my school."
+after
+False
+
+
+
+
+I am surprised, Mr. Smith, that you should have taken his part."
+that you should have taken his part."
+that
+False
+
+
+
+
+Though partial to Jim, and not caring whether or not he bullied the other boys, as soon as he came to see that Jim's presence was endangering the school, he reprimanded him severely.
+Though partial to Jim, and not caring whether or not he bullied the other boys, as soon as he came to see that Jim's presence was endangering the school
+Though
+True
+
+
+
+
+He cared more for himself--for number one--than for anyone else in the universe.nd demanding, in the meantime, that his nephew should be sent away forthwith.
+in the meantime, that his nephew should be sent away forthwith.
+in
+True
+
+
+
+
+As to his own agency in the matter, he did not give much thought to that.
+As to his own agency in the matter
+As
+False
+
+
+
+
+say, in fact, Mr. Roscoe, that till your ward entered the school it was a happy and harmonious family.
+in fact, Mr. Roscoe, that till your ward entered the school it was a happy and harmonious family.
+in
+True
+
+
+
+
+"  "I don't defend Hector Roscoe," said Allan, "but he writes me that your nephew was a bully, who imposed upon his schoolfellows, and that he, by taking their part and stopping this tyranny, incurred his ill-will and yours.
+by taking their part and stopping this tyranny, incurred his ill-will and yours.
+by
+True
+
+
+
+
+As Hector has left you, I have only to settle your bill, and bid you good-day."
+As Hector has left you
+As
+False
+
+
+
+
+he said to himself, as he was returning home.
+as he was returning home.
+as
+False
+
+
+
+
+In the heart of each was a feeling of relief, which increased as each minute carried them farther away from the school.
+In the heart of each was a feeling of relief, which increased as each minute carried them farther away from the school.
+In
+True
+
+
+
+
+I don't mean, of course, that he hasn't fair capacity, but his taste doesn't lie that way.
+of course, that he hasn't fair capacity, but his taste doesn't lie that way.
+of
+True
+
+
+
+
+By the way, he knows nothing of the change in my circumstances.
+By the way
+By
+False
+
+
+
+
+As they emerged from the depot a bright-faced boy came up eagerly and greeted them.
+As they emerged from the depot a bright-faced boy came up eagerly and greeted them.
+As
+False
+
+
+
+
+"I'll try not to worry you any more than I can help."  "I have no misgivings," said Mr. Crabb, as he mentally contrasted his new pupil with Jim Smith, and two or three others at the institute, who had been a frequent source of trouble and annoyance.
+as he mentally contrasted his new pupil with Jim Smith, and two or three others at the institute, who had been a frequent source of trouble and annoyance.
+as
+True
+
+
+
+
+I beg your pardon, Mr. Crabb, for my familiarity.
+for my familiarity.
+for
+False
+
+
+
+
+Arrived there, Mr. Crabb was shown into a spacious chamber, on the third floor, furnished with a luxury to which the poor usher was quite unaccustomed.
+on the third floor
+on
+False
+
+
+
+
+Since he had met his friend, his father had died, and he had been reduced from the heir of wealth to a penniless orphan.
+Since he had met his friend
+Since
+False
+
+
+
+
+Of this last change Walter knew nothing, but Hector did not mean long to leave him in ignorance.
+Of this last change Walter knew nothing, but Hector did not mean long to leave him in ignorance.
+Of
+True
+
+
+
+
+At dinner the two newcomers saw Mr. Ross, from whom they received a friendly welcome.
+At dinner the two newcomers saw Mr. Ross, from whom they received a friendly welcome.
+At
+True
+
+
+
+
+Of one thing you may be assured, your scholarship won't be severely taxed in educating him.
+Of one thing you may be assured
+Of
+False
+
+
+
+
+Of one thing you may be assured, your scholarship won't be severely taxed in educating him.y, but he isn't a prodigy of learning."
+Of one thing you may be assured
+Of
+False
+
+
+
+
+I am glad, Hector, that you were able to pay Walter a visit at this time."
+that you were able to pay Walter a visit at this time."
+that
+False
+
+
+
+
+As the usher looked about him and saw costly books, engravings, furniture and pictures, he could well understand that in such surroundings the merchant could take solid comfort.
+As the usher looked about him and saw costly books
+As
+False
+
+
+
+
+"Well, Hector, so you don't propose to go back to school," said the merchant.
+so you don't propose to go back to school, " said the merchant.
+so
+True
+
+
+
+
+"Yes, sir; but, as I said, circumstances have changed.
+as I said, circumstances have changed.
+as
+True
+
+
+
+
+I always understood that your father left a large estate," said Mr. Ross, in surprise.
+in surprise.
+in
+False
+
+
+
+
+In answer, Hector told the story of the revelation made to him by Allan Roscoe, after his father's death.
+In answer
+In
+False
+
+
+
+
+In answer, Hector told the story of the revelation made to him by Allan Roscoe, after his father's death.re," he concluded, "that I am penniless, and a dependent upon Mr. Allan Roscoe's generosity."
+In answer
+In
+False
+
+
+
+
+"This is a most extraordinary story!" said the merchant, after a pause.
+after a pause.
+after
+False
+
+
+
+
+"Never, Mr. Ross," answered Hector, with emphasis.
+with emphasis.
+with
+False
+
+
+
+
+obtain a situation of some kind in the city, if I can.
+if I can.
+if
+False
+
+
+
+
+"I can probably serve you, then, after a while.
+after a while.
+after
+False
+
+
+
+
+For the present, stay here as Walter's companion."
+For the present, stay here as Walter's companion."
+For
+True
+
+
+
+
+"You are two years, at least, behind Hector, and cannot spare the time as well as he."  "Hector will have to go round alone," objected Walter.
+at least, behind Hector, and cannot spare the time as well as he."  "Hector will have to go round alone, " objected Walter.
+at
+True
+
+
+
+
+"It will do him no harm to get acquainted with the different parts of the city, as that will be a kind of knowledge he may require if he should obtain a situation."
+as that will be a kind of knowledge he may require if he should obtain a situation."
+as
+False
+
+
+
+
+This, with perhaps an hour or more devoted to study in the afternoon or evening, will enable him to make fair progress."
+with perhaps an hour or more devoted to study in the afternoon or evening, will enable him to make fair progress."
+with
+True
+
+
+
+
+This arrangement struck Walter favorably, as he could, whenever he desired it, spend the whole afternoon with Hector.
+as he could, whenever he desired it
+as
+True
+
+
+
+
+This arrangement struck Walter favorably, as he could, whenever he desired it, spend the whole afternoon with Hector.to act upon the suggestion made by Mr. Ross.
+as he could, whenever he desired it
+as
+True
+
+
+
+
+He made his way to the lake, and took passage in one of the skiffs which, in charge of a skilled oarsman, makes a tour of the pretty and picturesque sheet of water.
+in charge of a skilled oarsman
+in
+False
+
+
+
+
+It was a leisurely walk, for he had no scruple in stopping wherever he saw anything in the streets or in the shop windows that seemed to him worthy of attention.
+for he had no scruple in stopping wherever he saw anything in the streets or in the shop windows that seemed to him worthy of attention.
+for
+False
+
+
+
+
+About the corner of Canal Street he was very much surprised at a boy who was on his knees, blacking the boots of an elderly gentleman--a boy whom he recognized at once as the son of a man who had for years been in his father's employ as gardener at Castle Roscoe.
+About the corner of Canal Street he was very much surprised at a boy who was on his knees, blacking the boots of an elderly gentleman--a boy whom he recognized at once as the son of a man who had for years been in his father's employ as gardener at Castle Roscoe.
+About
+True
+
+
+
+
+"Larry Deane!"e said, as the boy finished his job, and rose from his feet to receive his pay.  "
+as the boy finished his job, and rose from his feet to receive his pay.  "
+as
+True
+
+
+
+
+He had not yet acquired that sharp, keen look which characterizes, in most cases, the New York boy who has spent all his life in the streets.
+in most cases, the New York boy who has spent all his life in the streets.
+in
+True
+
+
+
+
+"I can answer both your questions with the same word, Master Hector," said Larry, as a sober look swept over his broad, honest face.
+as a sober look swept over his broad, honest face.
+as
+True
+
+
+
+
+"I hope your father and mother are well," said Hector, interrupting him.ey are well in health, but they are in trouble, as I told you.
+as I told you.
+as
+False
+
+
+
+
+He couldn't get a new place, for it wasn't the right time of year, and Mr. Roscoe said he wouldn't give him a recommendation.
+for it wasn't the right time of year, and Mr. Roscoe said he wouldn't give him a recommendation.
+for
+True
+
+
+
+
+Well, we had very little money in the house, for mother has been sick of late years, and all father's extra earnings went to pay for medicines and the doctor's bill.
+for mother has been sick of late years, and all father's extra earnings went to pay for medicines and the doctor's bill.
+for
+True
+
+
+
+
+"I couldn't get anything else to do, besides, this pays better than working in a store or office."
+besides, this pays better than working in a store or office."
+besides
+True
+
+
+
+
+In the middle of the day I go to a cheap restaurant."
+In the middle of the day I go to a cheap restaurant."
+In
+False
+
+
+
+
+"Thank you, Hector; but, though it is doing very well for me, it isn't as much as they need at home.
+though it is doing very well for me, it isn't as much as they need at home.
+though
+True
+
+
+
+
+Besides, I can't keep it up, as, after a while, I shall need to buy some new clothes.
+Besides, I can't keep it up, as, after a while, I shall need to buy some new clothes.
+Besides
+True
+
+
+
+
+If your father had been alive, my father would never have lost his place.
+If your father had been alive
+If
+False
+
+
+
+
+Hector did not care to explain to Larry just how matters stood, so he only said:  "I can't explain to you what seems strange to you, Larry, but I may be able to do so some time.
+so he only said:  "I can't explain to you what seems strange to you, Larry, but I may be able to do so some time.
+so
+True
+
+
+
+
+I will certainly write to Mr. Roscoe, as you desire; but you must not build any hopes upon it.
+as you desire; but you must not build any hopes upon it.
+as
+False
+
+
+
+
+As he spoke, he drew from his pocketbook a five-dollar bill and handed it to his humble friend.
+As he spoke
+As
+False
+
+
+
+
+"Then Hector, if you don't mind."
+if you don't mind."
+if
+False
+
+
+
+
+"I wish I could do something for Larry," said Hector, to himself, as he walked away.
+to himself, as he walked away.
+to
+True
+
+
+
+
+Despite the crowds of persons who thronged the sidewalks, he did not anticipate meeting anyone else that he knew.
+Despite the crowds of persons who thronged the sidewalks
+Despite
+False
+
+
+
+
+On the corner of Murray Street he saw two persons advancing toward him, the last, perhaps, that he expected to see.
+On the corner of Murray Street he saw two persons advancing toward him
+On
+False
+
+
+
+
+On the corner of Murray Street he saw two persons advancing toward him, the last, perhaps, that he expected to see.
+On the corner of Murray Street he saw two persons advancing toward him
+On
+False
+
+
+
+
+"Since you have taken your destiny into your own hands, you will excuse me for asking how you intend to earn your living?"r.  "Take my advice," said Guy, with a derisive smile, "and buy yourself a blacking box and brush.
+with a derisive smile, "and buy yourself a blacking box and brush.
+with
+True
+
+
+
+
+asked Allan, in some curiosity.
+in some curiosity.
+in
+False
+
+
+
+
+That's a good one!"xclaimed Guy, with evident relish.
+with evident relish.
+with
+False
+
+
+
+
+"I can answer that question, though it's none of your business all the same," volunteered Guy. "
+though it's none of your business all the same, " volunteered Guy. "
+though
+True
+
+
+
+
+"A bootblack is a nice playmate," said Guy, with his usual sneer.
+with his usual sneer.
+with
+False
+
+
+
+
+Mr. Roscoe, as I happen to know, my father always valued the services of Reuben Deane, and I ask, in his name, that you give him back his place."
+as I happen to know, my father always valued the services of Reuben Deane, and I ask, in his name, that you give him back his place."
+as
+True
+
+
+
+
+"I am sorry, Hector, that I cannot comply with your request.
+that I cannot comply with your request.
+that
+False
+
+
+
+
+By the way, you did not tell me where you were staying."
+By the way
+By
+False
+
+
+
+
+"Not the eminent merchant of that name?" asked Allan Roscoe, in surprise.
+in surprise.
+in
+False
+
+
+
+
+"That boy is as proud as ever," said Guy, after Hector had left them.
+after Hector had left them.
+after
+False
+
+
+
+
+After parting with Allan Roscoe and Guy, Hector kept on his way downtown.
+After parting with Allan Roscoe and Guy
+After
+False
+
+
+
+
+he asked himself, in some surprise.
+in some surprise.
+in
+False
+
+
+
+
+Then, for the first time, Jim looked down, and saw what the boy had done.
+for the first time, Jim looked down, and saw what the boy had done.
+for
+True
+
+
+
+
+"I hope you may succeed," said Hector, for he would not allow his dislikes to carry him too far.
+for he would not allow his dislikes to carry him too far.
+for
+False
+
+
+
+
+"We may be better friends in future," said Jim, with a grin.
+with a grin.
+with
+False
+
+
+
+
+"We may be better friends in future," said Jim, with a grin.ector was judiciously silent.
+with a grin.ector was judiciously silent.
+with
+False
+
+
+
+
+" he said, in an ingratiating voice.
+in an ingratiating voice.
+in
+False
+
+
+
+
+say anything against him, as he is your nephew, but he is an artful young--but no matter.
+as he is your nephew, but he is an artful young--but no matter.
+as
+True
+
+
+
+
+At any rate, Guy was not one of this small number.
+At any rate
+At
+False
+
+
+
+
+"I am sorry you have suffered such injustice at the hands of anyone in any way connected with my family," said Mr. Roscoe, who, like Guy, was not indisposed to believe anything to the discredit of Hector.
+like Guy, was not indisposed to believe anything to the discredit of Hector.
+like
+True
+
+
+
+
+Meanwhile Hector, after looking about him, turned, and, getting into a Broadway stage, rode uptown as far as Twenty-third Street, where the stage turned down toward Sixth Avenue.
+after looking about him
+after
+False
+
+
+
+
+As he was walking up Madison Avenue, his attention was drawn to a little girl in charge of a nursemaid.
+As he was walking up Madison Avenue
+As
+False
+
+
+
+
+As he was walking up Madison Avenue, his attention was drawn to a little girl in charge of a nursemaid.an acquaintance and forgot her charge.
+As he was walking up Madison Avenue
+As
+False
+
+
+
+
+The driver was looking away, and it seemed as if, through the double neglect of the driver and the nurse, the poor child would be crushed beneath the hoofs of the horses and the wheels of the carriage.
+through the double neglect of the driver and the nurse, the poor child would be crushed beneath the hoofs of the horses and the wheels of the carriage.
+through
+True
+
+
+
+
+The driver, who had done his best to rein up his horses, but without success, ejaculated with fervent gratitude, for he, too, had a child of his own about the age of the little girl, "God bless you, boy."
+for he
+for
+False
+
+
+
+
+"She wouldn't if she had been properly looked after," said the gentleman, sharply, for he had children of his own.
+for he had children of his own.
+for
+False
+
+
+
+
+She was a pretty child, with a sweet face, rimmed round by golden curls, her round, red cheeks glowing with exercise.
+with a sweet face
+with
+False
+
+
+
+
+"What is her name?" asked Hector, of the nurse.
+of the nurse.
+of
+False
+
+
+
+
+"Why, she must be the child of my friend, Titus Newman, of Pearl Street."
+of Pearl Street."
+of
+False
+
+
+
+
+If you had been attending to your duty, she wouldn't have been in danger."
+If you had been attending to your duty
+If
+False
+
+
+
+
+Mr. Newman owes his child's safety, perhaps her life, to your prompt courage.
+to your prompt courage.
+to
+False
+
+
+
+
+If you will give me your address, I may have something to communicate to you ere long."
+If you will give me your address
+If
+False
+
+
+
+
+"You must have been brought up in affluence," said Mr. Davidson, for this was his name.
+for this was his name.
+for
+False
+
+
+
+
+Till recently I supposed myself rich."
+Till recently I supposed myself rich."
+Till
+False
+
+
+
+
+"Well," thought Hector, as he made his way homeward,
+as he made his way homeward
+as
+False
+
+
+
+
+"I hope you didn't encourage him," said Walter, with a grimace.
+with a grimace.
+with
+False
+
+
+
+
+"I hope not, for in that case I should lose my scholar, and have to bow to his superior knowledge."
+for in that case I should lose my scholar, and have to bow to his superior knowledge."
+for
+True
+
+
+
+
+"I shall not be annoyed at all when you find me out in a mistake, for I don't pretend to be very learned."
+for I don't pretend to be very learned."
+for
+False
+
+
+
+
+"I shall not be annoyed at all when you find me out in a mistake, for I don't pretend to be very learned."er's modesty.
+for I don't pretend to be very learned."er's modesty.
+for
+False
+
+
+
+
+In the afternoon Hector and Walter spent two hours at the gymnasium in Twenty-eighth Street, and walked leisurely home after a healthful amount of exercise.
+In the afternoon Hector and Walter spent two hours at the gymnasium in Twenty-eighth Street, and walked leisurely home after a healthful amount of exercise.
+In
+True
+
+
+
+
+For some reason, which he could not himself explain, Hector said nothing to Walter about his rescue of the little girl on Madison Avenue, though he heard of it at the gymnasium.
+For some reason, which he could not himself explain
+For
+True
+
+
+
+
+Neither of the boys noticed that Hector's face was flushed, as he listened to the account of his own exploit.
+as he listened to the account of his own exploit.
+as
+False
+
+
+
+
+The next morning, among the letters laid upon the breakfast table was one for Hector Roscoe.
+among the letters laid upon the breakfast table was one for Hector Roscoe.
+among
+False
+
+
+
+
+"No, sir," answered Hector, in secret excitement.
+in secret excitement.
+in
+False
+
+
+
+
+It was written from Mr. Newman's house in Madison Avenue, though inclosed in a business envelope:  "MASTER HECTOR ROSCOE:
+though inclosed in a business envelope:  "MASTER HECTOR ROSCOE:
+though
+False
+
+
+
+
+I learn that I am indebted to you for the rescue of my little daughter from imminent peril during my absence from home yesterday.n child, that I cannot rest till I have had an opportunity of thanking you in person.
+that I cannot rest till I have had an opportunity of thanking you in person.
+that
+False
+
+
+
+
+You will do me a favor, if not otherwise engaged, if you will call at my house this evening, about eight o'clock.
+if not otherwise engaged, if you will call at my house this evening
+if
+True
+
+
+
+
+It is true, as we are often told, that "virtue is its own reward," but it is, nevertheless, pleasant to feel that our efforts to do well and serve others are appreciated.
+as we are often told, that "virtue is its own reward, " but it is
+as
+True
+
+
+
+
+"You may read the letter, if you like, Mr. Ross."
+if you like, Mr. Ross."
+if
+True
+
+
+
+
+"You did not tell me of this," said Walter, in astonishment.
+in astonishment.
+in
+False
+
+
+
+
+Now, if you had done such a thing, Walter, we should have been sure to hear of it."
+if you had done such a thing, Walter, we should have been sure to hear of it."
+if
+True
+
+
+
+
+By the way, Hector, there is a paragraph about it in the Herald of this morning.
+By the way
+By
+False
+
+
+
+
+It was, in the main, correct.
+in the main, correct.
+in
+True
+
+
+
+
+"I couldn't have rescued her quite as easily, in that case."
+in that case."
+in
+False
+
+
+
+
+Of course, Hector was called upon for an account of the affair, which he gave plainly, without adding any of those embellishments which some boys, possibly some of my young readers, might have been tempted to put in.
+without adding any of those embellishments which some boys
+without
+False
+
+
+
+
+The door was opened by a colored servant, of imposing manners.
+of imposing manners.
+of
+False
+
+
+
+
+Presently the servant reappeared, saying:  "Mr. Newman will see you, sar, in the library.
+in the library.
+in
+False
+
+
+
+
+Seated at a table, in a handsomely furnished library, sat a stout gentleman of kindly aspect.
+in a handsomely furnished library, sat a stout gentleman of kindly aspect.
+in
+True
+
+
+
+
+"You don't look so."with a smile, "that I have seen better days."  "Surely, you are young to have met with reverses, if that is what you mean to imply," the merchant remarked, observing our hero with some curiosity.
+if that is what you mean to imply, " the merchant remarked
+if
+True
+
+
+
+
+As the story has already been told, I will not repeat Hector's words.
+As the story has already been told
+As
+False
+
+
+
+
+"Call him your father, for I believe he was."
+for I believe he was."
+for
+False
+
+
+
+
+At Sacramento?"
+At Sacramento?"
+At
+False
+
+
+
+
+"Then you think, sir--" Hector began.
+sir--" Hector began.
+sir--
+False
+
+
+
+
+In the midst of his reverie the pompous servant entered, bringing a letter upon a silver salver.
+In the midst of his reverie the pompous servant entered, bringing a letter upon a silver salver.
+In
+True
+
+
+
+
+Mr. Newman glanced at the postmark, tore open the letter, read it with a frown, and then, as if he had suddenly formed a resolution, he said:  "This letter has helped me to a decision."
+as if he had suddenly formed a resolution, he said:  "This letter has helped me to a decision."
+as
+True
+
+
+
+
+"No, sir," answered Hector, with animation "Am I to go alone?"
+with animation "Am I to go alone?"
+with
+False
+
+
+
+
+It is needless to say that Hector was very much surprised, not to say startled, at this sudden proposal.
+at this sudden proposal.
+at
+False
+
+
+
+
+Yet, in more than one instance, I have found advantage in obeying such an impulse.
+in more than one instance, I have found advantage in obeying such an impulse.
+in
+True
+
+
+
+
+By the way, let me first ask you two or three questions.
+By the way, let me first ask you two or three questions.
+By
+True
+
+
+
+
+"I ask because playing pool in public rooms paves the way for intemperance, as bars are generally connected with such establishments."
+as bars are generally connected with such establishments."
+as
+False
+
+
+
+
+In California.
+In California.
+In
+False
+
+
+
+
+As I do not intend to conceal anything from you, I must tell you that he carried with him five hundred dollars purloined from my desk.
+As I do not intend to conceal anything from you
+As
+False
+
+
+
+
+I do not intend, however, to send him money, for he would misuse it.
+for he would misuse it.
+for
+False
+
+
+
+
+I do not intend, however, to send him money, for he would misuse it.
+for he would misuse it.
+for
+False
+
+
+
+
+him any harm to suffer a little privation, as a fitting punishment for his wayward courses.
+as a fitting punishment for his wayward courses.
+as
+False
+
+
+
+
+"I will undertake it, since you are willing to place such a responsibility upon me.
+since you are willing to place such a responsibility upon me.
+since
+False
+
+
+
+
+You may assure Gregory that I forgive him the theft of my money, though it gave me great pain to find him capable of such an act, and that I am prepared to receive him back into my favor if he will show himself worthy of it.
+though it gave me great pain to find him capable of such an act, and that I am prepared to receive him back into my favor if he will show himself worthy of it.
+though
+True
+
+
+
+
+"I wish you were my uncle instead of Mr. Allan Roscoe."  "By the way, Hector, take time, while you are in California, to go to Sacramento to see if you can learn anything of your early history.
+while you are in California, to go to Sacramento to see if you can learn anything of your early history.
+while
+True
+
+
+
+
+It will afford me sincere pleasure if, by reliable testimony, you can defeat the wicked conspiracy into which Mr. Roscoe has entered, with the object of defrauding you of your inheritance."
+by reliable testimony, you can defeat the wicked conspiracy into which Mr. Roscoe has entered, with the object of defrauding you of your inheritance."
+by
+True
+
+
+
+
+It will afford me sincere pleasure if, by reliable testimony, you can defeat the wicked conspiracy into which Mr. Roscoe has entered, with the object of defrauding you of your inheritance."
+by reliable testimony, you can defeat the wicked conspiracy into which Mr. Roscoe has entered, with the object of defrauding you of your inheritance."
+by
+True
+
+
+
+
+I am a close observer, and, though I have seen but little of you, I have seen enough to inspire me with confidence."
+though I have seen but little of you, I have seen enough to inspire me with confidence."
+though
+True
+
+
+
+
+Whether you succeed or not in your undertaking depends partly upon circumstances."
+Whether you succeed or not in your undertaking depends partly upon circumstances."
+Whether
+False
+
+
+
+
+He was provided with a photograph of Gregory, which had been taken but six months before, and which, as Mr. Newman assured him, bore a strong resemblance to his nephew.
+as Mr. Newman assured him, bore a strong resemblance to his nephew.
+as
+True
+
+
+
+
+With this picture you will be able to identify him."
+With this picture you will be able to identify him."
+With
+False
+
+
+
+
+Among those who watched the departure of the steamer was a person who escaped Hector's notice, for he arrived just too late to bid good-by to an acquaintance who was a passenger on board.
+Among those who watched the departure of the steamer was a person who escaped Hector's notice, for he arrived just too late to bid good-by to an acquaintance who was a passenger on board.
+Among
+True
+
+
+
+
+Among them was a clergyman, of middle age, who was attracted by our hero's frank countenance.
+Among them was a clergyman, of middle age, who was attracted by our hero's frank countenance.
+Among
+True
+
+
+
+
+"No, sir; I know no one, to my knowledge, in the Golden State."
+to my knowledge, in the Golden State."
+to
+True
+
+
+
+
+"Perhaps I should rather say, on a mission.
+on a mission.
+on
+False
+
+
+
+
+I am sent out, by a New York merchant, in search of his nephew, who is somewhere in San Francisco."
+by a New York merchant, in search of his nephew, who is somewhere in San Francisco."
+by
+True
+
+
+
+
+I think, my young friend, that you will enjoy your visit to our State."
+that you will enjoy your visit to our State."
+that
+False
+
+
+
+
+I spent a year at the mines; but, at the end of that time, finding an opening in my profession, I accepted the charge of a church in Sacramento."
+at the end of that time
+at
+False
+
+
+
+
+I spent a year at the mines; but, at the end of that time, finding an opening in my profession, I accepted the charge of a church in Sacramento."Yes.
+at the end of that time
+at
+False
+
+
+
+
+"It is probable that I met them, for Sacramento was a small place then.
+for Sacramento was a small place then.
+for
+False
+
+
+
+
+As Mr. Richards naturally looked inquisitive, Hector confided in him further.
+As Mr. Richards naturally looked inquisitive
+As
+False
+
+
+
+
+If so, I am heir to a large fortune.
+If so
+If
+False
+
+
+
+
+If so, I am heir to a large fortune.turb him in the enjoyment of what the law awards him."
+If so
+If
+False
+
+
+
+
+"In your investigation, it is quite possible that I may be able to help you materially, through my long residence and extensive acquaintance in Sacramento.
+through my long residence and extensive acquaintance in Sacramento.
+through
+False
+
+
+
+
+I shall feel alone in the world, without relations or family connections, with no one to sympathize with me in my successes, or feel for me in my disappointments."
+without relations or family connections, with no one to sympathize with me in my successes, or feel for me in my disappointments."
+without
+True
+
+
+
+
+After the contracted stateroom, in which he had passed over twenty days, he enjoyed the comfort and luxury of a bed on shore and a good-sized bedroom.
+After the contracted stateroom, in which he had passed over twenty days
+After
+True
+
+
+
+
+But, in the morning, he took a long walk, which was full of interest.
+in the morning, he took a long walk, which was full of interest.
+in
+True
+
+
+
+
+All around him, thronging the sidewalks, he will see almond-eyed men, wearing long queues, and clad in the comfortable, but certainly not elegant, flowing garments which we meet only occasionally in our Eastern cities, on the person of some laundryman.
+on the person of some laundryman.
+on
+False
+
+
+
+
+All around him, thronging the sidewalks, he will see almond-eyed men, wearing long queues, and clad in the comfortable, but certainly not elegant, flowing garments which we meet only occasionally in our Eastern cities, on the person of some laundryman.e curious names on the signs, speak of a far-off land.
+on the person of some laundryman.e curious names on the signs
+on
+False
+
+
+
+
+On every side, also, is heard the uncouth jargon of the Chinese tongue.
+On every side, also, is heard the uncouth jargon of the Chinese tongue.
+On
+True
+
+
+
+
+It is that part which strangers will do well to avoid, for it is the haunt of the worst portion of the population.
+for it is the haunt of the worst portion of the population.
+for
+False
+
+
+
+
+Here floats many a hopeless wreck, in the shape of a young man, who has yielded to the seductions of drink and the gaming table--who has lost all hope and ambition, and is fast nearing destruction.
+in the shape of a young man, who has yielded to the seductions of drink and the gaming table--who has lost all hope and ambition, and is fast nearing destruction.
+in
+True
+
+
+
+
+If Hector allowed himself to explore this quarter, it was not because he found anything to attract him, for his tastes were healthy, but he thought, from the description of Gregory Newman, that he would stand a better chance of meeting him here than in a more respectable quarter.
+If Hector allowed himself to explore this quarter
+If
+False
+
+
+
+
+He did not care to enter, but he watched, with curiosity, those who entered and those who came out.
+with curiosity, those who entered and those who came out.
+with
+True
+
+
+
+
+He did not care to enter, but he watched, with curiosity, those who entered and those who came out.
+with curiosity, those who entered and those who came out.
+with
+True
+
+
+
+
+on the shoulder.
+on the shoulder.
+on
+False
+
+
+
+
+He was evidently a confirmed inebriate, though not at that time under the influence of liquor.
+though not at that time under the influence of liquor.
+though
+False
+
+
+
+
+"Are you afraid?" asked the man, with a slight sneer.
+with a slight sneer.
+with
+False
+
+
+
+
+"Come," he said, in a wheedling tone, "let me make some money for you."
+in a wheedling tone, "let me make some money for you."
+in
+True
+
+
+
+
+He had the appearance, also, of one who indulges in drink.
+of one who indulges in drink.
+of
+False
+
+
+
+
+As the best way of getting into communication with the youth whom he suspected to be the object of his search, Hector asked him the name of the street.
+As the best way of getting into communication with the youth whom he suspected to be the object of his search
+As
+False
+
+
+
+
+On receiving an answer, he said, in an explanatory way:  "I am a stranger here.
+On receiving an answer
+On
+False
+
+
+
+
+To what?" inquired Hector, puzzled.  "
+To what?" inquired Hector, puzzled.  "
+To
+True
+
+
+
+
+If I had been lucky, I might have raised it to ten dollars, as a man next to me did; but I'm out of luck, and I don't know what to do."
+If I had been lucky
+If
+False
+
+
+
+
+"I may as well tell you, though I am ashamed to," said Gregory, reluctantly.
+though I am ashamed to, " said Gregory
+though
+True
+
+
+
+
+"I left New York without his knowledge, and, as I knew he wouldn't advance me money out of my own property, I took five hundred dollars from his desk."
+as I knew he wouldn't advance me money out of my own property, I took five hundred dollars from his desk."
+as
+True
+
+
+
+
+"I left New York without his knowledge, and, as I knew he wouldn't advance me money out of my own property, I took five hundred dollars from his desk."d or terror-stricken, for this would probably have prevented any further confidence.
+as I knew he wouldn't advance me money out of my own property, I took five hundred dollars from his desk."d or terror-stricken, for this would probably have prevented any further confidence.
+as
+True
+
+
+
+
+"Couldn't you get employment?" asked Hector, for he wished Gregory to understand his position fully.
+for he wished Gregory to understand his position fully.
+for
+False
+
+
+
+
+but I am afraid you would go back into the gambling house and lose it, as you did your other money."
+as you did your other money."
+as
+False
+
+
+
+
+"No; I never met you, to my knowledge."
+to my knowledge."
+to
+False
+
+
+
+
+It seemed ludicrous to him that he should be supposed to be a detective on Gregory's track, as the boy evidently suspected.
+as the boy evidently suspected.
+as
+False
+
+
+
+
+I come as a friend, with a message from your uncle---"  "What is it?"
+with a message from your uncle---"  "What is it?"
+with
+False
+
+
+
+
+Within five minutes' walk was a good clothing house, on Kearney Street.
+Within five minutes' walk was a good clothing house, on Kearney Street.
+Within
+True
+
+
+
+
+He is still living, at a very advanced age--the Rev. Mr. Barnard.
+at a very advanced age--the Rev. Mr. Barnard.
+at
+False
+
+
+
+
+Not only that, but he has a very full diary covering that time, in which he showed me this record:  "'Baptized, June 17th, Hector, the son of Thomas and Martha Roscoe; a bright, healthy child, in whom the parents much delight.
+in which he showed me this record:  "'Baptized, June 17th, Hector, the son of Thomas and Martha Roscoe; a bright, healthy child, in whom the parents much delight.
+in
+True
+
+
+
+
+In fact, it could not be stronger.
+In fact
+In
+False
+
+
+
+
+"He thought, also, that you would not have the means to come here to investigate for yourself," said Mr. Richards.
+that you would not have the means to come here to investigate for yourself, " said Mr. Richards.
+that
+True
+
+
+
+
+"I know what you are thinking of," said Gregory, after Hector had returned his salutation.
+after Hector had returned his salutation.
+after
+False
+
+
+
+
+Hector blushed deeply, for he was a modest boy.
+for he was a modest boy.
+for
+False
+
+
+
+
+"Still, if you are in earnest, I will try to set you a good example."
+if you are in earnest, I will try to set you a good example."
+if
+True
+
+
+
+
+In the evening the two boys attended a theatrical performance.
+In the evening the two boys attended a theatrical performance.
+In
+False
+
+
+
+
+There was no thought of danger in the mind of either, yet, as a fact, Hector had never in his life been exposed to peril so serious as that evening.
+as a fact, Hector had never in his life been exposed to peril so serious as that evening.
+as
+True
+
+
+
+
+At a place specially favorable, our hero was startled by hearing a bullet whiz by his ear.
+At a place specially favorable
+At
+False
+
+
+
+
+He was astonished and horrified when he discovered that it was from his uncle to this man, with whom he seemed to have an acquaintance, describing Hector, and promising him a thousand dollars if he would put him out of the way.
+with whom he seemed to have an acquaintance
+with
+False
+
+
+
+
+"Yes, if you will pay my expenses."
+if you will pay my expenses."
+if
+False
+
+
+
+
+By the next steamer Hector, Gregory and the stranger, who called himself Reuben Pearce, sailed for New York.
+By the next steamer Hector
+By
+False
+
+
+
+
+Though Mr. Roscoe was not altogether free from anxiety since he had learned of Hector's expedition to California, he had taught himself to believe that there was little chance of the boy's ferreting out the imposition he had practiced upon him.
+Though Mr. Roscoe was not altogether free from anxiety since he had learned of Hector's expedition to California
+Though
+False
+
+
+
+
+Though Mr. Roscoe was not altogether free from anxiety since he had learned of Hector's expedition to California, he had taught himself to believe that there was little chance of the boy's ferreting out the imposition he had practiced upon him..
+Though Mr. Roscoe was not altogether free from anxiety since he had learned of Hector's expedition to California
+Though
+False
+
+
+
+
+"But I am safe enough," he said to himself; "even if Hector discovered anything, something might happen to him, so that he might be unable to return.
+so that he might be unable to return.
+so
+False
+
+
+
+
+It's gone, at any rate.
+at any rate.
+at
+False
+
+
+
+
+As Guy left the room, the mail was brought in.
+As Guy left the room
+As
+False
+
+
+
+
+On one of the envelopes, Mr. Roscoe saw the name of his lawyer.
+On one of the envelopes
+On
+False
+
+
+
+
+"He is in the city, and expects us to meet him at two o'clock this afternoon, at the office of his lawyer, Mr. Parchment."
+at the office of his lawyer, Mr. Parchment."
+at
+True
+
+
+
+
+At five minutes to two Allan Roscoe and Mr. Tape were ushered into the private office of Mr. Parchment.
+At five minutes to two Allan Roscoe and Mr. Tape were ushered into the private office of Mr. Parchment.
+At
+False
+
+
+
+
+"Glad to see you, gentlemen," said the great lawyer, with his usual courtesy.
+with his usual courtesy.
+with
+False
+
+
+
+
+to be the son of the deceased Mr. Roscoe, and, of course, in that capacity, succeeds to his father's estate."
+of course, in that capacity
+of
+True
+
+
+
+
+We have, furthermore, the sworn testimony of the clergyman, still living, who baptized him, and we can show, though it is needless, in the face of such strong proof, that he was always spoken of in his infancy by Mr. and Mrs. Roscoe as their child."
+though it is needless, in the face of such strong proof, that he was always spoken of in his infancy by Mr. and Mrs. Roscoe as their child."
+though
+True
+
+
+
+
+"It is a lie!" said Allan, hoarsely, shaking, nevertheless, with fear.
+with fear.
+with
+False
+
+
+
+
+At a sign from Mr. Parchment, Hector opened the door of the office to give admission to Reuben Pearce.
+At a sign from Mr. Parchment
+At
+False
+
+
+
+
+At a sight of this man Allan Roscoe utterly collapsed.
+At a sight of this man Allan Roscoe utterly collapsed.
+At
+False
+
+
+
+
+There was an informal conference, in which it was agreed that Allan Roscoe should make no resistance to Hector's claim, but restore the estate to him.
+in which it was agreed that Allan Roscoe should make no resistance to Hector's claim, but restore the estate to him.
+in
+True
+
+
+
+
+There was an informal conference, in which it was agreed that Allan Roscoe should make no resistance to Hector's claim, but restore the estate to him.wo thousand dollars in cash, and an allowance of a hundred dollars per month for his life.
+in which it was agreed that Allan Roscoe should make no resistance to Hector's claim, but restore the estate to him.wo thousand dollars in cash, and an allowance of a hundred dollars per month for his life.
+in
+True
+
+
+
+
+As for Allan Roscoe, he and his son, Guy, lost no time in leaving the neighborhood.
+As for Allan Roscoe
+As
+False
+
+
+
+
+Hector lost no time, after being restored to his old position, in re-engaging Larry Deane's father, who had been discharged by his uncle.
+after being restored to his old position, in re-engaging Larry Deane's father, who had been discharged by his uncle.
+after
+True
+
+
+
+
+Larry a place in Mr. Newman's employ, and voluntarily allowed him as large a weekly sum as the merchant paid him in addition, so that Larry could live comfortably in the city.
+so that Larry could live comfortably in the city.
+so
+False
+
+
+
+
+" It was not long before it regained its old patronage, for Mr. Crabb was not only a good scholar, but was fair and just to the pupils, ruling them rather by love than fear.
+for Mr. Crabb was not only a good scholar, but was fair and just to the pupils
+for
+True
+
+
+
+
+As for Jim Smith, the last heard of him was to this effect: He had strayed out to St. Louis, and, after a few months of vicissitude, had secured the position of bartender in a low liquor saloon.
+As for Jim Smith
+As
+False
+
+
+
+
+End of the Project Gutenberg EBook of Hector's Inheritance, by Horatio Alger
+by Horatio Alger
+by
+False
+
+
+
+
+Creating the works from public domain print editions means that no one owns a United States copyright in these works, so the Foundation (and you!)
+so the Foundation (and you!)
+so
+False
+
+
+
+
+Projectt be used if you charge for the eBooks, unless you receive specific permission.
+unless you receive specific permission.
+unless
+False
+
+
+
+
+If you do not charge anything for copies of this eBook, complying with the rules is very easy.
+If you do not charge anything for copies of this eBook, complying with the rules is very easy.
+If
+True
+
+
+
+
+BEFORE YOU DISTRIBUTE OR USE
+BEFORE YOU DISTRIBUTE OR USE
+BEFORE
+False
+
+
+
+
+THIS WORK  To protect the Project Gutenberg-tm mission of promoting the free distribution of electronic works, by using or distributing this work (or any other work associated in any way with the phrase "Project Gutenberg")
+by using or distributing this work (or any other work associated in any way with the phrase "Project Gutenberg")
+by
+False
+
+
+
+
+By reading or using any part of this Project Gutenberg-tm electronic work, you indicate that you have read, understand, agree to and accept all the terms of this license and intellectual property (trademark/copyright) agreement.
+By reading or using any part of this Project Gutenberg-tm electronic work
+By
+False
+
+
+
+
+If you do not agree to abide by all the terms of this agreement, you must cease using and return or destroy all copies of Project Gutenberg-tm electronic works in your possession.
+If you do not agree to abide by all the terms of this agreement
+If
+False
+
+
+
+
+If you paid a fee for obtaining a copy of or access to a Project Gutenberg-tm electronic work and you do not agree to be bound by the terms of this agreement, you may obtain a refund from the person or entity to whom you paid the fee as set forth in paragraph 1.E.8.
+If you paid a fee for obtaining a copy of or access to a Project Gutenberg-tm electronic work and you do not agree to be bound by the terms of this agreement
+If
+False
+
+
+
+
+If an individual work is in the public domain in the United States and you are located in the United States, we do not claim a right to prevent you from copying, distributing, performing, displaying or creating derivative works based on the work as long as all references to Project Gutenberg are removed.
+If an individual work is in the public domain in the United States and you are located in the United States
+If
+False
+
+
+
+
+If an individual work is in the public domain in the United States and you are located in the United States, we do not claim a right to prevent you from copying, distributing, performing, displaying or creating derivative works based on the work as long as all references to Project Gutenberg are removed.g Project Gutenberg-tm works in compliance with the terms of this agreement for keeping the Project Gutenberg-tm name associated with the work.
+If an individual work is in the public domain in the United States and you are located in the United States
+If
+False
+
+
+
+
+If you are outside the United States, check the laws of your country in addition to the terms of this agreement before downloading, copying, displaying, performing, distributing or creating derivative works based on this work or any other Project Gutenberg-tm work.
+If you are outside the United States, check the laws of your country in addition to the terms of this agreement before downloading, copying, displaying, performing, distributing or creating derivative works based on this work or any other Project Gutenberg-tm work.
+If
+True
+
+
+
+
+Unless you have removed all references to Project Gutenberg:  1.E.1.
+Unless you have removed all references to Project Gutenberg:  1.E.1.
+Unless
+False
+
+
+
+
+Unless you have removed all references to Project Gutenberg:  1.E.1.
+Unless you have removed all references to Project Gutenberg:  1.E.1.
+Unless
+False
+
+
+
+
+to, or other immediate access to, the full Project Gutenberg-tm License must appear prominently whenever any copy of a Project Gutenberg-tm work (any work on which the phrase "Project Gutenberg" appears, or with which the phrase "Project Gutenberg" is associated) is accessed, displayed, performed, viewed, copied or distributed:
+to, or other immediate access to
+to
+True
+
+
+
+
+If an individual Project Gutenberg-tm electronic work is derived from the public domain (does not contain a notice indicating that it is posted with permission of the copyright holder), the work can be copied and distributed to anyone in the United States without paying any fees or charges.
+If an individual Project Gutenberg-tm electronic work is derived from the public domain (does not contain a notice indicating that it is posted with permission of the copyright holder)
+If
+False
+
+
+
+
+If an individual Project Gutenberg-tm electronic work is derived from the public domain (does not contain a notice indicating that it is posted with permission of the copyright holder), the work can be copied and distributed to anyone in the United States without paying any fees or charges.t comply either with the requirements of paragraphs 1.E.1 through 1.E.7 or obtain permission for the use of the work and the Project Gutenberg-tm trademark as set forth in paragraphs 1.E.8 or 1.E.9.
+If an individual Project Gutenberg-tm electronic work is derived from the public domain (does not contain a notice indicating that it is posted with permission of the copyright holder)
+If
+False
+
+
+
+
+If an individual Project Gutenberg-tm electronic work is posted with the permission of the copyright holder, your use and distribution must comply with both paragraphs 1.E.1 through 1.E.7 and any additional terms imposed by the copyright holder.
+If an individual Project Gutenberg-tm electronic work is posted with the permission of the copyright holder
+If
+False
+
+
+
+
+Do not copy, display, perform, distribute or redistribute this electronic work, or any part of this electronic work, without prominently displaying the sentence set forth in paragraph
+without prominently displaying the sentence set forth in paragraph
+without
+False
+
+
+
+
+Do not copy, display, perform, distribute or redistribute this electronic work, or any part of this electronic work, without prominently displaying the sentence set forth in paragraph.1 with active links or immediate access to the full terms of the Project Gutenberg-tm License.
+without prominently displaying the sentence set forth in paragraph.1 with active links or immediate access to the full terms of the Project Gutenberg-tm License.
+without
+False
+
+
+
+
+However, if you provide access to or distribute copies of a Project Gutenberg-tm work in a format other than "Plain Vanilla ASCII" or other format used in the official version posted on the official Project Gutenberg-tm web site (www.gutenberg.org), you must, at no additional cost, fee or expense to the user, provide a copy, a means of exporting a copy, or a means of obtaining a copy upon request, of the work in its original "Plain Vanilla ASCII" or other form.
+if you provide access to or distribute copies of a Project Gutenberg-tm work in a format other than "Plain Vanilla ASCII" or other format used in the official version posted on the official Project Gutenberg-tm web site (www.gutenberg.org), you must, at no additional cost, fee or expense to the user
+if
+True
+
+
+
+
+- You provide, in accordance with paragraph 1.F.3, a full refund of any      money paid for a work or a replacement copy, if a defect in the      electronic work is discovered and reported to you within 90 days      of receipt of the work.
+in accordance with paragraph 1.F.3, a full refund of any      money paid for a work or a replacement copy, if a defect in the      electronic work is discovered and reported to you within 90 days      of receipt of the work.
+in
+True
+
+
+
+
+Despite these efforts, Project Gutenberg-tm electronic works, and the medium on which they may be stored, may contain "Defects," such as, but not limited to, incomplete, inaccurate or corrupt data, transcription errors, a copyright or other intellectual property infringement, a defective or damaged disk or other medium, a computer virus, or computer codes that damage or cannot be read by your equipment.  1.F.2.
+Despite these efforts
+Despite
+False
+
+
+
+
+UNDER THIS AGREEMENT
+UNDER THIS AGREEMENT
+UNDER
+False
+
+
+
+
+If you received the work on a physical medium, you must return the medium with your written explanation.
+If you received the work on a physical medium
+If
+False
+
+
+
+
+If the second copy is also defective, you may demand a refund in writing without further opportunities to fix the problem.
+If the second copy is also defective
+If
+False
+
+
+
+
+Except for the limited right of replacement or refund set forth in paragraph 1.F.3, this work is provided to you 'AS-IS' WITH NO OTHER WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+Except for the limited right of replacement or refund set forth in paragraph 1.F.3
+Except
+False
+
+
+
+
+If any disclaimer or limitation set forth in this agreement violates the law of the state applicable to this agreement, the agreement shall be interpreted to make the maximum disclaimer or limitation permitted by the applicable state law.
+If any disclaimer or limitation set forth in this agreement violates the law of the state applicable to this agreement
+If
+False
+
+
+
+
+If any disclaimer or limitation set forth in this agreement violates the law of the state applicable to this agreement, the agreement shall be interpreted to make the maximum disclaimer or limitation permitted by the applicable state law.ining provisions.
+If any disclaimer or limitation set forth in this agreement violates the law of the state applicable to this agreement
+If
+False
+
+
+
+
+In 2001, the Project Gutenberg Literary Archive Foundation was created to provide a secure and permanent future for Project Gutenberg-tm and future generations.
+In 2001
+In
+False
+
+
+
+
+For thirty years, he produced and distributed Project Gutenberg-tm eBooks with only a loose network of volunteer support.
+For thirty years
+For
+False
+
+
+
+
