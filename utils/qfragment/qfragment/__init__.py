@@ -30,11 +30,11 @@ class Feedback(object):
 
 # Private methods
 
-def _build_trigram_indices():
+def _build_trigram_indices(trigram_index):
     """Build a dictionary of trigrams and their indices from a csv"""
     result = {}
     trigram_count = 0
-    for key, val in csv.reader(open(_PARTICIPLE_TRIGRAM_INDEX)):
+    for key, val in csv.reader(open(trigram_index)):
         result[key] = int(val)
         trigram_count += 1
     return result, trigram_count
@@ -76,30 +76,49 @@ def _trigramsToDictKeys(trigrams):
 def _textToTrigrams(text): 
     return _trigramsToDictKeys(_getPOSTrigramsForTextString(text))
 
-def _text_to_vector(text, trigram_count):
+def _text_to_vector(text,trigram2idx, trigram_count):
     wordVector = np.zeros(trigram_count)
     for word in _textToTrigrams(text):
-        index = word2idx.get(word, None)
+        index = trigram2idx.get(word, None)
         if index != None:
             wordVector[index] += 1
     return wordVector
 
+
+# Initializations
+
+## Load fragment dectection models
+prefixes = ['participle'] # => eventually, [participle, infinitive,
+                          #    afterthought, lonelyverb, subordinate,
+                          #    appositive]
+models = {}
+trigram2idx = {}
+trigram_count = {}
+for prefix in prefixes:
+    _trigram_index = os.path.join(__location__,
+            '{}vocabindex.csv'.format(prefix))
+    trigram2idx[prefix], trigram_count[prefix] = _build_trigram_indices(_trigram_index)
+    models[prefix] = _build_model(trigram_count[prefix])
+    models[prefix].load(os.path.join(__location__, 'models',
+            '{}_model.tfl'.format(prefix)))
+    
 # Public methods
 
-## initializations
-word2idx, trigram_count = _build_trigram_indices()
-model = _build_model(trigram_count)
-model.load(_PARTICIPLE_MODEL)
+def is_participle_clause_fragment(sentence):
+    """Supply a sentence or fragment and recieve a confidence interval"""
+    positive_prob = models['participle'].predict([_text_to_vector(sentence,
+        trigram2idx['participle'], trigram_count['participle'])])[0][1]
+    return float(positive_prob)
 
 
 def check(sentence):
     """Supply a sentence or fragment and recieve feedback"""
-    positive_prob = model.predict([_text_to_vector(sentence, trigram_count)])[0][1]
     result = Feedback()
-    if float(positive_prob) < .5:
+    is_participle = is_participle_clause_fragment(sentence)
+    if is_participle > .5:
         result.human_readable = PARTICIPLE_FRAGMENT_ADVICE.replace('\n', '')
-        result.matches['participle_phrase'] = float(positive_prob)
-    else:
+        result.matches['participle_phrase'] = is_participle
+    if not result.matches:
         result.human_readable = STRONG_SENTENCE_ADVICE.replace('\n', '')
 
     return result 
