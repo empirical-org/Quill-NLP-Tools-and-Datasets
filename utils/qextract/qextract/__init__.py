@@ -3,4 +3,7 @@ point.  If this changes, some methods will be moved here."""
 
 from .utils import *
 import spacy
-nlp = spacy.load('en')
+import os
+
+model_name = os.environ.get('QUILL_SPACY_MODEL', 'en')
+nlp = spacy.load(model_name)

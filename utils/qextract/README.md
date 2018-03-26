@@ -14,7 +14,11 @@ students become better writers.
 ```sh
 pip install qextract
 python -m spacy download en
+export QUILL_SPACY_MODEL=en
 ```
+
+QUILL_SPACY_MODEL=en is the default, but en_core_web_lg or other models can be
+specified using this web module.  Non-english models are not supported.
 
 ## Usage
 
