@@ -1,0 +1,201 @@
+#!/usr/bin/env python
+
+"""Extract participle phrases from a text file or directory of text files"""
+import argparse
+import logging
+import os
+import spacy
+from qextract import read_in_chunks
+
+# Constants
+OUTPUT_TEXT_FILE_BASE = 'participlePhrasesFrom{}'
+nlp = spacy.load('en')
+
+
+# Private methods
+def _participle_phrase_conditions_apply(possible_participle_phrase, participle,
+                                        sentence):
+    """Filter out phrases that may not actually be participle phrases"""
+    doc = nlp(possible_participle_phrase)
+
+    # introduces a main clause
+    if possible_participle_phrase[0].isupper():
+        # followed by preposition or subordinating conjunction
+        if len(doc) > 1 and doc[1].tag_ == 'IN':
+            return True
+
+    # concludes a main clause modifying a word farther up the sentence
+    elif sentence.split(participle)[0].endswith(', '):
+        # ie. Cooper enjoyed dinner at Audrey's house, agreeing to a large slice
+        # of cherry pie even though he was full to the point of bursting.
+        if len(doc) > 1 and doc[1].tag_ == 'IN':
+            return True
+
+    # concludes a main clause modifying word directly in front of it
+    else:
+        # ie. Mariah risked petting the pit bull wagging its stub tail.
+        # NOTE: we ignore these because they are rarely participle clauses
+        pass
+    return False
+
+
+def _split_sentence_with_non_first_word_participle(sentence, participle):
+    """Given a sentence that might include a paticiple phrase in the middle,
+    determine where the participle phrase ends, and return the phrase"""
+    full = participle + sentence.split(participle, 1)[1]
+    result = participle + sentence.split(participle, 1)[1].split(',')[0]
+    if len(full.split(',')) < 2:
+        return result # this one is easy
+
+    for part in full.split(',')[1:]:
+        doc = nlp(part.strip())
+        # do not include vbg verbs
+        if (doc and len(doc) > 0 and doc[0].tag_ in ['RB', 'RBR', 'RBS', 'VB',
+            'VBD', 'VBN', 'VBP', 'VBZ', 'NN', 'NNPS', 'NNS', 'NNP', 'PRP',
+            'PRP$', 'DET', 'JJ']):
+            break
+        else:
+            # append more to the phrase
+            result += ',' + part
+
+    return result
+
+
+def _split_sentence_with_first_word_participle(sentence):
+    """Given a sentence that begins with a participle phrase,
+    determine where the participle phrase ends, and return the phrase"""
+    result = sentence.split(',')[0]
+    if len(sentence.split(',')) < 2:
+        return result
+
+    for part in sentence.split(',')[1:]:
+        doc = nlp(part.strip())
+        if (doc and len(doc) > 0 and doc[0].tag_ in ['NN', 'NNPS', 'NNS', 'NNP',
+            'PRP', 'PRP$', 'DET', 'JJ']) or (doc and len(doc) > 0 and
+                    str(doc[0])[0].isupper()):
+            break
+        else:
+            # append more to the phrase
+            result += ',' + part
+
+    return result
+
+
+def _has_participle_verb(sentence):
+    """Return the participl and its index of the first past or present
+    participle verb if there is one, if not return None."""
+    doc = nlp(sentence)
+    for participle_index, participle in enumerate(doc):
+        if participle.tag_ in ['VBG', 'VBN']:
+            return str(participle), participle_index 
+    return None, None
+
+def _has_participle_phrase(sentence):
+    """Return participle phrase object or None
+    participle phrase object
+    {'phrase': 'spoiling her', 'flagged': False, 'participle': 'spoiling'}
+
+    an object can be flagged if it may need further review
+    """
+    phrase = ''
+    flagged = False
+    participle = ''
+    participle, participle_index = _has_participle_verb(sentence)
+
+    if participle:
+        if participle_index == 0:
+            phrase = _split_sentence_with_first_word_participle(sentence)
+        else:
+            phrase = _split_sentence_with_non_first_word_participle(sentence,
+                    participle)
+
+    if phrase and _participle_phrase_conditions_apply(phrase, participle,
+            sentence):
+        return {'phrase': phrase, 'participle':participle, 'flagged': flagged}
+
+    return None
+
+
+def _extract_from_file(input_file, output_file='qextract.out'):
+    """Write participle phrase file"""
+    # open a working copy of the file to show its currently being written to
+    try:
+        with open(input_file, 'r') as f:
+            # final sentence may not be a complete sentence, save and prepend to next chunk
+            leftovers = ''
+            sentence_no = 0
+            output = open(output_file + '.working', 'w+')
+            for chunk in read_in_chunks(f): # lazy way of reading our file in case it's large
+                # prepend leftovers to chunk
+                chunk = leftovers + chunk
+                chunk = chunk.replace(';', '.') # replace semi colons with periods 
+                doc = nlp(chunk)
+
+                # last sentence may not be sentence, move to next chunk
+                sents = [sent.string.strip() for sent in doc.sents]
+                if len(sents) > 1:
+                    leftovers = sents[-1] + chunk.rpartition(sents[-1])[-1]
+                    sents = sents[:-1]
+                for sent in sents:
+                    sent = sent.replace('\n', ' ')
+                    phrase = _has_participle_phrase(sent)
+                    if phrase:
+                        output.write("{}\n{}\n{}\n" \
+                        "{}\n\n\n\n\n".format(sent, phrase['phrase'],
+                            phrase['participle'], phrase['flagged']))
+            output.close()
+            # remove the .working extention to show the file is finished
+            os.rename(output_file + '.working', output_file)
+    except Exception as e:
+        raise e
+        print('error on {}'.format(input_file))
+        print(e)
+        print('closing file and continuing')
+        os.rename(output_file + '.working', output_file)
+        print('...')
+
+
+def _extract_from_directory(inputdir, outputdir='qextract_output'):
+    os.makedirs(outputdir, exist_ok=True)
+    existing_books = [os.path.join(outputdir, os.fsdecode(f1)) for f1 in
+            os.listdir(outputdir)]
+    for f in os.listdir(inputdir):
+        input_filename = os.path.join(inputdir, os.fsdecode(f))
+        output_filename = os.path.join(outputdir,
+                OUTPUT_TEXT_FILE_BASE.format(os.fsdecode(f)))
+        if output_filename not in existing_books:
+            _extract_from_file(input_filename, output_filename)
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Extract participle phrases '
+            'from arbitrary text.')
+    parser.add_argument('-i', '--inputfile', help='Extract participle phrases '
+            'from here.')
+    parser.add_argument('-I', '--inputdir', help='Extract participle phrases '
+            'from files in this input directory.')
+    parser.add_argument('-o', '--outputfile', help='write output to this file')
+    parser.add_argument('-O', '--outputdir', help='write output to this '
+            'directory.')
+    args = parser.parse_args()
+
+
+
+    if args.inputdir and args.outputdir:
+        _extract_from_directory(args.inputdir, args.outputdir)
+    elif args.inputdir:
+        _extract_from_directory(args.inputdir) 
+    elif args.inputfile and args.outputfile:
+        _extract_from_file(args.inputfile, args.outputfile)
+    elif args.inputfile:
+        _extract_from_file(args.inputfile)
+
+    # Generate ignore messages
+    if args.inputdir and (args.inputfile or args.outputfile):
+        logging.warning('inputfile and outputfile unused when directory is '
+                'specified.')
+    if args.outputdir and not args.inputdir:
+        logging.warning('inputdir required with outputdir.')
+    
+    if args.outputfile and not args.inputfile:
+        logging.warning('inputfile required with outputfile.')
