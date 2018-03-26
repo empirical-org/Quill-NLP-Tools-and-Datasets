@@ -6,8 +6,8 @@ import spacy
 
 # Constants
 IRREGULAR_PAST_PARTICIPLES_FILE = \
-'sentence_parts/irregularPastParticipleVerbs.txt'
-OUTPUT_FOLDER = 'fragments'
+'../data/sentence_parts/irregularPastParticipleVerbs.txt'
+OUTPUT_FOLDER = '../data/fragments/'
 OUTPUT_FOLDER = 'sciFiFrags'
 OUTPUT_TEXT_FILE_BASE = OUTPUT_FOLDER + '/participlePhrasesFrom{}'
 CHUNK_SIZE = 1024
@@ -169,7 +169,7 @@ def write_sentences_with_participle_prhases(input_file, output_file):
             sents = [sent.string.strip() for sent in doc.sents]
             if len(sents) > 1:
                 sents = sents[:-1]
-                leftovers = sents[-1]
+                leftovers = sents[-1] + ' '
             for sent in sents:
                 sent = sent.replace('\n', ' ')
                 phrase = has_participle_phrase(sent)
