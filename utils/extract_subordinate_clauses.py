@@ -51,7 +51,9 @@ def _extract_subordinate_clause_type1(sentence):
 
 def _extract_subordinate_clause_type2(sentence):
     """Return subordinate clause tuple from sentence with subordiante clause at
-    the end or middle of sentence."""
+    the end or middle of sentence. If the subordinating conj is not the first
+    word after a comma, the subordinating conjunction returned will be None.  If
+    this occurs, _extract_subordinate_clause_type3 should be attempted."""
     subordinate_clause = ''
     subordinating_conj = None
     flagged = False
@@ -71,6 +73,28 @@ def _extract_subordinate_clause_type2(sentence):
             break # clause followed by main clause
     return subordinate_clause, subordinating_conj, flagged
 
+def _extract_subordinate_clause_type3(sentence):
+    """Return subordinate clause tuple from sentence with subordinate clause in
+    the middle of a sentence and not directly after a comma.
+    
+    Note: using this method on setences that are not sure to have a subordinate
+    conj will give you trash results.
+    """
+    # Diane decided to plant tomatoes in the back of the yard where the sun
+    # blazed the longest during the day.
+    doc = nlp(sentence)
+    for word in doc:
+        if word.tag_ == 'IN':
+            break # print(word) => where
+    result = str(word) + sentence.split(str(word))[1] # print(result) => where
+    # the sun blazed the longest during the day.
+    result = result.split(',')[0]
+    result = result.split('.')[0]
+    subordinate_clause, subordinate_conj, flagged = result, word, False
+    
+    return subordinate_clause, subordinate_conj, flagged  
+
+    
 
 def has_subordinate_clause(sentence):
     '''If this has a subordiate clause return an object with the clause,
@@ -83,14 +107,7 @@ def has_subordinate_clause(sentence):
 
     # TODO: does not cover clauses that begin with a relative (WP, WP$) pronoun
     
-    # If subordinating conj is in the middle of the sentence:
-    # Start at subordinating conj and end with period or comma followed by
-    # adverb/verb/
-    # ie. Peter, with heroic unselfishness, did not say anything.
-    #     becomes,
-    #     with heroic unselfishness
-    #
-    # If sentence begins with subordingating conjuction:
+    # If sentence begins with subordinating conjuction:
     # Start at subordinating conj and end with period or
     # a comma followed by a noun/pronoun/adj/determiner
     # ie. Until the end of time, he would love her.
@@ -102,11 +119,30 @@ def has_subordinate_clause(sentence):
     # is a sentence that might be found in a book, still, we believe it would be
     # better with a comma after holidays and would suggest the student add one.
     #
+    # If subordinating conj is in the middle of the sentence and after a comma:
+    # Start at subordinating conj and end with period or comma followed by
+    # adverb/verb/
+    # ie. Peter, with heroic unselfishness, did not say anything.
+    #     becomes,
+    #     with heroic unselfishness
+    #
+    # If the subordinating conj in the middle of a sentence and not after a
+    # comma:
+    # Start at the subordinating conjunction and end with the first comma or
+    # period.
+    # ie. Jonathon spent his class time reading comic books since his average
+    #     was a 45 one week before final exams.
+    #     becomes,
+    #     since his average was a 45 one week before final exams.
+    
+
     doc = nlp(sentence)
     if doc[0].tag_ == 'IN':
         subordinate_clause, subordinating_conj, flagged =  _extract_subordinate_clause_type1(sentence)
     elif _document_has_subordinating_conj(doc):
         subordinate_clause, subordinating_conj, flagged =  _extract_subordinate_clause_type2(sentence)
+        if not subordinating_conj:
+            _extract_subordinate_clause_type3(sentence)
     else:
         subordinating_conj = None
             
@@ -141,6 +177,7 @@ def write_sentences_with_subordinate_clauses(input_filename, output_filename):
                 sent = sent.replace('\n', ' ')
                 clause = has_subordinate_clause(sent)
                 if clause:
+                    print(clause['clause'])
                     output.write("{}\n{}\n{}\n" \
                     "{}\n\n\n\n\n".format(sent, clause['clause'],
                         clause['subordinating_conj'], clause['flagged']))
