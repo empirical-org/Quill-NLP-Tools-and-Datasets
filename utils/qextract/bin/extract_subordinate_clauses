@@ -1,21 +1,13 @@
+#!/usr/bin/env python
+"""Extract subordinate clauses from a text file or directory of text files"""
+import argparse
+import logging
 import os
-import sys
-import spacy
-nlp = spacy.load('en')
+from qextract import read_in_chunks, nlp
 
 # Constants
-OUTPUT_FOLDER = '../data/fragments/subordinate-clauses'
-OUTPUT_TEXT_FILE_BASE = OUTPUT_FOLDER + '/subordinateClausesFrom{}'
-CHUNK_SIZE = 1024
+OUTPUT_TEXT_FILE_BASE = 'subordinateClausesFrom{}'
 
-# TODO: read in chunks is a shared helper method
-def _read_in_chunks(file_object, chunk_size=CHUNK_SIZE):
-    """Generator to read a file piece by piece."""
-    while True:
-        data = file_object.read(chunk_size)
-        if not data:
-            break
-        yield data
 
 def _document_has_subordinating_conj(doc):
     """Takes a spacy nlp document and returns a True if the document contains a
@@ -94,9 +86,8 @@ def _extract_subordinate_clause_type3(sentence):
     
     return subordinate_clause, subordinate_conj, flagged  
 
-    
 
-def has_subordinate_clause(sentence):
+def _has_subordinate_clause(sentence):
     '''If this has a subordiate clause return an object with the clause,
     subordinate conjuction, and whether or not it is 'flagged' for review'''
     result = {'clause': '', 'subordinating_conj': '', 'flagged': False}
@@ -155,70 +146,85 @@ def has_subordinate_clause(sentence):
 
     return result
 
-def write_sentences_with_subordinate_clauses(input_filename, output_filename):
-    '''extract sentences with subordinate clauses and write them'''
+
+def _extract_from_file(input_file, output_file='qextract.out'):
+    """Write subordinate clause file"""
     # open a working copy of the file to show its currently being written to
-    with open(input_filename, 'r') as f:
-        # final sentence may not be a complete sentence, save and prepend to next chunk
-        leftovers = ''
-        sentence_no = 0
-        output = open(output_filename + '.working', 'w+')
-        for chunk in _read_in_chunks(f): # lazy way of reading our file in case it's large
-            # prepend leftovers to chunk
-            chunk = leftovers + chunk
-            doc = nlp(chunk)
+    try:
+        with open(input_file, 'r') as f:
+            # final sentence may not be a complete sentence, save and prepend to next chunk
+            leftovers = ''
+            sentence_no = 0
+            output = open(output_file + '.working', 'w+')
+            for chunk in read_in_chunks(f): # lazy way of reading our file in case it's large
+                # prepend leftovers to chunk
+                chunk = leftovers + chunk
+                chunk = chunk.replace(';', '.') # replace semi colons with periods 
+                doc = nlp(chunk)
 
-            # last sentence may not be sentence, move to next chunk
-            sents = [sent.string.strip() for sent in doc.sents]
-            if len(sents) > 1:
-                sents = sents[:-1]
-                leftovers = sents[-1]
-            for sent in sents:
-                sent = sent.replace('\n', ' ')
-                clause = has_subordinate_clause(sent)
-                if clause:
-                    print(clause['clause'])
-                    output.write("{}\n{}\n{}\n" \
-                    "{}\n\n\n\n\n".format(sent, clause['clause'],
-                        clause['subordinating_conj'], clause['flagged']))
-        output.close()
-        # remove the .working extention to show the file is finished
-        os.rename(output_filename + '.working', output_filename)
+                # last sentence may not be sentence, move to next chunk
+                sents = [sent.string.strip() for sent in doc.sents]
+                if len(sents) > 1:
+                    leftovers = sents[-1] + chunk.rpartition(sents[-1])[-1]
+                    sents = sents[:-1]
+                for sent in sents:
+                    sent = sent.replace('\n', ' ')
+                    clause = _has_subordinate_clause(sent)
+                    if clause:
+                        output.write("{}\n{}\n{}\n" \
+                        "{}\n\n\n\n\n".format(sent, clause['clause'],
+                            clause['subordinating_conj'], clause['flagged']))
+            output.close()
+            # remove the .working extention to show the file is finished
+            os.rename(output_file + '.working', output_file)
+    except Exception as e:
+        raise e
+        print('error on {}'.format(input_file))
+        print(e)
+        print('closing file and continuing')
+        os.rename(output_file + '.working', output_file)
+        print('...')
 
-def print_help():
-    print('./extract_subordinate_clauses.py -f filename')
-    print('to index a file')
-    print('to extract subordinate clauses from a file,')
-    print('or')
-    print('./extract_subordinate_clauses.py -d directory')
-    print('to extract subordinate clauses from each file in a directory')
-    print('')
+
+def _extract_from_directory(inputdir, outputdir='qextract_output'):
+    os.makedirs(outputdir, exist_ok=True)
+    existing_books = [os.path.join(outputdir, os.fsdecode(f1)) for f1 in
+            os.listdir(outputdir)]
+    for f in os.listdir(inputdir):
+        input_filename = os.path.join(inputdir, os.fsdecode(f))
+        output_filename = os.path.join(outputdir,
+                OUTPUT_TEXT_FILE_BASE.format(os.fsdecode(f)))
+        if output_filename not in existing_books:
+            _extract_from_file(input_filename, output_filename)
+
 
 if __name__ == '__main__':
-    if len(sys.argv) >= 3 and sys.argv[1] == '-d':
-        existing_books = [OUTPUT_FOLDER + '/' + os.fsdecode(f1) for f1 in os.listdir(OUTPUT_FOLDER)]
-        directory_name = sys.argv[2]
-        for f in os.listdir(directory_name):
-            # TODO: below line should use a proper path joiner
-            input_filename = directory_name + '/' + os.fsdecode(f)
-            output_filename = OUTPUT_TEXT_FILE_BASE.format(input_filename.split('/')[-1])
-            if output_filename not in existing_books:
-                try:
-                    write_sentences_with_subordinate_clauses(input_filename,
-                       output_filename)
-                    print('Done extracting subordinate clauses from \
-                            {}'.format(input_filename))
-                except Exception as e:
-                    print('error on {}'.format(input_filename))
-                    print(e)
-                    print('closing file and continuing')
-                    os.rename(output_filename + '.working', output_filename)
-                    print('...')
+    parser = argparse.ArgumentParser(description='Extract subordinate clauses '
+            'from arbitrary text.')
+    parser.add_argument('-i', '--inputfile', help='Extract subordinate clauses '
+            'from here.')
+    parser.add_argument('-I', '--inputdir', help='Extract subordinate clauses '
+            'from files in this input directory.')
+    parser.add_argument('-o', '--outputfile', help='write output to this file')
+    parser.add_argument('-O', '--outputdir', help='write output to this '
+            'directory.')
+    args = parser.parse_args()
 
-    elif len(sys.argv) >= 3 and sys.argv[1] == '-f':
-        input_filename = sys.argv[2]
-        output_filename = OUTPUT_TEXT_FILE_BASE.format(input_filename.split('/')[-1])
-        print(input_filename, output_filename)
-        write_sentences_with_subordinate_clauses(input_filename, output_filename)
-    else:
-        print_help()
+    if args.inputdir and args.outputdir:
+        _extract_from_directory(args.inputdir, args.outputdir)
+    elif args.inputdir:
+        _extract_from_directory(args.inputdir) 
+    elif args.inputfile and args.outputfile:
+        _extract_from_file(args.inputfile, args.outputfile)
+    elif args.inputfile:
+        _extract_from_file(args.inputfile)
+
+    # Generate ignore messages
+    if args.inputdir and (args.inputfile or args.outputfile):
+        logging.warning('inputfile and outputfile unused when directory is '
+                'specified.')
+    if args.outputdir and not args.inputdir:
+        logging.warning('inputdir required with outputdir.')
+    
+    if args.outputfile and not args.inputfile:
+        logging.warning('inputfile required with outputfile.')

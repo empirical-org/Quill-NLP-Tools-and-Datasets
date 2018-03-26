@@ -4,12 +4,10 @@
 import argparse
 import logging
 import os
-import spacy
-from qextract import read_in_chunks
+from qextract import read_in_chunks, nlp
 
 # Constants
 OUTPUT_TEXT_FILE_BASE = 'participlePhrasesFrom{}'
-nlp = spacy.load('en')
 
 
 # Private methods

@@ -2,3 +2,5 @@
 point.  If this changes, some methods will be moved here."""
 
 from .utils import *
+import spacy
+nlp = spacy.load('en')
