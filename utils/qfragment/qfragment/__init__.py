@@ -2,13 +2,14 @@ import numpy as np
 import tensorflow as tf
 import tflearn
 import spacy
-nlp = spacy.load('en')
 import re
 from nltk.util import ngrams, trigrams
 import csv
 from .feedback import *
 import os
 
+model_name = os.environ.get('QUILL_SPACY_MODEL', 'en')
+nlp = spacy.load(model_name)
 # relative path resolution 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 

@@ -13,7 +13,11 @@ added often!
 ```bash
 pip install qfragment
 python -m spacy download en
+export QUILL_SPACY_MODEL=en
 ```
+
+QUILL_SPACY_MODEL is en by default.  Choose en_core_web_lg or any other english
+model name instead if you like. Non-english models are not supported.
 
 
 
