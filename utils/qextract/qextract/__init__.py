@@ -7,3 +7,9 @@ import os
 
 model_name = os.environ.get('QUILL_SPACY_MODEL', 'en')
 nlp = spacy.load(model_name)
+
+# relative path resolution 
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
+LANGUAGE_TOOL = os.path.join(__location__, 'vendor', 'LanguageTool-4.1',
+        'languagetool-commandline.jar')

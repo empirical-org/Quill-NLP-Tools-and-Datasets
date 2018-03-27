@@ -3,27 +3,97 @@
 import argparse
 import logging
 import os
-from qextract import read_in_chunks, nlp
+from qextract import read_in_chunks, nlp, LANGUAGE_TOOL
+import subprocess
+import json
+
+
+# java -jar LANGUAGE_TOOL --json [input-file]
 
 # Constants
 OUTPUT_TEXT_FILE_BASE = 'subordinateClausesFrom{}'
 
 
-def _extract_subordinate_clause(sentence):
-    """Extract a subordinate clause from a sentence if it has one"""
+def _extract_subordinate_clause3(sentence):
+    """Temporary method for extracting subordinate clauses.
+
+    This method aims to reduce false positives by forcing subordinate clauses to
+    be a single clause (no commas) and by using language tool.  It is possible
+    that some valid subordinate clauses will fall through the cracks."""
+    
+    # print(sentence) => John was angry until Sam was born, then he was happy.
+    subordinate_clause, subordinating_conj, flagged = '', None, False
+    doc = nlp(sentence)
+    
+    for word in doc:
+        if word.tag_ == 'IN':
+            subordinating_conj = str(word)
+            break
+    if not subordinating_conj:
+        return '', None, False
+
+    possible_subordinate_clause = subordinating_conj +\
+            sentence.partition(subordinating_conj)[-1].split(',')[0].split(';')[0]
+    return possible_subordinate_clause, subordinating_conj, flagged
+
+
+def _extract_subordinate_clause2(sentence):
+    """Temporary method for extracting subordinate clauses.
+
+    This method aims to reduce false positives by using spacy noun chunks and
+    the parse tree.  It is possible that some longer subordinate clauses will
+    fall through the cracks."""
+    # print(sentence) => John was angry until Sam was born, then he was happy.
     subordinate_clause, subordinating_conj, flagged = '', None, False
     doc = nlp(sentence)
     for word in doc:
         if word.tag_ == 'IN':
-            subordinating_conj = str(word) 
+            subordinating_conj = str(word)
             break
     if not subordinating_conj:
         return '', None, False
-     
+
+    rest_of_sentence = sentence.split(str(subordinating_conj), 1)[1]
+    # print(rest_of_sentence) => Sam was born, then he was happy.
+    cdoc = nlp(rest_of_sentence)
+    brk_pt = None
+    for d in cdoc.noun_chunks:
+        if d.root.dep_ == 'nsubj':
+            brk_pt = d.text
+        else:
+            brk_pt = None
+    
+    if not brk_pt:
+        return '', None, False
+
+    spl = rest_of_sentence.index(brk_pt) + len(brk_pt)
+    subordinate_clause = subordinating_conj + rest_of_sentence[:spl] + \
+            rest_of_sentence[spl:].split(',')[0]
+    # print(subordinate_clause) => Until Sam was born
+
+    print(subordinate_clause)
+    return subordinate_clause, subordinating_conj, flagged
+
+
+def _extract_subordinate_clause(sentence):
+    """Extract a subordinate clause from a sentence if it has one.
+
+    NOTE: currently not in use and will be deprecated"""
+    
+    subordinate_clause, subordinating_conj, flagged = '', None, False
+    doc = nlp(sentence)
+    for word in doc:
+        if word.tag_ == 'IN':
+            subordinating_conj = str(word)
+            break
+    if not subordinating_conj:
+        return '', None, False
+
     rest_of_sentence = sentence.split(str(subordinating_conj), 1)[1]
     for clause in rest_of_sentence.split(','):
-        cd = doc(clause)
-        for word in clause:
+        cdoc = nlp(clause)
+        is_full_clause = False
+        for word in cdoc:
             if word.tag_ in ['VB', 'VBD', 'VBP', 'VBZ']:
                 is_full_clause = True
                 break
@@ -32,7 +102,7 @@ def _extract_subordinate_clause(sentence):
             break
     subordinate_clause = subordinating_conj + subordinate_clause
     return subordinate_clause, subordinating_conj, flagged
-    
+
 
 def _extract_from_file(input_file, output_file='qextract.out'):
     """Write subordinate clause file"""
@@ -54,16 +124,18 @@ def _extract_from_file(input_file, output_file='qextract.out'):
                 if len(sents) > 1:
                     leftovers = sents[-1] + chunk.rpartition(sents[-1])[-1]
                     sents = sents[:-1]
+
                 for sent in sents:
                     sent = sent.replace('\n', ' ')
-                    clause, conj, flagged = _extract_subordinate_clause(sent)
+                    clause, conj, flagged = _extract_subordinate_clause3(sent)
                     if clause:
-                        output.write("{}\n{}\n{}\n" \
-                        "{}\n\n\n\n\n".format(sent, clause['clause'],
-                            clause['subordinating_conj'], clause['flagged']))
+                        if clause[-1] not in '.!?':
+                            clause += '.'
+                        output.write(clause.capitalize())
             output.close()
             # remove the .working extention to show the file is finished
             os.rename(output_file + '.working', output_file)
+            _run_language_tool(output_file)
     except Exception as e:
         raise e
         print('error on {}'.format(input_file))
@@ -72,6 +144,23 @@ def _extract_from_file(input_file, output_file='qextract.out'):
         os.rename(output_file + '.working', output_file)
         print('...')
 
+def _run_language_tool(filename):
+    """Run language tool on the possiible subordinate clauses"""
+    with open('out.json', 'w+') as log:
+        subprocess.run(['java', '-jar', LANGUAGE_TOOL,'--json', filename],
+                stdout=log)
+
+    with open('out.json', 'r') as log:
+        dic = json.load(log)
+        new_dic = {'matches':[]}
+        for item in dic['matches']:
+            if item['rule']['id'] == "SENTENCE_FRAGMENT":
+                new_dic['matches'].append(item)
+    
+    with open('out.json', 'w+') as log:
+        log.write(json.dumps(new_dic))
+        
+                
 
 def _extract_from_directory(inputdir, outputdir='qextract_output'):
     os.makedirs(outputdir, exist_ok=True)

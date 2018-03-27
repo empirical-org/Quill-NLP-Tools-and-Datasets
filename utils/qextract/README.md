@@ -11,6 +11,10 @@ students become better writers.
 
 ## Installation
 
+Before installing, **ensure you have an up-to-date version of Java**. This is needed
+for languagetool, one of our dependencies.
+
+
 ```sh
 pip install qextract
 python -m spacy download en
