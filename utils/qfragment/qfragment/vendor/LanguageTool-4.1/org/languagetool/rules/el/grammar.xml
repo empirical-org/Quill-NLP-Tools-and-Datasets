@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../../../../../../../../../languagetool-core/src/main/resources/org/languagetool/rules/print.xsl" ?>
+<?xml-stylesheet type="text/css" href="../../../../../../../../../languagetool-core/src/main/resources/org/languagetool/rules/rules.css" title="Easy editing stylesheet" ?>
+
+<!--
+Greek grammar and typo rules for LanguageTool.
+
+Copyright © 2012 Panagiotis Minos
+http://www.languagetool.org
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+
+-->
+<rules lang="el" xsi:noNamespaceSchemaLocation="../../../../../../../../../languagetool-core/src/main/resources/org/languagetool/rules/rules.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <category id="AGREEMENT" name="Agreement">
+        <rule id="HAVE_INF" name="έχω_απαρέμφατο">
+            <pattern>
+                <token inflected="yes">έχω</token>
+                <marker>
+                    <token postag="V"/>
+                </marker>
+            </pattern>
+            <message>Πιθανόν να χρειάζεται να χρησιμοποιήσετε τον απαρεμφατικό τύπο <suggestion><match no="2" postag="INF"/></suggestion></message>
+            <short>Πρόβλημα συμφωνίας</short>
+            <example correction="πάει">Είχα <marker>πάω</marker>.</example>
+            <example>Είχα πάει.</example>
+        </rule>
+        <rule id="GREEK_AGREEMENT_1" name="μέθοδοι αυτές">
+            <pattern>
+                <token regexp="yes">μέθοδοι|παράμετροι</token>
+                <marker>
+                    <token>αυτοί</token>
+                </marker>
+            </pattern>
+            <message>Το ουσιαστικό μέθοδος είναι γένους Θηλυκού. Χρησιμοποιήστε την αντωνυμία <suggestion>αυτές</suggestion></message>
+            <short>Πρόβλημα συμφωνίας</short>
+            <example correction="αυτές">Οι βελτιώσεις των προσεγγίσεων είναι εμφανείς και οι μέθοδοι <marker>αυτοί</marker> είναι κατάλληλοι για την κατανόηση των μεθόδων μεγαλύτερης τάξης.</example>
+            <example>Οι βελτιώσεις των προσεγγίσεων είναι εμφανείς και οι μέθοδοι αυτές είναι κατάλληλοι για την κατανόηση των μεθόδων μεγαλύτερης τάξης.</example>
+        </rule>
+        <rule id="GREEK_AGREEMENT_2" name="τρέχων έτος → τρέχον έτος">
+            <pattern>
+                <marker>
+                    <token>τρέχων</token>
+                </marker>
+                <token>έτος</token>
+            </pattern>
+            <message>Το ουσιαστικό «\2» είναι ουδέτερο, χρησιμοποιήστε τον ουδέτερο τύπο «<suggestion>τρέχον</suggestion>»</message>
+            <short>Πρόβλημα συμφωνίας</short>
+            <example correction="τρέχον">Προσθέτουμε στο <marker>τρέχων</marker> έτος 1 μέρα και ο χρόνος αυτός ονομάζεται δίσεκτος.</example>
+            <example>Προσθέτουμε στο τρέχον έτος 1 μέρα και ο χρόνος αυτός ονομάζεται δίσεκτος.</example>
+        </rule>        
+    </category>
+    <category id="ORTHOGRAPHY" name="Orthography">
+        <rule id="GREEK_WHERE-" name="πού;">
+            <pattern>
+                <token postag="SENT_START" />
+                <marker>
+                    <token skip="-1">που</token>
+                </marker>
+                <token>;</token>
+            </pattern>
+            <message>Στις ερωτηματικές προτάσεις το <suggestion>πού</suggestion> τονίζεται</message>
+            <short>Πρόβλημα ορθογραφίας</short>
+            <example correction="Πού"><marker>Που</marker> πας;</example>
+            <example>Πού πας;</example>
+        </rule>
+        <rule id="GREEK_HOW-" name="πώς;">
+            <pattern>
+                <token postag="SENT_START" />
+                <marker>
+                    <token skip="-1">πως</token>
+                </marker>
+                <token>;</token>
+            </pattern>
+            <message>Στις ερωτηματικές προτάσεις το <suggestion>πώς</suggestion> τονίζεται</message>
+            <short>Πρόβλημα ορθογραφίας</short>
+            <example correction="Πώς"><marker>Πως</marker> είσαι;</example>
+            <example>Πώς είσαι;</example>
+        </rule>
+        <rule id="GREEK_NUMERAL_ONE_WORD" name="αριθμητικά">
+            <pattern>
+                <token>δέκα</token>
+                <token regexp="yes">τρία|τριών|τέσσερα|τέσσερεις|τεσσάρων|πέντε|έξι|επτά|εφτά|οχτώ|οκτώ|εννιά|εννέα</token>
+            </pattern>
+            <message>Τα αριθμητικά από το 13 μέχρι το 19 γράφονται με μια λέξη <suggestion>δεκα\2</suggestion></message>
+            <short>Πρόβλημα ορθογραφίας</short>
+            <example correction="Δεκατρία"><marker>Δέκα τρία</marker>.</example>
+            <example>Δέκατρία.</example>
+        </rule>
+        <rule id="GREEK_COMMON_ERRORS_1" name="πώς και πώς">
+            <pattern>
+                <token>πως</token>
+                <token>και</token>
+                <token>πως</token>
+            </pattern>
+            <message><suggestion>πώς και πώς</suggestion></message>
+            <short>Πρόβλημα ορθογραφίας</short>
+            <example correction="Πώς και πώς"><marker>Πως και πως</marker>.</example>
+            <example>Πώς και πώς.</example>
+        </rule>
+        <rule id="GREEK_COMMON_ERRORS_2" name="πού και πού">
+            <pattern>
+                <token>που</token>
+                <token>και</token>
+                <token>που</token>
+            </pattern>
+            <message><suggestion>πού και πού</suggestion></message>
+            <short>Πρόβλημα ορθογραφίας</short>
+            <example correction="Πού και πού"><marker>Που και που</marker>.</example>
+            <example>Πού και πού.</example>
+        </rule>
+        <rule id="GREEK_COMMON_ERRORS_3" name="αραιά και πού">
+            <pattern>
+                <token>αραιά</token>
+                <token>και</token>
+                <token>που</token>
+            </pattern>
+            <message><suggestion>αραιά και πού</suggestion></message>
+            <short>Πρόβλημα ορθογραφίας</short>
+            <example correction="Αραιά και πού"><marker>Αραιά και που</marker>.</example>
+            <example>Αραιά και πού.</example>
+        </rule>
+        <rule id="GREEK_COMMON_ERRORS_4" name="πού κι ως πού">
+            <pattern>
+                <token>που</token>
+                <token>κι</token>
+                <token>ως</token>
+                <token>που</token>
+            </pattern>
+            <message><suggestion>πού κι ως πού</suggestion></message>
+            <short>Πρόβλημα ορθογραφίας</short>
+            <example correction="πού κι ως πού">Από <marker>που κι ως που</marker>.</example>
+            <example>Από πού κι ως πού.</example>
+        </rule>
+        <rule id="GREEK_ORTHOGRAPHY_AND_BEFORE_CONSONANT" name="χρήση «κι» πριν από σύμφωνο" type="misspelling">
+            <pattern>
+                <marker>
+                    <token>κι</token>
+                </marker>
+                <token regexp="yes">(β|γ|δ|ζ|θ|κ|λ|μ|ν|ξ|π|ρ|σ|τ|φ|χ|ψ).*</token>
+            </pattern>
+            <message>Το κι χρησιμοποιείται μόνο πριν από φωνήεν. Χρησιμοποιήστε τον τύπο «<suggestion>και</suggestion>».</message>
+            <short>Πρόβλημα ορθογραφίας</short>
+            <example correction="και">Το δεν γράφεται <marker>κι</marker> δε όταν ακολουθεί λέξη που αρχίζει από εξακολουθητικό σύμφωνο.</example>
+            <example>Το δεν γράφεται και δε όταν ακολουθεί λέξη που αρχίζει από εξακολουθητικό σύμφωνο.</example>
+        </rule>
+        <rule id="GREEK_ART_MASC_MISSING_N" name="τελικό ν αρσενικού άρθρου" type="grammar">
+            <pattern>
+                <marker>
+                    <token>το</token>
+                </marker>
+                    <token postag="N:MASC:SG:ACC"/>
+            </pattern>
+            <message>Το τελικό ν του αρσενικού άρθρου διατηρείται στον γραπτό λόγο. Χρησιμοποιήστε <suggestion>τον</suggestion></message>
+            <short>Πρόβλημα ορθογραφίας</short>
+            <example correction="τον">Πιθανόν να εξαφανίστηκε επειδή δεν άντεξε <marker>το</marker> ανταγωνισμό με τον ανατομικά ανώτερο σμιλόδοντα.</example>
+            <example>Αποφεύγουν τον ανταγωνισμό με το να καταλαμβάνουν διαφορετικούς τομείς του βροχοδάσους.</example>
+        </rule>
+        <rule id="GREEK_ART_FEM_MISSING_N" name="τελικό ν θηλυκού άρθρου (τn → την)" type="grammar">
+            <pattern>
+                <marker>
+                    <token>τη</token>
+                </marker>
+                <token postag="N:FEM:SG:ACC" regexp="yes">[αειηυοωάέίήύόώϊϋΐΰκπτξψ].*|γκ.*|μπ.*|ντ.*|τσ.*|τζ.*</token>
+            </pattern>
+            <message>Το τελικό ν διατηρείται στον γραπτό λόγο, όταν η επόμενη λέξη αρχίζει από φωνήεν ή από ένα από τα: κ, π, τ, γκ, μπ, ντ, τσ, τζ, ξ, ψ. Χρησιμοποιήστε <suggestion>την</suggestion></message>
+            <short>Πρόβλημα ορθογραφίας</short>
+            <example correction="την">Το Σιν Φέιν ψηφίζει υπέρ της συνεργασίας του με <marker>τη</marker> αστυνομία για πρώτη φορά στην ιστορία του κόμματος.</example>
+            <example>Το Σιν Φέιν ψηφίζει υπέρ της συνεργασίας του με την αστυνομία για πρώτη φορά στην ιστορία του κόμματος.</example>
+        </rule>
+        <rule id="GREEK_ART_FEM_EXTRA_N" name="τελικό ν θηλυκού άρθρου (τnν → τη)" type="grammar">
+            <pattern>
+                <marker>
+                    <token>την</token>
+                </marker>
+                <token postag="N:FEM:SG:ACC">
+                    <exception regexp="yes">[αειηυοωάέίήύόώϊϋΐΰκπτξψ].*|γκ.*|μπ.*|ντ.*|τσ.*|τζ.*</exception>
+                </token>
+            </pattern>
+            <message>Το τελικό ν διατηρείται στον γραπτό λόγο, μόνο όταν η επόμενη λέξη αρχίζει από φωνήεν ή από ένα από τα : κ, π, τ, γκ, μπ, ντ, τσ, τζ, ξ, ψ. Χρησιμοποιήστε <suggestion>τη</suggestion></message>
+            <short>Πρόβλημα ορθογραφίας</short>
+            <example correction="τη">Για <marker>την</marker> λειτουργία της αναπνοής υπάρχει σε κάθε οργανισμό ξεχωριστό σύστημα οργάνων</example>
+            <example>Για τη λειτουργία της αναπνοής υπάρχει σε κάθε οργανισμό ξεχωριστό σύστημα οργάνων</example>
+        </rule>
+    </category>
+    <category id="REDUNDANCY" name="Redundant Phrases">
+        <rule id="GREEK_MORE_ADJ_COMP" name="«πιο» πριν από επίθετο σε συγκριτικό βαθμό" type="grammar">
+            <pattern>
+                <marker>
+                    <token>πιο</token>
+                    <token postag_regexp="yes" postag="ADJ:COMP:.*"/>
+                </marker>
+            </pattern>
+            <message>Το επίθετο <suggestion>\2</suggestion> είναι σε συγκριτικό βαθμό και εμπεριέχει την έννοια του «πιο».</message>
+            <short>Λάθος πλεονασμού</short>
+            <example correction="ισχυρότερα">Όσο μεγαλύτερη ροπή θέλουμε να μεταφέρουμε τόσο <marker>πιο ισχυρότερα</marker> και περισσότερα πρέπει να είναι τα ελατήρια.</example>
+            <example>Όσο μεγαλύτερη ροπή θέλουμε να μεταφέρουμε τόσο ισχυρότερα και περισσότερα πρέπει να είναι τα ελατήρια.</example>
+        </rule>
+        <rulegroup id="GREEK_REDUNDANT_1" name="ανέκαθεν">
+            <rule>
+                <pattern>
+                    <token>εξ</token>
+                    <token>ανέκαθεν</token>
+                </pattern>
+                <message>Η έννοια του εξ περιέχεται ήδη στην κατάληξη -θεν. Χρησιμοποιήστε απλά την λέξη <suggestion>\2</suggestion>.</message>
+                <short>Λάθος πλεονασμού</short>
+                <example correction="ανέκαθεν">Οι Έλληνες ήταν <marker>εξ ανέκαθεν</marker> οι παραδοσιακοί έμποροι της Μεσογείου.</example>
+                <example>Οι Έλληνες ήταν ανέκαθεν οι παραδοσιακοί έμποροι της Μεσογείου.</example>
+            </rule>
+            <rule>
+                <pattern>
+                    <token regexp="yes">από|απο</token>
+                    <token>ανέκαθεν</token>
+                </pattern>
+                <message>Η έννοια του από περιέχεται ήδη στην κατάληξη -θεν. Χρησιμοποιήστε απλά την λέξη <suggestion>\2</suggestion>.</message>
+                <short>Λάθος πλεονασμού</short>
+                <example correction="ανέκαθεν">Η πολιτιστική και πνευματική ανάπτυξη του Δήμου <marker>από ανέκαθεν</marker> ήταν σε πολύ ψηλά επίπεδα.</example>
+                <example>Η πολιτιστική και πνευματική ανάπτυξη του Δήμου ανέκαθεν ήταν σε πολύ ψηλά επίπεδα.</example>
+            </rule>
+        </rulegroup>
+        <rule id="GREEK_REDUNDANT_2" name="άρα λοιπόν">
+            <pattern>
+                <token>άρα</token>
+                <token>λοιπόν</token>
+            </pattern>
+            <message>Οι λέξεις άρα και λοιπόν είναι συνώνυμες. Χρησιμοποιήστε απλά την λέξη <suggestion>\1</suggestion>.</message>
+            <short>Λάθος πλεονασμού</short>
+            <example correction="Άρα"><marker>Άρα λοιπόν</marker> πρακτικά το πεδίο αυτό περιέχει τον μέγιστο αριθμό κόμβων από τους οποίους πρέπει να περάσει το πακέτο έως ότου τελικά παραδοθεί στον παραλήπτη.</example>
+            <example>Άρα πρακτικά το πεδίο αυτό περιέχει τον μέγιστο αριθμό κόμβων από τους οποίους πρέπει να περάσει το πακέτο έως ότου τελικά παραδοθεί στον παραλήπτη.</example>
+        </rule>
+        <rule id="GREEK_REDUNDANT_3" name="επιτόπια αυτοψία">
+            <pattern>
+                <token>επιτόπια</token>
+                <token>αυτοψία</token>
+            </pattern>
+            <message>Η έννοια του επιτόπια περιέχεται ήδη στην λέξη αυτοψία. Χρησιμοποιήστε απλά την λέξη <suggestion>\2</suggestion>.</message>
+            <short>Λάθος πλεονασμού</short>
+            <example correction="αυτοψία">Στη συνέχεια ακολουθεί η <marker>επιτόπια αυτοψία</marker> αρχιτέκτονα στο κτίριο</example>
+            <example>Στη συνέχεια ακολουθεί η αυτοψία αρχιτέκτονα στο κτίριο</example>
+        </rule>
+    </category>
+    <category id="HOMONYMY" name="Homonymy">
+        <rule id="GREEK_PARTICLE_ARTICLE" name="η/ή">
+            <pattern>
+                <marker>
+                    <token>η</token>
+                </marker>
+                <token regexp="yes">θα|να</token>
+            </pattern>
+            <message>Μήπως εννοείτε τον διαζευκτικό σύνδεσμο <suggestion>ή</suggestion> (με τόνο);</message>
+            <short>Πρόβλημα ομωνυμίας</short>
+            <example correction="ή">Θα κλείσει <marker>η</marker> θα μεταφερθεί;</example>
+            <example>Θα κλείσει ή θα μεταφερθεί;</example>
+            <example correction="ή">Να ζει κανείς <marker>η</marker> να μη ζει;</example>
+            <example>Να ζει κανείς ή να μη ζει;</example>
+        </rule>
+        <rule id="GREEK_HOMONYMY_CONJ_PRON" name="ότι/ό,τι">
+            <pattern>
+                <token>σε</token>
+                <marker>
+                    <token>ότι</token>
+                </marker>
+            </pattern>
+            <message>Μήπως εννοείτε την αντωνυμία <suggestion>ό,τι</suggestion>;</message>
+            <short>Πρόβλημα ομωνυμίας</short>
+            <example correction="ό,τι">Το υπερρεαλιστικό κίνημα δεν είχε ποτέ κάποιο αποτέλεσμα σε <marker>ότι</marker> αφορά τις πολιτικές του τοποθετήσεις και προσπάθειες.</example>
+            <example>Το υπερρεαλιστικό κίνημα δεν είχε ποτέ κάποιο αποτέλεσμα σε ό,τι αφορά τις πολιτικές του τοποθετήσεις και προσπάθειες.</example>
+        </rule>
+    </category>
+    <category id="SYNTAX" name="Syntax">
+        <rule id="GREEK_SYNTAX_1" name="περισσότεροι από έναν">
+            <pattern>
+                <token>περισσότεροι</token>
+                <marker>
+                    <token>από</token>
+                    <token>ένας</token>
+                </marker>
+            </pattern>
+            <message>Μετά από επίθετο συγκριτικού βαθμού ακολουθεί συνήθως <suggestion>από έναν</suggestion> ή σπανιότερα <suggestion>του ενός</suggestion>.</message>
+            <short>Συντακτικό λάθος</short>
+            <example correction="από έναν|του ενός">Περισσότεροι <marker>από ένας</marker> στους τέσσερις οι άνεργοι.</example>
+            <example>Περισσότεροι από έναν στους τέσσερις οι άνεργοι.</example>
+        </rule>
+        <rule id="GREEK_SYNTAX_2" name="ανεξαρτήτως ηλικίας">
+            <pattern>
+                <marker>
+                    <token>ανεξαρτήτου</token>
+                </marker>
+                <token>ηλικίας</token>
+            </pattern>
+            <message>Η σωστή έκφραση είναι <suggestion>ανεξαρτήτως</suggestion> ηλικίας.</message>
+            <short>Συντακτικό λάθος</short>
+            <example correction="ανεξαρτήτως">Γίνονται όλοι δεκτοί <marker>ανεξαρτήτου</marker> ηλικίας.</example>
+            <example>Γίνονται όλοι δεκτοί ανεξαρτήτως ηλικίας.</example>
+        </rule>
+        <rule id="GREEK_SYNTAX_3" name="καλός όρισες → καλώς όρισες">
+            <pattern>
+                <marker>
+                    <token>καλός</token>
+                </marker>
+                <token regexp="yes">ήρθες|ήρθατε|ήλθες|ήλθατε|όρισες|ορίσατε</token>
+            </pattern>
+            <message>Το «\1» είναι επίθετο, χρησιμοποιήστε το επίρρημα «<suggestion>καλώς</suggestion>»</message>
+            <short>Συντακτικό λάθος</short>
+            <example correction="Καλώς"><marker>Καλός</marker> ορίσατε στην ιστοσελίδα μας!</example>
+            <example>Καλώς ορίσατε στην ιστοσελίδα μας!</example>
+        </rule>
+    </category>
+    <category id="PUNCTUATION" name="Στίξη" type="typographical">
+        <rule id="GREEK_PUNC_1" name="κόμμα μετά από μόριο στην αρχή της πρότασης">
+            <pattern>
+                <token postag="SENT_START" />
+                <marker>
+                    <token regexp="yes">Ναι|Όχι</token>
+                </marker>
+                <token negate="yes">,</token>
+            </pattern>
+            <message>Συνήθως χρειάζεται κόμμα μετά από αρνητικό ή βεβαιωτικό μόριο στην αρχή πρότασης: <suggestion>\2,</suggestion></message>
+            <url>http://publications.europa.eu/code/el/el-4100102el.htm#fn3</url>
+            <short>Punctuation error</short>
+            <example correction="Ναι,"><marker>Ναι</marker> η Επιτροπή έλαβε υπόψη της το αίτημά σας.</example>
+            <example>Ναι, η Επιτροπή έλαβε υπόψη της το αίτημά σας.</example>
+            <example correction="Όχι,"><marker>Όχι</marker> το Κοινοβούλιο δεν μπορεί να εγκρίνει την τροποποίηση.</example>
+            <example>Όχι, το Κοινοβούλιο δεν μπορεί να εγκρίνει την τροποποίηση.</example>
+        </rule>
+        <rulegroup id="GREEK_PUNC_2" name="κόμμα μετά από προτασιακό επίρρημα στην αρχή πρότασης">
+            <rule>
+                <pattern>
+                    <token postag="SENT_START" />
+                    <marker>
+                        <token regexp="yes">Αντίθετα|Αντιθέτως|Βέβαια|Βεβαίως|Δυστυχώς|Επομένως|Επιπλέον|Επίσης|Ευτυχώς|Ίσως|Λοιπόν|Μάλλον|Ομοίως|Πάντως|Πιθανόν|Πράγματι|Πραγματικά|Προφανώς|Συμπερασματικά|Συνεπώς|Τελικά|Τέλος|Φυσικά|Ωστόσο</token>
+                    </marker>
+                    <token negate="yes">,</token>
+                </pattern>
+                <message>Συνήθως χρειάζεται κόμμα μετά από προτασιακό επίρρημα στην αρχή πρότασης: <suggestion>\2,</suggestion></message>
+                <url>http://publications.europa.eu/code/el/el-4100102el.htm#fn3</url>
+                <short>Ελέγξτε τη στίξη</short>
+                <example correction="Συνεπώς,"><marker>Συνεπώς</marker> ο κανονισμός πρέπει να τροποποιηθεί ανάλογα.</example>
+                <example>Συνεπώς, ο κανονισμός πρέπει να τροποποιηθεί ανάλογα.</example>
+                <example correction="Αντίθετα,"><marker>Αντίθετα</marker> η Επιτροπή δεν συμφώνησε με την πρόταση αυτή.</example>
+                <example>Αντίθετα, η Επιτροπή δεν συμφώνησε με την πρόταση αυτή.</example>
+            </rule>
+            <rule>
+                <pattern>
+                    <token postag="SENT_START" />
+                    <marker>
+                        <token>Για</token>
+                        <token>παράδειγμα</token>
+                    </marker>
+                    <token negate="yes">,</token>
+                </pattern>
+                <message>Συνήθως χρειάζεται κόμμα μετά από προτασιακό επίρρημα στην αρχή πρότασης: <suggestion>\2 \3,</suggestion></message>
+                <url>http://publications.europa.eu/code/el/el-4100102el.htm#fn3</url>
+                <short>Ελέγξτε τη στίξη</short>
+                <example correction="Για παράδειγμα,"><marker>Για παράδειγμα</marker> ορισμένα μονόμετρα μεγέθη είναι η μάζα, ο χρόνος, η θερμοκρασία, το ηλεκτρικό φορτίο ενώ ορισμένα διανυσματικά είναι η ταχύτητα, η επιτάχυνση, η μετατόπιση.</example>
+                <example>Για παράδειγμα, ορισμένα μονόμετρα μεγέθη είναι η μάζα, ο χρόνος, η θερμοκρασία, το ηλεκτρικό φορτίο ενώ ορισμένα διανυσματικά είναι η ταχύτητα, η επιτάχυνση, η μετατόπιση.</example>
+            </rule>
+            <rule>
+                <pattern>
+                    <token postag="SENT_START" />
+                    <marker>
+                        <token regexp="yes">Και|Κι</token>
+                        <token>όμως</token>
+                    </marker>
+                    <token negate="yes">,</token>
+                </pattern>
+                <message>Συνήθως χρειάζεται κόμμα μετά από προτασιακό επίρρημα στην αρχή πρότασης: <suggestion>\2 \3,</suggestion></message>
+                <url>http://publications.europa.eu/code/el/el-4100102el.htm#fn3</url>
+                <short>Ελέγξτε τη στίξη</short>
+                <example correction="Κι όμως,"><marker>Κι όμως</marker> Κι όμως, κινείται!</example>
+                <example>Κι όμως, κινείται!</example>
+            </rule>
+        </rulegroup>
+        <rule id="GREEK_PUNC_MULTIPLE_EXCLAMATION" name="χρήση πολλαπλών θαυμαστικών">
+            <pattern>
+                <marker>
+                    <token>!</token>
+                    <token>!</token>
+                </marker>
+            </pattern>
+            <message>Αποφύγετε τη χρήση πολλών θαυμαστικών: <suggestion>\2</suggestion></message>
+            <short>Ελέγξτε τη στίξη</short>
+            <example correction="!">Μην το ξεχάσετε<marker>!!</marker></example>
+            <example>Μην το ξεχάσετε!</example>
+        </rule>
+        <rule id="GREEK_PUNC_DOTS_INSTEAD_OF_ELLIPSIS" name="τυπογραφικά αποσιωπητικά">
+            <pattern>
+                <marker>
+                    <token>.</token>
+                    <token>.</token>
+                    <token>.</token>
+                </marker>
+            </pattern>
+            <message>Χρησιμοποιήστε τον χαρακτήρα <suggestion>…</suggestion></message>
+            <short>Ελέγξτε τη στίξη</short>
+            <example correction="…">Η Επιτροπή κατέβαλε κάθε προσπάθεια για να αποτρέψει την εξέλιξη αυτή, αλλά δυστυχώς<marker>...</marker></example>
+            <example>Η Επιτροπή κατέβαλε κάθε προσπάθεια για να αποτρέψει την εξέλιξη αυτή, αλλά δυστυχώς…</example>
+        </rule>
+        <rule id="GREEK_PUNC_DOT_AFTER_ELLIPSIS" name="τελεία ύστερα από αποσιωπητικά">
+            <pattern>
+                <marker>
+                    <token>…</token>
+                    <token>.</token>
+                </marker>
+            </pattern>
+            <message>Ύστερα από αποσιωπητικά, η τελεία είναι περιττή. <suggestion>…</suggestion></message>
+            <short>Ελέγξτε τη στίξη</short>
+            <example correction="…">Η Επιτροπή κατέβαλε κάθε προσπάθεια για να αποτρέψει την εξέλιξη αυτή, αλλά δυστυχώς<marker>….</marker></example>
+            <example>Η Επιτροπή κατέβαλε κάθε προσπάθεια για να αποτρέψει την εξέλιξη αυτή, αλλά δυστυχώς…</example>
+        </rule>
+    </category>
+    <category id="STYLE" name="Υφολογικά λάθη" type="style">
+        <rule id="GREEK_STYLE_AND" name="χρήση «κι» σε επίσημο λόγο">
+            <pattern>
+                <marker>
+                    <token>κι</token>
+                </marker>
+            </pattern>
+            <message>Το κι πρέπει να αποφεύγεται σε επιστημονικά κείμενα και στον επίσημο λόγο. Χρησιμοποιήστε «<suggestion>και</suggestion>».</message>
+            <short>Υφολογικό λάθος</short>
+            <example correction="και">Για το σκοπό αυτό αποφασίστηκε η δημιουργία <marker>κι</marker> ενός μπουκαλιού με χαρακτηριστικό σχήμα.</example>
+            <example>Για το σκοπό αυτό αποφασίστηκε η δημιουργία και ενός μπουκαλιού με χαρακτηριστικό σχήμα.</example>
+        </rule>
+    </category>
+</rules>

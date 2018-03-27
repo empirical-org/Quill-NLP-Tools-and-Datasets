@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='qfragment',
-      version='0.0.9',
+      version='0.0.10',
       description='Sentence fragment detection and feedback',
       url='https://github.com/empirical-org/Quill-NLP-Tools-and-Datasets',
       author='Quill.org',

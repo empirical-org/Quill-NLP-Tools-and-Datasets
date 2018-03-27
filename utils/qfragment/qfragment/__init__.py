@@ -7,6 +7,8 @@ from nltk.util import ngrams, trigrams
 import csv
 from .feedback import *
 import os
+import subprocess
+import json
 
 model_name = os.environ.get('QUILL_SPACY_MODEL', 'en')
 nlp = spacy.load(model_name)
@@ -15,7 +17,8 @@ __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file
 
 _PARTICIPLE_TRIGRAM_INDEX = os.path.join(__location__, 'participlevocabindex.csv')
 _PARTICIPLE_MODEL = os.path.join(__location__, 'models', 'participle_model.tfl')
-
+LANGUAGE_TOOL = os.path.join(__location__, 'vendor', 'LanguageTool-4.1',
+        'languagetool-commandline.jar')
 
 class Feedback(object):
     """Result feedback class"""
@@ -105,6 +108,15 @@ for prefix in prefixes:
     
 # Public methods
 
+def get_language_tool_feedback(sentence):
+    with open('.languagetool', 'w+') as f:
+        f.write(sentence)
+    proc = subprocess.run(subprocess.run(['java', '-jar',
+        LANGUAGE_TOOL,'--json', '.languagetool'], stdout=subprocess.PIPE))
+    lang_tool_out = json.loads(proc.stdout.read())
+    return lang_tool_out['matches']
+
+
 def is_participle_clause_fragment(sentence):
     """Supply a sentence or fragment and recieve a confidence interval"""
     positive_prob = models['participle'].predict([_text_to_vector(sentence,
@@ -116,9 +128,15 @@ def check(sentence):
     """Supply a sentence or fragment and recieve feedback"""
     result = Feedback()
     is_participle = is_participle_clause_fragment(sentence)
+    lang_tool_feedback = get_language_tool_feedback(sentence)
     if is_participle > .5:
         result.human_readable = PARTICIPLE_FRAGMENT_ADVICE.replace('\n', '')
         result.matches['participle_phrase'] = is_participle
+    if lang_tool_feedback:
+        result.matches['lang_tool'] = lang_tool_feedback
+        if not result.human_readable:
+            result.human_readable = lang_tool_feedback[0]['message']
+        
     if not result.matches:
         result.human_readable = STRONG_SENTENCE_ADVICE.replace('\n', '')
 
