@@ -20,7 +20,7 @@ def _extract_subordinate_clause(sentence):
     if not subordinating_conj:
         return '', None, False
      
-    rest_of_sentence = sentence.split(str(subordinating_conj), 1)
+    rest_of_sentence = sentence.split(str(subordinating_conj), 1)[1]
     for clause in rest_of_sentence.split(','):
         cd = doc(clause)
         for word in clause:
