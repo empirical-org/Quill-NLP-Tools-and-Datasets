@@ -1,4 +1,5 @@
-"""Right now this is empty as this library is a command line tool only at this
+LANGUAGE_TOOL = os.path.join(__location__, 'vendor', 'LanguageTool-4.1',
+ 14     ¦   'languagetool-commandline.jar')"""Right now this is empty as this library is a command line tool only at this
 point.  If this changes, some methods will be moved here."""
 
 from .utils import *

@@ -111,9 +111,11 @@ for prefix in prefixes:
 def get_language_tool_feedback(sentence):
     with open('.languagetool', 'w+') as f:
         f.write(sentence)
-    proc = subprocess.run(subprocess.run(['java', '-jar',
-        LANGUAGE_TOOL,'--json', '.languagetool'], stdout=subprocess.PIPE))
-    lang_tool_out = json.loads(proc.stdout.read())
+    with open('.lang_json', 'w+') as lg:
+        subprocess.run(['java', '-jar',LANGUAGE_TOOL,'--json', '.languagetool'],
+                stdout=lg)
+    with open('.lang_json', 'r') as lg:
+        lang_tool_out = json.load(lg)
     return lang_tool_out['matches']
 
 
