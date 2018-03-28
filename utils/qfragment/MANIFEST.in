@@ -1,4 +1,4 @@
 include README.md
 include qfragment/*.csv
 include qfragment/models/participle_model.tfl.*
-graft vendor 
+graft qfragment/vendor 
