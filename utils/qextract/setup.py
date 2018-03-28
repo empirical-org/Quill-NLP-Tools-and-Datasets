@@ -9,7 +9,6 @@ setup(name='qextract',
       license='MIT',
       packages=['qextract'],
       scripts=['bin/extract_participle_phrases',
-          'bin/extract_subordinate_clauses'
       ],
       install_requires=[
           'spacy'
