@@ -119,7 +119,8 @@ def get_language_tool_feedback(sentence):
     with open('.languagetool', 'w+') as f:
         f.write(sentence)
     with open('.lang_json', 'w+') as lg:
-        subprocess.run(['java', '-jar',LANGUAGE_TOOL,'--json', '.languagetool'],
+        subprocess.run(['java', '-jar',LANGUAGE_TOOL,'--json', '--language',
+        'en-US', '.languagetool'],
                 stdout=lg)
     with open('.lang_json', 'r') as lg:
         lang_tool_out = json.load(lg)
