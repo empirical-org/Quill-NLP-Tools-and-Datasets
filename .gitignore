@@ -12,3 +12,5 @@ dist
 build
 *.combined.txt
 checkpoint
+.lang_json
+.languagetool

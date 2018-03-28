@@ -88,6 +88,13 @@ def _text_to_vector(text,trigram2idx, trigram_count):
             wordVector[index] += 1
     return wordVector
 
+def _begins_with_one_of(sentence, parts_of_speech):
+    """Return True if the sentence or fragment begins with one of the parts of
+    speech in the list, else False"""
+    doc = nlp(sentence)
+    if doc[0].tag_ in parts_of_speech:
+        return True
+    return False 
 
 # Initializations
 
@@ -121,6 +128,9 @@ def get_language_tool_feedback(sentence):
 
 def is_participle_clause_fragment(sentence):
     """Supply a sentence or fragment and recieve a confidence interval"""
+    # short circuit if sentence or fragment doesn't start with a participle
+    if not _begins_with_one_of(sentence, ['VBG', 'VBN']):
+        return 0.0
     positive_prob = models['participle'].predict([_text_to_vector(sentence,
         trigram2idx['participle'], trigram_count['participle'])])[0][1]
     return float(positive_prob)
