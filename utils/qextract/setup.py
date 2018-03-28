@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='qextract',
-      version='0.0.7',
+      version='0.0.8',
       description='Extract different types of phrases and clauses from text',
       url='https://github.com/empirical-org/Quill-NLP-Tools-and-Datasets',
       author='Quill.org',
