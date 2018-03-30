@@ -9,8 +9,9 @@ from .feedback import *
 import os
 import subprocess
 import json
+from .subject_verb_agreement import check_agreement
 
-model_name = os.environ.get('QUILL_SPACY_MODEL', 'en')
+model_name = os.environ.get('QUILL_SPACY_MODEL', 'en_core_web_md')
 nlp = spacy.load(model_name)
 # relative path resolution 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -115,6 +116,10 @@ for prefix in prefixes:
     
 # Public methods
 
+def get_subject_verb_agreement_feedback(sentence):
+    """Return True if no subject verb agreement errors, else False"""
+    return check_agreement(sentence, nlp)
+
 def get_language_tool_feedback(sentence):
     with open('.languagetool', 'w+') as f:
         f.write(sentence)
@@ -142,9 +147,15 @@ def check(sentence):
     result = Feedback()
     is_participle = is_participle_clause_fragment(sentence)
     lang_tool_feedback = get_language_tool_feedback(sentence)
+    subject_and_verb_agree = get_subject_verb_agreement_feedback(sentence)
     if is_participle > .5:
-        result.human_readable = PARTICIPLE_FRAGMENT_ADVICE.replace('\n', '')
         result.matches['participle_phrase'] = is_participle
+        if not result.human_readable:
+            result.human_readable = PARTICIPLE_FRAGMENT_ADVICE.replace('\n', '')
+    if not subject_and_verb_agree:
+        result.matches['subject_verb_agreement'] = subject_and_verb_agree
+        if not result.human_readable:
+            result.human_readable = SUBJECT_VERB_AGREEMENT_ADVICE.replace('\n', '') 
     if lang_tool_feedback:
         result.matches['lang_tool'] = lang_tool_feedback
         if not result.human_readable:

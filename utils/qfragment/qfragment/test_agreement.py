@@ -1,10 +1,14 @@
-from subject_verb_agreement import check_agreement, nlp
+from subject_verb_agreement import check_agreement
+import spacy
+nlp = spacy.load('en_core_web_lg')
 
 # pip install pytest
 
 
 sentences = [
         ("The scientist stirs the potion", True),
+        ("Katherine started crying", True),
+        ("Katherine began crying", True),
         ("The men will be worry", False),
         ("The men will be irate", True),
         ("The men will be jumpy", True),
