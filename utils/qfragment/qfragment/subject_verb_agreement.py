@@ -1,7 +1,7 @@
 """Check if subject and verb agree in a simple sentence"""
 
 import spacy
-nlp = spacy.load('en')
+nlp = spacy.load('en_core_web_lg')
 
 ACCEPTABLE_STRUCTURES = [
     'I/YOU/WE/THEY--VBP',
@@ -9,7 +9,18 @@ ACCEPTABLE_STRUCTURES = [
     'NNP--VBZ',
     'NN--VBZ',
     'NNS--VBP',
-    'COMPOUND_SUBJ--VBP'
+    'COMPOUND_SUBJ--VBP',
+    'COMPOUND_SUBJ--VB'
+]
+
+# Grammatical, but not complete sentences
+NON_SENTENCE_STRUCTURE = [
+    'I/YOU/WE/THEY--MD',
+    'HE/SHE/IT--MD',
+    'NNP--MD',
+    'NN--MD',
+    'NNS--MD',
+    'COMPOUND_SUBJ--MD'
 ]
 
 
@@ -19,21 +30,23 @@ def _to_be_agreement(subject_text, subject_structure, verb_text,
         return verb_text in ['AM', 'WAS'] or (have_precedes and verb_text ==
                 'BEEN')
     elif (subject_text.upper() in ['WE', 'YOU', 'THEY'] or subject_structure in
-            ['NNS', 'NNPS']):
+            ['NNS', 'NNPS', 'COMPOUND_SUBJ']):
         return verb_text in ['ARE', 'WERE'] or (have_precedes and verb_text ==
                 'BEEN')
     return verb_text in ['IS', 'WAS'] or (have_precedes and verb_text ==
             'BEEN')
 
 
-def _to_do_agreement(subject_text, verb_text):
-    if subject_text.upper() in ['I', 'YOU', 'WE', 'THEY']:
+def _to_do_agreement(subject_text,subject_structure, verb_text):
+    if (subject_text.upper() in ['I', 'YOU', 'WE', 'THEY'] or subject_structure
+            in ['NNS', 'NNPS', 'COMPOUND_SUBJ']):
         return verb_text in ['DO', 'DID'] 
     return verb_text in ['DOES', 'DID']
 
 
-def _to_have_agreement(subject_text, verb_text):
-    if subject_text.upper() in ['I', 'YOU', 'THEY', 'WE']:
+def _to_have_agreement(subject_text, subject_structure, verb_text):
+    if (subject_text.upper() in ['I', 'YOU', 'THEY', 'WE'] or subject_structure
+            in ['NNS', 'NNPS', 'COMPOUND_SUBJ']):
         return verb_text in ['HAVE', 'HAD']
     return verb_text in ['HAS', 'HAD']
 
@@ -41,17 +54,21 @@ def _to_have_agreement(subject_text, verb_text):
 def check_agreement(sentence):
     """Singular subject takes a singular verb, plural subject takes a plural
     verb"""
+    feedback = ''
+    feedback += sentence + '\n'
     doc = nlp(sentence)
+    feedback += "{}\n".format( [(d.text, d.dep_, d.tag_) for d in doc] )
     subject_structure, verb_structure, auxilary_structure = '', '', ''
     auxilary_text, subject_text, verb_text = '', '', ''
     verb_base, auxilary_base = '', ''
     auxilaries = []
     prev_dep = ''
-    has_direct_object = True
+    has_direct_object = False
+    acomp_following_root = False
     for w in doc:
         if prev_dep.startswith('nsubj') and w.text.upper() == 'AND':
             subject_structure = 'COMPOUND_SUBJ'
-        elif w.dep_ == 'nsubj' and w.tag_ != 'PRP':
+        elif w.dep_.startswith('nsubj') and w.tag_ != 'PRP':
             subject_structure = w.tag_ 
             subject_text = w.text.upper()
         elif w.dep_.startswith('nsubj') and w.tag_ == 'PRP':
@@ -63,7 +80,7 @@ def check_agreement(sentence):
             verb_structure = w.tag_
             verb_base = w.lemma_
             verb_text = w.text.upper()
-        elif w.dep_ == 'aux':
+        elif w.dep_.startswith('aux'): # aux, auxpass
             auxilary_structure = w.tag_ # VBPVBN
             auxilary_base = w.lemma_ # havebe
             auxilary_text = w.text.upper() # HAVEBEEN
@@ -71,8 +88,16 @@ def check_agreement(sentence):
                 auxilary_base])
         elif w.dep_ == 'dobj':
             has_direct_object = True
+        elif prev_dep == 'ROOT' and w.dep_ == 'acomp':
+            acomp_following_root = True
+            acomp_structure = w.tag_
+            # The scientists will be stir
+            # The scientists have been stir
+            if acomp_structure == 'VB':
+                return False
+
         prev_dep = w.dep_
-    
+
     # Ensure auxilaries have correct number (modal auxilaries never change form)
     have_precedes = False
     previous_aux = (None, None, None)
@@ -88,9 +113,11 @@ def check_agreement(sentence):
                         have_precedes):
                 return False
 
-        elif aux[2] == 'do' and not _to_do_agreement(subject_text, aux[0]):
+        elif (aux[2] == 'do' and not
+                _to_do_agreement(subject_text,subject_structure, aux[0])):
             return False
-        elif aux[2] == 'have' and not _to_have_agreement(subject_text, aux[0]):
+        elif (aux[2] == 'have' and not _to_have_agreement(subject_text,
+            subject_structure, aux[0])):
             return False
         elif aux[2] == 'have':
             have_precedes = True
@@ -102,17 +129,20 @@ def check_agreement(sentence):
 
     # Deal with main verb edge cases
     if verb_base == 'have':
-        return _to_have_agreement(subject_text, verb_text)
+        if not _to_have_agreement(subject_text,subject_structure, verb_text):
+            return False
     elif verb_base == 'be':
         # be following modal auxilary does not change form
         if auxilaries and auxilaries[-1][2] not in ['be', 'do', 'have']:
-            # we should be
-            return verb_text == 'be'
+            if verb_text != 'BE':
+                return False
         # if be doesn't follow a modal auxilary,
-        return _to_be_agreement(subject_text, subject_structure, verb_text,
-                have_precedes)
+        elif not _to_be_agreement(subject_text, subject_structure, verb_text,
+                have_precedes):
+            return False
     elif verb_base == 'do':
-        return _to_do_agreement(subject_text, verb_text)
+        if not _to_do_agreement(subject_text, subject_structure, verb_text):
+            return False
 
     # If auxilaries are used, main verb should be participle, else, check
     # structure
@@ -127,14 +157,19 @@ def check_agreement(sentence):
             elif has_direct_object: 
                 # we have been stirring [the potion](D.O.)
                 # she has been cooking dinner
+                # we should be cooking dinner
+                # we should be worried
                 return verb_structure == 'VBG'
             
             # we should have been worried [about you](object of the prep.)
             # we should have been worrying about you 
+            # The races have been run
             return verb_structure in ['VBG', 'VBN']
         else: # did or modal auxilary
             return verb_structure == 'VB'
-           
+            
+    if verb_base in ['have', 'be', 'do']:
+        return True
     structure = '{}--{}'.format(subject_structure, verb_structure)
-    return structure in ACCEPTABLE_STRUCTURES
-
+    return (structure in ACCEPTABLE_STRUCTURES or structure in
+            NON_SENTENCE_STRUCTURE)
