@@ -56,16 +56,6 @@ working on a work around for this; please be patient.
 
 ## Usage
 
-On the command line,
-```
-$ qfragment 'Until she leapt into the air and kissed him.'
-This looks like a subordinating conjunction fragment. Try removing the
-subordinating conjunction or adding a main clause.
-$
-$ qfragment 'She leapt into the air and kissed him.'
-This looks like a strong sentence.
-```
-
 As a module,
 ```py
 from qfragment import check
@@ -77,3 +67,7 @@ print(feedback.human_readable) # => This looks like a subordinating conjunction
                                #    conjunction or adding a main clause.
 ```
 
+On the command line,
+
+ + command line use no longer available because of its startling poor
+   performance. It may be reintroduced later.
