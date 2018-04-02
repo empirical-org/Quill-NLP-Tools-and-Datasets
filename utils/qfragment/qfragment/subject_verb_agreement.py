@@ -17,7 +17,8 @@ ACCEPTABLE_STRUCTURES = [
     'NNP--VBD',
     'NN--VBD',
     'NNS--VBD',
-    'COMPOUND_SUBJ--VBD'
+    'COMPOUND_SUBJ--VBD',
+    '--VB'
 ]
 
 # Grammatical, but not complete sentences
@@ -33,12 +34,19 @@ NON_SENTENCE_STRUCTURE = [
     'NNP--VBG',
     'NN--VBG',
     'NNS--VBG',
-    'COMPOUND_SUBJ--VBG'
+    'COMPOUND_SUBJ--VBG',
+    '--VBG',
+    '--VBD',
+    '--VBN',
+    '--VBP',
+    '--VBZ',
 ]
 
 
 def _to_be_agreement(subject_text, subject_structure, verb_text,
         have_precedes=False):
+    if not subject_text:
+        return True
     if subject_text.upper() == 'I':
         return verb_text in ['AM', 'WAS'] or (have_precedes and verb_text ==
                 'BEEN')
@@ -51,6 +59,8 @@ def _to_be_agreement(subject_text, subject_structure, verb_text,
 
 
 def _to_do_agreement(subject_text,subject_structure, verb_text):
+    if not subject_text:
+        return True
     if (subject_text.upper() in ['I', 'YOU', 'WE', 'THEY'] or subject_structure
             in ['NNS', 'NNPS', 'COMPOUND_SUBJ']):
         return verb_text in ['DO', 'DID'] 
@@ -58,6 +68,8 @@ def _to_do_agreement(subject_text,subject_structure, verb_text):
 
 
 def _to_have_agreement(subject_text, subject_structure, verb_text):
+    if not subject_text:
+        return True
     if (subject_text.upper() in ['I', 'YOU', 'THEY', 'WE'] or subject_structure
             in ['NNS', 'NNPS', 'COMPOUND_SUBJ']):
         return verb_text in ['HAVE', 'HAD']
@@ -89,7 +101,8 @@ def check_agreement(sentence):
             subject_text = w.text.upper()
             if subject_text in ['HE', 'SHE', 'IT']:
                 subject_structure = 'HE/SHE/IT'
-        elif w.dep_ == 'ROOT':
+        elif w.dep_ == 'ROOT' and w.tag_ in ['VB', 'VBD', 'VBG', 'VBN', 'VBP',
+                'VBZ']:
             verb_structure = w.tag_
             verb_base = w.lemma_
             verb_text = w.text.upper()
@@ -111,6 +124,9 @@ def check_agreement(sentence):
                 return False
 
         prev_dep = w.dep_
+
+    if not verb_text:
+        return True # if there is no main verb, no need to grade this
 
     # Ensure auxilaries have correct number (modal auxilaries never change form)
     have_precedes = False
@@ -179,13 +195,13 @@ def check_agreement(sentence):
             # we should have been worried [about you](object of the prep.)
             # we should have been worrying about you 
             # The races have been run
+            # Have mixed the potion
             return verb_structure in ['VBG', 'VBN']
         else: # did or modal auxilary
             return verb_structure == 'VB'
             
     if verb_base in ['have', 'be', 'do']:
         return True
-    
     structure = '{}--{}'.format(subject_structure, verb_structure)
     return (structure in ACCEPTABLE_STRUCTURES or structure in
             NON_SENTENCE_STRUCTURE)

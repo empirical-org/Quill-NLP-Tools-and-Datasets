@@ -119,7 +119,7 @@ for prefix in prefixes:
 
 def get_subject_verb_agreement_feedback(sentence):
     """Return True if no subject verb agreement errors, else False"""
-    return check_agreement(sentence, nlp)
+    return check_agreement(sentence)
 
 
 def get_language_tool_feedback(sentence):
@@ -147,22 +147,41 @@ def is_participle_clause_fragment(sentence):
 
 def check(sentence):
     """Supply a sentence or fragment and recieve feedback"""
+
+    # How we decide what to put as the human readable feedback
+    #
+    # Our order of prefence is,
+    #
+    # 1. Spelling errors.
+    #   - A spelling error can change the sentence meaning
+    # 2. Subject-verb agreement errors
+    # 3. Subordinate conjunction starting a sentence
+    # 4. Participle phrase fragment
+    # 5. Other errors
+
     result = Feedback()
     is_participle = is_participle_clause_fragment(sentence)
     lang_tool_feedback = get_language_tool_feedback(sentence)
     subject_and_verb_agree = get_subject_verb_agreement_feedback(sentence)
-    if is_participle > .5:
+    ####
+    if is_participle > .5: # Lowest priority
         result.matches['participle_phrase'] = is_participle
-        if not result.human_readable:
-            result.human_readable = PARTICIPLE_FRAGMENT_ADVICE.replace('\n', '')
-    if not subject_and_verb_agree:
-        result.matches['subject_verb_agreement'] = subject_and_verb_agree
-        if not result.human_readable:
-            result.human_readable = SUBJECT_VERB_AGREEMENT_ADVICE.replace('\n', '') 
+        result.human_readable = PARTICIPLE_FRAGMENT_ADVICE.replace('\n', '')
     if lang_tool_feedback:
         result.matches['lang_tool'] = lang_tool_feedback
-        if not result.human_readable:
-            result.human_readable = lang_tool_feedback[0]['message']
+        for ltf in lang_tool_feedback:
+            if ltf['rule']['id'] == 'SENTENCE_FRAGMENT':
+                result.human_readable = lang_tool_feedback[0]['message']
+    if not subject_and_verb_agree:
+        result.matches['subject_verb_agreement'] = subject_and_verb_agree
+        result.human_readable = SUBJECT_VERB_AGREEMENT_ADVICE.replace('\n', '') 
+    if lang_tool_feedback: # Highest priority
+        result.matches['lang_tool'] = lang_tool_feedback
+        for ltf in lang_tool_feedback:
+            if ltf['rule']['id'] == 'MORFOLOGIK_RULE_EN_US':
+                result.human_readable = lang_tool_feedback[0]['message']
+         
+    ####
         
     if not result.matches:
         result.human_readable = STRONG_SENTENCE_ADVICE.replace('\n', '')

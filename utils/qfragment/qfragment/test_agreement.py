@@ -9,6 +9,14 @@ nlp = spacy.load(os.environ.get('QUILL_SPACY_MODEL', 'en_core_web_lg'))
 
 sentences = [
         ("The scientist stirs the potion", True),
+        ("Run around the word", True),
+        ("Ran around the word", True),
+        ("Have run around the word", True),
+        ("Have mixed the potion", True),
+        ("Running around the word", True),
+        ("Will run around the word", True),
+        ("Will have mixed the potion", True),
+        ("Will have run around the word", True),
         ("Katherine began", True),
         ("Katherine started", True),
         ("Katherine start", False),
@@ -128,7 +136,10 @@ sentences = [
         ("The race have been run", False),
         ("The scientists has been stirring", False),
         ("The scientist has been stirring", True),
-        ("The scientist have been stirring", False)
+        ("The scientist have been stirring", False),
+        ("Worried about the world", True),
+        ("Worrying needlessly", True),
+        ("Until Sam is full grown", True)
 ]
         
 def test_answer():
