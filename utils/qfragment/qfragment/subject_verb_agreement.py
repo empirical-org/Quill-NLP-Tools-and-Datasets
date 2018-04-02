@@ -11,7 +11,13 @@ ACCEPTABLE_STRUCTURES = [
     'NN--VBZ',
     'NNS--VBP',
     'COMPOUND_SUBJ--VBP',
-    'COMPOUND_SUBJ--VB'
+    'COMPOUND_SUBJ--VB',
+    'I/YOU/WE/THEY--VBD',
+    'HE/SHE/IT--VBD',
+    'NNP--VBD',
+    'NN--VBD',
+    'NNS--VBD',
+    'COMPOUND_SUBJ--VBD'
 ]
 
 # Grammatical, but not complete sentences
@@ -21,7 +27,13 @@ NON_SENTENCE_STRUCTURE = [
     'NNP--MD',
     'NN--MD',
     'NNS--MD',
-    'COMPOUND_SUBJ--MD'
+    'COMPOUND_SUBJ--MD',
+    'I/YOU/WE/THEY--VBG',
+    'HE/SHE/IT--VBG',
+    'NNP--VBG',
+    'NN--VBG',
+    'NNS--VBG',
+    'COMPOUND_SUBJ--VBG'
 ]
 
 
@@ -81,10 +93,11 @@ def check_agreement(sentence):
             verb_structure = w.tag_
             verb_base = w.lemma_
             verb_text = w.text.upper()
-        elif w.dep_.startswith('aux'): # aux, auxpass
-            auxilary_structure = w.tag_ # VBPVBN
-            auxilary_base = w.lemma_ # havebe
-            auxilary_text = w.text.upper() # HAVEBEEN
+        elif w.dep_.startswith('aux') and not verb_text:
+            # auxilaries before main verb
+            auxilary_structure = w.tag_
+            auxilary_base = w.lemma_
+            auxilary_text = w.text.upper()
             auxilaries.append([auxilary_text, auxilary_structure,
                 auxilary_base])
         elif w.dep_ == 'dobj':
@@ -156,6 +169,7 @@ def check_agreement(sentence):
                 # she has cooked dinner
                 return verb_structure in ['VBN']
             elif has_direct_object: 
+                # the scientist and the boy stir the potion
                 # we have been stirring [the potion](D.O.)
                 # she has been cooking dinner
                 # we should be cooking dinner
@@ -171,6 +185,7 @@ def check_agreement(sentence):
             
     if verb_base in ['have', 'be', 'do']:
         return True
+    
     structure = '{}--{}'.format(subject_structure, verb_structure)
     return (structure in ACCEPTABLE_STRUCTURES or structure in
             NON_SENTENCE_STRUCTURE)

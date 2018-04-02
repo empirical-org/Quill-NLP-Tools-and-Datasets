@@ -9,8 +9,16 @@ nlp = spacy.load(os.environ.get('QUILL_SPACY_MODEL', 'en_core_web_lg'))
 
 sentences = [
         ("The scientist stirs the potion", True),
+        ("Katherine began", True),
+        ("Katherine started", True),
+        ("Katherine start", False),
         ("Katherine started crying", True),
         ("Katherine began crying", True),
+        ("Katherine began to cry", True),
+        ("Katherine began cry", False),
+        ("Katherine started cry", False),
+        ("Katherine cried", True),
+        ("Katherine crying", True),
         ("The men will be worry", False),
         ("The men will be irate", True),
         ("The men will be jumpy", True),
