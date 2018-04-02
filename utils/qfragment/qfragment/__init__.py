@@ -138,7 +138,8 @@ def get_language_tool_feedback(sentence):
 def is_participle_clause_fragment(sentence):
     """Supply a sentence or fragment and recieve a confidence interval"""
     # short circuit if sentence or fragment doesn't start with a participle
-    if not _begins_with_one_of(sentence, ['VBG', 'VBN']):
+    # past participles can sometimes look like adjectives -- ie, Tired
+    if not _begins_with_one_of(sentence, ['VBG', 'VBN', 'JJ']):
         return 0.0
     positive_prob = models['participle'].predict([_text_to_vector(sentence,
         trigram2idx['participle'], trigram_count['participle'])])[0][1]
