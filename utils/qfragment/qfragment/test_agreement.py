@@ -1,6 +1,8 @@
 from subject_verb_agreement import check_agreement
 import spacy
-nlp = spacy.load('en_core_web_lg')
+import os
+
+nlp = spacy.load(os.environ.get('QUILL_SPACY_MODEL', 'en_core_web_lg'))
 
 # pip install pytest
 

@@ -1,6 +1,8 @@
 """Check if subject and verb agree in a simple sentence"""
 
 import spacy
+import os
+nlp =  spacy.load(os.environ.get('QUILL_SPACY_MODEL', 'en_core_web_lg'))
 
 ACCEPTABLE_STRUCTURES = [
     'I/YOU/WE/THEY--VBP',
@@ -49,12 +51,8 @@ def _to_have_agreement(subject_text, subject_structure, verb_text):
         return verb_text in ['HAVE', 'HAD']
     return verb_text in ['HAS', 'HAD']
 
-def get_spacy_model():
-    import spacy
-    return spacy.load('en_core_web_md')
-    
 
-def check_agreement(sentence, nlp=get_spacy_model()):
+def check_agreement(sentence):
     """Singular subject takes a singular verb, plural subject takes a plural
     verb"""
     feedback = ''

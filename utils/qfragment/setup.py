@@ -11,9 +11,9 @@ setup(name='qfragment',
       install_requires=[
           'nltk',
           'numpy',
-          'spacy==1.10.1',
-          'tensorflow==1.7.0',
-          'tflearn==0.3.2'
+          'spacy==2.0.10',
+          'tensorflow==1.5.1',
+          'tflearn'
       ],
       include_package_data=True,
       zip_safe=False)
