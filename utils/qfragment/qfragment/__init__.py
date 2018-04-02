@@ -1,25 +1,26 @@
-import numpy as np
-import tensorflow as tf
-import tflearn
-import spacy
-import re
+from .feedback import *
+from .subject_verb_agreement import check_agreement
 from nltk.util import ngrams, trigrams
 import csv
-from .feedback import *
-import os
-import subprocess
 import json
-from .subject_verb_agreement import check_agreement
+import numpy as np
+import os
+import re
+import requests
+import spacy
+import subprocess
+import tensorflow as tf
+import tflearn
 
 model_name = os.environ.get('QUILL_SPACY_MODEL', 'en_core_web_md')
 nlp = spacy.load(model_name)
 # relative path resolution 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
+LT_SERVER = 'http://localhost:{}/v2/check'.format(os.environ.get('LT_PORT',
+        8081))
 _PARTICIPLE_TRIGRAM_INDEX = os.path.join(__location__, 'participlevocabindex.csv')
 _PARTICIPLE_MODEL = os.path.join(__location__, 'models', 'participle_model.tfl')
-LANGUAGE_TOOL = os.path.join(__location__, 'vendor', 'LanguageTool-4.1',
-        'languagetool-commandline.jar')
 
 class Feedback(object):
     """Result feedback class"""
@@ -120,16 +121,18 @@ def get_subject_verb_agreement_feedback(sentence):
     """Return True if no subject verb agreement errors, else False"""
     return check_agreement(sentence, nlp)
 
+
 def get_language_tool_feedback(sentence):
-    with open('.languagetool', 'w+') as f:
-        f.write(sentence)
-    with open('.lang_json', 'w+') as lg:
-        subprocess.run(['java', '-jar',LANGUAGE_TOOL,'--json', '--language',
-        'en-US', '.languagetool'],
-                stdout=lg)
-    with open('.lang_json', 'r') as lg:
-        lang_tool_out = json.load(lg)
-    return lang_tool_out['matches']
+    """Get matches from languagetool"""
+    payload = {'language':'en-US', 'text':sentence}
+    try:
+        r = requests.post(LT_SERVER, data=payload)
+    except requests.exceptions.ConnectionError as e:
+        raise requests.exceptions.ConnectionError('''The languagetool server is
+        not running.  Try starting it with "ltserver" ''')
+    if r.status_code >= 200 and r.status_code < 300:
+        return r.json().get('matches', [])
+    return [] 
 
 
 def is_participle_clause_fragment(sentence):
