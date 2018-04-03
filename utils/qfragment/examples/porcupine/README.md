@@ -22,3 +22,8 @@ python porcupine.py
 Hit http://localhost:5000 in your browser to ensure it is running.
 
 Have fun.
+
+## Please Note:
+
+QFragment is still under rapid development and feedback may not always be
+accurate. Please remember this when deciding whether to use it.
