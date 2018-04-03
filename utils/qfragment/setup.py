@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='qfragment',
-      version='0.0.18',
+      version='0.0.20',
       description='Sentence fragment detection and feedback',
       url='https://github.com/empirical-org/Quill-NLP-Tools-and-Datasets',
       author='Quill.org',
@@ -19,5 +19,6 @@ setup(name='qfragment',
       dependency_links = [
           'https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-2.0.0/en_core_web_lg-2.0.0.tar.gz#egg=en_core_web_lg==2.0.0'
       ],
+      tests_require=['pytest'],
       include_package_data=True,
       zip_safe=False)

@@ -8,9 +8,12 @@ venv*
 models/*.tfl.*
 data/documents
 *.egg-info
+.eggs
 dist
 build
 *.combined.txt
 checkpoint
 .lang_json
 .languagetool
+.pytest_cache
+data/fragments

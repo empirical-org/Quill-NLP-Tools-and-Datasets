@@ -1,11 +1,5 @@
-from subject_verb_agreement import check_agreement
-import spacy
-import os
-
-nlp = spacy.load(os.environ.get('QUILL_SPACY_MODEL', 'en_core_web_lg'))
-
-# pip install pytest
-
+from qfragment.subject_verb_agreement import check_agreement
+import pytest
 
 sentences = [
         ("The scientist stirs the potion", True),
@@ -145,19 +139,9 @@ sentences = [
         ("Worrying needlessly", True),
         ("Until Sam is full grown", True)
 ]
-        
-def test_answer():
-    errors = 0
-    for s,a in sentences:
-        try:
-            assert check_agreement(s) == a 
-        except:
-            errors += 1
-            print('ERROR: expected {} for'.format(a))
-            print(s)
-            print([(d.text, d.dep_, d.tag_) for d in nlp(s)])
-            print('----') 
-    print('Finished with {}/{}'.format(len(sentences) - errors, len(sentences)))
 
 
-test_answer()
+@pytest.mark.parametrize("test_input,expected", sentences) 
+def test_eval(test_input, expected):
+    assert check_agreement(test_input) == expected 
+
