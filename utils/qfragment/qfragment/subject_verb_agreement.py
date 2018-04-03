@@ -130,11 +130,11 @@ def check_agreement(sentence):
 
     # Ensure auxilaries have correct number (modal auxilaries never change form)
     have_precedes = False
-    previous_aux = (None, None, None)
+    previous_aux = None
     for aux in auxilaries:
         if aux[2] == 'be':
             # if be form is preceded by modal auxilary it should be base form
-            if previous_aux[2] not in ['be', 'do', 'have']:
+            if previous_aux and previous_aux[2] not in ['be', 'do', 'have']:
                 if aux[0] != 'BE':
                     return False 
 
@@ -156,6 +156,7 @@ def check_agreement(sentence):
             have_precedes = False
 
         previous_aux = aux
+
 
     # Deal with main verb edge cases
     if verb_base == 'have':
