@@ -2,7 +2,13 @@
 
 import spacy
 import os
-nlp =  spacy.load(os.environ.get('QUILL_SPACY_MODEL', 'en_core_web_lg'))
+
+model_name = os.environ.get('QUILL_SPACY_MODEL', 'en_core_web_lg')
+if model_name != 'en_core_web_lg':
+    nlp = spacy.load(model_name)
+else:
+    import en_core_web_lg
+    nlp = en_core_web_lg.load()
 
 ACCEPTABLE_STRUCTURES = [
     'I/YOU/WE/THEY--VBP',

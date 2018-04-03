@@ -16,7 +16,7 @@ pip install -r requirements.txt
 
 Run the server
 ```bash
-python porcupine.py
+python app.py
 ```
 
 Hit http://localhost:5000 in your browser to ensure it is running.

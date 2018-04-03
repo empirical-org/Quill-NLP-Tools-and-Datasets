@@ -12,8 +12,13 @@ import subprocess
 import tensorflow as tf
 import tflearn
 
-model_name = os.environ.get('QUILL_SPACY_MODEL', 'en_core_web_md')
-nlp = spacy.load(model_name)
+model_name = os.environ.get('QUILL_SPACY_MODEL', 'en_core_web_lg')
+if model_name != 'en_core_web_lg':
+    nlp = spacy.load(model_name)
+else:
+    import en_core_web_lg
+    nlp = en_core_web_lg.load()
+
 # relative path resolution 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
