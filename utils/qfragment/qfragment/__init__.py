@@ -146,6 +146,22 @@ def is_participle_clause_fragment(sentence):
     # past participles can sometimes look like adjectives -- ie, Tired
     if not _begins_with_one_of(sentence, ['VBG', 'VBN', 'JJ']):
         return 0.0
+
+    # short circuit if sentence starts with a gerund and the gerund is the
+    # subject.
+    
+    if _begins_with_one_of(sentence, ['VBG']):
+        doc = nlp(sentence)
+        fw = [w for w in doc][0]
+        # Running is fun
+        if fw.dep_.endswith('subj'):
+            return 0.0
+
+        fc = [c for c in doc.noun_chunks]
+        # Dancing boys can never sing
+        if str(fw) in str(fc):
+            return 0.0
+
     positive_prob = models['participle'].predict([_text_to_vector(sentence,
         trigram2idx['participle'], trigram_count['participle'])])[0][1]
     return float(positive_prob)

@@ -16,6 +16,7 @@ participle_clauses = [
 ]
 
 non_participle_clauses = [
+    "Dancing in the moonlight rock",
     "John, tired and needing sleep, continued toward the gate.",
     "Tired and needing sleep, John continued toward the gate.",
     "Sleeping is one of the best parts of the day.",

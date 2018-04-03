@@ -3,6 +3,9 @@ import pytest
 
 sentences = [
         ("The scientist stirs the potion", True),
+        ("Dancing in the moonlight makes me happy.", True),
+        ("Dancing in the moonlight could rock.", True),
+        ("Dancing in the moonlight rock.", False),
         ("Run around the word", True),
         ("Ran around the word", True),
         ("Have run around the word", True),

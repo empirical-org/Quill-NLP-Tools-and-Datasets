@@ -46,6 +46,7 @@ NON_SENTENCE_STRUCTURE = [
     '--VBN',
     '--VBP',
     '--VBZ',
+    'VBG--VBZ',
 ]
 
 
@@ -97,12 +98,12 @@ def check_agreement(sentence):
     has_direct_object = False
     acomp_following_root = False
     for w in doc:
-        if prev_dep.startswith('nsubj') and w.text.upper() == 'AND':
+        if prev_dep.endswith('subj') and w.text.upper() == 'AND':
             subject_structure = 'COMPOUND_SUBJ'
-        elif w.dep_.startswith('nsubj') and w.tag_ != 'PRP':
+        elif w.dep_.endswith('subj') and w.tag_ != 'PRP':
             subject_structure = w.tag_ 
             subject_text = w.text.upper()
-        elif w.dep_.startswith('nsubj') and w.tag_ == 'PRP':
+        elif w.dep_.endswith('subj') and w.tag_ == 'PRP':
             subject_structure = 'I/YOU/WE/THEY'
             subject_text = w.text.upper()
             if subject_text in ['HE', 'SHE', 'IT']:
