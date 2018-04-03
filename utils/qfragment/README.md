@@ -46,13 +46,20 @@ http://localhost:8081/v2/check?language=en-US&text=my+text in your browser.
 
 ```bash
 pip install qfragment
-python -m spacy download en
-export QUILL_SPACY_MODEL=en_core_web_md
 ```
 
-QUILL_SPACY_MODEL is en_core_web_md by default. Some English spacy models are
-not supported yet because spacy 2.x does not play well with TensorFlow.  We are
-working on a work around for this; please be patient. 
+QUILL_SPACY_MODEL is en_core_web_lg by default. If you wish to download another
+model, do so with,
+
+```bash
+python -m spacy download <SPACY MODEL NAME>
+```
+
+and set
+
+```bash
+export QUILL_SPACY_MODEL=<SPACY_MODEL_NAME>
+```
 
 ## Usage
 
