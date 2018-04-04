@@ -140,7 +140,29 @@ sentences = [
         ("The scientist have been stirring", False),
         ("Worried about the world", True),
         ("Worrying needlessly", True),
-        ("Until Sam is full grown", True)
+        ("Until Sam is full grown", True),
+        ("In the distance was the three forts whose historic names were known"
+                "to every child in Charleston.", False),
+        ("In the distance were the three forts whose historic names were known"
+                "to every child in Charleston.", True),
+        ("In the distance was three forts.", False),
+        ("In the distance were three forts.", True),
+        ("And with her pretty soft black curls, her rosy cheeks and pleasant"
+                "voice, no one could imagined a more desirable teacher than"
+                "Miss Rosalie George.", False),
+        ("And with her pretty soft black curls, her rosy cheeks and pleasant"
+                "voice, no one could imagine a more desirable teacher than"
+                "Miss Rosalie George.", True),
+        ("And with her pretty soft black curls, her rosy cheeks and pleasant"
+                "voice, no one could have imagined a more desirable teacher than"
+                "Miss Rosalie George.", True),
+        ("And with her pretty soft black curls, her rosy cheeks and pleasant"
+                "voice, no one could have imagine a more desirable teacher than"
+                "Miss Rosalie George.", False),
+        ("There am just twelve little girls in her school.", False),
+        ("There were just twelve little girls in her school.", True),
+        ("He will have a comfortable home now.", True),
+        ("They will have a comfortable home now.", True),
 ]
 
 

@@ -17,6 +17,9 @@ def check_sentence():
             flash_message = error
         else:
             feedback = check(request.form['text']).human_readable
+            # TODO: remove the hack below
+            if feedback == "This looks like a strong sentence.":
+                feedback = "No errors were found."
             flash_message = feedback
 
         flash(flash_message)
