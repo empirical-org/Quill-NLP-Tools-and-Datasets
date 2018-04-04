@@ -10,6 +10,11 @@ else:
     import en_core_web_lg
     nlp = en_core_web_lg.load()
 
+
+# [('VBG', 'csubj', 'Running', 'run'), ('VBZ', 'ROOT', 'makes', 'make'), ('PRP',
+# 'nsubj', 'me', '-PRON-'), ('JJ', 'ccomp', 'happy', 'happy'), ('.', 'punct',
+# '.', '.')]
+
 ACCEPTABLE_STRUCTURES = [
     'I/YOU/WE/THEY--VBP',
     'HE/SHE/IT--VBZ',
@@ -100,14 +105,15 @@ def check_agreement(sentence):
     for w in doc:
         if prev_dep.endswith('subj') and w.text.upper() == 'AND':
             subject_structure = 'COMPOUND_SUBJ'
-        elif w.dep_.endswith('subj') and w.tag_ != 'PRP':
-            subject_structure = w.tag_ 
-            subject_text = w.text.upper()
-        elif w.dep_.endswith('subj') and w.tag_ == 'PRP':
-            subject_structure = 'I/YOU/WE/THEY'
-            subject_text = w.text.upper()
-            if subject_text in ['HE', 'SHE', 'IT']:
-                subject_structure = 'HE/SHE/IT'
+        elif w.dep_.endswith('subj') and not subject_structure:
+            if w.dep_.endswith('subj') and w.tag_ != 'PRP':
+                subject_structure = w.tag_ 
+                subject_text = w.text.upper()
+            elif w.dep_.endswith('subj') and w.tag_ == 'PRP':
+                subject_structure = 'I/YOU/WE/THEY'
+                subject_text = w.text.upper()
+                if subject_text in ['HE', 'SHE', 'IT']:
+                    subject_structure = 'HE/SHE/IT'
         elif w.dep_ == 'ROOT' and w.tag_ in ['VB', 'VBD', 'VBG', 'VBN', 'VBP',
                 'VBZ']:
             verb_structure = w.tag_

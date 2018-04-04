@@ -31,11 +31,13 @@ class Feedback(object):
     """Result feedback class"""
     def __init__(self):
         self.human_readable = '' # human readable advice
+        self.primary_error = None
+        self.specific_error = None
         self.matches = {}        # possible errors
 
     def to_dict(self):
         return self.__dict__
-    
+
     def __repr__(self):
         return self.human_readable
 
@@ -147,6 +149,13 @@ def is_participle_clause_fragment(sentence):
     if not _begins_with_one_of(sentence, ['VBG', 'VBN', 'JJ']):
         return 0.0
 
+    if _begins_with_one_of(sentence, ['JJ']):
+        doc = nlp(sentence)
+        fw = [w for w in doc][0]
+        # Beautiful toy birds
+        if fw.dep_ == 'amod':
+            return 0.0
+
     # short circuit if sentence starts with a gerund and the gerund is the
     # subject.
     
@@ -189,22 +198,34 @@ def check(sentence):
     if is_participle > .5: # Lowest priority
         result.matches['participle_phrase'] = is_participle
         result.human_readable = PARTICIPLE_FRAGMENT_ADVICE.replace('\n', '')
+        result.primary_error = 'FRAGMENT_ERROR'
+        result.specific_error = 'PARTICIPLE_PHRASE'
     if lang_tool_feedback:
         result.matches['lang_tool'] = lang_tool_feedback
         for ltf in lang_tool_feedback:
             if ltf['rule']['id'] == 'SENTENCE_FRAGMENT':
                 result.human_readable = lang_tool_feedback[0]['message']
+                result.primary_error = 'FRAGMENT_ERROR'
+                result.specific_error = 'SUBORDINATE_CLAUSE'
     if not subject_and_verb_agree:
         result.matches['subject_verb_agreement'] = subject_and_verb_agree
         result.human_readable = SUBJECT_VERB_AGREEMENT_ADVICE.replace('\n', '') 
+        result.primary_error = 'SUBJECT_VERB_AGREEMENT_ERROR'
+        result.specific_error = 'SUBJECT_VERB_AGREEMENT'
     if lang_tool_feedback: # Highest priority
         result.matches['lang_tool'] = lang_tool_feedback
         for ltf in lang_tool_feedback:
             if ltf['rule']['id'] == 'MORFOLOGIK_RULE_EN_US':
-                result.human_readable = lang_tool_feedback[0]['message']
+                result.human_readable = ltf['message']
+                result.primary_error = 'SPELLING_ERROR'
+                result.specific_error = 'SPELLING_ERROR'
+        if not result.primary_error:
+            result.human_readable = ltf['message']
+            result.primary_error = 'OTHER_ERROR'
+            result.specific_error = ltf['rule']['id']
+
          
     ####
-        
     if not result.matches:
         result.human_readable = STRONG_SENTENCE_ADVICE.replace('\n', '')
 
