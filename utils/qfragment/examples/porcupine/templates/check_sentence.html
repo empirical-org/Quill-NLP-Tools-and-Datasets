@@ -3,7 +3,8 @@
   <form action="{{ url_for('check_sentence') }}" method="post" class="add-entry">
     <dl>
       <dd><textarea name="text" rows="5" cols="40" >{{ text }}</textarea>
-      <dd><input type="submit" value="Check">
+      <dd><input type="submit" value="Check" name="check">
+      <dd><input type="submit" value="Report" name="report">
     </dl>
   </form>
 {% endblock %}

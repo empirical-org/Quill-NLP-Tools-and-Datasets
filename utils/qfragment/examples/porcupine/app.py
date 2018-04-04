@@ -11,16 +11,21 @@ def check_sentence():
     """Sole porcupine endpoint"""
     text = ''
     if request.method == 'POST':
-        text = request.form['text']
-        if not request.form['text']:
-            error = 'No input'
-            flash_message = error
+        if request.form.get('report'):
+            with open('report.log', 'a+') as r:
+                r.write(request.form['text'] + '\n')
+            flash_message = 'This sentence has been reported'    
         else:
-            feedback = check(request.form['text']).human_readable
-            # TODO: remove the hack below
-            if feedback == "This looks like a strong sentence.":
-                feedback = "No errors were found."
-            flash_message = feedback
+            text = request.form['text']
+            if not request.form['text']:
+                error = 'No input'
+                flash_message = error
+            else:
+                feedback = check(request.form['text']).human_readable
+                # TODO: remove the hack below
+                if feedback == "This looks like a strong sentence.":
+                    feedback = "No errors were found."
+                flash_message = feedback
 
         flash(flash_message)
     return render_template('check_sentence.html', text=text)

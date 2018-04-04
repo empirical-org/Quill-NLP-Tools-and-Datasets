@@ -163,6 +163,9 @@ sentences = [
         ("There were just twelve little girls in her school.", True),
         ("He will have a comfortable home now.", True),
         ("They will have a comfortable home now.", True),
+        ("Let us go back a week and record what passed at the last interview"
+                "between Philip and his father before the latter passed into"
+                "the state of unconsciousness which preceded death.", True),
 ]
 
 
