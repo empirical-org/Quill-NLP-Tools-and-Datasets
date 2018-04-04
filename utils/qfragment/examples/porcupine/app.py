@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import request, \
      render_template, flash, Flask
+from pathlib import Path
 print('Loading qfragment models...')
 from qfragment import check
 app = Flask(__name__)
@@ -12,7 +13,7 @@ def check_sentence():
     text = ''
     if request.method == 'POST':
         if request.form.get('report'):
-            with open('report.log', 'a+') as r:
+            with open(str(Path.home()) + '/Desktop/report.log', 'a+') as r:
                 r.write(request.form['text'] + '\n')
             flash_message = 'This sentence has been reported'    
         else:
