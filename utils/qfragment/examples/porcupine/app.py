@@ -17,6 +17,8 @@ def check_sentence():
                 r.write(request.form['text'] + '\n')
             flash_message = 'This sentence has been reported'    
         else:
+            with open(str(Path.home()) + '/Desktop/tests.log', 'a+') as r:
+                r.write(request.form['text'] + '\n')
             text = request.form['text']
             if not request.form['text']:
                 error = 'No input'
