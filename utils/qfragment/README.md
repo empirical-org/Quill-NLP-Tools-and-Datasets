@@ -28,10 +28,11 @@ sudo unzip LanguageTool-4.1.zip
 sudo rm LanguageTool-4.1.zip
 ```
 
-Add the follwing lines to your .bash_profile or system equivalent
+Add the follwing lines to your .bash_profile or system equivalent. Do not
+include a trailing slash for the LT_URI.
 ```bash
 alias ltserver='nohup java -cp /opt/LanguageTool-4.1/languagetool-server.jar org.languagetool.server.HTTPServer --port 8081 </dev/null >/dev/null 2>&1 &'
-export LT_PORT=8081
+export LT_URI=http://localhost:8081
 ```
 
 Start the server
