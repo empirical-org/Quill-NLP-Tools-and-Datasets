@@ -23,7 +23,7 @@ else:
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 LT_SERVER = \
-        '{}/v2/check'.format(os.environ.get('LT_URI','http://localhost:8081/v2/check'))
+        '{}/v2/check'.format(os.environ.get('LT_URI','http://localhost:8081'))
 _PARTICIPLE_TRIGRAM_INDEX = os.path.join(__location__, 'participlevocabindex.csv')
 _PARTICIPLE_MODEL = os.path.join(__location__, 'models', 'participle_model.tfl')
 
