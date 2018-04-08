@@ -2,6 +2,8 @@
 <title>Porcupine</title>
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
 <div class="page">
+  <a href="{{url_for('check_sentence')}}">Home</a>
+  <a href="{{url_for('list_submissions')}}">History</a>
   <h1>Porcupine</h1>
   <h4>The easy spelling and grammar checker from Quill.org</h4>
   {% block body %}{% endblock %}

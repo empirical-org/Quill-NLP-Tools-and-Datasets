@@ -4,31 +4,76 @@ from flask import request, \
 from pathlib import Path
 print('Loading qfragment models...')
 from qfragment import check
+from sqlalchemy import create_engine, Column, Integer, String, Boolean
+from sqlalchemy.orm import sessionmaker
+import os
+from sqlalchemy.ext.declarative import declarative_base
+
+
+# DB CONFIG AND SETUP ##################################################################
+
+DB_PASS = os.environ['PORCUPINE_DB_PASS']
+Base = declarative_base()
+engine = \
+        create_engine('postgres://porcupine:{}@localhost:54321/porcupine'.format(DB_PASS))
+Session = sessionmaker(bind=engine)
+session = Session()
+
+
+class Submission(Base):
+    __tablename__ = 'submissions'
+
+    id = Column(Integer, primary_key=True)
+    text = Column(String, nullable=False)
+    correct = Column(Boolean)
+    primary_error = Column(String)
+    specific_error = Column(String)
+
+    def __repr__(self):
+        return "<Submission {}...>".format(self.text[:30])
+
+
+try:
+    Base.metadata.create_all(engine)
+except:
+    pass # it already exists
+
+# ROUTES AND APP ##########################################################################
+
 app = Flask(__name__)
 app.secret_key = 'dddxasdasd' # needed for message flashing
+
+@app.route('/submissions', methods=['GET'])
+def list_submissions():
+    """List the past submissions with information about them"""
+    submissions = session.query(Submission).all()
+    return render_template('list_submissions.html', submissions=submissions)
+
 
 @app.route('/', methods=['GET', 'POST'])
 def check_sentence():
     """Sole porcupine endpoint"""
     text = ''
     if request.method == 'POST':
-        if request.form.get('report'):
-            with open(str(Path.home()) + '/Desktop/report.log', 'a+') as r:
-                r.write(request.form['text'] + '\n')
-            flash_message = 'This sentence has been reported'    
+        text = request.form['text']
+        if not text:
+            error = 'No input'
+            flash_message = error
         else:
-            with open(str(Path.home()) + '/Desktop/tests.log', 'a+') as r:
-                r.write(request.form['text'] + '\n')
-            text = request.form['text']
-            if not request.form['text']:
-                error = 'No input'
-                flash_message = error
-            else:
-                feedback = check(request.form['text']).human_readable
-                # TODO: remove the hack below
-                if feedback == "This looks like a strong sentence.":
-                    feedback = "No errors were found."
-                flash_message = feedback
+            fb = check(request.form['text'])
+            correct = False
+            if request.form.get('is_correct') and not fb.primary_error:
+                correct = True
+            elif not request.form.get('is_correct') and fb.primary_error:
+                correct = True
+            sub = Submission(text=text, correct=correct, primary_error=fb.primary_error,
+                    specific_error=fb.specific_error)
+            session.add(sub)
+            session.commit()
+            # TODO: remove the hack below
+            if not fb.primary_error:
+                fb.human_readable = "No errors were found."
+            flash_message = fb.human_readable
 
         flash(flash_message)
     return render_template('check_sentence.html', text=text)

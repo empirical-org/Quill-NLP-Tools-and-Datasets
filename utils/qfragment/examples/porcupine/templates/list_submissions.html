@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block body %}
+  <ul>
+  {% for submission in submissions %}
+  {% if not submission.correct and submission.specific_error %}
+    <li><p class="incorrect">{{ submission.text + ' -- ' + submission.specific_error }} </p></li>
+  {% elif not submission.correct %}
+    <li><p class="incorrect">{{ submission.text }} </p></li>
+  {% elif submission.specific_error %}
+    <li><p class="correct">{{ submission.text + ' -- ' +  submission.specific_error }} </p></li>
+  {% else %}
+    <li><p class="correct">{{ submission.text }} </p></li>
+  {% endif %}
+  {% endfor %}
+  </ul>
+
+{% endblock %}
