@@ -1,17 +1,28 @@
 {% extends "layout.html" %}
 {% block body %}
-  <ul>
-  {% for submission in submissions %}
-  {% if not submission.correct and submission.specific_error %}
-    <li><p class="incorrect">{{ submission.text + ' -- ' + submission.specific_error }} </p></li>
-  {% elif not submission.correct %}
-    <li><p class="incorrect">{{ submission.text }} </p></li>
-  {% elif submission.specific_error %}
-    <li><p class="correct">{{ submission.text + ' -- ' +  submission.specific_error }} </p></li>
-  {% else %}
-    <li><p class="correct">{{ submission.text }} </p></li>
-  {% endif %}
-  {% endfor %}
-  </ul>
+  <script>
+  $(document).ready(function() {
+    $('#submissions_table').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": "http://localhost:5000/submissions.json"
+    } );
+  } );
+  </script>
+  <table id="submissions_table" class="display" style="width:100%">
+    <thead>
+      <tr>
+        <th>Submission</th>
+        <th>ERROR</th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th>Submission</th>
+        <th>ERROR</th>
+      </tr>
+    </tfoot>
+  </table>
+
 
 {% endblock %}

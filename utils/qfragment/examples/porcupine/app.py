@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import request, \
      render_template, flash, Flask
+from flask import jsonify
 from pathlib import Path
 print('Loading qfragment models...')
 from qfragment import check
@@ -48,6 +49,31 @@ def list_submissions():
     """List the past submissions with information about them"""
     submissions = session.query(Submission).all()
     return render_template('list_submissions.html', submissions=submissions)
+
+@app.route('/submissions.json', methods=['GET'])
+def get_submissions():
+    """API endpoint to get submissions in JSON format"""
+    print(request.args.to_dict())
+    print(request.args.get('search[value]'))
+    print(request.args.get('draw', 1))
+    # submissions  = session.query(Submission).all()
+    search_val = request.args.get('search[value]')
+    draw = request.args.get('draw', 1)
+    filtered_len = session.query(Submission).filter(Submission.text.startswith(search_val))\
+            .count()
+    subs = \
+            session.query(Submission).filter(Submission.text.startswith(search_val))\
+            .offset(request.args.get('start', 0))\
+            .limit(request.args.get('length', 10))\
+            .all()
+    submissions = {'draw': draw, 'recordsTotal':0, 'recordsFiltered':0, 'data':[]}
+    i = 0
+    for i, submission in enumerate(subs):
+       submissions['data'].append([submission.text, submission.primary_error]) 
+    submissions['recordsTotal'] = session.query(Submission).count() 
+    submissions['recordsFiltered'] = filtered_len 
+
+    return jsonify(submissions) 
 
 
 @app.route('/', methods=['GET', 'POST'])
