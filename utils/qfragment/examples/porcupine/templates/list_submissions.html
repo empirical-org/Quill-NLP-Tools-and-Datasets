@@ -10,6 +10,23 @@
             "data": function ( d ) {
                 d.correct_filter = $('#show_correct_dropdown').val();
             }
+        },
+        "columnDefs": [
+          {
+            "targets": [ 3 ],
+            "visible": false,
+            "searchable": false
+          }
+        ],
+        "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+          // Bold the grade for all 'A' grade browsers
+          if ( aData[3] == true )
+          {
+            $('td:eq(1)', nRow).css('color', 'green');
+          }
+          else {
+            $('td:eq(1)', nRow).css('color', 'red');
+          }
         }
     } );
     $('#show_correct_dropdown').change( function() {
@@ -31,14 +48,18 @@
   <table id="submissions_table" class="display" style="width:100%">
     <thead>
       <tr>
+        <th>id</th>
         <th>Submission</th>
         <th>ERROR</th>
+        <th>correct</th>
       </tr>
     </thead>
     <tfoot>
       <tr>
+        <th>id</th>
         <th>Submission</th>
         <th>ERROR</th>
+        <th>correct</th>
       </tr>
     </tfoot>
   </table>

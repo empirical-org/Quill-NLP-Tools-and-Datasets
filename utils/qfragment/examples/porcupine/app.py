@@ -69,6 +69,14 @@ def get_submissions():
     else:
         correct_filter = [False]
     
+    if request.args.get('order[0][column]', '0') == '0':
+        column = 'id'
+    elif request.args['order[0][column]'] == '1':
+        column = 'text'
+    else:
+        column = 'primary_error'
+        
+    order_str = "{} {}".format(column, request.args.get('order[0][dir]', 'desc'))
 
     search_val = request.args.get('search[value]')
     draw = request.args.get('draw', 1)
@@ -79,13 +87,15 @@ def get_submissions():
     subs = \
             session.query(Submission).filter(Submission.text.startswith(search_val))\
             .filter(Submission.correct.in_(correct_filter))\
+            .order_by(order_str)\
             .offset(request.args.get('start', 0))\
             .limit(request.args.get('length', 10))\
             .all()
     submissions = {'draw': draw, 'recordsTotal':0, 'recordsFiltered':0, 'data':[]}
     i = 0
     for i, submission in enumerate(subs):
-       submissions['data'].append([submission.text, submission.primary_error]) 
+       submissions['data'].append([submission.id, submission.text,
+           submission.primary_error, submission.correct]) 
     submissions['recordsTotal'] = session.query(Submission).count() 
     submissions['recordsFiltered'] = filtered_len 
 
