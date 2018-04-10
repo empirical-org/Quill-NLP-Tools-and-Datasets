@@ -7,6 +7,7 @@ print('Loading qfragment models...')
 from qfragment import check
 from sqlalchemy import create_engine, Column, Integer, String, Boolean
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.exc import SQLAlchemyError
 import os
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -47,7 +48,11 @@ app.secret_key = 'dddxasdasd' # needed for message flashing
 @app.route('/submissions', methods=['GET'])
 def list_submissions():
     """List the past submissions with information about them"""
-    submissions = session.query(Submission).all()
+    submissions = []
+    try:
+        submissions = session.query(Submission).all()
+    except SQLAlchemyError as e:
+        session.rollback()
     return render_template('list_submissions.html', submissions=submissions)
 
 @app.route('/submissions.json', methods=['GET'])
@@ -57,12 +62,23 @@ def get_submissions():
     print(request.args.get('search[value]'))
     print(request.args.get('draw', 1))
     # submissions  = session.query(Submission).all()
+    if request.args.get('correct_filter', 'all') == 'all':
+        correct_filter = [True, False]
+    elif request.args['correct_filter'] == 'correct':
+        correct_filter = [True]
+    else:
+        correct_filter = [False]
+    
+
     search_val = request.args.get('search[value]')
     draw = request.args.get('draw', 1)
-    filtered_len = session.query(Submission).filter(Submission.text.startswith(search_val))\
+    filtered_len = session.query(Submission)\
+            .filter(Submission.text.startswith(search_val))\
+            .filter(Submission.correct.in_(correct_filter))\
             .count()
     subs = \
             session.query(Submission).filter(Submission.text.startswith(search_val))\
+            .filter(Submission.correct.in_(correct_filter))\
             .offset(request.args.get('start', 0))\
             .limit(request.args.get('length', 10))\
             .all()
