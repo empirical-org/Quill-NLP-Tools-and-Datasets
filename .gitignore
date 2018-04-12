@@ -10,6 +10,7 @@ data/documents
 *.egg-info
 .eggs
 dist
+old_dist
 build
 *.combined.txt
 checkpoint
@@ -17,3 +18,4 @@ checkpoint
 .languagetool
 .pytest_cache
 data/fragments
+

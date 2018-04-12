@@ -25,6 +25,9 @@ then
   exit 1
 fi
 
+# move old dist(s) into old_dist folder
+mv dist/* old_dist/
+
 # delete old egg
 rm -r *.egg-info 
 

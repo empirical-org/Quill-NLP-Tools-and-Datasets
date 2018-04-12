@@ -1,5 +1,7 @@
 from .feedback import *
 from .subject_verb_agreement import check_agreement
+from .infinitive_phrase_detect import (detect_infinitive_phrase,
+        detect_missing_verb)
 from nltk.util import ngrams, trigrams
 import csv
 import json
@@ -191,11 +193,18 @@ def check(sentence):
     # 5. Other errors
 
     result = Feedback()
+    is_missing_verb = detect_missing_verb(sentence)
+    is_infinitive = detect_infinitive_phrase(sentence)
     is_participle = is_participle_clause_fragment(sentence)
     lang_tool_feedback = get_language_tool_feedback(sentence)
     subject_and_verb_agree = get_subject_verb_agreement_feedback(sentence)
     ####
-    if is_participle > .5: # Lowest priority
+    if is_missing_verb: # Lowest priority
+        result.matches['missing_verb'] = True 
+        result.human_readable = MISSING_VERB_ADVICE.replace('\n', '') 
+        result.primary_error = 'MISSING_VERB_ERROR'
+        result.specific_error = 'MISSING_VERB'
+    if is_participle > .5: 
         result.matches['participle_phrase'] = is_participle
         result.human_readable = PARTICIPLE_FRAGMENT_ADVICE.replace('\n', '')
         result.primary_error = 'FRAGMENT_ERROR'
@@ -207,12 +216,17 @@ def check(sentence):
                 result.human_readable = lang_tool_feedback[0]['message']
                 result.primary_error = 'FRAGMENT_ERROR'
                 result.specific_error = 'SUBORDINATE_CLAUSE'
+    if is_infinitive:
+        result.matches['infinitive_phrase'] = True 
+        result.human_readable = INFINITIVE_PHRASE_ADVICE.replace('\n', '') 
+        result.primary_error = 'INFINITIVE_PHRASE_ERROR'
+        result.specific_error = 'INFINITIVE_PHRASE'
     if not subject_and_verb_agree:
         result.matches['subject_verb_agreement'] = subject_and_verb_agree
         result.human_readable = SUBJECT_VERB_AGREEMENT_ADVICE.replace('\n', '') 
         result.primary_error = 'SUBJECT_VERB_AGREEMENT_ERROR'
         result.specific_error = 'SUBJECT_VERB_AGREEMENT'
-    if lang_tool_feedback: # Highest priority
+    if lang_tool_feedback: # Highest priority (spelling, other lang tool errors)
         result.matches['lang_tool'] = lang_tool_feedback
         for ltf in lang_tool_feedback:
             if ltf['rule']['id'] == 'MORFOLOGIK_RULE_EN_US':

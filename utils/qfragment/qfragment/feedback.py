@@ -4,3 +4,6 @@ PARTICIPLE_FRAGMENT_ADVICE = """This looks like a participle clause with no main
 STRONG_SENTENCE_ADVICE = 'This looks like a strong sentence.'
 SUBJECT_VERB_AGREEMENT_ADVICE = """It looks like you might have a subject verb
  agreement error."""
+INFINITIVE_PHRASE_ADVICE = """This is an infinitive phrase with no main clause.
+Try adding a main clause to make it into a bona fide sentence."""
+MISSING_VERB_ADVICE = """Try adding a main verb to make this a sentence."""
