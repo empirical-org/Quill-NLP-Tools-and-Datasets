@@ -4,7 +4,6 @@ from collections import Counter
 from pattern.en import lexeme, tenses
 from pattern.en import pluralize, singularize
 from textstat.textstat import textstat
-import textacy
 from tflearn.data_utils import to_categorical
 import hashlib
 import numpy as np
@@ -12,44 +11,79 @@ import re
 import spacy
 import sqlite3
 import tensorflow as tf
+import textacy
 import tflearn
 
 nlp = spacy.load('en_core_web_lg')
 conn = sqlite3.connect('db/mangled_agreement.db')
-cursor = conn.cursor()
+#cursor = conn.cursor()
 
 # Load the Datafiles ########################################################
 print("Loading datafiles...")
 # TODO: This is kind of memory intensive don'tcha think?
-texts = []
-labels = []
+#texts = []
+#labels = []
 
+def get_correct_or_mangled_sentence():
+    """Generator function that randomly yields a correct or mangled sentences
+    and its label, where 0 is correct and 1 is mangled. If no results are
+    available, yields None."""
+    result = None
+    mangled_cursor = conn.cursor()
+    correct_cursor = conn.cursor()
+    mangled_cursor.execute("SELECT sentence FROM mangled_sentences ORDER BY "
+            "RANDOM() LIMIT 799675")
+    correct_cursor.execute("SELECT sentence FROM orignal_sentences")
+
+    mangled = random.choice([True, False])
+    if mangled:
+        result = mangled_cursor.fetchone()
+        if result:
+            result = (result, 1)
+    if not mangled or not result:
+        result = correct_cursor.fetchone()
+        if result:
+            result = (result, 0)
+    if not mangled and not result:
+        result = mangled_cursor.fetchone()
+        if result:
+            result = (result, 1)
+
+    yield result
+    
+
+
+# NOTE: now using a generator, no need to make an array of text and an array of
+# labels now
+#
 # add 0 label to correct sentences
-for row in cursor.execute("SELECT sentence FROM orignal_sentences"):
-    texts.append(row[0].strip())
-    labels.append(0)
-
-# add 1 label to sentences with a subject verb agreement error, limit should match the number of original sentences
-for row in cursor.execute("SELECT sentence FROM mangled_sentences ORDER BY RANDOM() LIMIT 799675"):
-    texts.append(row[0].strip())
-    labels.append(1)
-        
-print(texts[-10:])
-assert type(texts[0]) == str 
-conn.close() # done with sqlite connection
+#for row in cursor.execute("SELECT sentence FROM orignal_sentences"):
+#    texts.append(row[0].strip())
+#    labels.append(0)
+#
+## add 1 label to sentences with a subject verb agreement error, limit should match the number of original sentences
+#for row in cursor.execute("SELECT sentence FROM mangled_sentences ORDER BY RANDOM() LIMIT 799675"):
+#    texts.append(row[0].strip())
+#    labels.append(1)
+#        
+#print(texts[-10:])
+#assert type(texts[0]) == str 
+#conn.close() # done with sqlite connection
 
 # Shuffle The Data ##########################################################
-print("Shuffling the data")
-combined = list(zip(texts,labels))
-random.shuffle(combined)
+# NOTE: using our generator there is no need to shuffle anymore
 
-texts[:], labels[:] = zip(*combined)
-print(texts[-10:])
-assert type(texts) == list
-assert type(texts[0]) == str
-assert type(labels) == list
-assert type(labes[0]) == int
-print(labels[-10:])
+#print("Shuffling the data")
+#combined = list(zip(texts,labels))
+#random.shuffle(combined)
+#
+#texts[:], labels[:] = zip(*combined)
+#print(texts[-10:])
+#assert type(texts) == list
+#assert type(texts[0]) == str
+#assert type(labels) == list
+#assert type(labels[0]) == int
+#print(labels[-10:])
 
 
 # Get Verb Phrase Keys for Sentence ##########################################
@@ -156,15 +190,30 @@ print("Performing key counts")
 
 c = Counter()
 
-for textString in texts:
+# NOTE: now pulling texts from the generator instead
+#for textString in texts:
+#    c.update(sentence_to_keys(textString))
+
+
+for textString, _ in get_correct_or_mangled_sentence():
+    # NOTE: this COULD be memory intensive.  Since we expect (and hope) that the
+    # keys will repeat pretty often, even with large number of correct and
+    # mangled sentences our counter should be keeping track of a smaller number
+    # of those keys.  If keys rarely repeat, we could be in trouble. 
+    # 
+    # Right now, a warning is printed if the number of keys is over a million;
+    # we can adjust this number as we go to make it sensible.
     c.update(sentence_to_keys(textString))
 
 total_counts = c
 
-print("Total words in data set: ", len(total_counts))
+print("Total keys in data set: ", len(total_counts))
 print("Most common keys: ")
 for k, ct in c.most_common(10):
     print("{}:{}".format(k, ct))
+if len(total_counts) > 1000000:
+    print("WARNING: there are over a million keys being tracked. This could be"
+            "memory intensive and not productive.")
 
 vocab = sorted(total_counts, key=total_counts.get, reverse=True)
 assert type(vocab) == list
@@ -186,14 +235,31 @@ def text_to_vector(text):
 
 # Build word vectors #####################################################
 print("Building word vectors...")
+#records = len(labels) # NOTE: instead get the counts from the database
+records = [x for x in mangled_cursor.execute("SELECT count(*) FROM mangled_sentences LIMIT"
+        " 799675")][0][0]
+records += [x for x in correct_cursor.execute("SELECT count(*) FROM "
+    "orignal_sentences")][0][0]
+assert type(records) == int
 
-word_vectors = np.zeros((len(texts), len(vocab)), dtype=np.int_)
-for ii, text in enumerate(texts):
+# NOTE: use number of databse records instead of len of texts list 
+#word_vectors = np.zeros((len(texts), len(vocab)), dtype=np.int_)
+#for ii, text in enumerate(texts):
+#    word_vectors[ii] = text_to_vector(text)
+
+
+# NOTE: this part is obviously still memory intensive, but at least its not
+# quite as bad as storting strings.
+word_vectors = np.zeros((records, len(vocab)), dtype=np.int_)
+labels = []
+ii = 0
+for text, label in get_correct_or_mangled_sentence():
     word_vectors[ii] = text_to_vector(text)
+    labels.append(label)
+    ii+=1
 
 # Chunk data for tensorflow ##############################################
 print("Chunking data for tensorflow...")
-records = len(labels)
 test_fraction = 0.9
 
 train_split, test_split = int(records*test_fraction), int(records*(1-test_fraction))
