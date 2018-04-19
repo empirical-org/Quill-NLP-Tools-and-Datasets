@@ -1,5 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 """Generate a model capable of detecting subject-verb agreement errors"""
-
+print("loading libraries...")
 from collections import Counter
 from pattern.en import lexeme, tenses
 from pattern.en import pluralize, singularize
@@ -7,12 +10,16 @@ from textstat.textstat import textstat
 from tflearn.data_utils import to_categorical
 import hashlib
 import numpy as np
+import random
 import re
 import spacy
 import sqlite3
 import tensorflow as tf
 import textacy
 import tflearn
+
+print("loading spacy...")
+
 
 nlp = spacy.load('en_core_web_lg')
 conn = sqlite3.connect('db/mangled_agreement.db')
@@ -28,28 +35,29 @@ def get_correct_or_mangled_sentence():
     """Generator function that randomly yields a correct or mangled sentences
     and its label, where 0 is correct and 1 is mangled. If no results are
     available, yields None."""
-    result = None
     mangled_cursor = conn.cursor()
     correct_cursor = conn.cursor()
     mangled_cursor.execute("SELECT sentence FROM mangled_sentences ORDER BY "
             "RANDOM() LIMIT 799675")
     correct_cursor.execute("SELECT sentence FROM orignal_sentences")
 
-    mangled = random.choice([True, False])
-    if mangled:
-        result = mangled_cursor.fetchone()
-        if result:
-            result = (result, 1)
-    if not mangled or not result:
-        result = correct_cursor.fetchone()
-        if result:
-            result = (result, 0)
-    if not mangled and not result:
-        result = mangled_cursor.fetchone()
-        if result:
-            result = (result, 1)
-
-    yield result
+    # just a start value that will be changed
+    result = True 
+    while result:
+        mangled = random.choice([True, False])
+        if mangled:
+            result = mangled_cursor.fetchone()[0]
+            if result:
+                result = (result, 1)
+        if not mangled or not result:
+            result = correct_cursor.fetchone()[0]
+            if result:
+                result = (result, 0)
+        if not mangled and not result:
+            result = mangled_cursor.fetchone()[0]
+            if result:
+                result = (result, 1)
+        yield result
     
 
 
@@ -102,19 +110,20 @@ def get_verb_phrases(sentence_doc):
     """ 
     pattern =  r'<VERB>*<ADV>*<VERB>+' #  r'<VERB>?<ADV>*<VERB>+' is suggested by textacy site
     verb_phrases = textacy.extract.pos_regex_matches(sentence_doc, pattern)
-    sentence_str = sentence_doc.text
+    #sentence_str = sentence_doc.text
     
-    index_2_word_no = {} # the starting position for each word to its number{0:0, 3:1, 7:2, 12:3}
-    for word in sentence_doc:
-        index_2_word_no[word.i] = word.idx
+    #index_2_word_no = {} # the starting position for each word to its number{0:0, 3:1, 7:2, 12:3}
+    #for word in sentence_doc:
+    #    index_2_word_no[word.idx] = word.i
+
+    #print(index_2_word_no)
         
     result = [] # [(1), (5,6,7)] => 2 verb phrases. a single verb at index 1, another verb phrase 5,6,7
     for vp in verb_phrases:
         word_numbers = []
         # return the index of 'could have been happily eating' from 'She could have been happily eating chowder'
-        str_idx = sentence_str.index(vp.text)
-        first_word = index_2_word_no[str_idx] # word number for first word of verb phrase
-        
+        first_word = vp.start
+
         x = first_word
         if len(vp) > 1:
             for verb_or_adverb in vp:
@@ -126,7 +135,7 @@ def get_verb_phrases(sentence_doc):
             word_numbers.append(first_word)
         
         # filter out infinitive phrases
-        if ( (word_numbers[0] - 1) < 0) or (doc[word_numbers[0] - 1].text.lower() != 'to'):
+        if ( (word_numbers[0] - 1) < 0) or (sentence_doc[word_numbers[0] - 1].text.lower() != 'to'):
             result.append(word_numbers)
     
     return result
@@ -180,7 +189,7 @@ def sentence_to_keys(sentence):
     
     return final_keys
     
-assert (sentence_to_keys("Jane is only here for tonight.") ==
+assert (sentence_to_keys(u"Jane is only here for tonight.") ==
         [hashlib.sha256((str(tenses("is")))).hexdigest() + '>' + 'SG']) 
 
 
@@ -203,6 +212,8 @@ for textString, _ in get_correct_or_mangled_sentence():
     # 
     # Right now, a warning is printed if the number of keys is over a million;
     # we can adjust this number as we go to make it sensible.
+    #print(textString)
+    
     c.update(sentence_to_keys(textString))
 
 total_counts = c
@@ -217,7 +228,6 @@ if len(total_counts) > 1000000:
 
 vocab = sorted(total_counts, key=total_counts.get, reverse=True)
 assert type(vocab) == list
-assert type(vocab[0]) == str
 
 # Indexing the sentence keys ################################################
 print("Indexing sentence keys...")
