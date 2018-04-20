@@ -18,4 +18,5 @@ checkpoint
 .languagetool
 .pytest_cache
 data/fragments
-
+db
+nohup.out
