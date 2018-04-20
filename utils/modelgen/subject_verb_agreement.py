@@ -258,6 +258,9 @@ assert type(records) == int
 #    word_vectors[ii] = text_to_vector(text)
 
 
+# Vectorize sentences ####################################################
+print('Vectorizing sentences...')
+
 # NOTE: this part is obviously still memory intensive, but at least its not
 # quite as bad as storting strings.
 word_vectors = np.zeros((records, len(vocab)), dtype=np.int_)
