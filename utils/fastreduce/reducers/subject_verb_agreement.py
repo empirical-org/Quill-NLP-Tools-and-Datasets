@@ -144,16 +144,10 @@ def simplify_compound_subjects(sentence_doc):
         
         new_sent_str = sentence_doc.text
         for replacement in chars_to_repl:
-            print(replacement)
             new_sent_str = new_sent_str[:replacement[0]] + replacement[2] + \
                     new_sent_str[replacement[1]:]
-            print(new_sent_str)
-        print("After loop")
-        print(new_sent_str)
         new_sent_str = new_sent_str.replace('文', '')
         new_sent_str = re.sub( '\s+', ' ', new_sent_str ).strip()
-        print("After replace")
-        print(new_sent_str)
 
     sentence_doc = textacy.Doc(new_sent_str, lang='en_core_web_lg')
     return sentence_doc 
