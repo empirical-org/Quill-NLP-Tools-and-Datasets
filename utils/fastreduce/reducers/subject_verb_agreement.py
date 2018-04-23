@@ -7,10 +7,32 @@ from pattern.en import pluralize, singularize
 from textstat.textstat import textstat
 import hashlib
 import os
+import re
 import pika
 import sqlite3
 import textacy
 RABBIT = os.environ.get('RABBITMQ_LOCATION', 'localhost')
+
+# NOTE:
+#
+# This module can be used as a package.  Just import get_reduction.
+# from subject_verb_agreement import get_reduction
+# get_reduction("She was tired")
+
+
+# Compound noun extraction
+#
+# textacy.extract.pos_regex_matches(doc,
+# r'(<DET>?(<NOUN|PROPN>|<PRON>)<PUNCT>)+<DET>?(<NOUN|PROPN>|<PRON>)<PUNCT>?<CCONJ><DET>?(<NOUN|PROPN>|<PRON>)')
+# => matches 3 or more subjects joined by commas - oxford comma not enforced
+# => NOTE: will fail on possessives : He, Louis's mom, and the dog, are dead. 
+# if the coordinating conjunction is and, number should match 'they'.  We can
+# use the pronoun they in our hash to replace the noun.
+#
+# else, if the coordinating conjunction is not and, the number should match the
+# subject closest to the verb. 'The dogs, the birds, or the mailman' would get
+# its number from the mailman (SINGULAR).
+
 
 # #Steps:
 # 1. Read strings from String Queue
@@ -60,9 +82,88 @@ def singular_or_plural(word_string):
         return 'SG'
     return 'PL'
 
+def simplify_sentence_doc(sentence_doc):
+    """Given a sentence doc, return a sentence doc based on the input with
+    adjectives and adverbs removed."""
+    chars_to_repl = []
+    for w in sentence_doc:
+        if w.pos_ == 'ADJ' or w.pos_ == 'ADV':
+            # remove adverbs and adjectives
+            repl = ''.ljust(len(w.text), '文') # pad w unexpected char 
+            chars_to_repl.append([w.idx, w.idx + len(w.text), repl])
+    
+    new_sent_str = sentence_doc.text
+    for replacement in chars_to_repl:
+        new_sent_str = new_sent_str[:replacement[0]] + replacement[2] + \
+                new_sent_str[replacement[1]:]
+    new_sent_str = new_sent_str.replace('文', '')
+    new_sent_str = re.sub( '\s+', ' ', new_sent_str ).strip()
+    return textacy.Doc(new_sent_str, lang='en_core_web_lg')
+
+def simplify_compound_subjects(sentence_doc):
+    """Given a sentence doc, return a new sentence doc with compound subjects
+    reduced to their simplest forms.
+
+    'The man, the boy, and the girl went to school.'
+
+    would reduce to 'They went to school'
+
+    'The man, the boy, or the girls are frauds.'
+
+    would reduce to 'The girls are frauds.'
+
+    Sentences without a compund subject will not be changed at all."""
+    
+    cs_patterns = \
+            [r'((<DET>?(<NOUN|PROPN>|<PRON>)+<PUNCT>)+<DET>?(<NOUN|PROPN>|<PRON>)+<PUNCT>?<CCONJ><DET>?(<NOUN|PROPN>|<PRON>)+)|'\
+            '(<DET>?(<NOUN|PROPN>|<PRON>)<CCONJ><DET>?(<NOUN|PROPN>|<PRON>))']
+
+    for cs_pattern in cs_patterns:
+    
+        compound_subjects = textacy.extract.pos_regex_matches(sentence_doc,
+                cs_pattern)
+
+        chars_to_repl = [] # [(start_repl, end_repl, replacement), (start_repl,
+        # end_repl, replacement), ...] 
+        
+        for cs in compound_subjects:
+            for w in cs:
+                if w.pos_ == 'CCONJ' and w.text.lower() == 'and':
+                    # replace with they
+                    repl = 'they'.ljust(len(cs.text), '文') # pad w unexpected char 
+                    chars_to_repl.append([cs[0].idx, cs[-1].idx + len(cs[-1].text), repl])
+
+                elif w.pos_ == 'CCONJ' and w.text.lower() != 'and':
+                    # replace with final <DET>?(<NOUN|PROPN>|<PRON>)
+                    repl = cs[-1:].text
+                    if cs[-2].pos_ == 'DET':
+                        repl = cs[-2:].text
+                    repl = repl.ljust(len(cs.text), '文') # pad w unexpected char 
+                    
+                    chars_to_repl.append([cs[0].idx, cs[-1].idx + len(cs[-1].text), repl])
+        
+        new_sent_str = sentence_doc.text
+        for replacement in chars_to_repl:
+            print(replacement)
+            new_sent_str = new_sent_str[:replacement[0]] + replacement[2] + \
+                    new_sent_str[replacement[1]:]
+            print(new_sent_str)
+        print("After loop")
+        print(new_sent_str)
+        new_sent_str = new_sent_str.replace('文', '')
+        new_sent_str = re.sub( '\s+', ' ', new_sent_str ).strip()
+        print("After replace")
+        print(new_sent_str)
+
+    sentence_doc = textacy.Doc(new_sent_str, lang='en_core_web_lg')
+    return sentence_doc 
+
+
 
 def sentence_to_keys(sentence):
     doc = textacy.Doc(sentence, lang='en_core_web_lg')
+    doc = simplify_sentence_doc(doc) # remove adverbs and adj
+    doc = simplify_compound_subjects(doc) # treat compound subjects right
     
     verb_phrases = get_verb_phrases(doc)
     
@@ -73,7 +174,7 @@ def sentence_to_keys(sentence):
             verb_number_or_pronoun = ''
             for child in word.children:
                 if child.dep_ == 'nsubj':
-                    if child.pos == 'PRON':
+                    if child.pos_ == 'PRON':
                         verb_number_or_pronoun = child.text.upper()
                     else:
                         verb_number_or_pronoun = singular_or_plural(child.text)
