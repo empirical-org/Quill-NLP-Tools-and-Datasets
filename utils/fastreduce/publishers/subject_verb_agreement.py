@@ -7,6 +7,8 @@ from time import sleep
 the strings queue"""
 RABBIT = os.environ.get('RABBITMQ_LOCATION', 'localhost')
 DB_PASSWORD = os.environ.get('SVA_PASSWORD', '')
+DB_NAME = os.environ.get('SVA_DB', 'sva')
+DB_USER = os.environ.get('SVA_USER', DB_NAME)
 
 
 # #Steps
@@ -18,7 +20,7 @@ DB_PASSWORD = os.environ.get('SVA_PASSWORD', '')
 if __name__ == '__main__':
     print("Subject Verb Agreement SentStr Publisher Started.")
     # Connect to the database
-    conn = psycopg2.connect(dbname="sva", user="sva", password=DB_PASSWORD)
+    conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD)
 
     # Issue select statements
     mangledcur = conn.cursor()
