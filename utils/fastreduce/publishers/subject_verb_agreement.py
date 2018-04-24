@@ -42,7 +42,7 @@ if __name__ == '__main__':
         while q_len < 500 and sent_str:
             mangled = random.choice([True, False])
             if mangled:
-                sent_str = mangledcur.fetchone()[0]
+                sent_str = mangledcur.fetchone()[0] # blows if mc.fo() == None
             if not mangled or not sent_str:
                 sent_str = originalcur.fetchone()[0]
             if not mangled and not sent_str:
