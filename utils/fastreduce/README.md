@@ -49,17 +49,6 @@ Many reducers are allowed, but only a single instance of the db writer and queue
 populator are allowed.
 
 
-The database should exist in its own box.  It should have good access to memory
-and CPUs.
-
-The RabbitMQ server can exist on its own box (ideally).  It should have lots of
-access to memory. This box can also include the DB Writer and Queue Populator.
-Queue sizes should remain close to 0.
-
-Multiple reducers can exists on the same box, but there should never be more
-reducers on the box than there are CPUs. These reducers read from the string
-queue and write to the reduced string queue.
-
 ## Usage
 
 The boxes could be hosted on digital ocean. Because of the high cost of keeping
@@ -67,3 +56,5 @@ The boxes could be hosted on digital ocean. Because of the high cost of keeping
 writing an ansible script to provision the reducer boxes. When the reducers are
 done working, those droplets can be destroyed.
 
+
+Right now, a single beefy digital ocean droplet hosts all of fast reduce.
