@@ -15,7 +15,7 @@ DB_USER = os.environ.get('SVA_USER', DB_NAME)
 BULK_INSERT_SIZE = int(os.environ.get('SVA_REDUCTIONS_BATCH_SIZE', '5000'))
 
 # Connect to the database
-conn = psycopg2.connect(dbname=DB_NAME, user=DB_PASSWORD, password=DB_PASSWORD)
+conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD)
 cur = conn.cursor()
 
 # Values # TODO: consider using copy to/from
