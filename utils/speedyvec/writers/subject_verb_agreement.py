@@ -18,21 +18,18 @@ BULK_INSERT_SIZE = int(os.environ.get('SVA_REDUCTIONS_BATCH_SIZE', '5000'))
 conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD)
 cur = conn.cursor()
 
-# Values # TODO: consider using copy to/from
-#reductions_to_insert = [] # [('xasdasdasd:adadsasd>PL',), ('asdd:SG',), ...]
-
 # #Steps:
-# 1. Read reduced strings from Reduction Queue
-# 2. Write reduced strings to database 
+# 1. Read vectorized string from Reduction Queue
+# 2. Write vectorized string to database 
 
 def handle_message(ch, method, properties, body):
-    sent_reduction = body.decode("utf-8") 
-    #reductions_to_insert.append([sent_reduction])
-    #if len(reductions_to_insert) > BULK_INSERT_SIZE:
-    #    # add sent reduction to database
-    #    execute_values(cur, "INSERT INTO reductions (reduction) VALUES %s", reductions_to_insert)
-    #    reductions_to_insert = []
-    cur.execute('INSERT INTO reductions (reduction) VALUES (%s)', (sent_reduction,))
+    labeled_sent_vector = dict(body.decode("utf-8")) 
+    sent_vector = labeled_sent_vector['sent_vector'] 
+    label = labeled_sent_vector['label'] 
+    # TODO: bulk / batch inserts are faster. This should be changed to to
+    # batches
+    cur.execute('INSERT INTO vectors (vector, label) VALUES (%s, %s)',
+            (sent_vector, label))
     conn.commit()
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
