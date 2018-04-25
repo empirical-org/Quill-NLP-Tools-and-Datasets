@@ -28,7 +28,7 @@ cur = conn.cursor()
 
 def handle_message(ch, method, properties, body):
     labeled_sent_vector = json.loads(body) 
-    sent_vector = labeled_sent_vector['vector'] 
+    sent_vector = json.dumps(labeled_sent_vector['vector'])
     label = labeled_sent_vector['label'] 
     # TODO: bulk / batch inserts are faster. This should be changed to to
     # batches
