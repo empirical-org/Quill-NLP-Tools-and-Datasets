@@ -59,7 +59,7 @@ if __name__ == '__main__':
                     label=None
 
             # add the labeled sent string to the queue
-            labeled_sent_str = repr({'sent_str': sent_str, 'label': label})
+            labeled_sent_str = str({'sent_str': sent_str, 'label': label})
             channel.basic_publish(exchange='', routing_key='fstrings',
                     body=labeled_sent_str)
             q = channel.queue_declare(queue='fstrings')
