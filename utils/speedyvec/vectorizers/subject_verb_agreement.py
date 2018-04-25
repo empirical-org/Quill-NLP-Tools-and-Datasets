@@ -32,12 +32,12 @@ cur = conn.cursor()
 
 
 # Select unique reductions in order of regularity, must occur at least thrice
-reductions = cur.execute('SELECT reduction, count(*) from reductions group by'
+cur.execute('SELECT reduction, count(*) from reductions group by'
         ' reduction having count(*) > 2 order by count(*) desc;')
 
 # with ~2 million total sentences the number of unique reductions was a little
 # over 12k. ~5k had more than 2 occurrences
-reduction2idx = {n: i for i, n[1] in enumerate(reductions)} 
+reduction2idx = {n[0]: i for i, n in enumerate(cur)} 
 num_reductions = len(reduction2idx)
 
 
