@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+#from __future__ import unicode_literals
 """Generate a model capable of detecting subject-verb agreement errors"""
 print("loading libraries...")
+import json
 import numpy as np
+import os
+import psycopg2
 import tensorflow as tf
 import tflearn
-import psycopg2
-import json
 
 # Constants
 
@@ -15,30 +16,42 @@ DB_PASSWORD = os.environ.get('SVA_PASSWORD', '')
 DB_NAME = os.environ.get('SVA_DB', 'max')
 DB_USER = os.environ.get('SVA_USER', DB_NAME)
 DB_PORT = int(os.environ.get('SVA_PORT', '5432'))
+DB_HOST = 'localhost'
 
 
 def inflate(deflated_vector):
     """Given a defalated vector, inflate it into a np array and return it"""
     dv = json.loads(deflated_vector)
-    result = np.zeros(dv['reductions'])
+    #result = np.zeros(dv['reductions']) # some claim vector length 5555, others
+    #5530. this could have occurred doing remote computations? or something.
+    # anyhow, we will use 5555.  Let's just hard code it.  Gosh darnit.
+    result = np.zeros(5555) # some claim vector length 5555, others
     for n in dv['indices']:
         result[int(n)] = dv['indices'][n]
+    print("Inflated vector. Length", len(result))
     return result
 
 
 # New stuff 
 # connect to database
 conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD,
-        port=DB_PORT)
+        port=DB_PORT, host=DB_HOST)
 cur = conn.cursor()
 
 # get records count
 cur.execute('SELECT count(*) FROM vectors')
 records = cur.fetchone()[0]
+print("Records count, ", records)
 
 # get vector length
 cur.execute('SELECT vector FROM vectors LIMIT 1')
 vector_len = json.loads(cur.fetchone()[0])['reductions']
+# again, this should be 5555 in our case, but some of them have 5530. If it's
+# not 5555 lets change it. ug, bad code.
+if vector_len != 5555:
+    vector_len = 5555
+print("Vector length, ", vector_len)
+
 
 # grab deflated vectors
 cur.execute('SELECT vector, label FROM vectors') # less than 2 million
