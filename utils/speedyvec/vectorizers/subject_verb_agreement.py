@@ -63,7 +63,7 @@ def get_vector(string):
     for reduction in get_reduction(string):
         index = reduction2idx.get(reduction)
         if index:
-            result['indices'][index] = x['indices'].get(index, 0) + 1
+            result['indices'][index] = result['indices'].get(index, 0) + 1
     return result
 
 
@@ -82,7 +82,7 @@ if __name__ == '__main__':
     connection = pika.BlockingConnection(pika.ConnectionParameters(RABBIT))
     channel = connection.channel()
     channel.queue_declare(queue='fstrings') # create queue if doesn't exist
-    channel.queue_declare(queue='reductions')
+    channel.queue_declare(queue='vectors')
 
     # NOTE: if the prefetch count is too high, some workers could starve. If it
     # is too low, we make an unneccessary amount of requests to rabbitmq server 
