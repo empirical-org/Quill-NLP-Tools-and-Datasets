@@ -14,6 +14,9 @@ DB_NAME = os.environ.get('SVA_DB', 'sva')
 DB_USER = os.environ.get('SVA_USER', DB_NAME)
 BULK_INSERT_SIZE = int(os.environ.get('SVA_REDUCTIONS_BATCH_SIZE', '5000'))
 
+# Ensure new table exists
+# create table vectors (id serial, vector varchar, label integer);
+
 # Connect to the database
 conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD)
 cur = conn.cursor()
