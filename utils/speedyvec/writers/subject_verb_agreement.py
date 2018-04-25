@@ -7,6 +7,7 @@ from pattern.en import pluralize, singularize
 import os
 import pika
 import psycopg2
+import json
 from psycopg2.extras import execute_values
 RABBIT = os.environ.get('RABBITMQ_LOCATION', 'localhost')
 DB_PASSWORD = os.environ.get('SVA_PASSWORD', '')
@@ -26,7 +27,7 @@ cur = conn.cursor()
 # 2. Write vectorized string to database 
 
 def handle_message(ch, method, properties, body):
-    labeled_sent_vector = dict(body.decode("utf-8")) 
+    labeled_sent_vector = json.loads(body) 
     sent_vector = labeled_sent_vector['sent_vector'] 
     label = labeled_sent_vector['label'] 
     # TODO: bulk / batch inserts are faster. This should be changed to to

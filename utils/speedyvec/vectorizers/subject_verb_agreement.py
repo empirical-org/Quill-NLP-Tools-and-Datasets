@@ -8,6 +8,7 @@ from textstat.textstat import textstat
 from time import sleep
 import hashlib
 import os
+import json
 import pika
 import psycopg2
 import random
@@ -63,16 +64,15 @@ def get_vector(string):
         index = reduction2idx.get(reduction)
         if index:
             result['indices'][index] = x['indices'].get(index, 0) + 1
-    result = str(result) # transform to a string
     return result
 
 
 def handle_message(ch, method, properties, body):
-    labeled_sent_dict = dict(body.decode("utf-8"))
+    labeled_sent_dict = json.loads(body)
     sent_str = labeled_sent_dict['sent_str'] 
     label = labeled_sent_dict['label']
     for vector in get_vector(sent_str):
-        labeled_vector = str({'vector':vector, 'label':label})
+        labeled_vector = json.dumps({'vector':vector, 'label':label})
         channel.basic_publish(exchange='', routing_key='vectors',
                 body=labeled_vector)
     ch.basic_ack(delivery_tag=method.delivery_tag)

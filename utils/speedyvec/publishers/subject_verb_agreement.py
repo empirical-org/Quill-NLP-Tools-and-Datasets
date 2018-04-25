@@ -3,6 +3,7 @@ import os
 import psycopg2
 import random
 from time import sleep
+import json
 """Publish sentences with subject verb agreement errors and correct sentneces to
 the fstrings queue"""
 RABBIT = os.environ.get('RABBITMQ_LOCATION', 'localhost')
@@ -59,7 +60,7 @@ if __name__ == '__main__':
                     label=None
 
             # add the labeled sent string to the queue
-            labeled_sent_str = str({'sent_str': sent_str, 'label': label})
+            labeled_sent_str = json.dumps({'sent_str': sent_str, 'label': label})
             channel.basic_publish(exchange='', routing_key='fstrings',
                     body=labeled_sent_str)
             q = channel.queue_declare(queue='fstrings')
