@@ -41,12 +41,12 @@ def handle_message(ch, method, properties, body):
 if __name__ == '__main__':
     connection = pika.BlockingConnection(pika.ConnectionParameters(RABBIT))
     channel = connection.channel()
-    channel.queue_declare(queue='reductions') # create queue if doesn't exist
+    channel.queue_declare(queue='vectors') # create queue if doesn't exist
 
     # NOTE: a high prefetch count is not risky here because there will only ever
     # be one writer (so this guy can't starve anyone out)
     channel.basic_qos(prefetch_count=100) # limit num of unackd msgs on channel
-    channel.basic_consume(handle_message, queue='reductions', no_ack=False)
+    channel.basic_consume(handle_message, queue='vectors', no_ack=False)
     channel.start_consuming()
 
     cur.close()
