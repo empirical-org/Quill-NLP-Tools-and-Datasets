@@ -112,7 +112,7 @@ def _begins_with_one_of(sentence, parts_of_speech):
 ## Load fragment dectection models
 prefixes = ['participle'] # => eventually, [participle, infinitive,
                           #    afterthought, lonelyverb, subordinate,
-                          #    appositive]
+                          #    appositive, sva]
 models = {}
 trigram2idx = {}
 trigram_count = {}

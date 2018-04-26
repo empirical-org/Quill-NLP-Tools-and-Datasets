@@ -15,6 +15,7 @@ import tflearn
 from sva_rule_based import check_agreement
 
 METHOD = 'COMBINED' 
+#METHOD = 'RULE_BASED' 
 
 # Constants
 
@@ -79,9 +80,9 @@ def test_sentence(sentence, ans):
     vps = textacy.extract.pos_regex_matches(doc, pattern)
 
     #if len([x for x in vps]) < 2:
-    if (METHOD == 'COMBINED' and len(sentence) < 30) or METHOD == 'RULE_BASED':
+    if (METHOD == 'COMBINED' and len([x for x in vps]) < 2) or METHOD == 'RULE_BASED':
         print("Simple sentence, using rule based checker")
-        return check_agreement(sentence)
+        return ans != check_agreement(sentence)
     
     # Use ML on more complex sentences
 
