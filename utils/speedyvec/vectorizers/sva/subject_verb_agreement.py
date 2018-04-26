@@ -19,16 +19,21 @@ from sva_reducer import get_reduction
 print("You just imported get_reduction from sva_reducer. This reduction"
         "algorithm should be the same as the one used to create your previous"
         "reducutions.")
+
+# Constants
+
 RABBIT = os.environ.get('RABBITMQ_LOCATION', 'localhost')
 DB_PASSWORD = os.environ.get('SVA_PASSWORD', '')
-DB_NAME = os.environ.get('SVA_DB', 'sva')
+DB_NAME = os.environ.get('SVA_DB', 'max')
 DB_USER = os.environ.get('SVA_USER', DB_NAME)
+DB_PORT = int(os.environ.get('SVA_PORT', '5432'))
+DB_HOST = 'localhost'
 
-# Indexing the sentence keys ################################################
-print("Indexing sentence keys...")
+print('Connecting to the database... ')
 
 # Connect to postgres
-conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD)
+conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD,
+        port=DB_PORT, host=DB_HOST)
 cur = conn.cursor()
 
 
