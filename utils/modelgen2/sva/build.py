@@ -8,6 +8,7 @@ import numpy as np
 import os
 import psycopg2
 import tensorflow as tf
+from tflearn.data_utils import to_categorical
 import tflearn
 
 # Constants
@@ -28,7 +29,7 @@ def inflate(deflated_vector):
     result = np.zeros(5555) # some claim vector length 5555, others
     for n in dv['indices']:
         result[int(n)] = dv['indices'][n]
-    print("Inflated vector. Length", len(result))
+    #print("Inflated vector. Length", len(result))
     return result
 
 
@@ -90,7 +91,7 @@ def build_model():
     tf.reset_default_graph()
     
     #### Your code ####
-    net = tflearn.input_data([None, len(vocab)])                          # Input
+    net = tflearn.input_data([None, vector_len])                          # Input
     net = tflearn.fully_connected(net, 200, activation='ReLU')      # Hidden
     net = tflearn.fully_connected(net, 25, activation='ReLU')      # Hidden
     net = tflearn.fully_connected(net, 2, activation='softmax')   # Output
@@ -132,7 +133,7 @@ print('\n'*10)
 
 # Testing ##############################################################
 print('Running tests against your model...')
-
+# TODO: text_to_vector not currently included so tests can't run
 def test_sentence(sentence, ans):
     positive_prob = model.predict([text_to_vector(sentence)])[0][1]
     print('---{}---'.format(sentence))
