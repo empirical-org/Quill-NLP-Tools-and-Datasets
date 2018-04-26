@@ -1,3 +1,4 @@
 include README.md
 include qfragment/*.csv
 include qfragment/models/participle_model.tfl.*
+include qfragment/models/subject_verb_agreement_model.tfl.*

@@ -1,5 +1,5 @@
 from .feedback import *
-from .subject_verb_agreement import check_agreement
+from .sva import check_agreement2
 from .infinitive_phrase_detect import (detect_infinitive_phrase,
         detect_missing_verb)
 from nltk.util import ngrams, trigrams
@@ -128,7 +128,7 @@ for prefix in prefixes:
 
 def get_subject_verb_agreement_feedback(sentence):
     """Return True if no subject verb agreement errors, else False"""
-    return check_agreement(sentence)
+    return check_agreement2(sentence)
 
 
 def get_language_tool_feedback(sentence):
