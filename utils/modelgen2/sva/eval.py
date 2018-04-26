@@ -7,10 +7,14 @@ import json
 import numpy as np
 import os
 import requests
+import textacy
 import tensorflow as tf
 from tflearn.data_utils import to_categorical
 from test_sents import sentences as ts
 import tflearn
+from sva_rule_based import check_agreement
+
+METHOD = 'COMBINED' 
 
 # Constants
 
@@ -66,6 +70,21 @@ print('Running tests against your model...')
 # TODO: text_to_vector not currently included so tests can't run
 def test_sentence(sentence, ans):
     """Returns true if correct"""
+    correct = False
+
+
+    # see number of verb phrases
+    pattern = r'<VERB>?<ADV>*<VERB>+'
+    doc = textacy.Doc(sentence, lang='en_core_web_lg')
+    vps = textacy.extract.pos_regex_matches(doc, pattern)
+
+    #if len([x for x in vps]) < 2:
+    if (METHOD == 'COMBINED' and len(sentence) < 30) or METHOD == 'RULE_BASED':
+        print("Simple sentence, using rule based checker")
+        return check_agreement(sentence)
+    
+    # Use ML on more complex sentences
+
     positive_prob = model.predict([text_to_vector(sentence)])[0][1]
     print('---{}---'.format(sentence))
     print('Does this sentence have a subject-verb agreement error?\n {}'.format(sentence))
