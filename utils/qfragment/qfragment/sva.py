@@ -64,7 +64,7 @@ model = build_model()
 # Loading TF Model #####################################################
 print("Loading TF model...")
 # model.load('./models/subject_verb_agreement_model.tfl')
-model.load(os.path.join(__location__, 'models', '{}_model.tfl'.format(prefix)))
+model.load(os.path.join(__location__, 'models', 'subject_verb_agreement_model.tfl'))
 
 def check_agreement2(sentence):
     """Returns False when subject and verb disagree (or probably disagree)"""
