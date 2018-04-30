@@ -13,6 +13,7 @@ from tflearn.data_utils import to_categorical
 import tflearn
 from .sva_rule_based import check_agreement
 
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 METHOD = 'COMBINED' 
 VECTORIZE_API = os.environ.get('VECTORIZE_API_URI', 'http://localhost:10200')
 
@@ -62,7 +63,8 @@ model = build_model()
 
 # Loading TF Model #####################################################
 print("Loading TF model...")
-model.load('./models/subject_verb_agreement_model.tfl')
+# model.load('./models/subject_verb_agreement_model.tfl')
+model.load(os.path.join(__location__, 'models', '{}_model.tfl'.format(prefix)))
 
 def check_agreement2(sentence):
     """Returns False when subject and verb disagree (or probably disagree)"""
