@@ -14,7 +14,7 @@ import tflearn
 from .sva_rule_based import check_agreement
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-METHOD = 'COMBINED' 
+METHOD = os.environ.get('SVA_METHOD', 'COMBINED')
 VECTORIZE_API = os.environ.get('VECTORIZE_API_URI', 'http://localhost:10200')
 
 # Constants
@@ -69,7 +69,6 @@ model.load(os.path.join(__location__, 'models', 'subject_verb_agreement_model.tf
 def check_agreement2(sentence):
     """Returns False when subject and verb disagree (or probably disagree)"""
     correct = False
-    METHOD = 'COMBINED'
 
     # see number of verb phrases
     pattern = r'<VERB>?<ADV>*<VERB>+'
