@@ -77,7 +77,7 @@ We trained our model, and tested it. Testing revealed we were able to catch
 errors with somewhere between 70 and 80 percent accuracy.  That might sound
 suitable, but trust us, it wasn't.
 
-### So why did it suck?
+### So why didn't it work?
 
 Stupid in, stupid out.
 
@@ -179,8 +179,16 @@ entirely.** So what did we miss?
 
    What a pleasure to vectorize a 3 word sentence!
 
+6. **Idioms**. This stuff is bananas! Shouldn't it be 'These things are
+   bananas'? Obviously both are fine (and mean different things). Idioms like
+   this are common in English and often have a funky grammatical structure.  To
+   handle them properly, they should be extracted from our training set or
+   deemed negligible in number, and a rule based system could provide a second
+   layer of detection OR idioms could be transformed into more grammatical
+   versions in the preprocessing step. Finally, we could choose to just judge
+   them normally... we are teaching grammar after all?
 
-With these 5 major mistakes in mind, we hope to greatly improve the efficacy of
+With these 6 major mistakes in mind, we hope to greatly improve the efficacy of
 our model. Whether we will be able to accurately extract all this information
 remains to be seen.  I have high hopes.
 
