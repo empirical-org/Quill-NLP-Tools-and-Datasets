@@ -11,7 +11,7 @@ import re
 import pika
 import sqlite3
 import textacy
-from sva_reduce import sentence_to_keys
+from sva_reducer import sentence_to_keys
 RABBIT = os.environ.get('RABBITMQ_LOCATION', 'localhost')
 
 
