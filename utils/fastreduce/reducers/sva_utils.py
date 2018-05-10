@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 """Preprocess sentences and reduce them."""
 import textacy
+from pattern.en import conjugate
 import re
 
 
