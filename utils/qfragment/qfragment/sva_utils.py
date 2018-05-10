@@ -7,13 +7,18 @@ import re
 
 
 def remove_adverbial_clauses(sentence_str):
-    """Given a string, drop any adverbial clauses"""
+    """Given a string, drop any adverbial clauses."""
+    # should also return updated indexes
+    # Sam , worried, asked him.
+    # [0, 0, 0, 0, 3, 3, 3]
     tdoc = textacy.Doc(sentence_str, lang='en_core_web_lg')
     advcl_phrases = [] #=> [(start.i, end.i), ...]
     has_advcl = False
+    start = None
     for w in tdoc:
         if w.tag_ == ',' and has_advcl: # end phrase, start next
-            advcl_phrases.append((start.i, w.i))
+            if start: # end phrase if started
+                advcl_phrases.append((start.i, w.i))
             start = w
             has_advcl = False
         elif w.tag_ == ',': # start phrase
@@ -145,9 +150,7 @@ def simplify_compound_subjects(sentence_str):
             revised_compound_subjects.append(new_cs)
         
         for cs in revised_compound_subjects:
-            print(cs)
             for w in cs:
-                print w.text, w.dep_, w.head.text
                 if w.pos_ == 'CCONJ' and w.text.lower() == 'and':
                     # replace with they
                     repl = 'they'.ljust(len(cs.text), '文') # pad w unexpected char 
