@@ -20,10 +20,14 @@ def get_reduction(sent_str):
 
 
 def handle_message(ch, method, properties, body):
-    sent_str = body.decode("utf-8") 
-    for reduction in get_reduction(sent_str):
-        channel.basic_publish(exchange='', routing_key='reductions',
-                body=reduction)
+    try:
+        sent_str = body.decode("utf-8") 
+        for reduction in get_reduction(sent_str):
+            channel.basic_publish(exchange='', routing_key='reductions',
+                    body=reduction)
+    except Exception as e:
+        print(e) # log exception, but just move on
+
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
