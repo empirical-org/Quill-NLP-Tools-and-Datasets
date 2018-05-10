@@ -83,7 +83,7 @@ def substitute_infinitives_as_subjects(sent_str):
     for inf in infinitives:
         if inf[0].text.lower() != 'to':
             continue
-        if ('csubj' not in [w.dep_ for w in inf] and sent_doc[inf[-1].i + 1].dep_
+        if ('csubj' not in [w.dep_ for w in inf] and 0 <= inf[-1].i + 1 < len(sent_doc) and sent_doc[inf[-1].i + 1].dep_
                 != 'csubj'):
             continue
         if inf[-1].tag_ != 'VB':
