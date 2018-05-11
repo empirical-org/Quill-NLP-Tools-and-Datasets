@@ -81,13 +81,17 @@ def get_vector(string):
 
 
 def handle_message(ch, method, properties, body):
-    labeled_sent_dict = json.loads(body)
-    sent_str = labeled_sent_dict['sent_str'] 
-    label = labeled_sent_dict['label']
-    vector =  get_vector(sent_str)
-    labeled_vector = json.dumps({'vector':vector, 'label':label})
-    channel.basic_publish(exchange='', routing_key='vectors',
-            body=labeled_vector)
+    try:
+        labeled_sent_dict = json.loads(body)
+        sent_str = labeled_sent_dict['sent_str'] 
+        label = labeled_sent_dict['label']
+        vector =  get_vector(sent_str)
+        labeled_vector = json.dumps({'vector':vector, 'label':label})
+        channel.basic_publish(exchange='', routing_key='vectors',
+                body=labeled_vector)
+    except Exception as e: # if they don't all work, whatever
+        print("There was an exception:")
+        print(e)
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
