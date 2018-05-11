@@ -173,7 +173,10 @@ def sentence_to_keys(sentence_str):
     sentence_str = simplify_compound_subjects(sentence_str)
     sentence_str = remove_double_commas(sentence_str)
     sentence_str = textacy.preprocess.normalize_whitespace(sentence_str)
-    sentence_str = sentence_str[0].upper() + sentence_str[1:]
+    try:
+        sentence_str = sentence_str[0].upper() + sentence_str[1:]
+    except:
+        print("Sentence: {}: failed to capitalize", sentence_str)
     sentence_mood = determine_sentence_mood(sentence_str)
     doc = textacy.Doc(sentence_str, lang='en_core_web_lg')
     verb_phrases_with_subjects = get_verb_phrase_subject_pairs(doc)

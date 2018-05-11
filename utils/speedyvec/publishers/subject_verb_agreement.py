@@ -71,5 +71,6 @@ if __name__ == '__main__':
 
     print("String Q has been fully populated.")
     print("Subject Verb Agreement SentStr Publisher Exiting.")
-    cur.close()
+    mangledcur.close()
+    originalcur.close()
     conn.close()
