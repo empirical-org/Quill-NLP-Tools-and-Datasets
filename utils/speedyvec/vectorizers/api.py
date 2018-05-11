@@ -6,15 +6,15 @@ from flask import request, \
      render_template, flash, Flask
 from flask import jsonify
 import sys
-sys.path.insert(0, 'sva')
-from subject_verb_agreement import get_vector   
+sys.path.insert(0, 'sva2')
+from sva_vector import get_vector   
 
 
 app = Flask(__name__)
 app.secret_key = 'dddxasdasd' # needed for message flashing
 
 @app.route('/sva/vector')
-def sva_vector():
+def vectorize():
     s = request.args.get('s', '')
     if s:
         s = get_vector(s)
