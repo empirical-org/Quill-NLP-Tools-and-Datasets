@@ -26,7 +26,7 @@ def inflate(deflated_vector):
     #result = np.zeros(dv['reductions']) # some claim vector length 5555, others
     #5530. this could have occurred doing remote computations? or something.
     # anyhow, we will use 5555.  Let's just hard code it.  Gosh darnit.
-    result = np.zeros(5555) # some claim vector length 5555, others
+    result = np.zeros(93540) # some claim vector length 5555, others
     for n in dv['indices']:
         result[int(n)] = dv['indices'][n]
     #print("Inflated vector. Length", len(result))
@@ -49,8 +49,8 @@ cur.execute('SELECT vector FROM vectors LIMIT 1')
 vector_len = json.loads(cur.fetchone()[0])['reductions']
 # again, this should be 5555 in our case, but some of them have 5530. If it's
 # not 5555 lets change it. ug, bad code.
-if vector_len != 5555:
-    vector_len = 5555
+if vector_len != 93540:
+    vector_len = 93540 
 print("Vector length, ", vector_len)
 
 
