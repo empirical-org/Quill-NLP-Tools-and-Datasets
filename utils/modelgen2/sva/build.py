@@ -20,17 +20,21 @@ DB_PORT = int(os.environ.get('SVA_PORT', '5432'))
 DB_HOST = 'localhost'
 
 
+VEC_LEN = 93540 
+REDUCED_VEC = 6000 
+
+
 def inflate(deflated_vector):
     """Given a defalated vector, inflate it into a np array and return it"""
     dv = json.loads(deflated_vector)
     #result = np.zeros(dv['reductions']) # some claim vector length 5555, others
     #5530. this could have occurred doing remote computations? or something.
     # anyhow, we will use 5555.  Let's just hard code it.  Gosh darnit.
-    result = np.zeros(93540) # some claim vector length 5555, others
+    result = np.zeros(VEC_LEN) # some claim vector length 5555, others
     for n in dv['indices']:
         result[int(n)] = dv['indices'][n]
     #print("Inflated vector. Length", len(result))
-    return result
+    return result[:REDUCED_VEC]
 
 
 # New stuff 
@@ -49,8 +53,8 @@ cur.execute('SELECT vector FROM vectors LIMIT 1')
 vector_len = json.loads(cur.fetchone()[0])['reductions']
 # again, this should be 5555 in our case, but some of them have 5530. If it's
 # not 5555 lets change it. ug, bad code.
-if vector_len != 93540:
-    vector_len = 93540 
+if vector_len != VEC_LEN:
+    vector_len = VEC_LEN 
 print("Vector length, ", vector_len)
 
 
@@ -63,7 +67,7 @@ cur.execute('SELECT vector, label FROM vectors') # less than 2 million
 # the vector size, so each item in the array of vectors and the array of labels
 # is small. I think this should work fine and fast on most of the machines we
 # run at Quill.org.
-word_vectors = np.zeros((records, vector_len), dtype=np.int_)
+word_vectors = np.zeros((records, REDUCED_VEC), dtype=np.int_)
 labels = []
 ii = 0
 for deflated_vector, label in cur: 
@@ -91,7 +95,7 @@ def build_model():
     tf.reset_default_graph()
     
     #### Your code ####
-    net = tflearn.input_data([None, vector_len])                          # Input
+    net = tflearn.input_data([None, REDUCED_VEC])                          # Input
     net = tflearn.fully_connected(net, 200, activation='ReLU')      # Hidden
     net = tflearn.fully_connected(net, 25, activation='ReLU')      # Hidden
     net = tflearn.fully_connected(net, 2, activation='softmax')   # Output
