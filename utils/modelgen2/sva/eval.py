@@ -14,7 +14,9 @@ from test_sents import sentences as ts
 import tflearn
 from sva_rule_based import check_agreement
 
-METHOD = 'COMBINED' 
+
+METHOD = 'ML_ONLY'
+#METHOD = 'COMBINED' 
 #METHOD = 'RULE_BASED' 
 
 # Constants
@@ -29,11 +31,11 @@ def inflate(deflated_vector):
     #result = np.zeros(dv['reductions']) # some claim vector length 5555, others
     #5530. this could have occurred doing remote computations? or something.
     # anyhow, we will use 5555.  Let's just hard code it.  Gosh darnit.
-    result = np.zeros(5555) # some claim vector length 5555, others
+    result = np.zeros(93540) # some claim vector length 5555, others
     for n in dv['indices']:
         result[int(n)] = dv['indices'][n]
     #print("Inflated vector. Length", len(result))
-    return result
+    return result[:6000]
 
 def text_to_vector(sent_str):
     """Given a string, get it's defalted vector, inflate it, then return the
@@ -44,13 +46,13 @@ def text_to_vector(sent_str):
 # Building TF Model #######################################################
 
 print("Setting up tensorflow...")
-vector_len = 5555 # TODO: this probably really should not be hardcoded
+vector_len = 6000 # TODO: this probably really should not be hardcoded
 def build_model():
     # This resets all parameters and variables, leave this here
     tf.reset_default_graph()
     
     #### Your code ####
-    net = tflearn.input_data([None, vector_len])                          # Input
+    net = tflearn.input_data([None, 6000])                          # Input
     net = tflearn.fully_connected(net, 200, activation='ReLU')      # Hidden
     net = tflearn.fully_connected(net, 25, activation='ReLU')      # Hidden
     net = tflearn.fully_connected(net, 2, activation='softmax')   # Output
@@ -58,6 +60,9 @@ def build_model():
     model = tflearn.DNN(net)
 
     return model
+
+
+
 
 print("Building TF model...")
 model = build_model()
@@ -90,11 +95,21 @@ def test_sentence(sentence, ans):
     print('---{}---'.format(sentence))
     print('Does this sentence have a subject-verb agreement error?\n {}'.format(sentence))
     print('P(positive) = {:.3f} :'.format(positive_prob),
-          'Yes' if positive_prob > 0.61 else 'No')
-    correct = (positive_prob > 0.61) == ans
+          'Yes' if positive_prob > 0.5 else 'No')
+    correct = (positive_prob > 0.5) == ans
     print("Is correct?", correct)
     print('-------------------------------------------')
     return correct
+
+
+while True:
+    s = input('sent: ')
+    positive_prob = model.predict([text_to_vector(s)])[0][1]
+    print(positive_prob)
+    if positive_prob > .5:
+        print('Incorrect')
+    else:
+        print('Correct')
 
 total_sents = len(ts)
 total_right = 0.0

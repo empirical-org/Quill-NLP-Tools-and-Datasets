@@ -4,6 +4,7 @@
 """Generate a model capable of detecting subject-verb agreement errors"""
 print("loading libraries...")
 import json
+import h5py
 import numpy as np
 import os
 import psycopg2
@@ -22,6 +23,7 @@ DB_HOST = 'localhost'
 
 VEC_LEN = 93540 
 REDUCED_VEC = 6000 
+REDUCED_VEC = 93540 
 
 
 def inflate(deflated_vector):
@@ -59,7 +61,7 @@ print("Vector length, ", vector_len)
 
 
 # grab deflated vectors
-cur.execute('SELECT vector, label FROM vectors') # less than 2 million
+#cur.execute('SELECT vector, label FROM vectors') # less than 2 million
 
 # #Iterate through deflated vectors
 #
@@ -67,24 +69,65 @@ cur.execute('SELECT vector, label FROM vectors') # less than 2 million
 # the vector size, so each item in the array of vectors and the array of labels
 # is small. I think this should work fine and fast on most of the machines we
 # run at Quill.org.
-word_vectors = np.zeros((records, REDUCED_VEC), dtype=np.int_)
-labels = []
+#word_vectors = np.zeros((records, REDUCED_VEC), dtype=np.int_)
+#labels = []
+#ii = 0
+#for deflated_vector, label in cur: 
+#    word_vectors[ii] = inflate(deflated_vector)
+#    labels.append(label)
+#    ii+=1
+
+hdf5_f = h5py.File("sva_model.hdf5", "w")
+word_vectors = hdf5_f.create_dataset("word_vectors", (records, REDUCED_VEC),
+        dtype=np.int_)
+labels = hdf5_f.create_dataset("labels", (records,), dtype=np.int_)
 ii = 0
 for deflated_vector, label in cur: 
     word_vectors[ii] = inflate(deflated_vector)
-    labels.append(label)
+    labels[ii] = label
     ii+=1
+
+'''
+def trainingSet(train_split):
+    ts_cur = conn.cursor()
+    ts_cur.execute('SELECT vector FROM vectors limit %s', (train_split,))
+    for deflated_vector in ts_cur:
+        yield inflate(deflated_vector)
+
+def testSet(train_split):
+    tst_cur = conn.cursor()
+    tst_cur.execute('SELECT vector FROM vectors offset %s', (train_split,))
+    for deflated_vector in tst_cur:
+        yield inflate(deflated_vector)
+
+def trainingLabels(train_split):
+    tl_cur = conn.cursor()
+    tl_cur.execute('SELECT label FROM vectors limit %s', (train_split,))
+    return [x for x in tl_cur]
+
+def testLabels(train_split):
+    tsl_cur = conn.cursor()
+    tsl_cur.execute('SELECT label FROM vectors offset %s', (train_split,))
+    return [x for x in tsl_cur]
+'''
+
 
 # Chunk data for tensorflow ##############################################
 print("Chunking data for tensorflow...")
 test_fraction = 0.9
 
+# can I pass a generator??
 train_split, test_split = int(records*test_fraction), int(records*(1-test_fraction))
 print("Train split", train_split)
 print("Test split", test_split)
 print("...")
+#trainX, trainY = word_vectors[:train_split], to_categorical(labels[:train_split], 2)
+#testX, testY = word_vectors[test_split:], to_categorical(labels[test_split:], 2)
+#trainX, trainY = trainingSet(train_split), to_categorical(trainingLabels(train_split), 2)
+#testX, testY = testSet(train_split), to_categorical(testLabels(train_split), 2)
 trainX, trainY = word_vectors[:train_split], to_categorical(labels[:train_split], 2)
 testX, testY = word_vectors[test_split:], to_categorical(labels[test_split:], 2)
+
 
 # Building TF Model #######################################################
 
@@ -111,6 +154,10 @@ model = build_model()
 print("Training TF model...")
 model.fit(trainX, trainY, validation_set=0.1, show_metric=True, batch_size=128, n_epoch=50)
 
+
+print("Saving model...")
+model.save("../../../models/subject_verb_agreement_model2.tfl")
+
 ## predictions, testing
 predictions = (np.array(model.predict(testX))[:,0] >= 0.5).astype(np.int_)
 test_accuracy = np.mean(predictions == testY[:,0], axis=0)
@@ -126,8 +173,8 @@ print("Test accuracy: ", test_accuracy)
 #    w.writerow([key, val])
 
 # Save model ############################################################
-print("Saving model...")
-model.save("../../../models/subject_verb_agreement_model.tfl")
+#print("Saving model...")
+#model.save("../../../models/subject_verb_agreement_model2.tfl")
 
 print('\n'*10)
 print('-----')
