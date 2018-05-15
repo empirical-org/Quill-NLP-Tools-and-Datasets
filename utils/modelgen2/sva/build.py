@@ -22,8 +22,6 @@ DB_HOST = 'localhost'
 
 
 VEC_LEN = 93540 
-REDUCED_VEC = 6000 
-REDUCED_VEC = 93540 
 
 
 def inflate(deflated_vector):
@@ -36,7 +34,7 @@ def inflate(deflated_vector):
     for n in dv['indices']:
         result[int(n)] = dv['indices'][n]
     #print("Inflated vector. Length", len(result))
-    return result[:REDUCED_VEC]
+    return result
 
 
 # New stuff 
@@ -59,57 +57,24 @@ if vector_len != VEC_LEN:
     vector_len = VEC_LEN 
 print("Vector length, ", vector_len)
 
-
 # grab deflated vectors
-#cur.execute('SELECT vector, label FROM vectors') # less than 2 million
-
-# #Iterate through deflated vectors
-#
-# NOTE: loads 2 million vectors and 2 million labels into memory. Numpy reduces
-# the vector size, so each item in the array of vectors and the array of labels
-# is small. I think this should work fine and fast on most of the machines we
-# run at Quill.org.
-#word_vectors = np.zeros((records, REDUCED_VEC), dtype=np.int_)
-#labels = []
-#ii = 0
-#for deflated_vector, label in cur: 
-#    word_vectors[ii] = inflate(deflated_vector)
-#    labels.append(label)
-#    ii+=1
-
+cur.execute('SELECT vector, label FROM vectors') # less than 2 million
+print('Executed vector, label select...')
 hdf5_f = h5py.File("sva_model.hdf5", "w")
-word_vectors = hdf5_f.create_dataset("word_vectors", (records, REDUCED_VEC),
-        dtype=np.int_)
-labels = hdf5_f.create_dataset("labels", (records,), dtype=np.int_)
+print("Created hdf5 file...")
+word_vectors = hdf5_f.create_dataset("word_vectors", (records, VEC_LEN),
+        dtype=np.int_, compression="lzf")
+print("Created h5py word vectors...")
+labels = hdf5_f.create_dataset("labels", (records,), dtype=np.int_,
+        compression="lzf")
+print("Created h5py labels...")
 ii = 0
 for deflated_vector, label in cur: 
     word_vectors[ii] = inflate(deflated_vector)
     labels[ii] = label
     ii+=1
 
-'''
-def trainingSet(train_split):
-    ts_cur = conn.cursor()
-    ts_cur.execute('SELECT vector FROM vectors limit %s', (train_split,))
-    for deflated_vector in ts_cur:
-        yield inflate(deflated_vector)
-
-def testSet(train_split):
-    tst_cur = conn.cursor()
-    tst_cur.execute('SELECT vector FROM vectors offset %s', (train_split,))
-    for deflated_vector in tst_cur:
-        yield inflate(deflated_vector)
-
-def trainingLabels(train_split):
-    tl_cur = conn.cursor()
-    tl_cur.execute('SELECT label FROM vectors limit %s', (train_split,))
-    return [x for x in tl_cur]
-
-def testLabels(train_split):
-    tsl_cur = conn.cursor()
-    tsl_cur.execute('SELECT label FROM vectors offset %s', (train_split,))
-    return [x for x in tsl_cur]
-'''
+print("Assigned word vectors and labels...")
 
 
 # Chunk data for tensorflow ##############################################
@@ -121,11 +86,10 @@ train_split, test_split = int(records*test_fraction), int(records*(1-test_fracti
 print("Train split", train_split)
 print("Test split", test_split)
 print("...")
-#trainX, trainY = word_vectors[:train_split], to_categorical(labels[:train_split], 2)
-#testX, testY = word_vectors[test_split:], to_categorical(labels[test_split:], 2)
-#trainX, trainY = trainingSet(train_split), to_categorical(trainingLabels(train_split), 2)
-#testX, testY = testSet(train_split), to_categorical(testLabels(train_split), 2)
+
+print("Splitting train x, train y...")
 trainX, trainY = word_vectors[:train_split], to_categorical(labels[:train_split], 2)
+print("Splitting test x, test y...")
 testX, testY = word_vectors[test_split:], to_categorical(labels[test_split:], 2)
 
 
@@ -138,7 +102,7 @@ def build_model():
     tf.reset_default_graph()
     
     #### Your code ####
-    net = tflearn.input_data([None, REDUCED_VEC])                          # Input
+    net = tflearn.input_data([None, VEC_LEN])                          # Input
     net = tflearn.fully_connected(net, 200, activation='ReLU')      # Hidden
     net = tflearn.fully_connected(net, 25, activation='ReLU')      # Hidden
     net = tflearn.fully_connected(net, 2, activation='softmax')   # Output
