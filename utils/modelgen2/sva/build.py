@@ -11,6 +11,7 @@ import psycopg2
 import tensorflow as tf
 from tflearn.data_utils import to_categorical
 import tflearn
+from time import time
 
 # Constants
 
@@ -22,20 +23,6 @@ DB_HOST = 'localhost'
 
 
 VEC_LEN = 93540 
-
-
-def inflate(deflated_vector):
-    """Given a defalated vector, inflate it into a np array and return it"""
-    dv = json.loads(deflated_vector)
-    #result = np.zeros(dv['reductions']) # some claim vector length 5555, others
-    #5530. this could have occurred doing remote computations? or something.
-    # anyhow, we will use 5555.  Let's just hard code it.  Gosh darnit.
-    result = np.zeros(VEC_LEN) # some claim vector length 5555, others
-    for n in dv['indices']:
-        result[int(n)] = dv['indices'][n]
-    #print("Inflated vector. Length", len(result))
-    return result
-
 
 # New stuff 
 # connect to database
@@ -60,7 +47,7 @@ print("Vector length, ", vector_len)
 # grab deflated vectors
 cur.execute('SELECT vector, label FROM vectors') # less than 2 million
 print('Executed vector, label select...')
-hdf5_f = h5py.File("sva_model.hdf5", "w")
+hdf5_f = h5py.File("bob_ross_sva_model.hdf5", "w")
 print("Created hdf5 file...")
 word_vectors = hdf5_f.create_dataset("word_vectors", (records, VEC_LEN),
         dtype=np.int_, compression="lzf")
@@ -69,10 +56,21 @@ labels = hdf5_f.create_dataset("labels", (records,), dtype=np.int_,
         compression="lzf")
 print("Created h5py labels...")
 ii = 0
+then = time()
 for deflated_vector, label in cur: 
-    word_vectors[ii] = inflate(deflated_vector)
+    dv = json.loads(deflated_vector)
+    for n in dv['indices']:
+        word_vectors[ii][int(n)] = dv['indices'][n]
     labels[ii] = label
+    if ii % 1000 == 0:
+        print('iteration: ', ii+1)
+        total_time = time() - then  
+        records_ps = float(i) / total_time  
+        print('{}s for {} records...'.format(total_time, i))
+        print('{} per second'.format(records_ps))
     ii+=1
+total_time = time() - then
+print('Total time for vector updates', total_time)
 
 print("Assigned word vectors and labels...")
 
@@ -120,7 +118,7 @@ model.fit(trainX, trainY, validation_set=0.1, show_metric=True, batch_size=128, 
 
 
 print("Saving model...")
-model.save("../../../models/subject_verb_agreement_model2.tfl")
+model.save("../../../models/bob_ross_subject_verb_agreement_model.tfl")
 
 ## predictions, testing
 predictions = (np.array(model.predict(testX))[:,0] >= 0.5).astype(np.int_)
