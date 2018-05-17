@@ -60,10 +60,8 @@ word_vectors_train = hdf5_f.create_dataset("word_vectors_train", (train_split, V
 word_vectors_test = hdf5_f.create_dataset("word_vectors_test", (test_split, VEC_LEN),
         dtype=np.int_)
 print("Created h5py word vectors...")
-labels_train = hdf5_f.create_dataset("labels_train", (records,), dtype=np.int_,
-        compression="lzf")
-labels_test = hdf5_f.create_dataset("labels_test", (records,), dtype=np.int_,
-        compression="lzf")
+labels_train = hdf5_f.create_dataset("labels_train", (records,), dtype=np.int_)
+labels_test = hdf5_f.create_dataset("labels_test", (records,), dtype=np.int_)
 print("Created h5py labels...")
 ii = 0
 then = time()
