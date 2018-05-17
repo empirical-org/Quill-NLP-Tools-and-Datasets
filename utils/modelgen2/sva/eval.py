@@ -35,7 +35,7 @@ def inflate(deflated_vector):
     for n in dv['indices']:
         result[int(n)] = dv['indices'][n]
     #print("Inflated vector. Length", len(result))
-    return result[:6000]
+    return result[:93540]
 
 def text_to_vector(sent_str):
     """Given a string, get it's defalted vector, inflate it, then return the
@@ -46,13 +46,13 @@ def text_to_vector(sent_str):
 # Building TF Model #######################################################
 
 print("Setting up tensorflow...")
-vector_len = 6000 # TODO: this probably really should not be hardcoded
+vector_len = 93540 # TODO: this probably really should not be hardcoded
 def build_model():
     # This resets all parameters and variables, leave this here
     tf.reset_default_graph()
     
     #### Your code ####
-    net = tflearn.input_data([None, 6000])                          # Input
+    net = tflearn.input_data([None, 93540])                          # Input
     net = tflearn.fully_connected(net, 200, activation='ReLU')      # Hidden
     net = tflearn.fully_connected(net, 25, activation='ReLU')      # Hidden
     net = tflearn.fully_connected(net, 2, activation='softmax')   # Output
@@ -69,7 +69,7 @@ model = build_model()
 
 # Loading TF Model #####################################################
 print("Loading TF model...")
-model.load('../../../models/subject_verb_agreement_model.tfl')
+model.load('../../../models/james_subject_verb_agreement_model.tfl')
 
 # Testing ##############################################################
 print('Running tests against your model...')

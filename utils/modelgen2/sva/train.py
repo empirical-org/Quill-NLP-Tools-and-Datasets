@@ -47,7 +47,7 @@ train_fraction = 0.9
 train_split = int(records*train_fraction)
 test_split = records - train_split
 
-with h5py.File('/home/max/hdf5_files/james_sva_model.hdf5', 'r') as f:
+with h5py.File('/Volumes/ryn/hdf5_files/james_sva_model.hdf5', 'r') as f:
     print("Opened hdf5 file...")
     word_vectors_train = f['word_vectors_train']
     word_vectors_test = f['word_vectors_train']
@@ -75,7 +75,7 @@ with h5py.File('/home/max/hdf5_files/james_sva_model.hdf5', 'r') as f:
 
     def build_model():
         # This resets all parameters and variables, leave this here
-        tf.reset_default_graph()
+        tf.reset_default_graph() # num cpu cores is all by default
         
         #### Your code ####
         net = tflearn.input_data([None, VEC_LEN])                          # Input
@@ -92,16 +92,46 @@ with h5py.File('/home/max/hdf5_files/james_sva_model.hdf5', 'r') as f:
 
     # Train TF Model ########################################################
     print("Training TF model...")
-    model.fit(trainX, trainY, validation_set=0.1, show_metric=True, batch_size=128, n_epoch=50)
+    #model.fit(trainX, trainY, validation_set=0.1, show_metric=True, batch_size=128, n_epoch=50)
+    #model.fit(trainX, trainY, validation_set=(testX, testY), show_metric=True, batch_size=128, n_epoch=50)
+    
+    train_len = len(trainX)
+    start_pos = 0
+    slab_size = 3000 # large slab minimizes time finding the slab
+    end_pos = start_pos + slab_size
+    while start_pos < train_len:
+        end_pos = start_pos + slab_size
+        if end_pos > train_len:
+            end_pos = train_len 
+        slabX = trainX[start_pos:end_pos]
+        slabY = trainY[start_pos:end_pos]
+        model.fit(slabX, slabY, validation_set=0.1, show_metric=True,
+            batch_size=128, n_epoch=50)
+        start_pos = end_pos
+        if end_pos % 90000 == 0: # save a copy of the model every 90k times
+            print('Saving model in current state... still training.')
+            model.save("../../../models/james_subject_verb_agreement_model2.tfl")
+
+    #### TensorFlow only approahc
+    #data = h5py.File('myfile.h5py', 'r')
+    #data_size = data['data_set'].shape[0]
+    #batch_size = 128
+    #sess = tf.Session()
+    #train_op = # tf.something_useful()
+    #input = # tf.placeholder or something
+    #for i in range(0, data_size, batch_size):
+    #    current_data = data['data_set'][position:position+batch_size]
+    #    sess.run(train_op, feed_dict={input: current_data})
+    ####
 
 
-    print("Saving model...")
-    model.save("../../../models/james_subject_verb_agreement_model.tfl")
+    print("Saving model...(final save)")
+    model.save("../../../models/james_subject_verb_agreement_model2.tfl")
 
     ## predictions, testing
-    predictions = (np.array(model.predict(testX))[:,0] >= 0.5).astype(np.int_)
-    test_accuracy = np.mean(predictions == testY[:,0], axis=0)
-    print("Test accuracy: ", test_accuracy)
+    #predictions = (np.array(model.predict(testX))[:,0] >= 0.5).astype(np.int_)
+    #test_accuracy = np.mean(predictions == testY[:,0], axis=0)
+    #print("Test accuracy: ", test_accuracy)
 
 
 
