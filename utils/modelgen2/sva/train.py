@@ -37,6 +37,7 @@ print("Records count, ", records)
 cur.execute('SELECT vector FROM vectors LIMIT 1')
 vector_len = json.loads(cur.fetchone()[0])['reductions']
 if vector_len != VEC_LEN:
+    raise Exception('WRONG VECTOR LENGTH!')
     vector_len = VEC_LEN 
 print("Vector length, ", vector_len)
 
@@ -80,7 +81,7 @@ model = build_model()
 # Train TF Model ########################################################
 print("Training TF model...")
 
-train_len = len(trainX)
+train_len = records 
 start_pos = 0
 slab_size = 5000 # large slab minimizes time finding the slab
 end_pos = start_pos + slab_size
