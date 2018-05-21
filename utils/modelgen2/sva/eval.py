@@ -7,12 +7,12 @@ import json
 import numpy as np
 import os
 import requests
-import textacy
+#import textacy
 import tensorflow as tf
 from tflearn.data_utils import to_categorical
-from test_sents import sentences as ts
+#from test_sents import sentences as ts
 import tflearn
-from sva_rule_based import check_agreement
+#from sva_rule_based import check_agreement
 
 
 METHOD = 'ML_ONLY'
@@ -80,14 +80,14 @@ def test_sentence(sentence, ans):
 
 
     # see number of verb phrases
-    pattern = r'<VERB>?<ADV>*<VERB>+'
-    doc = textacy.Doc(sentence, lang='en_core_web_lg')
-    vps = textacy.extract.pos_regex_matches(doc, pattern)
+    #pattern = r'<VERB>?<ADV>*<VERB>+'
+    #doc = textacy.Doc(sentence, lang='en_core_web_lg')
+    #vps = textacy.extract.pos_regex_matches(doc, pattern)
 
     #if len([x for x in vps]) < 2:
-    if (METHOD == 'COMBINED' and len([x for x in vps]) < 2) or METHOD == 'RULE_BASED':
-        print("Simple sentence, using rule based checker")
-        return ans != check_agreement(sentence)
+    #if (METHOD == 'COMBINED' and len([x for x in vps]) < 2) or METHOD == 'RULE_BASED':
+    #    print("Simple sentence, using rule based checker")
+    #    return ans != check_agreement(sentence)
     
     # Use ML on more complex sentences
 
@@ -106,43 +106,10 @@ while True:
     s = input('sent: ')
     positive_prob = model.predict([text_to_vector(s)])[0][1]
     print(positive_prob)
-    if positive_prob > .5:
+    if positive_prob > .6:
         print('Incorrect')
     else:
         print('Correct')
-
-total_sents = len(ts)
-total_right = 0.0
-overly_strict = 0.0
-overly_lenient = 0.0
-too_strict_sents = []
-for sent, ans in ts:
-    correct =  test_sentence(sent, ans)
-    if correct:
-        total_right += 1
-    
-    if not correct and not ans:
-        # There is not an error but one was marked
-        overly_strict += 1
-        too_strict_sents.append(sent)
-        pass
-    if not correct and ans:
-        # There is an error but none was marked
-        overly_lenient += 1
-        pass
-
-print("Too strict sents: ")
-print("\n")
-for too_s in too_strict_sents:
-    print(" > " + too_s)
-
-print("Success rate was {}%".format(total_right/total_sents * 100))
-print("\n")
-print("Error rate {}%".format(100 - total_right/total_sents * 100))
-print("Too strict {}%".format(overly_strict/total_sents * 100))
-print("Too lenient {}%".format(overly_lenient/total_sents * 100))
-
-
 
 
 print('done. 🎉')

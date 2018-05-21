@@ -39,7 +39,7 @@ cur = conn.cursor()
 
 # Select unique reductions in order of regularity, must occur at least thrice 
 cur.execute('SELECT reduction, count(*) from reductions group by'
-        ' reduction having count(*) > 2 order by count(*) desc;')
+        ' reduction having count(*) > 2 order by count(*) desc, reduction;')
 
 
 # with ~2 million total sentences the number of unique reductions was a little

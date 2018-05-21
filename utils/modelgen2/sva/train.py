@@ -7,6 +7,7 @@ import json
 import h5py
 import numpy as np
 import os
+import gc
 import psycopg2
 import tensorflow as tf
 from tflearn.data_utils import to_categorical
@@ -47,7 +48,7 @@ train_fraction = 0.9
 train_split = int(records*train_fraction)
 test_split = records - train_split
 
-with h5py.File('/Volumes/ryn/hdf5_files/james_sva_model.hdf5', 'r') as f:
+with h5py.File('/home/max/hdf5_files/james_sva_model.hdf5', 'r') as f:
     print("Opened hdf5 file...")
     word_vectors_train = f['word_vectors_train']
     word_vectors_test = f['word_vectors_train']
@@ -97,20 +98,26 @@ with h5py.File('/Volumes/ryn/hdf5_files/james_sva_model.hdf5', 'r') as f:
     
     train_len = len(trainX)
     start_pos = 0
-    slab_size = 3000 # large slab minimizes time finding the slab
+    slab_size = 5000 # large slab minimizes time finding the slab
     end_pos = start_pos + slab_size
     while start_pos < train_len:
         end_pos = start_pos + slab_size
         if end_pos > train_len:
             end_pos = train_len 
-        slabX = trainX[start_pos:end_pos]
-        slabY = trainY[start_pos:end_pos]
-        model.fit(slabX, slabY, validation_set=0.1, show_metric=True,
-            batch_size=128, n_epoch=50)
+        #slabX = trainX[start_pos:end_pos]
+        #slabY = trainY[start_pos:end_pos]
+        model.fit(trainX[start_pos:end_pos], trainY[start_pos:end_pos],
+                validation_set=0.1, show_metric=True, batch_size=128,
+                n_epoch=50)
+        try:
+            gc.collect() # force Garbage Collector to release unreferenced memory  
+        except:
+            pass
+
         start_pos = end_pos
-        if end_pos % 90000 == 0: # save a copy of the model every 90k times
+        if end_pos % 100000 == 0: # save a copy of the model every 90k times
             print('Saving model in current state... still training.')
-            model.save("../../../models/james_subject_verb_agreement_model2.tfl")
+            model.save("../../../models/james_subject_verb_agreement_model.tfl")
 
     #### TensorFlow only approahc
     #data = h5py.File('myfile.h5py', 'r')
@@ -126,7 +133,7 @@ with h5py.File('/Volumes/ryn/hdf5_files/james_sva_model.hdf5', 'r') as f:
 
 
     print("Saving model...(final save)")
-    model.save("../../../models/james_subject_verb_agreement_model2.tfl")
+    model.save("../../../models/james_subject_verb_agreement_model.tfl")
 
     ## predictions, testing
     #predictions = (np.array(model.predict(testX))[:,0] >= 0.5).astype(np.int_)

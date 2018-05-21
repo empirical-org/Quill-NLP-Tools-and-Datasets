@@ -39,7 +39,11 @@ cur = conn.cursor()
 
 # Select unique reductions in order of regularity, must occur at least thrice 
 cur.execute('SELECT reduction, count(*) from reductions group by'
-        ' reduction having count(*) > 2 order by count(*) desc;')
+        ' reduction having count(*) > 2 order by count(*) desc, reduction;')
+
+
+# select reduction, count(*) from reductions group by reduction having count(*)
+# > 2 order by count(*) desc offset 7763 limit 1;
 
 
 # with ~2 million total sentences the number of unique reductions was a little
@@ -73,10 +77,13 @@ print('Vectorizing sentence keys...')
 def get_vector(string):
     result = {'indices':{}, 'reductions':num_reductions}
     for reduction in get_reduction(string):
+        print(reduction)
         index = reduction2idx.get(reduction)
+        print(index)
         if index:
             result['indices'][index] = result['indices'].get(index, 0) + 1
     # TODO: result isn't what's expected. visit after lunch
+
     return result
 
 
