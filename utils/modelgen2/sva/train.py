@@ -83,21 +83,22 @@ print("Training TF model...")
 
 train_len = records 
 start_pos = 0
-slab_size = 5000 # large slab minimizes time finding the slab
+slab_size = 10000 # large slab minimizes time finding the slab
 end_pos = start_pos + slab_size
 while start_pos < train_len:
     end_pos = start_pos + slab_size
     if end_pos > train_len:
         end_pos = train_len 
-    vec_and_labs = get_word_vectors(start_pos, end_pos)
-    slabX = np.asarray([inflate(vec) for vec,lab in vec_and_labs])
-    slabY = to_categorical(np.asarray([lab for vec,lab in vec_and_labs]), 2)
-    model.fit(slabX, slabY, validation_set=0.1, show_metric=True,
-            batch_size=128, n_epoch=50)
-    try:
-        gc.collect() # force Garbage Collector to release unreferenced memory  
-    except:
-        pass
+    # start_pos, 0
+    # end_pos, 5000
+    vec_and_labs = get_word_vectors(start_pos, slab_size)
+    print('Fitting model with start: {}, end: {}'.format(start_pos, end_pos))
+    assert len(vec_and_labs) == slab_size
+    model.fit(np.asarray([inflate(vec) for vec,lab in vec_and_labs]),
+            to_categorical(np.asarray([lab for vec,lab in vec_and_labs]), 2),
+            validation_set=0.1, show_metric=True, batch_size=128, n_epoch=50)
+    del vec_and_labs
+    gc.collect() # force Garbage Collector to release unreferenced memory  
 
     start_pos = end_pos
     if end_pos % 100000 == 0: # save a copy of the model every 90k times
