@@ -200,6 +200,5 @@ def sentence_to_keys(sentence_str):
     for tag in tags:
         #print(tag)
         pass
-
     return tags
         

@@ -77,14 +77,14 @@ def test_sentence(sentence, ans):
 
 
     # see number of verb phrases
-    pattern = r'<VERB>?<ADV>*<VERB>+'
-    doc = textacy.Doc(sentence, lang='en_core_web_lg')
-    vps = textacy.extract.pos_regex_matches(doc, pattern)
+    #pattern = r'<VERB>?<ADV>*<VERB>+'
+    #doc = textacy.Doc(sentence, lang='en_core_web_lg')
+    #vps = textacy.extract.pos_regex_matches(doc, pattern)
 
     #if len([x for x in vps]) < 2:
-    if (METHOD == 'COMBINED' and len([x for x in vps]) < 2) or METHOD == 'RULE_BASED':
-        print("Simple sentence, using rule based checker")
-        return ans != check_agreement(sentence)
+    #if (METHOD == 'COMBINED' and len([x for x in vps]) < 2) or METHOD == 'RULE_BASED':
+    #    print("Simple sentence, using rule based checker")
+    #    return ans != check_agreement(sentence)
     
     # Use ML on more complex sentences
 
@@ -109,3 +109,5 @@ while True:
     else:
         print('Correct')
 
+
+print('done. 🎉')
