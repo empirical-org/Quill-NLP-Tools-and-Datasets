@@ -43,7 +43,18 @@ ltserver
 LanguageTool is now running on port 8081. To test that it works try hitting
 http://localhost:8081/v2/check?language=en-US&text=my+text in your browser.
 
-2. Install QFragment
+
+2. Install the vectorization server
+
+QFragments machine learning models rely on the ability to vectorize sentences.
+Originally, QFragment did this work itself, but because of processing overhead,
+we are slowly pulling vectorization out of QFragment.  The vectorization server
+is a Flask app that lives in this repository under
+utils/speedyvec/vectorizers/api.py.  You can run it wherever you like just be
+sure to specify the `VECTORIZE_API_URI` as an environment variable. The default
+is `http://localhost:10200`
+
+3. Install QFragment
 
 ```bash
 pip install qfragment

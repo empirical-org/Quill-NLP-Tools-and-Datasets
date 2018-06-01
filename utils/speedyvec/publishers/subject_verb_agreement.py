@@ -41,7 +41,7 @@ if __name__ == '__main__':
     label=None # tells whether sentence is mangled or not
 
     while sent_str:
-        while q_len < 500 and sent_str:
+        while q_len < 2000 and sent_str:
             mangled = random.choice([True, False])
             if mangled:
                 n = mangledcur.fetchone()
@@ -71,5 +71,6 @@ if __name__ == '__main__':
 
     print("String Q has been fully populated.")
     print("Subject Verb Agreement SentStr Publisher Exiting.")
-    cur.close()
+    mangledcur.close()
+    originalcur.close()
     conn.close()

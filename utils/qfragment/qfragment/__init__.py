@@ -1,5 +1,5 @@
 from .feedback import *
-from .subject_verb_agreement import check_agreement
+from .sva import check_agreement2
 from .infinitive_phrase_detect import (detect_infinitive_phrase,
         detect_missing_verb)
 from nltk.util import ngrams, trigrams
@@ -112,7 +112,7 @@ def _begins_with_one_of(sentence, parts_of_speech):
 ## Load fragment dectection models
 prefixes = ['participle'] # => eventually, [participle, infinitive,
                           #    afterthought, lonelyverb, subordinate,
-                          #    appositive]
+                          #    appositive, sva]
 models = {}
 trigram2idx = {}
 trigram_count = {}
@@ -128,7 +128,7 @@ for prefix in prefixes:
 
 def get_subject_verb_agreement_feedback(sentence):
     """Return True if no subject verb agreement errors, else False"""
-    return check_agreement(sentence)
+    return check_agreement2(sentence)
 
 
 def get_language_tool_feedback(sentence):

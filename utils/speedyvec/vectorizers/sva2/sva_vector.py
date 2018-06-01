@@ -15,33 +15,49 @@ import random
 import re
 import sqlite3
 import textacy
-from sva_reducer import get_reduction
+from sva_reducer import sentence_to_keys as get_reduction
 print("You just imported get_reduction from sva_reducer. This reduction"
         "algorithm should be the same as the one used to create your previous"
         "reducutions.")
+
+# Constants
+
 RABBIT = os.environ.get('RABBITMQ_LOCATION', 'localhost')
 DB_PASSWORD = os.environ.get('SVA_PASSWORD', '')
-DB_NAME = os.environ.get('SVA_DB', 'sva')
+DB_NAME = os.environ.get('SVA_DB', 'max')
 DB_USER = os.environ.get('SVA_USER', DB_NAME)
+DB_PORT = int(os.environ.get('SVA_PORT', '5432'))
+DB_HOST = 'localhost'
 
-# Indexing the sentence keys ################################################
-print("Indexing sentence keys...")
+print('Connecting to the database... ')
 
 # Connect to postgres
-conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD)
+conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD,
+        port=DB_PORT, host=DB_HOST)
 cur = conn.cursor()
 
 
-# Select unique reductions in order of regularity, must occur at least thrice
+# Select unique reductions in order of regularity, must occur at least thrice 
 cur.execute('SELECT reduction, count(*) from reductions group by'
-        ' reduction having count(*) > 2 order by count(*) desc;')
+        ' reduction having count(*) > 2 order by count(*) desc, reduction;')
+
+
+# select reduction, count(*) from reductions group by reduction having count(*)
+# > 2 order by count(*) desc offset 7763 limit 1;
+
 
 # with ~2 million total sentences the number of unique reductions was a little
-# over 12k. ~5k had more than 2 occurrences
+# over 290k. ~94k had more than 2 occurrences
 reduction2idx = {n[0]: i for i, n in enumerate(cur)} 
 num_reductions = len(reduction2idx)
 
+if num_reductions != 93540:
+    print('ALERT: num_reductions does not match expected value. Exiting.')
+    raise Exception('expected value error. are you connected to the right'
+            'database')
 
+
+# close connections to database
 # close connections to database
 cur.close()
 conn.close()
@@ -61,21 +77,28 @@ print('Vectorizing sentence keys...')
 def get_vector(string):
     result = {'indices':{}, 'reductions':num_reductions}
     for reduction in get_reduction(string):
+        print(reduction)
         index = reduction2idx.get(reduction)
+        print(index)
         if index:
             result['indices'][index] = result['indices'].get(index, 0) + 1
     # TODO: result isn't what's expected. visit after lunch
+
     return result
 
 
 def handle_message(ch, method, properties, body):
-    labeled_sent_dict = json.loads(body)
-    sent_str = labeled_sent_dict['sent_str'] 
-    label = labeled_sent_dict['label']
-    vector =  get_vector(sent_str)
-    labeled_vector = json.dumps({'vector':vector, 'label':label})
-    channel.basic_publish(exchange='', routing_key='vectors',
-            body=labeled_vector)
+    try:
+        labeled_sent_dict = json.loads(body)
+        sent_str = labeled_sent_dict['sent_str'] 
+        label = labeled_sent_dict['label']
+        vector =  get_vector(sent_str)
+        labeled_vector = json.dumps({'vector':vector, 'label':label})
+        channel.basic_publish(exchange='', routing_key='vectors',
+                body=labeled_vector)
+    except Exception as e: # if they don't all work, whatever
+        print("There was an exception:")
+        print(e)
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
