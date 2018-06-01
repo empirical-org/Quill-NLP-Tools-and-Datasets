@@ -38,7 +38,9 @@ def text_to_vector(sent_str):
     """Given a string, get it's defalted vector, inflate it, then return the
     inflated vector"""
     r = requests.get("{}/sva/vector".format(VECTORIZE_API), params={'s':sent_str})
-    return inflate(r.text)
+    result = inflate(r.text)
+    print('Text vectorized...')
+    return result
 
 # Building TF Model #######################################################
 
@@ -66,7 +68,7 @@ model = build_model()
 
 # Loading TF Model #####################################################
 print("Loading TF model...")
-model.load('../../../models/james_sva/james_subject_verb_agreement_model.tfl')
+model.load('../../../models/thompson_sva/thompson_subject_verb_agreement_model.tfl')
 
 # Testing ##############################################################
 print('Running tests against your model...')

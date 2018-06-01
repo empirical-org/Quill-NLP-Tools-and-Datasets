@@ -83,7 +83,7 @@ print("Training TF model...")
 
 train_len = records 
 start_pos = 0
-slab_size = 10000 # large slab minimizes time finding the slab
+slab_size = 5000 # large slab minimizes time finding the slab
 end_pos = start_pos + slab_size
 while start_pos < train_len:
     end_pos = start_pos + slab_size
