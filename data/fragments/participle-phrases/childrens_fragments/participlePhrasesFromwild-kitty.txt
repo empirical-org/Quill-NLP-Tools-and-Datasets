@@ -1,0 +1,64 @@
+Hoping against hope to extract from half a sovereign to fifteen shillings from the generous-hearted Irish girl, she suddenly found herself the lucky possessor of eight whole sovereigns.
+Hoping against hope to extract from half a sovereign to fifteen shillings from the generous-hearted Irish girl
+Hoping
+False
+
+
+
+
+Turning to her right, she knocked at a certain door; waited for an answer, but none came; then turned the handle and went in.
+Turning to her right
+Turning
+True
+
+
+
+
+"Something in the back of your head?" whispered Annie.
+Something in the back of your head?" whispered Annie.
+Something
+False
+
+
+
+
+I think, even for my sake, seeing that Aunt Charlotte is doing so much for me--"  "Now stop that," said Carrie; "I won't have a word of abuse against Sam.
+seeing that Aunt Charlotte is doing so much for me--"  "Now stop that," said Carrie; "I won't have a word of abuse against Sam.
+seeing
+True
+
+
+
+
+"Oh, my dear, nothing of the kind--a fresh egg!
+nothing of the kind--a fresh egg!
+nothing
+True
+
+
+
+
+Owing to a warning glance from Carrie, Mrs. Lewis refrained from saying a word; but Mrs. Steward had no idea of keeping her emotions to herself.
+Owing to a warning glance from Carrie
+Owing
+False
+
+
+
+
+Carrie did so, winking at her mother as she arranged the tray.
+winking at her mother as she arranged the tray.
+winking
+False
+
+
+
+
+Leaning on her niece's arm, Mrs. Steward now pursued her way to Middleton School.
+Leaning on her niece's arm
+Leaning
+False
+
+
+
+

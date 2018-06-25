@@ -1,0 +1,72 @@
+Turning in the direction
+Turning in the direction
+Turning
+False
+
+
+
+
+Glancing along its length, Jarwin saw that here and there the edge was lipping over, while in one place, not far off, the thunder of its fall had already begun.
+Glancing along its length
+Glancing
+True
+
+
+
+
+Embarking on this frail vessel with his dog, he pushed off, and using a piece of plank for an oar, sculled himself over the lagoon.
+Embarking on this frail vessel with his dog
+Embarking
+True
+
+
+
+
+Cuffy, nestling into his breast, placed his chin on his neck, and heaved a deep, contented sigh.
+nestling into his breast
+nestling
+True
+
+
+
+
+Of course we cannot prove this, seeing that we have never been cast alone on a desert island (although we _have_ been next thing to it), and cannot positively conclude what would have been the consequences to our castaway if he had rigidly refrained from speech.
+seeing that we have never been cast alone on a desert island (although we _have_ been next thing to it), and cannot positively conclude what would have been the consequences to our castaway if he had rigidly refrained from speech.
+seeing
+True
+
+
+
+
+Indulging in his tendency to think aloud, he said--  "Come now, John, don't go for to make a downright fool of yerself.
+Indulging in his tendency to think aloud
+Indulging
+True
+
+
+
+
+Reviving in a little time, he took another sip, and then crawled back to his couch.
+Reviving in a little time
+Reviving
+True
+
+
+
+
+Then, reflecting that he was quite as decently clothed as the other natives about, he turned again and slowly retraced his steps, pretending to be interested in picking stones and plants from the ground.
+reflecting that he was quite as decently clothed as the other natives about
+reflecting
+True
+
+
+
+
+Then, reflecting that he was quite as decently clothed as the other natives about, he turned again and slowly retraced his steps, pretending to be interested in picking stones and plants from the ground.
+reflecting that he was quite as decently clothed as the other natives about
+reflecting
+True
+
+
+
+

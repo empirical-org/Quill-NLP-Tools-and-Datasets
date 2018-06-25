@@ -1,0 +1,472 @@
+quoth the Tinker, stopping in his singing. "
+stopping in his singing. "
+stopping
+False
+
+
+
+
+" So he went upon his way, muttering to himself.
+muttering to himself.
+muttering
+False
+
+
+
+
+" So he went upon his way, muttering to himself.en David of Doncaster told Robin Hood what the Palmer had said to him, Robin called the band around him and spoke to them thus:  "Now let us get straightway into Nottingham Town and mix ourselves with the people there; but keep ye one another in sight, pressing as near the prisoner and his guards as ye can, when they come outside the walls.
+muttering to himself.en David of Doncaster told Robin Hood what the Palmer had said to him
+muttering
+True
+
+
+
+
+But the Sheriff, bowing along his horse's back, made no answer but only spurred the faster.
+bowing along his horse's back
+bowing
+True
+
+
+
+
+But the Sheriff, bowing along his horse's back, made no answer but only spurred the faster.ittle John and looked him in the face till the tears ran down from his eyes and he wept aloud; and kissing his friend's cheeks, "O Little John!"
+bowing along his horse's back
+bowing
+True
+
+
+
+
+Plunging into the woods, they came at last to the greenwood tree, where they found Robin Hood and threescore of his merry men lying upon the fresh green grass.
+Plunging into the woods
+Plunging
+True
+
+
+
+
+Seeing that the Tanner had spied him out, Little John put a bold face upon the matter.
+Seeing that the Tanner had spied him out
+Seeing
+False
+
+
+
+
+Choosing among them, he presently found a sapling to his liking.
+Choosing among them
+Choosing
+False
+
+
+
+
+Choosing among them, he presently found a sapling to his liking.
+Choosing among them
+Choosing
+False
+
+
+
+
+Then, turning to the stranger, he said, "What may be thy name, good fellow?"
+turning to the stranger
+turning
+True
+
+
+
+
+After a time he came back, bearing with him a great brown loaf of bread, and a fair, round cheese, and a goatskin full of stout March beer, slung over his shoulders.
+bearing with him a great brown loaf of bread, and a fair
+bearing
+True
+
+
+
+
+After a time he came back, bearing with him a great brown loaf of bread, and a fair, round cheese, and a goatskin full of stout March beer, slung over his shoulders.ese into four fair portions, and each man helped himself.
+bearing with him a great brown loaf of bread, and a fair
+bearing
+True
+
+
+
+
+But now the Miller, plodding along the road, had come opposite to where the yeomen lay hidden, whereupon all four of them ran at him and surrounded him.
+plodding along the road
+plodding
+True
+
+
+
+
+Robin kindly; then, turning to the others, he cried, "Come, lads, busk ye and get our feast ready; only thou, Will Scarlet, and thou, Little John, stay here with me."
+turning to the others
+turning
+True
+
+
+
+
+The sound came from over behind the bank, that here was steep and high, dropping from the edge of the road a half a score of feet to the sedgy verge of the river.
+dropping from the edge of the road a half a score of feet to the sedgy verge of the river.
+dropping
+True
+
+
+
+
+"Now then," quoth merry Robin, panting as he spake and wiping the sweat from his brow, "I have thee, fellow.
+panting as he spake and wiping the sweat from his brow, "I have thee
+panting
+True
+
+
+
+
+"Now then," quoth merry Robin, panting as he spake and wiping the sweat from his brow, "I have thee, fellow.ed thine away from thee.
+panting as he spake and wiping the sweat from his brow, "I have thee, fellow.ed thine away from thee.
+panting
+True
+
+
+
+
+"Now, thou art a saucy varlet to speak so to my crest," quoth the Bishop, frowning on Robin. "
+frowning on Robin. "
+frowning
+True
+
+
+
+
+And now, around the bend of the highroad, came others, riding upon horses.
+riding upon horses.
+riding
+True
+
+
+
+
+Passing by fair Mansfield Town, with its towers and battlements and spires all smiling in the sun, they came at last out of the forest lands.
+Passing by fair Mansfield Town, with its towers and battlements and spires all smiling in the sun
+Passing
+True
+
+
+
+
+so, coming at last to a certain spot where a shrine stood at the crossing of two roads, Robin called upon them to stop, for here on
+coming at last to a certain spot where a shrine stood at the crossing of two roads
+coming
+True
+
+
+
+
+Thereupon, turning to those near him, he gave his orders, and five hundred pounds were counted out and tied up in a leathern bag for Sir Richard.
+turning to those near him
+turning
+True
+
+
+
+
+Then, turning to his men, he called aloud, "Bring forth the pack horses."
+turning to his men
+turning
+True
+
+
+
+
+Quoth Robin at last, "Methinks I would rather roam this forest in the gentle springtime than be King of all merry England.
+King of all merry England.
+King
+False
+
+
+
+
+quoth Little John, looking upon them with his head on one side.
+looking upon them with his head on one side.
+looking
+False
+
+
+
+
+"Talking of fatness," said the Peddler, "thou thyself lookest none too ill-fed, holy friar."
+Talking of fatness," said the Peddler, "thou thyself lookest none too ill-fed
+Talking
+True
+
+
+
+
+So, talking to himself, he came to where the dusty road turned sharply around the hedge, all tender with the green of the coming leaf, and
+talking to himself
+talking
+True
+
+
+
+
+And so it is with me, bully boy, saving that my doxy cometh not."
+saving that my doxy cometh not."
+saving
+True
+
+
+
+
+But tell me truly, what hast thou in thy pouches?"  "Why," quoth the Beggar, peeping into the mouths of his bags, "I find here a goodly piece of pigeon pie, wrapped in a cabbage leaf to hold the gravy.
+peeping into the mouths of his bags, "I find here a goodly piece of pigeon pie
+peeping
+True
+
+
+
+
+But tell me truly, what hast thou in thy pouches?"  "Why," quoth the Beggar, peeping into the mouths of his bags, "I find here a goodly piece of pigeon pie, wrapped in a cabbage leaf to hold the gravy.of white bread.
+peeping into the mouths of his bags, "I find here a goodly piece of pigeon pie
+peeping
+True
+
+
+
+
+Then, looking upon the feast spread upon the ground--and a fair sight it was to look upon--he slowly rubbed his hand over his stomach, for to his hungry eyes it seemed the fairest sight that he had beheld in all his life.
+looking upon the feast spread upon the ground--and a fair sight it was to look upon--he slowly rubbed his hand over his stomach, for to his hungry eyes it seemed the fairest sight that he had beheld in all his life.
+looking
+True
+
+
+
+
+Then Robin, seeing that he had somewhat gathered the wits that had just been rapped out of his head, said, "Now, good fellow, wilt thou change clothes with me, or shall I have to tap thee again?
+seeing that he had somewhat gathered the wits that had just been rapped out of his head
+seeing
+True
+
+
+
+
+"I promise on the word of a true yeoman," quoth Robin, thinking that the fellow had a few pennies that he would save.
+thinking that the fellow had a few pennies that he would save.
+thinking
+True
+
+
+
+
+he drank, "methinks it is no more than seemly of you all to be glad to see me, seeing that I bring sight to the blind, speech to the dumb, hearing to the deaf, and such a lusty leg to a lame man.
+seeing that I bring sight to the blind
+seeing
+True
+
+
+
+
+Then Robin, seeing that things were like to go ill with him, albeit he knew not what all the coil was about, leaped to his feet also and, catching up his trusty staff, clapped his back against the tree and stood upon his guard against them. "
+seeing that things were like to go ill with him, albeit he knew not what all the coil was about
+seeing
+True
+
+
+
+
+Our Queen would fain see thee strive with these, knowing that if thou wilt come thou wilt, with little doubt, carry off the prize.
+knowing that if thou wilt come thou wilt, with little doubt
+knowing
+True
+
+
+
+
+Our Queen would fain see thee strive with these, knowing that if thou wilt come thou wilt, with little doubt, carry off the prize.er own fair thumb, which I give herewith into thy hands."
+knowing that if thou wilt come thou wilt, with little doubt
+knowing
+True
+
+
+
+
+Robin's, owning that he could never hope to draw such a bowstring as Robin Hood or Little John.
+owning that he could never hope to draw such a bowstring as Robin Hood or Little John.
+owning
+False
+
+
+
+
+Thinkest thou that the laws of the King of England are to be so evaded by one poor knave without friends or money?"
+King of England are to be so evaded by one poor knave without friends or money?"
+King
+False
+
+
+
+
+Thus, Your Majesty, would I say to myself, were I the King of England."
+King of England."
+King
+True
+
+
+
+
+Thus, Your Majesty, would I say to myself, were I the King of England."urned to Sir Robert Lee and bade him send six of the yeomen of the guard to take Robin Hood and his three men prisoners.
+King of England."urned to Sir Robert Lee and bade him send six of the yeomen of the guard to take Robin Hood and his three men prisoners.
+King
+True
+
+
+
+
+Then, striking to the westward and the south, they came at last to the northern borders of Sherwood Forest, without in all that time having met so much as a single band of the King's men.
+striking to the westward and the south
+striking
+True
+
+
+
+
+Here, seeing that he was out of present danger, he slackened in his running, and at last sat him down beneath a hedge where the grass was the longest and the shade the coolest, there to rest and catch his wind. "
+seeing that he was out of present danger
+seeing
+True
+
+
+
+
+Here, seeing that he was out of present danger, he slackened in his running, and at last sat him down beneath a hedge where the grass was the longest and the shade the coolest, there to rest and catch his wind. "
+seeing that he was out of present danger
+seeing
+True
+
+
+
+
+So off they went, grumbling at having to sleep two in a bed, but their troubles on this score, as well as all others, were soon lost in the quietness of sleep.
+grumbling at having to sleep two in a bed, but their troubles on this score
+grumbling
+True
+
+
+
+
+And now came the first gust of wind, rushing past the place, clapping and banging the doors and shutters, smelling of the coming rain, and all wrapped in a cloud of dust and leaves.
+rushing past the place, clapping and banging the doors and shutters, smelling of the coming rain, and all wrapped in a cloud of dust and leaves.
+rushing
+True
+
+
+
+
+Seeing that his strength was going from him, Robin leaped forward, and, quick as a flash, struck a back-handed blow beneath the sword arm.
+Seeing that his strength was going from him
+Seeing
+True
+
+
+
+
+Seeing that his strength was going from him, Robin leaped forward, and, quick as a flash, struck a back-handed blow beneath the sword arm.rasp, and back he staggered at the stroke, and, ere he could regain himself, Robin's sword passed through and through his body.
+Seeing that his strength was going from him
+Seeing
+True
+
+
+
+
+Then, seeing that Little John had armed himself, he clapped his bugle horn to his lips and blew three blasts both loud and shrill.
+seeing that Little John had armed himself
+seeing
+True
+
+
+
+
+Thus rode the King into Nottingham Town on that bright afternoon in the early fall season; and none rejoiced more than Robin Hood and his merry men to see him come so royally unto his own.
+King into Nottingham Town on that bright afternoon in the early fall season; and none rejoiced more than Robin Hood and his merry men to see him come so royally unto his own.
+King
+False
+
+
+
+
+Quoth the King to the Sheriff, laughing as he spoke, "I have heard much spoken concerning the doings of certain fellows hereabouts, one Robin Hood and his band, who are outlaws and abide in Sherwood Forest.
+King to the Sheriff, laughing as he spoke, "I have heard much spoken concerning the doings of certain fellows hereabouts, one Robin Hood and his band, who are outlaws and abide in Sherwood Forest.
+King
+True
+
+
+
+
+Quoth the King to the Sheriff, laughing as he spoke, "I have heard much spoken concerning the doings of certain fellows hereabouts, one Robin Hood and his band, who are outlaws and abide in Sherwood Forest.
+King to the Sheriff, laughing as he spoke, "I have heard much spoken concerning the doings of certain fellows hereabouts, one Robin Hood and his band, who are outlaws and abide in Sherwood Forest.
+King
+True
+
+
+
+
+Art thou the King of England, to talk so to me?
+King of England, to talk so to me?
+King
+False
+
+
+
+
+"Never a whit," quoth merry Robin, "for I tell thee that we of Sherwood are more loyal to our lord the King than those of thine order.
+King than those of thine order.
+King
+True
+
+
+
+
+"Why," quoth merry Robin, rising from the grass, "these are certain gentle guests that came with us from the highroad over by Newstead Abbey.
+rising from the grass, "these are certain gentle guests that came with us from the highroad over by Newstead Abbey.
+rising
+True
+
+
+
+
+Thus they rode slowly onward, talking about these old, familiar things;
+talking about these old
+talking
+True
+
+
+
+
+Then, after a while, came four more, panting with their running, and two of these four were Will Scathelock and Midge, the Miller; for all of these had heard the sound of Robin Hood's horn.
+panting with their running, and two of these four were Will Scathelock and Midge, the Miller; for all of these had heard the sound of Robin Hood's horn.
+panting
+True
+
+
+
+
+Then, after a while, came four more, panting with their running, and two of these four were Will Scathelock and Midge, the Miller; for all of these had heard the sound of Robin Hood's horn.n to Robin and kissed his hands and his clothing, with great sound of weeping.
+panting with their running, and two of these four were Will Scathelock and Midge, the Miller; for all of these had heard the sound of Robin Hood's horn.n to Robin and kissed his hands and his clothing, with great sound of weeping.
+panting
+True
+
+
+
+
+Staggering under its weight, he came forward and hurled it crashing against the door.
+Staggering under its weight
+Staggering
+False
+
+
+
+

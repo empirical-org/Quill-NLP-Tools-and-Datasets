@@ -1,0 +1,32 @@
+"It's about a thousand yards, according to the survey maps."
+according to the survey maps."
+according
+False
+
+
+
+
+Instantly, according to instructions issued by Commander McLaurin, a fleet of ten of the tiniest, fastest scouts darted out.
+according to instructions issued by Commander McLaurin, a fleet of ten of the tiniest, fastest scouts darted out.
+according
+True
+
+
+
+
+"But the Fourth Degree--_there is no law whatsoever_, nothing in all the Universe can exist.
+nothing in all the Universe can exist.
+nothing
+False
+
+
+
+
+You know, in the Fourth Degree, nothing in all the Universe could resist, deflect, or control it, if launched freely, and self-maintaining.
+nothing in all the Universe could resist
+nothing
+True
+
+
+
+

@@ -1,0 +1,40 @@
+"Nothing except this sandcar, which you sold me for eight thousand dollars.
+Nothing except this sandcar, which you sold me for eight thousand dollars.
+Nothing
+False
+
+
+
+
+He would be in Venusborg, penniless and in debt, looking for work in an overcrowded city.
+looking for work in an overcrowded city.
+looking
+True
+
+
+
+
+And Janie, of course, waiting for him in Tampa.
+waiting for him in Tampa.
+waiting
+True
+
+
+
+
+Staring at the partially blocked mouth of the cave, he could see green eyes, two, four, six, eight.
+Staring at the partially blocked mouth of the cave
+Staring
+True
+
+
+
+
+He ran down the ravine, looking for an opening in its sides.
+looking for an opening in its sides.
+looking
+False
+
+
+
+

@@ -1,0 +1,32 @@
+Dealing in ideas!
+Dealing in ideas!
+Dealing
+False
+
+
+
+
+His dark hair, thinning at the temples, was clipped short and brushed straight back.
+thinning at the temples
+thinning
+True
+
+
+
+
+Getting through the airlock should be easy enough.
+Getting through the airlock should be easy enough.
+Getting
+False
+
+
+
+
+Realizing that he was lucky to come close at all by such a guess, he tried to steer himself with brief jets from his air tank, and wound up on the verge of bashing directly into a fin.
+Realizing that he was lucky to come close at all by such a guess
+Realizing
+True
+
+
+
+

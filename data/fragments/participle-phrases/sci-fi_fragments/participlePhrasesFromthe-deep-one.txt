@@ -1,0 +1,32 @@
+Looking for escape, Adam's eyes caught a round metallic handle set flush into the heavy deck carpet.
+Looking for escape
+Looking
+False
+
+
+
+
+Deciding that the others might miss him, he retraced his steps, located the trapdoor in the ceiling, pushed it open and ascended.
+Deciding that the others might miss him
+Deciding
+True
+
+
+
+
+Going against them wasn't necessarily the same as doing wrong.
+Going against them wasn't necessarily the same as doing wrong.
+Going
+False
+
+
+
+
+Returning to the hatch, he reworked the combination to make sure it was not the lock that held him.
+Returning to the hatch
+Returning
+False
+
+
+
+

@@ -1,0 +1,264 @@
+Starting For The Vosges.
+Starting For The Vosges.
+Starting
+False
+
+
+
+
+We ought, according to published accounts, to be able to put a larger army than theirs in the field, just at first
+according to published accounts, to be able to put a larger army than theirs in the field
+according
+True
+
+
+
+
+There ought to be scores of small parties, hanging upon the rear and flank of the enemy, and interrupting his communication."
+hanging upon the rear and flank of the enemy, and interrupting his communication."
+hanging
+True
+
+
+
+
+Going as privates?"
+Going as privates?"
+Going
+False
+
+
+
+
+Starting For The Vosges.
+Starting For The Vosges.
+Starting
+False
+
+
+
+
+Failing that, we must try a bridge.
+Failing that
+Failing
+False
+
+
+
+
+Then, rising to his feet, he threw himself upon the sleeping man and, in a moment, had him tightly by the throat with one hand, while the other was placed firmly on his mouth.
+rising to his feet
+rising
+True
+
+
+
+
+Another day's short, but weary, marching over the mountains brought them to the village of Still; lying high upon the western slope of the Vosges, above Mutzig.
+marching over the mountains brought them to the village of Still; lying high upon the western slope of the Vosges, above Mutzig.
+marching
+True
+
+
+
+
+Looking through the trees towards the village, a dense smoke could now be seen rising in several places and, in a few minutes, the whole village was in a blaze.
+Looking through the trees towards the village, a dense smoke could now be seen rising in several places and, in a few minutes, the whole village was in a blaze.
+Looking
+True
+
+
+
+
+Looking through the trees towards the village, a dense smoke could now be seen rising in several places and, in a few minutes, the whole village was in a blaze.ands, crying, and cursing the invaders.
+Looking through the trees towards the village, a dense smoke could now be seen rising in several places and, in a few minutes, the whole village was in a blaze.ands, crying, and cursing the invaders.
+Looking
+True
+
+
+
+
+Owing to these various causes, the corps of franc tireurs distinguished themselves, in a great number of cases, only by the extreme ingenuity and foresight which they displayed in keeping at a prudent distance from the enemy.
+Owing to these various causes, the corps of franc tireurs distinguished themselves, in a great number of cases, only by the extreme ingenuity and foresight which they displayed in keeping at a prudent distance from the enemy.
+Owing
+True
+
+
+
+
+In one of these, standing upon rising and broken ground, Major Tempe halted his men; and opened so heavy a fire upon the enemy's cavalry, when the column appeared, that they were at once halted; and although, when the artillery arrived, a few shells were fired into the wood, the franc tireurs had already retired, and gained the forest without further molestation.
+standing upon rising and broken ground
+standing
+True
+
+
+
+
+Finding that the shots were not repeated, some twenty or thirty skirmishers were sent into the woods; but returned, in ten minutes, without finding any trace of the man who had shot the major.
+Finding that the shots were not repeated, some twenty or thirty skirmishers were sent into the woods; but returned, in ten minutes, without finding any trace of the man who had shot the major.
+Finding
+True
+
+
+
+
+Owing to some gross mismanagement, the great bulk of the troops had been withdrawn, only the day before.
+Owing to some gross mismanagement, the great bulk of the troops had been withdrawn, only the day before.
+Owing
+True
+
+
+
+
+Riding into the yard, they told the hostler to put up their horses, and to clean and feed them well; enforcing their request with a five-franc piece.
+Riding into the yard
+Riding
+True
+
+
+
+
+Riding into the yard, they told the hostler to put up their horses, and to clean and feed them well; enforcing their request with a five-franc piece.
+Riding into the yard
+Riding
+True
+
+
+
+
+house was smaller than usual, owing to the greater portion of the troops having been pushed on, to reinforce Von der Tann.
+owing to the greater portion of the troops having been pushed on, to reinforce Von der Tann.
+owing
+True
+
+
+
+
+"If any of you gentleman would kindly give me your card, to give to the officer of the regiment at Bellevue, saying that you have found me fair in my dealing, I should feel very grateful," Ralph said, humbly.
+saying that you have found me fair in my dealing
+saying
+True
+
+
+
+
+Looking over the wall, they could watch the sentries and--choosing their time when one had just passed, so that his back would be turned towards them--he no sooner disappeared in the darkness than they dropped noiselessly into the road, ran across the street, climbed a low railing, and stood in a garden which reached down to the river.
+Looking over the wall
+Looking
+True
+
+
+
+
+Seeing that it was so, Ralph reluctantly left the room; his only comfort being that Percy was as carefully tended, and looked after, as it was possible for him to be.
+Seeing that it was so
+Seeing
+True
+
+
+
+
+I have, of course, nothing with me."
+nothing with me."
+nothing
+True
+
+
+
+
+I have, of course, nothing with me."urse understand that," the officer said.
+nothing with me."urse understand that," the officer said.
+nothing
+True
+
+
+
+
+"Owing to my brother's illness, I have not been able to ask, before; but I am now anxious to leave as soon as possible, especially as the doctor says that change is desirable for my brother, and that he ought to have at least a month's nursing, at home, before he gets on horseback again."
+Owing to my brother's illness
+Owing
+True
+
+
+
+
+"Owing to my brother's illness, I have not been able to ask, before; but I am now anxious to leave as soon as possible, especially as the doctor says that change is desirable for my brother, and that he ought to have at least a month's nursing, at home, before he gets on horseback again."rrow morning," General Trochu said, "but if you choose to stay here, I will promise you both places upon my own staff; or upon those of Generals Ducrot or Vinoy--either of whom would, I am sure, be very glad to receive you."
+Owing to my brother's illness
+Owing
+True
+
+
+
+
+Seeing that Ralph was determined upon this score, the colonel had reluctantly agreed to take the sum he had paid for the horse.
+Seeing that Ralph was determined upon this score, the colonel had reluctantly agreed to take the sum he had paid for the horse.
+Seeing
+False
+
+
+
+
+"Being upon the staff we shall, no doubt, manage to get a roof of some sort over our heads; but for the sentries it must be terrible.
+Being upon the staff we shall
+Being
+True
+
+
+
+
+Here are the passes for you, saying that you have carried goods down here for the army; and are therefore to return back, without your carts being further requisitioned."
+saying that you have carried goods down here for the army; and are therefore to return back, without your carts being further requisitioned."
+saying
+True
+
+
+
+
+"Nearly three weeks, Ralph; fortunately it came four or five days before a letter from Tempe, saying that he feared you were killed.
+saying that he feared you were killed.
+saying
+True
+
+
+
+
+The French positions were about a mile nearer to the town, extending from the foot of Fontaine les Dijon through the villages of Saint Marten, and Fontaine.
+extending from the foot of Fontaine les Dijon through the villages of Saint Marten, and Fontaine.
+extending
+True
+
+
+
+
+Sitting on their horses, or leaning against them, they had chatted with the officers of the general staff.
+Sitting on their horses, or leaning against them
+Sitting
+True
+
+
+
+
+Sitting on their horses, or leaning against them, they had chatted with the officers of the general staff.ation between him and General Pelissier.
+Sitting on their horses, or leaning against them
+Sitting
+True
+
+
+
+
+Simultaneously with the news of this retreat came the intelligence of the surrender of Paris, and of the armistice and, grieving over France's misfortune, they were yet heartily rejoiced that the hopeless contest was over.
+grieving over France's misfortune
+grieving
+True
+
+
+
+
+Simultaneously with the news of this retreat came the intelligence of the surrender of Paris, and of the armistice and, grieving over France's misfortune, they were yet heartily rejoiced that the hopeless contest was over.intention of leaving for England.
+grieving over France's misfortune
+grieving
+True
+
+
+
+

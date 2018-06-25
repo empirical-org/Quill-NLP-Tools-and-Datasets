@@ -1,0 +1,48 @@
+The engine room was a place of stillness and peace, save for the almost inaudible hum of the drive, running at half a million Gauss flux-density.
+running at half a million Gauss flux-density.
+running
+True
+
+
+
+
+The engine room was a place of stillness and peace, save for the almost inaudible hum of the drive, running at half a million Gauss flux-density.
+running at half a million Gauss flux-density.
+running
+True
+
+
+
+
+He went out of the radar room, walking on what had been a side wall.
+walking on what had been a side wall.
+walking
+False
+
+
+
+
+He went out of the radar room, walking on what had been a side wall.ng less, now.
+walking on what had been a side wall.ng less
+walking
+True
+
+
+
+
+So far, the best course I can get means we graze the sun's photosphere in fourteen days six hours, allowing for acceleration by the sun's gravity.
+allowing for acceleration by the sun's gravity.
+allowing
+True
+
+
+
+
+It was almost as if, looking at Baird, they twinkled.
+looking at Baird
+looking
+True
+
+
+
+

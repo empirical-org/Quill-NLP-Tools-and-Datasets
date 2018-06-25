@@ -1,0 +1,96 @@
+Judging from that, he was not surprised that ten dollars exceeded the charitable fund of the philanthropist.
+Judging from that
+Judging
+False
+
+
+
+
+Nothing for you to-day."
+Nothing for you to-day."
+Nothing
+False
+
+
+
+
+Two young girls, passing by, noticed the blind man.
+passing by
+passing
+True
+
+
+
+
+Two young girls, passing by, noticed the blind man.topped to inquire how long he had been blind.
+passing by
+passing
+True
+
+
+
+
+Accordingly, returning to the room, he broached the subject.
+returning to the room
+returning
+True
+
+
+
+
+"Something like it," said Frank.
+Something like it," said Frank.
+Something
+False
+
+
+
+
+Mrs. Leroy rose, and, going to her bureau, drew an ivory portemonnaie from a small upper drawer; from this she extracted a two-dollar bill, and gave it to Frank.
+going to her bureau
+going
+True
+
+
+
+
+Crossing to Third avenue he hailed a car, and rode down-town.
+Crossing to Third avenue he hailed a car, and rode down-town.
+Crossing
+False
+
+
+
+
+"Nothing near its value, of course, nor is that necessary.
+Nothing near its value, of course, nor is that necessary.
+Nothing
+True
+
+
+
+
+Thinking that it might be some humble neighbor, on a borrowing expedition, Mrs. Morgan opened the door.
+Thinking that it might be some humble neighbor, on a borrowing expedition
+Thinking
+True
+
+
+
+
+There is an old trunk, belonging to your deceased father, in the      attic.
+belonging to your deceased father, in the      attic.
+belonging
+True
+
+
+
+
+Admitting that you are right, I don't know that I have any right to object.
+Admitting that you are right
+Admitting
+False
+
+
+
+

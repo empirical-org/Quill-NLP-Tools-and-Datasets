@@ -1,0 +1,136 @@
+Sitting beside the bed was a lady of middle age and pleasant expression.
+Sitting beside the bed was a lady of middle age and pleasant expression.
+Sitting
+False
+
+
+
+
+He ran to the door, and, emerging into the street, ran away till he had placed a considerable distance between himself and the disorderly and drunken party in the barroom.
+emerging into the street
+emerging
+True
+
+
+
+
+He ran to the door, and, emerging into the street, ran away till he had placed a considerable distance between himself and the disorderly and drunken party in the barroom.ere
+emerging into the street
+emerging
+True
+
+
+
+
+How should you like to leave me, and go to some Italian city to roam about all day, playing on the violin?"
+playing on the violin?"
+playing
+True
+
+
+
+
+The two boys began to strip mechanically, knowing that there was no appeal.
+knowing that there was no appeal.
+knowing
+False
+
+
+
+
+Thinking of all this, Phil began to think it probable that he, too, would some day break his bonds and run away.
+Thinking of all this
+Thinking
+True
+
+
+
+
+Thinking over these things, a bold suggestion came into Phil's mind.
+Thinking over these things, a bold suggestion came into Phil's mind.
+Thinking
+False
+
+
+
+
+Arriving at Trinity Church, Phil turned into Wall Street, looking about him in a desultory way, for he was at present out of business.
+Arriving at Trinity Church
+Arriving
+True
+
+
+
+
+Cortlandt Street is a short distance below the Astor House, and leads to the ferry, connecting on the other side with trains bound for Philadelphia and intermediate places.
+connecting on the other side with trains bound for Philadelphia and intermediate places.
+connecting
+True
+
+
+
+
+They did not pass through to the other end, but, leaning against the side, kept their eyes fixed on the city they were about to leave.
+leaning against the side
+leaning
+True
+
+
+
+
+At that moment Pietro, standing on the brink, caught sight of the boy he was pursuing, looking back at him from the deck of the ferry-boat.
+standing on the brink
+standing
+True
+
+
+
+
+At length, at a little distance before him, he saw a figure about the size of Phil, playing on the violin.
+playing on the violin.
+playing
+True
+
+
+
+
+Being in Italian, Bridget did not exactly understand their meaning, but guessed it.
+Being in Italian
+Being
+True
+
+
+
+
+He ran to the front, thinking that Phil might be taking flight from the street door, but it was only a ruse of Mrs. McGuire, who rather enjoyed tantalizing Pietro.
+thinking that Phil might be taking flight from the street door, but it was only a ruse of Mrs. McGuire, who rather enjoyed tantalizing Pietro.
+thinking
+True
+
+
+
+
+He ran to the front, thinking that Phil might be taking flight from the street door, but it was only a ruse of Mrs. McGuire, who rather enjoyed tantalizing
+thinking that Phil might be taking flight from the street door, but it was only a ruse of Mrs. McGuire, who rather enjoyed tantalizing
+thinking
+True
+
+
+
+
+Getting out of the train, he found himself in a village of moderate size.
+Getting out of the train
+Getting
+False
+
+
+
+
+Turning in the direction from which they came, he met the glance of his old enemy, Pietro.
+Turning in the direction from which they came
+Turning
+True
+
+
+
+

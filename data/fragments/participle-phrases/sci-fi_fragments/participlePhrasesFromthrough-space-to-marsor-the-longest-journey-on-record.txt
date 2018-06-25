@@ -1,0 +1,96 @@
+There was not much space to move about in it, as, owing to the long and narrow shape of the projectile, economy of room was enforced.
+owing to the long and narrow shape of the projectile
+owing
+True
+
+
+
+
+Standing in it, and peering out through a heavy plate glass window, the operator could guide the machine in any direction he desired, and he could also regulate the rate of progress.
+Standing in it, and peering out through a heavy plate glass window, the operator could guide the machine in any direction he desired, and he could also regulate the rate of progress.
+Standing
+True
+
+
+
+
+The force flows from the plates right through the stern of the ship, passing through the metal without the necessity for any openings.
+passing through the metal without the necessity for any openings.
+passing
+False
+
+
+
+
+The force flows from the plates right through the stern of the ship, passing through the metal without the necessity for any openings.nd, by pushing against it send the projectile forward, just as if it was a stream of compressed air acting on the atmosphere, or a propeller in the water.
+passing through the metal without the necessity for any openings.nd, by pushing against it send the projectile forward
+passing
+True
+
+
+
+
+"Something like that," admitted jack.
+Something like that," admitted jack.
+Something
+False
+
+
+
+
+"Something like that," admitted jack.a choking smell in the shop.
+Something like that," admitted jack.a choking smell in the shop.
+Something
+False
+
+
+
+
+"Tampering with the motor?"
+Tampering with the motor?"
+Tampering
+False
+
+
+
+
+Something in Jack's manner told the colored man that there was trouble aboard.
+Something in Jack's manner told the colored man that there was trouble aboard.
+Something
+False
+
+
+
+
+Then Washington White, looking into the engine-room from his kitchen, exclaimed:
+looking into the engine-room from his kitchen
+looking
+True
+
+
+
+
+Standing with his back to them was a strange man.
+Standing with his back to them was a strange man.
+Standing
+False
+
+
+
+
+Seeing that the strangers realized that they could not pass, the Martian officer and his men lowered their sticks.
+Seeing that the strangers realized that they could not pass, the Martian officer and his men lowered their sticks.
+Seeing
+False
+
+
+
+
+Finding that this would not answer, the little people created clouds of noxious gases, that swirled around the projectile like a fog.
+Finding that this would not answer, the little people created clouds of noxious gases, that swirled around the projectile like a fog.
+Finding
+True
+
+
+
+

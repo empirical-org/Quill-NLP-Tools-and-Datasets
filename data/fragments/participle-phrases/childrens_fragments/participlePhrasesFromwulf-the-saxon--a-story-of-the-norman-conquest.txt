@@ -1,0 +1,392 @@
+"Look at Lyfing of Worcester, to whom next only to Godwin the king owed his throne.
+Lyfing of Worcester, to whom next only to Godwin the king owed his throne.
+Lyfing
+False
+
+
+
+
+Harold will be King of England, Wulf will be a powerful thane, and will doubtless some day hold high place at court, and as he seems to have taken a real liking to Osgod, the boy may have good chances.
+King of England
+King
+True
+
+
+
+
+When he saw Wulf enter he rose from his seat, and, beckoning to him to follow, pushed aside the hangings across a door leading to an apartment behind and went in.
+beckoning to him to follow
+beckoning
+True
+
+
+
+
+When he saw Wulf enter he rose from his seat, and, beckoning to him to follow, pushed aside the hangings across a door leading to an apartment behind and went in.
+beckoning to him to follow
+beckoning
+True
+
+
+
+
+Then, seeing that he was for the moment alone, he entered the room and stood with bowed head waiting for Harold to address him.
+seeing that he was for the moment alone
+seeing
+True
+
+
+
+
+of armour at Steyning for them, for your father was followed by forty house-carls when he went with me to the Welsh wars.
+Steyning for them, for your father was followed by forty house-carls when he went with me to the Welsh wars.
+Steyning
+False
+
+
+
+
+Listening to the talk of the monks Wulf learned much more as to the actual situation than he had done in the court of the Normanized king, and his feelings of patriotism became more and more developed and strengthened, while he applied himself with even greater ardour to his military exercises, as he recognized more fully the necessity that might arise for every West Saxon to be ready to take his place in the line of battle.
+Listening to the talk of the monks Wulf learned much more as to the actual situation than he had done in the court of the Normanized king, and his feelings of patriotism became more and more developed and strengthened, while he applied himself with even greater ardour to his military exercises, as he recognized more fully the necessity that might arise for every West Saxon to be ready to take his place in the line of battle.
+Listening
+True
+
+
+
+
+You already possess the favour of Earl Harold, who is, in all respects but name, King of England.
+King of England.
+King
+True
+
+
+
+
+You could scarce be a page of Earl Harold's and not be a true Englishman and patriot; therefore, my son, I think that I can predict a bright and honourable future for you if Harold lives and reigns King of England.
+King of England.
+King
+True
+
+
+
+
+Finding that he was to remain for the present at Westminster, Wulf sent off a messenger at once to request Egbert to forward the rest of his clothes immediately.
+Finding that he was to remain for the present at Westminster
+Finding
+False
+
+
+
+
+I know that the Normans count all that are cast on their shores as lawful prey; and even if we reach the land in safety and escape murder at the hands of the lord of the soil and his people, I may fall into the hands of Duke William, who is assuredly no friend of mine, seeing that I stand in the way of his designs upon the throne of England.
+seeing that I stand in the way of his designs upon the throne of England.
+seeing
+True
+
+
+
+
+Returning to his men, Harold ordered the wounded to be raised, and the party at once set out.
+Returning to his men
+Returning
+True
+
+
+
+
+They now stole out, keeping in the shadow of the building, until they reached the staircase leading up to the battlements, close to the point Wulf had fixed upon for making their descent.
+keeping in the shadow of the building, until they reached the staircase leading up to the battlements
+keeping
+True
+
+
+
+
+Wading in they started swimming, resting their chests on the reeds and striking out with their legs, and in a few minutes were on the southern bank of the river.
+Wading in they started swimming, resting their chests on the reeds and striking out with their legs, and in a few minutes were on the southern bank of the river.
+Wading
+True
+
+
+
+
+Wading in they started swimming, resting their chests on the reeds and striking out with their legs, and in a few minutes were on the southern bank of the river.outh," Wulf said.
+Wading in they started swimming, resting their chests on the reeds and striking out with their legs, and in a few minutes were on the southern bank of the river.outh," Wulf said.
+Wading
+True
+
+
+
+
+You look to me honest of purpose and of gentle blood, and not, I am sure, belonging to the class of wayfarer who will trump up any story for the purpose of gaining alms.
+belonging to the class of wayfarer who will trump up any story for the purpose of gaining alms.
+belonging
+True
+
+
+
+
+The King of England was chosen by the nation, and Edward had no shadow of right to bequeath the throne even to one of his sons much less to a foreign prince, who, although related to himself by marriage, had no drop of English blood in his veins.
+King of England was chosen by the nation, and Edward had no shadow of right to bequeath the throne even to one of his sons much less to a foreign prince, who, although related to himself by marriage
+King
+True
+
+
+
+
+The King of England was chosen by the nation, and Edward had no shadow of right to bequeath the throne even to one of his sons much less to a foreign prince, who, although related to himself by marriage, had no drop of English blood in his veins.he more
+King of England was chosen by the nation, and Edward had no shadow of right to bequeath the throne even to one of his sons much less to a foreign prince, who, although related to himself by marriage
+King
+True
+
+
+
+
+According to English law the promise was but an empty breath, absolutely without effect or value.
+According to English law the promise was but an empty breath, absolutely without effect or value.
+According
+False
+
+
+
+
+According to Norman law it constituted a powerful claim, and Duke William was assuredly not a man to let such a claim drop unpressed.
+According to Norman law it constituted a powerful claim, and Duke William was assuredly not a man to let such a claim drop unpressed.
+According
+False
+
+
+
+
+Returning to the tents, the duke and Harold paused where Osgod, who had sunk to the ground as soon as the Breton attack had ceased, was sitting by the side of his master.
+Returning to the tents, the duke and Harold paused where Osgod, who had sunk to the ground as soon as the Breton attack had ceased, was sitting by the side of his master.
+Returning
+True
+
+
+
+
+Relying upon his affection and friendship, I have called you here together to hear him swear in public that which he has already told me privately--that he will be my faithful feudatory, and will in all ways aid me to gain my lawful rights."
+Relying upon his affection and friendship
+Relying
+True
+
+
+
+
+Travelling as fast and as far as the horses could carry them, the force reached Gloucester.
+Travelling as fast and as far as the horses could carry them, the force reached Gloucester.
+Travelling
+False
+
+
+
+
+Travelling as fast and as far as the horses could carry them, the force reached Gloucester.y knew that the great earl himself was with the troops they had no doubt that he had come to give them protection and to punish their enemies.
+Travelling as fast and as far as the horses could carry them, the force reached Gloucester.y knew that the great earl himself was with the troops they had no doubt that he had come to give them protection and to punish their enemies.
+Travelling
+False
+
+
+
+
+Descending among the trees
+Descending among the trees
+Descending
+False
+
+
+
+
+Returning to the courtyard, they told off a body of men to search the cellars and granaries, and were glad to find that there was an ample store of grain to last for months, together with large quantities of ale and a few casks of wine.
+Returning to the courtyard
+Returning
+True
+
+
+
+
+As he spoke a messenger came from Beorn, saying that the Welsh were pouring arrows and javelins from the hill upon his sentries on the walls, and that these were unable to show a head above the parapet.
+saying that the Welsh were pouring arrows and javelins from the hill upon his sentries on the walls, and that these were unable to show a head above the parapet.
+saying
+True
+
+
+
+
+As he spoke a messenger came from Beorn, saying that the Welsh were pouring arrows and javelins from the hill upon his sentries on the walls, and that these were unable to show a head above the parapet.m Wulf proceeded to the wall at the rear.
+saying that the Welsh were pouring arrows and javelins from the hill upon his sentries on the walls, and that these were unable to show a head above the parapet.m Wulf proceeded to the wall at the rear.
+saying
+True
+
+
+
+
+Death will break the knot if you will not do so, and I could die with a smile on my lips, knowing that I was dying for your good and England's.
+knowing that I was dying for your good and England's.
+knowing
+True
+
+
+
+
+Death will break the knot if you will not do so, and I could die with a smile on my lips, knowing that I was dying for your good and England's.orrow's sun rises, either by your sacrifice or by my own hand, you will be free.
+knowing that I was dying for your good and England's.orrow's sun rises, either by your sacrifice or by my own hand
+knowing
+True
+
+
+
+
+The brothers, seeing that the subject was a painful one, wisely said no more, but turned the conversation to the meeting on the following day, and assured Harold that they hoped the decision would now be unanimous, and then after a short time skilfully brought it round again to the subject of the marriage.
+seeing that the subject was a painful one
+seeing
+True
+
+
+
+
+Still he and the King of Norway may cause trouble."
+King of Norway may cause trouble."
+King
+False
+
+
+
+
+Leading from this were the king and queen's private chambers, where the one sat and read or received his chief councillors, and the other worked with her maids, and listened to the music of the harpers or the tales of war and love sung by bards.
+Leading from this were the king and queen's private chambers, where the one sat and read or received his chief councillors, and the other worked with her maids, and listened to the music of the harpers or the tales of war and love sung by bards.
+Leading
+True
+
+
+
+
+Crawling along on his stomach
+Crawling along on his stomach
+Crawling
+False
+
+
+
+
+Norman well.matter before you, thinking that you might either take it in hand yourself or name one suitable for it."
+thinking that you might either take it in hand yourself or name one suitable for it."
+thinking
+False
+
+
+
+
+for it may well be that these plotters may not meet again for some time, seeing that the king is away."
+seeing that the king is away."
+seeing
+False
+
+
+
+
+Landing at once the armourer found a small vessel on the point of starting for York, and in half an hour from the time of weighing anchor the tide turned, and they ran rapidly along, helped by the flood.
+Landing at once the armourer found a small vessel on the point of starting for York, and in half an hour from the time of weighing anchor the tide turned, and they ran rapidly along, helped by the flood.
+Landing
+True
+
+
+
+
+Here, standing against the arras, they were concealed from the sight of the guests by the crowd of servitors passing to and fro.
+standing against the arras
+standing
+True
+
+
+
+
+But the conditions of service in England were such that it was impossible to keep a great force on foot for an indefinite time.ly regular portion of the army The great bulk of the force, both land and sea, consisting of the levies or militia, whose term of service was very limited.
+consisting of the levies or militia, whose term of service was very limited.
+consisting
+True
+
+
+
+
+But if we are successful, and I remain King of England, the services you have rendered me at the risk of your life, Wulf, shall be worthily rewarded.
+King of England, the services you have rendered me at the risk of your life
+King
+True
+
+
+
+
+Put my gayest suit into the saddle-bag, for I may stay some time at York, and must make a fair show, going as I do as Harold's messenger."
+going as I do as Harold's messenger."
+going
+True
+
+
+
+
+Owing to the difficulty of getting the levies formed up and set in motion, the Norsemen had arrived on the ground and had taken up a defensive position before the English reached it.
+Owing to the difficulty of getting the levies formed up and set in motion, the Norsemen had arrived on the ground and had taken up a defensive position before the English reached it.
+Owing
+False
+
+
+
+
+The King of Norway had offered favourable terms; a local Gemot had been held, and it had been agreed to make peace with Harold of Norway, and not only to receive him as king but to join him in his warfare against the South.
+King of Norway had offered favourable terms; a local Gemot had been held, and it had been agreed to make peace with Harold of Norway, and not only to receive him as king but to join him in his warfare against the South.
+King
+True
+
+
+
+
+Had the King of Norway advanced to the end of the bridge a battle would have been impossible, for the English could never have forced their way across.
+King of Norway advanced to the end of the bridge a battle would have been impossible, for the English could never have forced their way across.
+King
+False
+
+
+
+
+It was not the King of Norway and Tostig, but the impatience of our sailors and troops, that left our shores unguarded.
+King of Norway and Tostig, but the impatience of our sailors and troops, that left our shores unguarded.
+King
+True
+
+
+
+
+Wulf and Beorn lay down among the thanes, after Harold, sitting with them round a fire, had explained his plans for the battle.
+sitting with them round a fire
+sitting
+True
+
+
+
+
+King of England, and that clemency was his best policy.
+King of England, and that clemency was his best policy.
+King
+False
+
+
+
+
+William is King of England, but whether that will in the end repay Normandy for the loss she has suffered seems to me very doubtful.
+King of England, but whether that will in the end repay Normandy for the loss she has suffered seems to me very doubtful.
+King
+False
+
+
+
+
+I can go hence now right willingly when God calls me, knowing that my father and mother have another son to fill my place, and that the happiness of my sister is secured.
+knowing that my father and mother have another son to fill my place, and that the happiness of my sister is secured.
+knowing
+True
+
+
+
+

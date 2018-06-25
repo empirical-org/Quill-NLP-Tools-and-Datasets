@@ -1,0 +1,416 @@
+Deep roars, sounding like distant thunder, were heard from time to time among the hills.
+sounding like distant thunder
+sounding
+True
+
+
+
+
+The lion gave a roar of rage and pain, then, crouching for a moment, with a few tremendous bounds he reached the edge of the wood.
+crouching for a moment, with a few tremendous bounds he reached the edge of the wood.
+crouching
+True
+
+
+
+
+The lion gave a roar of rage and pain, then, crouching for a moment, with a few tremendous bounds he reached the edge of the wood.t as soon as they had discharged their arrows the soldiers had caught up their weapons and formed in a close body, and the lion was received upon the points of a dozen spears.
+crouching for a moment, with a few tremendous bounds he reached the edge of the wood.t as soon as they had discharged their arrows the soldiers had caught up their weapons and formed in a close body, and the lion was received upon the points of a dozen spears.
+crouching
+True
+
+
+
+
+And the general and his son, leaping upon their steeds, dashed out from the grove in pursuit of the troop of lions.
+leaping upon their steeds
+leaping
+True
+
+
+
+
+And the general and his son, leaping upon their steeds, dashed out from the grove in pursuit of the troop of lions.
+leaping upon their steeds
+leaping
+True
+
+
+
+
+One of the soldiers, thinking that the lion was now nearly crippled, ventured to ride somewhat closer; he discharged his arrow, but before he could wheel his horse the lion with two tremendous springs was upon him.
+thinking that the lion was now nearly crippled
+thinking
+True
+
+
+
+
+Moving round the little grove Hamilcar posted the slaves at short distances apart, to give warning should the enemy be attempting an attack upon the other sides, and then returned to the side facing the other grove, where the soldiers were keeping up a steady fire at the enemy.
+Moving round the little grove Hamilcar posted the slaves at short distances apart, to give warning should the enemy be attempting an attack upon the other sides, and then returned to the side facing the other grove, where the soldiers were keeping up a steady fire at the enemy.
+Moving
+True
+
+
+
+
+Extending into the bay lay the isthmus, known as the Tana, some three miles in length, communicating with the mainland by a tongue of land a hundred yards wide.
+Extending into the bay lay the isthmus, known as the Tana, some three miles in length, communicating with the mainland by a tongue of land a hundred yards wide.
+Extending
+True
+
+
+
+
+Here, standing in gardens and parks, were the mansions of the wealthy merchants and traders, the suburb presenting to the eye a mass of green foliage dotted thickly with white houses.
+standing in gardens and parks
+standing
+True
+
+
+
+
+Knocking in a particular way it was opened at once and closed behind them.
+Knocking in a particular way it was opened at once and closed behind them.
+Knocking
+False
+
+
+
+
+"The barbarian tribes would cease to revolt, knowing that success would be hopeless.
+knowing that success would be hopeless.
+knowing
+False
+
+
+
+
+On the crest, rising from an ornament enriched with pearls, was a large plume of feathers, sometimes red and sometimes white.
+rising from an ornament enriched with pearls
+rising
+True
+
+
+
+
+Night came again with its long, dreary hours.r, believing that he was falling into the hungry jaws below.
+believing that he was falling into the hungry jaws below.
+believing
+True
+
+
+
+
+Seeing that Malchus was utterly worn and exhausted his companions hastened to place food and drink before him before asking any further questions.
+Seeing that Malchus was utterly worn and exhausted his companions hastened to place food and drink before him before asking any further questions.
+Seeing
+False
+
+
+
+
+He would constantly start from his couch, thinking that he heard the howl of the wolves, and any sudden noise made him start and turn pale.
+thinking that he heard the howl of the wolves, and any sudden noise made him start and turn pale.
+thinking
+True
+
+
+
+
+He would constantly start from his couch, thinking that he heard the howl of the wolves, and any sudden noise made him start and turn pale.l times in ships which were going across to Africa for stores.
+thinking that he heard the howl of the wolves, and any sudden noise made him start and turn pale.l times in ships which were going across to Africa for stores.
+thinking
+True
+
+
+
+
+Believing that Rome, who would then have open to her all Europe and Asia to conquer, would not grudge to Carthage the northern seaboard of Africa, they forgot that a nation which is rich and defenceless will speedily fall a victim to the greed of a powerful and warlike neighbour, and that a conqueror never needs excuses for an attack upon a defenceless neighbour.
+Believing that Rome, who would then have open to her all Europe and Asia to conquer, would not grudge to Carthage the northern seaboard of Africa
+Believing
+True
+
+
+
+
+Passing over the site where it is now situated they continued their march north until Saguntum, standing on its rocky eminence, came into view.
+Passing over the site where it is now situated they continued their march north until Saguntum, standing on its rocky eminence, came into view.
+Passing
+True
+
+
+
+
+Seeing that it was impossible for his troops to win an entrance by a breach, as long as the Saguntines occupied every point commanding it, he caused a vast tower to be built, sufficiently lofty to overlook every point of the defences, arming each of its stages with catapults and ballistas.
+Seeing that it was impossible for his troops to win an entrance by a breach, as long as the Saguntines occupied every point commanding it
+Seeing
+True
+
+
+
+
+Their chiefs, smarting under the heavy yoke of Rome, listened eagerly to the offers of Hannibal's agents, who distributed large sums of money among them, and promised them, in return for their assistance, not only their freedom from their conqueror, but a full share in the spoils of Rome.
+smarting under the heavy yoke of Rome
+smarting
+True
+
+
+
+
+Their chiefs, smarting under the heavy yoke of Rome, listened eagerly to the offers of Hannibal's agents, who distributed large sums of money among them, and promised them, in return for their assistance, not only their freedom from their conqueror, but a full share in the spoils of Rome.ith all their forces.
+smarting under the heavy yoke of Rome
+smarting
+True
+
+
+
+
+We shall be safe there from their arrows, while, lying at the entrance, we could shoot any that should venture past the corner.
+lying at the entrance
+lying
+True
+
+
+
+
+Sufficeching from the Pyrenees at a high rate of speed, the army reached the Rhone at the point where Roquemaure now stands, a short distance above Avignon.
+Sufficeching from the Pyrenees at a high rate of speed, the army reached the Rhone at the point where Roquemaure now stands, a short distance above Avignon.
+Sufficeching
+True
+
+
+
+
+Once across Hanno gave his men twenty-four hours' rest, and then, calculating that Hannibal's preparations would be complete, he marched down the river until he reached a hill, whose summit was visible from Hannibal's camp at daybreak.
+calculating that Hannibal's preparations would be complete
+calculating
+True
+
+
+
+
+Finding that the Carthaginians had left he marched his army down to his ships again, re-embarked them, and sailed for Genoa, intending to oppose Hannibal as he issued from the defiles of the Alps, in the event of his succeeding in making the passage.
+Finding that the Carthaginians had left he marched his army down to his ships again
+Finding
+True
+
+
+
+
+Seeing that he attempted neither to fly nor to defend himself, they rushed upon him tumultuously, stripped him of his arms and armour, and dragged him before their leader.
+Seeing that he attempted neither to fly nor to defend himself
+Seeing
+True
+
+
+
+
+Hearing that a prisoner of some importance had been captured, he ordered Malchus to be brought before him.
+Hearing that a prisoner of some importance had been captured
+Hearing
+False
+
+
+
+
+Hearing that a prisoner of some importance had been captured, he ordered Malchus to be brought before him.n of his young prisoner.
+Hearing that a prisoner of some importance had been captured
+Hearing
+False
+
+
+
+
+They lay quiet among the bushes until, after a delay of a quarter of an hour, a goat, browsing upon the bushes, passed within a yard or two of them.
+browsing upon the bushes
+browsing
+True
+
+
+
+
+The natives, seeing from above everything that was being done, deserted their posts as usual at nightfall, confident that the Carthaginians had no intention of moving forward.
+seeing from above everything that was being done
+seeing
+True
+
+
+
+
+Seeing that it was impossible to pass this obstacle, Hannibal turned back the head of the column until they reached the top of the ascent down which they had just come.
+Seeing that it was impossible to pass this obstacle
+Seeing
+False
+
+
+
+
+Marching with all haste north he enlisted 10,000 troops from among the inhabitants of the country, many of them having already served in the Roman army.
+Marching with all haste north he enlisted 10,000 troops from among the inhabitants of the country
+Marching
+True
+
+
+
+
+Malchus, riding through the camp, came upon the tents of his late host, who had been joined that day by his family.
+riding through the camp
+riding
+True
+
+
+
+
+A strong Roman fortress, Castegglo (Clastidium), lying at the foot of the hills, should have barred his way; but Hannibal, by the medium of one of his native allies, bribed the Roman commander to abstain from interrupting his march.
+lying at the foot of the hills, should have barred his way; but Hannibal, by the medium of one of his native allies
+lying
+True
+
+
+
+
+A strong Roman fortress, Castegglo (Clastidium), lying at the foot of the hills, should have barred his way; but Hannibal, by the medium of one of his native allies, bribed the Roman commander to abstain from interrupting his march.ed
+lying at the foot of the hills, should have barred his way; but Hannibal, by the medium of one of his native allies
+lying
+True
+
+
+
+
+Some ten thousand Roman soldiers only, keeping in a solid body, cut their way through the cavalry and reached Piacenza.
+keeping in a solid body
+keeping
+True
+
+
+
+
+But the Carthaginians, exulting in their victory, did not gauge the extent of the stubbornness and resources of Rome.
+exulting in their victory
+exulting
+True
+
+
+
+
+Hamilcar and most of his officers fell, striving to the last to stem the current.
+striving to the last to stem the current.
+striving
+False
+
+
+
+
+Seeing that he could render his friend no assistance, Trebon turned round and galloped off with nine of the soldiers who had made their way with him to the gate.
+Seeing that he could render his friend no assistance
+Seeing
+False
+
+
+
+
+Malchus, seeing that, now he had lost all the presents intended for the chiefs, it would be useless to pursue his mission further, especially as he had learned that the Roman agents had already been at work among the tribes, returned with his party to Hannibal's camp.
+seeing that
+seeing
+True
+
+
+
+
+Hannibal, finding that the Romans would not attack him, was compelled to resume foraging expeditions.
+finding that the Romans would not attack him
+finding
+True
+
+
+
+
+Hannibal, finding that the Romans would not attack him, was compelled to resume foraging expeditions.ard the intrenchment.
+finding that the Romans would not attack him
+finding
+True
+
+
+
+
+Going to the porthole to discover the cause of this sudden change, he found that a sack had been stuffed into it, and immediately afterwards the sound of hammering told him that a plank was being nailed over this outside to keep it in its place.
+Going to the porthole to discover the cause of this sudden change
+Going
+True
+
+
+
+
+These howdahs were of rough construction, being in fact little more than large open crates, for the elephants after being watered went to the forage yard, where the crates were filled with freshly cut grass or young boughs of trees, which they carried up for their own use to the citadel.
+being in fact little more than large open crates, for the elephants after being watered went to the forage yard, where the crates were filled with freshly cut grass or young boughs of trees, which they carried up for their own use to the citadel.
+being
+True
+
+
+
+
+Fighting with extreme obstinacy the Carthaginian centre was forced gradually back until they were again in a line with the Africans on their flanks.
+Fighting with extreme obstinacy the Carthaginian centre was forced gradually back until they were again in a line with the Africans on their flanks.
+Fighting
+False
+
+
+
+
+I surrender with my followers, seeing that resistance is hopeless."
+seeing that resistance is hopeless."
+seeing
+False
+
+
+
+
+Looking round him
+Looking round him
+Looking
+False
+
+
+
+
+Standing behind the shelter of the hut he raised his hand, and all began to move towards him.
+Standing behind the shelter of the hut he raised his hand, and all began to move towards him.
+Standing
+False
+
+
+
+
+Finding from the other slaves that until the previous day the animal had been accustomed to run about the house freely and to lie in Flavia's room, Malchus at once unfastened the chain and for some time played with the lion, which appeared gentle and good tempered.
+Finding from the other slaves that until the previous day the animal had been accustomed to run about the house freely and to lie in Flavia's room
+Finding
+True
+
+
+
+
+Knowing that, docile as it was with those it knew, the lion objected to strangers, the thought occurred to him that some midnight thief had entered the house for the purpose of robbery.
+Knowing that
+Knowing
+True
+
+
+
+
+Acting on his instructions they had thrust a kerchief into her mouth, and wrapped a cloak round her, and were carrying her off when a man rushed at him, and he supposed struck him, for he remembered nothing more.
+Acting on his instructions they had thrust a kerchief into her mouth, and wrapped a cloak round her, and were carrying her off when a man rushed at him, and he supposed struck him, for he remembered nothing more.
+Acting
+True
+
+
+
+
+She wore the dress of a peasant boy, consisting of a tunic of rough cloth reaching to her knees.
+consisting of a tunic of rough cloth reaching to her knees.
+consisting
+False
+
+
+
+

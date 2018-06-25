@@ -1,0 +1,104 @@
+"Why so, Noddy?"  "Because, according to my notion, I did set the building afire.
+according to my notion
+according
+True
+
+
+
+
+"Well, we give different salaries, depending on the men."
+depending on the men."
+depending
+True
+
+
+
+
+"Nothing of that sort for me," replied Noddy, promptly.
+Nothing of that sort for me," replied Noddy
+Nothing
+True
+
+
+
+
+Dodging under the curtains, he reached the place which served as a dressing-room.
+Dodging under the curtains
+Dodging
+False
+
+
+
+
+Keeping on the outskirts of the lawn, where he could make good his retreat in case of necessity, he walked nearly around to the pier, and was so fortunate as to discover Bertha at the turn of a winding path, near his route.
+Keeping on the outskirts of the lawn, where he could make good his retreat in case of necessity
+Keeping
+True
+
+
+
+
+Descending from the yard, he grasped the main-topmast stay, and ran over upon it to the main-topmast, and then made his way to the deck by the main-topmast back-stay.
+Descending from the yard
+Descending
+True
+
+
+
+
+Noddy, puffing like a grampus from the violence of the struggle, rushed forward to the forecastle.
+puffing like a grampus from the violence of the struggle
+puffing
+True
+
+
+
+
+"Why are you not on deck, attending to your duty?"
+attending to your duty?"
+attending
+False
+
+
+
+
+Creeping on the top of the lockers, and holding on to the front of the berths, he reached the door of the captain's state-room.
+Creeping on the top of the lockers, and holding on to the front of the berths
+Creeping
+True
+
+
+
+
+Descending by the fore-shrouds, he reached the forecastle of the schooner.
+Descending by the fore-shrouds
+Descending
+False
+
+
+
+
+Looking over the bow, he discovered the dark, ragged rocks, rising a few feet above the water, on which she had struck, but he could not see any land.     CHAPTER XVII.
+Looking over the bow
+Looking
+True
+
+
+
+
+He could not refuse, when he saw the poor girl, weeping as though her heart would break, kneel down at the head of the grave.
+weeping as though her heart would break
+weeping
+True
+
+
+
+
+According to the captain's estimate,--which was rather low,--he took about four hundred dollars' worth of goods from the island.
+According to the captain's estimate,--which was rather low,--he took about four hundred dollars' worth of goods from the island.
+According
+True
+
+
+
+

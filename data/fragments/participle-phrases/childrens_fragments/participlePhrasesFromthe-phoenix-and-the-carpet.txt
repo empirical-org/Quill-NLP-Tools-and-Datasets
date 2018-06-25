@@ -1,0 +1,56 @@
+The Beginning of the End
+Beginning of the End
+Beginning
+False
+
+
+
+
+And every one instantly fell down flat on its front to look under the grate, and there lay the egg, glowing in a nest of hot ashes.
+glowing in a nest of hot ashes.
+glowing
+True
+
+
+
+
+I might tell YOU,' it went on, looking at Robert with eyes that were indeed starry. '
+looking at Robert with eyes that were indeed starry. '
+looking
+True
+
+
+
+
+Something about bacon and rations?'
+Something about bacon and rations?'
+Something
+False
+
+
+
+
+'I say, talking of stones,' said Robert, 'you see that heap of stones against the wall over in that corner.
+talking of stones,' said Robert, 'you see that heap of stones against the wall over in that corner.
+talking
+True
+
+
+
+
+Soaking in southern seas once.
+Soaking in southern seas once.
+Soaking
+False
+
+
+
+
+Everything of reasonable size, I mean; for, of course, there were no motors or flying machines or thoroughbred chargers.
+Everything of reasonable size
+Everything
+True
+
+
+
+

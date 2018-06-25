@@ -1,0 +1,72 @@
+Nothing of the kind had ever before been imported into that region of the country.
+Nothing of the kind had ever before been imported into that region of the country.
+Nothing
+False
+
+
+
+
+Something like a thunder-cloud seemed to be gathering on Murray's face, and the deep furrows grew deeper, in great rigid lines and curves, while his steel-blue eyes lighted up with a fire that made them unpleasant to look upon.
+Something like a thunder-cloud seemed to be gathering on Murray's face, and the deep furrows grew deeper, in great rigid lines and curves, while his steel-blue eyes lighted up with a fire that made them unpleasant to look upon.
+Something
+True
+
+
+
+
+It was not a difficult trail to follow, for the lodge pole ends, dragging on the ground, had so deeply marked it that a man like Murray could have found it in the dark.
+dragging on the ground
+dragging
+True
+
+
+
+
+Going for our camp?
+Going for our camp?
+Going
+False
+
+
+
+
+Nothing except a revolver or a lance, and they all had lances.
+Nothing except a revolver or a lance, and they all had lances.
+Nothing
+False
+
+
+
+
+I will ask Send Warning about those words, and all about those pictures."
+Warning about those words, and all about those pictures."
+Warning
+False
+
+
+
+
+Nothing of the kind could be done that night, but there was no saying what might come into their angry minds before morning.
+Nothing of the kind could be done that night, but there was no saying what might come into their angry minds before morning.
+Nothing
+False
+
+
+
+
+Nothing but yells."
+Nothing but yells."
+Nothing
+False
+
+
+
+
+"Well, Dolores, which do you like best, cooking for Mexican miners or for the great chief?"
+cooking for Mexican miners or for the great chief?"
+cooking
+True
+
+
+
+

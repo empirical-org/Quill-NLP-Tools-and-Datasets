@@ -1,0 +1,48 @@
+"Something on the order of a milk sea?"
+Something on the order of a milk sea?"
+Something
+False
+
+
+
+
+A steamer, going from New York to Bermuda, reported seeing a patch of the silvery jelly only three hundred miles from the eastern coast.
+going from New York to Bermuda
+going
+True
+
+
+
+
+Formless things, shining of silver, showed where forests had come in its way.
+shining of silver
+shining
+True
+
+
+
+
+Then, diving as in a football game, Davis flung himself for the opening.
+diving as in a football game
+diving
+True
+
+
+
+
+Straight for the bridge he went, plowing through the thick, sticky mass.
+plowing through the thick
+plowing
+True
+
+
+
+
+All the factories in the country, working at their highest speed, could not supply the quantity necessary.
+working at their highest speed, could not supply the quantity necessary.
+working
+True
+
+
+
+

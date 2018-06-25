@@ -1,0 +1,88 @@
+The passenger, Mr. Randall, was a director of a country bank, journeying to Shoreham, about twenty miles above the point
+journeying to Shoreham
+journeying
+True
+
+
+
+
+The passenger, Mr. Randall, was a director of a country bank, journeying to Shoreham, about twenty miles above the pointhad embarked in the _
+journeying to Shoreham
+journeying
+True
+
+
+
+
+Lawry, chuckling with delight at what he had done, rang the hand-bell he found in the kitchen, at the door.
+chuckling with delight at what he had done
+chuckling
+True
+
+
+
+
+Lawry, chuckling with delight at what he had done, rang the hand-bell he found in the kitchen, at the door.
+chuckling with delight at what he had done
+chuckling
+True
+
+
+
+
+"I advise you to get up a handbill of your steamer, announcing that she is to be let to parties by the day, at all the large ports on the lake.
+announcing that she is to be let to parties by the day, at all the large ports on the lake.
+announcing
+True
+
+
+
+
+"I advise you to get up a handbill of your steamer, announcing that she is to be let to parties by the day, at all the large ports on the lake.o would be glad to engage her, even for a week at once."
+announcing that she is to be let to parties by the day, at all the large ports on the lake.o would be glad to engage her
+announcing
+True
+
+
+
+
+While the steamer lay at the wharf, waiting for Mr. Sherwood, many persons, moved by curiosity to inspect the beautiful craft, came aboard; and whenever she stopped, she had plenty of visitors of this description.
+waiting for Mr. Sherwood
+waiting
+True
+
+
+
+
+While the steamer lay at the wharf, waiting for Mr. Sherwood, many persons, moved by curiosity to inspect the beautiful craft, came aboard; and whenever she stopped, she had plenty of visitors of this description.h the machinery and appointments of steamers.
+waiting for Mr. Sherwood
+waiting
+True
+
+
+
+
+Running with all his speed, he reached the head of the wharf just as the boat had backed far enough to permit Ben to see him, and for him to see that Ben was at the wheel.
+Running with all his speed
+Running
+True
+
+
+
+
+Jumping over the bulwark, he stood on the guard from which opened the windows of the saloon.
+Jumping over the bulwark
+Jumping
+False
+
+
+
+
+It was a new home to him; and, profiting by the experience of the past, he resumed his labor as a ferryman, striving to be contented with his lot.
+profiting by the experience of the past
+profiting
+True
+
+
+
+

@@ -1,0 +1,24 @@
+Sure, something like the Hole was incomprehensible.
+something like the Hole was incomprehensible.
+something
+False
+
+
+
+
+He ran down into the smoke, circling toward the woods and the stream where he had passed an afternoon with the girl.
+circling toward the woods and the stream where he had passed an afternoon with the girl.
+circling
+False
+
+
+
+
+He ran down into the smoke, circling toward the woods and the stream where he had passed an afternoon with the girl.he lost himself in the smoke, stumbling over rocks and fallen trees.
+circling toward the woods and the stream where he had passed an afternoon with the girl.he lost himself in the smoke, stumbling over rocks and fallen trees.
+circling
+True
+
+
+
+

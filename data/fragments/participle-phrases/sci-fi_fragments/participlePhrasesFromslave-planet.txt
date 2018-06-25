@@ -1,0 +1,64 @@
+The Commons Room of the Third Building of City One was a large affair, whose three bare metal walls enclosed more space than any other single living-quarters room in the Building; but the presence of the fourth wall made it seem tiny.
+Building of City One was a large affair, whose three bare metal walls enclosed more space than any other single living-quarters room in the Building; but the presence of the fourth wall made it seem tiny.
+Building
+False
+
+
+
+
+If it were cruel to keep them the way they are, working on their own world and being fed and kept warm and safe, why, I'd say go ahead and liberate them.
+working on their own world and being fed and kept warm and safe, why
+working
+True
+
+
+
+
+Dodd woke with the words in his mind, flashing on and off like a lighted sign.
+flashing on and off like a lighted sign.
+flashing
+False
+
+
+
+
+Inside, Cadnan saw six elders, sitting in a circle on the floor.
+sitting in a circle on the floor.
+sitting
+True
+
+
+
+
+According to reports from our outside operatives, and such statistical checking as we have been able to use in a matter of this nature, there exists a strong possibility that present procurement procedures regarding our raw materials may at any moment be abrogated by act of the Confederation government.
+According to reports from our outside operatives, and such statistical checking as we have been able to use in a matter of this nature, there exists a strong possibility that present procurement procedures regarding our raw materials may at any moment be abrogated by act of the Confederation government.
+According
+True
+
+
+
+
+The song was necessary, and his voice, carrying over the sounds that filtered through to him, was clear and strong.
+carrying over the sounds that filtered through to him
+carrying
+True
+
+
+
+
+I say this now, knowing that the talk-machine hears me and that the Confederation hears me.
+knowing that the talk-machine hears me and that the Confederation hears me.
+knowing
+False
+
+
+
+
+From the speech of Dr. Anna Haenlingen      Before the High Court (Earth) of the Confederation      Preparatory to the Passing of Sentence  ...
+Passing of Sentence  ...
+Passing
+False
+
+
+
+

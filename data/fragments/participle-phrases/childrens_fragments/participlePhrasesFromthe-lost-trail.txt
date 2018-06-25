@@ -1,0 +1,96 @@
+The fugitive, catching in some obstruction, was thrown flat upon his face, but quickly recovered himself.
+catching in some obstruction
+catching
+True
+
+
+
+
+The fugitive, catching in some obstruction, was thrown flat upon his face, but quickly recovered himself.
+catching in some obstruction
+catching
+True
+
+
+
+
+An Indian woman was discernible among the trees, walking along the path at a rapid walk, as if she were greatly hurried.
+walking along the path at a rapid walk, as if she were greatly hurried.
+walking
+True
+
+
+
+
+Knowing that the hearing of the Indians is marvelously acute, he believed the squaw had heard sounds of distress; but, instead of quickening her steps, she now moved more slowly than ever.
+Knowing that the hearing of the Indians is marvelously acute
+Knowing
+True
+
+
+
+
+Rising to a sitting position, he scratched his head (which was significant only of abstraction of thought), and gazed meditatively into the smoldering embers.
+Rising to a sitting position
+Rising
+True
+
+
+
+
+Nothing but the dim figures of the tree-trunks rewarded his gaze.
+Nothing but the dim figures of the tree-trunks rewarded his gaze.
+Nothing
+False
+
+
+
+
+It happens it leads to the north'ard, and it'll be a little divarsion to foller it, minding at the same time that there's an Injin in it."
+minding at the same time that there's an Injin in it."
+minding
+True
+
+
+
+
+He lay motionless, listening for a while, but hearing nothing of their voices or footsteps, he judged that either they had no suspicion of the true cause, or else had not heard him at all.
+listening for a while, but hearing nothing of their voices or footsteps
+listening
+True
+
+
+
+
+All at once, something upon the ground caught his eye.
+something upon the ground caught his eye.
+something
+False
+
+
+
+
+These considerations, passing through Richter's brain much more rapidly than we have narrated them, decided him to abandon both plans, and to resort to what, beyond question, was a most desperate expedient.
+passing through Richter's brain much more rapidly than we have narrated them
+passing
+True
+
+
+
+
+The blood, oozing down the face of the savage, plainly showed how unerringly true had been the aim.
+oozing down the face of the savage
+oozing
+True
+
+
+
+
+Something in the upward look of the dying man startled the missionary.
+Something in the upward look of the dying man startled the missionary.
+Something
+False
+
+
+
+

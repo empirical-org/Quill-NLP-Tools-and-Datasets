@@ -1,0 +1,24 @@
+Something about the conditional setup seemed to give me an idea.
+Something about the conditional setup seemed to give me an idea.
+Something
+False
+
+
+
+
+In a voice, soaring into the falsetto, the Swami demanded that he be sent back to Brooklyn where he was appreciated.
+soaring into the falsetto, the Swami demanded that he be sent back to Brooklyn where he was appreciated.
+soaring
+True
+
+
+
+
+The Swami took a casual turn about the room, leaning to one side on his magic carpet as if banking an airplane.
+leaning to one side on his magic carpet as if banking an airplane.
+leaning
+False
+
+
+
+

@@ -1,0 +1,32 @@
+And now Stragella.lving about a strange star.
+Stragella.lving about a strange star.
+Stragella.lving
+False
+
+
+
+
+Rising to the foreground out of our thirty-six, came Fielding Mason, tall, taciturn, and handsome, with a keen intellect and a sense of values remarkable in so young a man.
+Rising to the foreground out of our thirty-six, came Fielding Mason
+Rising
+True
+
+
+
+
+"Judging from what we've seen," Mason said, "I would say that the race that built this place had reached approximately a grade C-5 of civilization, according to the Mokart scale.
+Judging from what we've seen," Mason said, "I would say that the race that built this place had reached approximately a grade C-5 of civilization, according to the Mokart scale.
+Judging
+True
+
+
+
+
+Climbing to the top level was a heart-pounding task, but Mason almost ran up those steps.
+Climbing to the top level was a heart-pounding task, but Mason almost ran up those steps.
+Climbing
+False
+
+
+
+

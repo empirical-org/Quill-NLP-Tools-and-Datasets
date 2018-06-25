@@ -1,0 +1,72 @@
+"Looking for gold," was the reply.
+Looking for gold," was the reply.
+Looking
+False
+
+
+
+
+He sank back, feeling in a state of mental and bodily collapse.
+feeling in a state of mental and bodily collapse.
+feeling
+False
+
+
+
+
+Miles, rising at once, and entering the cabin.
+rising at once, and entering the cabin.
+rising
+True
+
+
+
+
+Considering that Tom is by no means an uncommon name, it could hardly be called very remarkable, but Tom politely assented.
+Considering that Tom is by no means an uncommon name
+Considering
+True
+
+
+
+
+Bruin, deciding that this had lasted long enough, began in a slow and dignified manner to approach the intruder upon his solitude.
+deciding that this had lasted long enough
+deciding
+True
+
+
+
+
+Owing to the drought, my crops fell off at least one quarter."
+Owing to the drought
+Owing
+False
+
+
+
+
+Arriving in the city late in the afternoon, Tom went at once to see John Miles.
+Arriving in the city late in the afternoon
+Arriving
+False
+
+
+
+
+"  "Going at twenty-five hundred!" said the auctioneer.
+Going at twenty-five hundred!" said the auctioneer.
+Going
+False
+
+
+
+
+eBook, complying with the rules is very easy.
+complying with the rules is very easy.
+complying
+False
+
+
+
+

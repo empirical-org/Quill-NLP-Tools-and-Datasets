@@ -1,0 +1,360 @@
+Leaping to his feet, the speaker started at a brisk walk to meet a jovial-looking personage coming down from the direction of the castle.
+Leaping to his feet, the speaker started at a brisk walk to meet a jovial-looking personage coming down from the direction of the castle.
+Leaping
+False
+
+
+
+
+Knowing that they were still a long way off, he advanced as rapidly as he could in the direction in which they were coming.
+Knowing that they were still a long way off
+Knowing
+False
+
+
+
+
+Seeing that any sudden attack was impossible, the earl now directed a strong body to cut down trees, and prepare a movable bridge to throw across the moat.
+Seeing that any sudden attack was impossible, the earl now directed a strong body to cut down trees, and prepare a movable bridge to throw across the moat.
+Seeing
+True
+
+
+
+
+The King of France, with his army, was also attacked with fury, and a large portion of his force were slaughtered.
+King of France, with his army
+King
+True
+
+
+
+
+The King of France, with his army, was also attacked with fury, and a large portion of his force were slaughtered.f that the Turks were equal to the Christian knights.
+King of France, with his army
+King
+True
+
+
+
+
+Falling upon their knees, the crowd begged of him to give them the sign of the cross, and to bestow his blessing upon their swords, and upon their efforts.
+Falling upon their knees, the crowd begged of him to give them the sign of the cross, and to bestow his blessing upon their swords, and upon their efforts.
+Falling
+True
+
+
+
+
+The King of England was already in Normandy hastening the preparations, and each band, as it landed, marched down to the meeting-place on the plains of Vezelay.
+King of England was already in Normandy hastening the preparations, and each band, as it landed
+King
+True
+
+
+
+
+The King of France, on the other hand, looked grave.
+King of France, on the other hand
+King
+True
+
+
+
+
+The King of France, on the other hand, looked grave.more politic king than Richard; and although he had consented to the sudden proposal, yet he felt in his heart that the contest was a foolish one, and that it might create bad feeling among the men of the two nationalities whichever way it went.
+King of France, on the other hand
+King
+True
+
+
+
+
+embarkation--that is, supposing that you make your way through the snares which beset you."
+supposing that you make your way through the snares which beset you."
+supposing
+False
+
+
+
+
+Extremely uneasy at the circumstance, Cuthbert went to the city guard, thinking that perhaps his guide might have got drunk, and been shut up in the cells.
+thinking that perhaps his guide might have got drunk, and been shut up in the cells.
+thinking
+True
+
+
+
+
+Extremely uneasy at the circumstance, Cuthbert went to the city guard, thinking that perhaps his guide might have got drunk, and been shut up in the cells.ve notice to the authorities of his loss, and then, mounting his horse, and leaving some money with the landlord of the hostelry to give to his guide in case the latter should return, he started at mid-day by the southern road.
+thinking that perhaps his guide might have got drunk, and been shut up in the cells.ve notice to the authorities of his loss, and then, mounting his horse, and leaving some money with the landlord of the hostelry to give to his guide in case the latter should return
+thinking
+True
+
+
+
+
+There was no news of the King of England; and, as often happens, the saying "the more haste the less speed," had been verified here.
+King of England; and, as often happens, the saying "the more haste the less speed," had been verified here.
+King
+True
+
+
+
+
+The men-at-arms, however, consisting of three, who appeared to be the leaders, and of eight pikemen, fought stubbornly and well.
+consisting of three, who appeared to be the leaders, and of eight pikemen
+consisting
+True
+
+
+
+
+The men-at-arms, however, consisting of three, who appeared to be the leaders, and of eight pikemen, fought stubbornly and well.airs
+consisting of three, who appeared to be the leaders, and of eight pikemen
+consisting
+True
+
+
+
+
+I am no more under his protection than under that of the King of France, and it is to the latter I should appeal, for as I believe the men who abducted me were his subjects."
+King of France, and it is to the latter I should appeal, for as I believe the men who abducted me were his subjects."
+King
+True
+
+
+
+
+He undertook the management of all details, having with him a trusty squire who commands my Saxon bowmen."
+having with him a trusty squire who commands my Saxon bowmen."
+having
+False
+
+
+
+
+His Majesty, finding that Cnut was of gentle Saxon blood, gave him a gold chain in token of his favour, and distributed a heavy purse among the men who had followed him.
+finding that Cnut was of gentle Saxon blood
+finding
+True
+
+
+
+
+Finding that it was impossible to catch these wary horsemen, King Richard ordered his bowmen to march outside his cavalry, so that when the enemy's horse approached within bowshot they should open upon them with arrows; then, should the horsemen persist in charging, the archers were at once to take refuge behind the lines of the knights.
+Finding that it was impossible to catch these wary horsemen
+Finding
+True
+
+
+
+
+Dividing as the king with his knights charged them, they suffered these to pass through with but slight resistance, and then closed in upon their track, while another and still more numerous body fell upon the footmen and their guard.
+Dividing as the king with his knights charged them
+Dividing
+True
+
+
+
+
+Rising to his feet, he saw a black slave, and an old woman beside him.
+Rising to his feet
+Rising
+True
+
+
+
+
+Passing through several passages, he was at length led into a room where a lady of some forty years of age, surrounded by several slaves and younger women, was sitting.
+Passing through several passages
+Passing
+True
+
+
+
+
+Passing through several passages, he was at length led into a room where a lady of some forty years of age, surrounded by several slaves and younger women, was sitting.le in making a deep obeisance to her; the respect shown to women in the days of chivalry was very great, and Cuthbert in bowing almost to the ground before the lady who was really his mistress, did not feel that he was humiliating himself.
+Passing through several passages
+Passing
+True
+
+
+
+
+Keeping along the edge for a considerable distance, he came to a spot where it was passable, and made his way down to the river bank.
+Keeping along the edge for a considerable distance
+Keeping
+True
+
+
+
+
+Although it may seem strange to you, looking upon this withered frame, sixty-five years back I was as bold and comely a knight as rode in the train of the king, for I am now past ninety, and for sixty years I have resided here.
+looking upon this withered frame, sixty-five years back I was as bold and comely a knight as rode in the train of the king, for I am now past ninety, and for sixty years I have resided here.
+looking
+True
+
+
+
+
+The hermit was silent, and Cuthbert, seeing that his thoughts had again referred to the past, wandered away, and left him sitting by the river side.
+seeing that his thoughts had again referred to the past
+seeing
+True
+
+
+
+
+Going to the door of the principal hut, he knocked, and upon entering showed the owner--who opened the door--a rosette of peculiar beads, and repeated the name of Father Anselm.
+Going to the door of the principal hut
+Going
+True
+
+
+
+
+, exulting in his freedom, and in once again possessing arms to defend himself should it be needed.
+exulting in his freedom, and in once again possessing arms to defend himself should it be needed.
+exulting
+True
+
+
+
+
+Cuthbert, retiring to his tent with the Earl of Evesham, inquired of him what had taken place during his absence.
+retiring to his tent with the Earl of Evesham
+retiring
+True
+
+
+
+
+Cuthbert gave directions to Cnut and the archers; and these, feeling that life depended upon a good fire being kept up, set to with a will, cutting down shrubs and branches growing in the vicinity of the hut.
+feeling that life depended upon a good fire being kept up
+feeling
+True
+
+
+
+
+Glancing over, Cuthbert saw that the moat was dry; and after a final discharge of arrows into the crowd, the six men slid one after another down the rope and made their way at full speed across the country.     CHAPTER XIX.  DRESDEN.
+Glancing over
+Glancing
+True
+
+
+
+
+Rushing in with axe and pike, they were astonished to find the place empty.
+Rushing in with axe and pike
+Rushing
+False
+
+
+
+
+Asking for the residence of the Burgomaster, Cuthbert at once proceeded thither, and stated that he was an English knight on the return from the Crusades;
+Asking for the residence of the Burgomaster
+Asking
+True
+
+
+
+
+Looking from the window they saw a large party of rough men, whose appearance at once betokened that they were disbanded soldiers--a title almost synonymous in those days with that of robber.
+Looking from the window they saw a large party of rough men, whose appearance at once betokened that they were disbanded soldiers--a title almost synonymous in those days with that of robber.
+Looking
+False
+
+
+
+
+Looking from the window they saw a large party of rough men, whose appearance at once betokened that they were disbanded soldiers--a title almost synonymous in those days with that of robber.ed from the alcove and placed against the door.
+Looking from the window they saw a large party of rough men, whose appearance at once betokened that they were disbanded soldiers--a title almost synonymous in those days with that of robber.ed from the alcove and placed against the door.
+Looking
+False
+
+
+
+
+The noble charger which the King of Saxony had presented to Cuthbert, had suffered greatly, and he feared at one time, that the poor animal would succumb to the effects of the tempest.
+King of Saxony had presented to Cuthbert
+King
+True
+
+
+
+
+He at once took up his abode there, having with him two stout serving-men, and a 'prentice boy; and from that time two sets of watchers observed without ceasing what passed at the Convent of St. Anne.
+having with him two stout serving-men, and a 'prentice boy; and from that time two sets of watchers observed without ceasing what passed at the Convent of St. Anne.
+having
+True
+
+
+
+
+Then, turning to the herald, he said, "Tell the false knight, your master, on my part, that he is a foul ruffian, perjured to all the vows of knighthood; that this act of visiting upon a woman the enmity he bears her son, will bring upon him the execration of all men; and that the offer which he makes me is as foul and villainous as himself.
+turning to the herald
+turning
+True
+
+
+
+
+Then, turning to the herald, he said, "Tell the false knight, your master, on my part, that he is a foul ruffian, perjured to all the vows of knighthood; that this act of visiting upon a woman the enmity he bears her son, will bring upon him the execration of all men; and that the offer which he makes me is as foul and villainous as himself.other, is to leave the castle gates as I enter them; and that though by his foul device he may encompass my death, yet that the curse of every good man will light upon him, that he will be shunned as the dog he is, and that assuredly heaven will not suffer that deeds so foul should bring with them the prize he seeks to gain."
+turning to the herald
+turning
+True
+
+
+
+
+Cnut and the outlaws, burning with indignation, were ready to attempt anything.
+burning with indignation
+burning
+True
+
+
+
+
+Then the warder, seeing that it contained faggots, lowered the drawbridge without question, raised the portcullis, and opened the gates.
+seeing that it contained faggots
+seeing
+True
+
+
+
+
+Foaming with rage, Sir Rudolph took possession of a cottage near, camped his men around and prepared for a siege.
+Foaming with rage
+Foaming
+True
+
+
+
+
+Arriving at Vienna they lingered for some time, hoping there to be able to obtain some information of the whereabouts of King Richard.
+Arriving at Vienna they lingered for some time, hoping there to be able to obtain some information of the whereabouts of King Richard.
+Arriving
+False
+
+
+
+
+Hearing that Longchamp, Bishop of Ely, one of Richard's vicegerents, was over in Normandy, and rightly deeming him the most earnest of his adherents, they at once recrossed the sea, and found the warlike prelate at Rouen.
+Hearing that Longchamp
+Hearing
+True
+
+
+
+
+dissentient the King of England was acquitted of all the charges brought against him.
+King of England was acquitted of all the charges brought against him.
+King
+False
+
+
+
+

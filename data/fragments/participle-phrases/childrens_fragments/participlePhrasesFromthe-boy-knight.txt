@@ -1,0 +1,360 @@
+Leaping to his feet, the speaker started at a brisk walk to meet a jovial-looking personage coming down from the direction of the castle.
+Leaping to his feet, the speaker started at a brisk walk to meet a jovial-looking personage coming down from the direction of the castle.
+Leaping
+False
+
+
+
+
+Knowing that they were still a long way off, he advanced as rapidly as he could in the direction in which they were coming.
+Knowing that they were still a long way off
+Knowing
+False
+
+
+
+
+Seeing that any sudden attack was impossible, the earl now directed a strong body to cut down trees, and prepare a moveable bridge to throw across the moat.
+Seeing that any sudden attack was impossible, the earl now directed a strong body to cut down trees, and prepare a moveable bridge to throw across the moat.
+Seeing
+True
+
+
+
+
+"Passing through Hungary, where they greatly ravaged the fields, they came to Bulgaria.
+Passing through Hungary, where they greatly ravaged the fields
+Passing
+True
+
+
+
+
+The King of France, with his army, was also attacked with fury, and a large portion of his force were slaughtered.
+King of France, with his army
+King
+True
+
+
+
+
+The King of France, on the other hand, looked grave.
+King of France, on the other hand
+King
+True
+
+
+
+
+"Methinks that it were robbery to take your wager," the King of France said.
+King of France said.
+King
+False
+
+
+
+
+Here is a gold chain; take it as a proof that the King of England holds that you have sustained well the honor of his country; and mark me, if at any time you require a boon, bring or send me that chain, and thou shalt have it freely.
+King of England holds that you have sustained well the honor of his country; and mark me, if at any time you require a boon
+King
+True
+
+
+
+
+Seeing that it was speed, and speed alone, which now could save him, he flung aside his belt and scabbard as he ran, and with rapid steps flew along the streets, not knowing whither he went, and striving only to keep ahead of his pursuers.
+Seeing that it was speed, and speed alone, which now could save him
+Seeing
+True
+
+
+
+
+Extremely uneasy at the circumstance, Cuthbert went to the city guard, thinking that perhaps his guide might have got drunk, and been shut up in the cells.
+thinking that perhaps his guide might have got drunk, and been shut up in the cells.
+thinking
+True
+
+
+
+
+There was no news of the King of England; and, as often happens, the saying "The more haste the less speed," had been verified here.
+King of England; and, as often happens, the saying "The more haste the less speed," had been verified here.
+King
+True
+
+
+
+
+There was no news of the King of England; and, as often happens, the saying "The more haste the less speed," had been verified here.
+King of England; and, as often happens, the saying "The more haste the less speed," had been verified here.
+King
+True
+
+
+
+
+Here, too, came the Queen of Navarre, bringing with her the beautiful Princess Berengaria.
+bringing with her the beautiful Princess Berengaria.
+bringing
+True
+
+
+
+
+The men-at-arms, however, consisting of three, who appeared to be the leaders, and of eight pikemen fought stubbornly and well.
+consisting of three, who appeared to be the leaders, and of eight pikemen fought stubbornly and well.
+consisting
+True
+
+
+
+
+Whoever you be, I warn you that the King of England will revenge this indignity.
+King of England will revenge this indignity.
+King
+False
+
+
+
+
+I am no more under his protection than under that of the King of France, and it is to the latter I should appeal, for as I believe the men who abducted me were his subjects."
+King of France, and it is to the latter I should appeal, for as I believe the men who abducted me were his subjects."
+King
+True
+
+
+
+
+I am no more under his protection than under that of the King of France, and it is to the latter I should appeal, for as I believe the men who abducted me were his subjects."has been just killed by the leader of our men-at-arms.
+King of France, and it is to the latter I should appeal, for as I believe the men who abducted me were his subjects."has been just killed by the leader of our men-at-arms.
+King
+True
+
+
+
+
+He undertook the management of all details, having with him a trusty squire who commands my Saxon bowmen."
+having with him a trusty squire who commands my Saxon bowmen."
+having
+False
+
+
+
+
+He undertook the management of all details, having with him a trusty squire who commands my Saxon bowmen."all not find Richard ungrateful.
+having with him a trusty squire who commands my Saxon bowmen."all not find Richard ungrateful.
+having
+False
+
+
+
+
+His majesty, finding that Cnut was of gentle Saxon blood, gave him a gold chain in token of his favor, and distributed a heavy purse among the men who had followed him.
+finding that Cnut was of gentle Saxon blood
+finding
+True
+
+
+
+
+The King of Cyprus, however, an insolent and haughty despot, sent back a message of defiance.
+King of Cyprus
+King
+True
+
+
+
+
+Finding that it was impossible to catch these wary horsemen, King Richard ordered his bowmen to march outside his cavalry, so that when the enemy's horse approached within bowshot they should open upon them with arrows; then, should the horsemen persist in charging, the archers were at once to take refuge behind the lines of the knights.
+Finding that it was impossible to catch these wary horsemen
+Finding
+True
+
+
+
+
+Rising to his feet, he saw a black slave, and an old woman beside him.
+Rising to his feet
+Rising
+True
+
+
+
+
+Passing through several passages, he was at length led into a room where a lady of some forty years of age, surrounded by several slaves and younger women, was sitting.
+Passing through several passages
+Passing
+True
+
+
+
+
+Keeping along the edge for a considerable distance, he came to a spot where it was passable, and made his way down to the river bank.
+Keeping along the edge for a considerable distance
+Keeping
+True
+
+
+
+
+The hermit was silent, and Cuthbert, seeing that his thoughts had again referred to the past, wandered away, and left him sitting by the river side.
+seeing that his thoughts had again referred to the past
+seeing
+True
+
+
+
+
+Going to the door of the principal hut he knocked, and upon entering showed the owner--who opened the door--a rosette of peculiar beads and repeated the name of Father Anselm.
+Going to the door of the principal hut he knocked, and upon entering showed the owner--who opened the door--a rosette of peculiar beads and repeated the name of Father Anselm.
+Going
+False
+
+
+
+
+Cuthbert, retiring to his tent with the Earl of Evesham, inquired of him what had taken place during his absence.
+retiring to his tent with the Earl of Evesham
+retiring
+True
+
+
+
+
+You are, as I see, returning from the Holy Land, an are therefore used to heat rather than cold, so I should advise you before you leave this city to buy some rough cloaks to shield you from the cold.
+returning from the Holy Land, an are therefore used to heat rather than cold, so I should advise you before you leave this city to buy some rough cloaks to shield you from the cold.
+returning
+True
+
+
+
+
+Cuthbert gave directions to Cnut and the archers; and these, feeling that life depended upon a good fire being kept up, set to with a will, cutting down shrubs and branches growing in the vicinity of the hut.
+feeling that life depended upon a good fire being kept up
+feeling
+True
+
+
+
+
+Glancing over, Cuthbert saw that the moat was dry; and after a final discharge of arrows into the crowd, the six men slid one after another down the rope and made their way at full speed across the country.     CHAPTER XIX.  DRESDEN.
+Glancing over
+Glancing
+True
+
+
+
+
+Rushing in with ax and pike, they were astonished to find the place empty.
+Rushing in with ax and pike
+Rushing
+False
+
+
+
+
+Seeing that the confusion wrought by a sudden attack from men perched up aloft as we were, commanding the courtyard, and being each of us able to hit a silver mark at the distance of one hundred yards, would be great indeed, we judged that you might be able to slip away unobserved, and were sure that your quick wit would seize any opportunity which might offer.
+Seeing that the confusion wrought by a sudden attack from men perched up aloft as we were, commanding the courtyard, and being each of us able to hit a silver mark at the distance of one hundred yards, would be great indeed
+Seeing
+True
+
+
+
+
+The noble charger which the King of Saxony had presented to Cuthbert had suffered greatly, and he feared at one time that the poor animal would succumb to the effects of the tempest.
+King of Saxony had presented to Cuthbert had suffered greatly, and he feared at one time that the poor animal would succumb to the effects of the tempest.
+King
+False
+
+
+
+
+He at once took up his abode there, having with him two stout serving-men, and a 'prentice boy; and from that time two sets of watchers observed without ceasing what passed at the Convent of St. Anne.
+having with him two stout serving-men, and a 'prentice boy; and from that time two sets of watchers observed without ceasing what passed at the Convent of St. Anne.
+having
+True
+
+
+
+
+He at once took up his abode there, having with him two stout serving-men, and a 'prentice boy; and from that time two sets of watchers observed without ceasing what passed at the Convent of St. Anne.e grange occupied.
+having with him two stout serving-men, and a 'prentice boy; and from that time two sets of watchers observed without ceasing what passed at the Convent of St. Anne.e grange occupied.
+having
+True
+
+
+
+
+Finding that summonses to open were unanswered, the door was broken in, and the premises were found in confusion.
+Finding that summonses to open were unanswered, the door was broken in, and the premises were found in confusion.
+Finding
+True
+
+
+
+
+Cnut and the outlaws, burning with indignation, were ready to attempt anything.
+burning with indignation
+burning
+True
+
+
+
+
+She could say no more, for the men, closing round the weeping girl, hurried her out from the convent.
+closing round the weeping girl
+closing
+True
+
+
+
+
+She could say no more, for the men, closing round the weeping girl, hurried her out from the convent.without, and in this the young lady was placed, and, borne upon the shoulders of four stout men, she started at a fast pace, surrounded closely by the rest of the band.
+closing round the weeping girl
+closing
+True
+
+
+
+
+Foaming with rage, Sir Rudolph took possession of a cottage near, camped his men around and prepared for a siege.
+Foaming with rage
+Foaming
+True
+
+
+
+
+Arriving at Vienna they lingered for some time, hoping there to be able to obtain some information of the whereabouts of King Richard.
+Arriving at Vienna they lingered for some time, hoping there to be able to obtain some information of the whereabouts of King Richard.
+Arriving
+False
+
+
+
+
+Arriving at Vienna they lingered for some time, hoping there to be able to obtain some information of the whereabouts of King Richard.tendom at the imprisonment of its champion.
+Arriving at Vienna they lingered for some time, hoping there to be able to obtain some information of the whereabouts of King Richard.tendom at the imprisonment of its champion.
+Arriving
+False
+
+
+
+
+Hearing that Longchamp, Bishop of Ely, one of Richard's vicegerents, was over in Normandy, and rightly deeming him the most earnest of his adherents, they at once recrossed the sea, and found the warlike prelate at Rouen.
+Hearing that Longchamp
+Hearing
+True
+
+
+
+
+The trial was soon over, and without a single dissentient the King of England was acquitted of all the charges brought against him.
+King of England was acquitted of all the charges brought against him.
+King
+False
+
+
+
+

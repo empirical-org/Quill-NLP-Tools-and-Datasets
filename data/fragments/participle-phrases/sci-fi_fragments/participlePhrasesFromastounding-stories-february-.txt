@@ -1,0 +1,320 @@
+[Illustration: _"Hay crosses the gulf, taking with him the cord which controls the electro-magnet."
+taking with him the cord which controls the electro-magnet."
+taking
+False
+
+
+
+
+Then, turning to Lance, he said: "You'd better knock off a few hours' sleep.
+turning to Lance
+turning
+True
+
+
+
+
+Hay crosses the gulf, taking with him the cord which controls the electro-magnet.
+taking with him the cord which controls the electro-magnet.
+taking
+False
+
+
+
+
+Hay crosses the gulf, taking with him the cord which controls the electro-magnet.ases the pull of the magnet, and--there you are!
+taking with him the cord which controls the electro-magnet.ases the pull of the magnet, and--there you are!
+taking
+True
+
+
+
+
+Coming to the end one, he peered round its blunt corner.
+Coming to the end one
+Coming
+False
+
+
+
+
+Lance, pulling on thick gloves, did not reply.
+pulling on thick gloves
+pulling
+True
+
+
+
+
+The torpedoes were even now on their way, hurtling along miles above the earth.
+hurtling along miles above the earth.
+hurtling
+False
+
+
+
+
+Hovering in the plane over San Francisco Lance squirmed round in his seat, reached back into the fuselage, and pressed rapidly the studs on the Singe beacon.
+Hovering in the plane over San Francisco Lance squirmed round in his seat, reached back into the fuselage, and pressed rapidly the studs on the Singe beacon.
+Hovering
+True
+
+
+
+
+He broke off, wordless, waiting for an answer that did not come, then sprang to the connecting ramp and ran to the deck below.
+waiting for an answer that did not come
+waiting
+True
+
+
+
+
+Bending over one still form, he pressed his hand on the heart.
+Bending over one still form
+Bending
+False
+
+
+
+
+The monsters came towards him quite slowly, obviously wary, advancing over the sea-floor in what was a hideous mockery of walking, their forward tentacles outstretched.
+advancing over the sea-floor in what was a hideous mockery of walking
+advancing
+True
+
+
+
+
+Standing over Sparks' inert body, he put through a call to Robert Knapp, on the _Falcon_.  "Knapp?"
+Standing over Sparks' inert body
+Standing
+True
+
+
+
+
+It was Hemmy Bowman, speaking from the enemy ship.
+speaking from the enemy ship.
+speaking
+False
+
+
+
+
+Dangling in the shadow-filled darkness he was carried slowly to the exit port, and he heard the inner door swing open, then close again.
+Dangling in the shadow-filled darkness he was carried slowly to the exit port, and he heard the inner door swing open, then close again.
+Dangling
+True
+
+
+
+
+Slowly the ruler of the octopi swam into the chamber.eith Wells, standing at the head of his cowering men; and its mighty tentacles waved slowly, gracefully, as if the creature stood in doubt.
+standing at the head of his cowering men; and its mighty tentacles waved slowly
+standing
+True
+
+
+
+
+It was Graham, calling from the cell behind.
+calling from the cell behind.
+calling
+False
+
+
+
+
+There were dozens of mysterious wheels, jutting from every possible angle, squads of black and red-handled levers, whole armies of queer little stud-buttons and dials.
+jutting from every possible angle
+jutting
+True
+
+
+
+
+Then, remembering for the first time his sea-suit radio, he yelled: "Mr. Wells!
+remembering for the first time his sea-suit radio
+remembering
+True
+
+
+
+
+Looking down he found that he had a gun in his hand.
+Looking down he found that he had a gun in his hand.
+Looking
+False
+
+
+
+
+Glancing below he saw a great, dark, many-fingered cloud dropping rapidly away, and was glad to know that the octopi could not follow him into the lesser pressures above without their suits.
+Glancing below he saw a great
+Glancing
+True
+
+
+
+
+"Nothing in here but some glass statues," he announced.
+Nothing in here but some glass statues," he announced.
+Nothing
+False
+
+
+
+
+Hoping against hope that its fall had not shattered the bulb, he ran his fingers over the cold, damp stones, every instant expecting to feel the clutch of the unseen monster.
+Hoping against hope that its fall had not shattered the bulb
+Hoping
+True
+
+
+
+
+The head in shape was bullet-like, ending in a blunt nose as big as a bushel basket and in two prominent nostrils.
+ending in a blunt nose as big as a bushel basket and in two prominent nostrils.
+ending
+False
+
+
+
+
+The head in shape was bullet-like, ending in a blunt nose as big as a bushel basket and in two prominent nostrils.ayonetlike teeth that curved inward like those of a shark, to splash and bubble freely to the rock floor and to dribble horribly over the warty, gray hide.
+ending in a blunt nose as big as a bushel basket and in two prominent nostrils.ayonetlike teeth that curved inward like those of a shark, to splash and bubble freely to the rock floor and to dribble horribly over the warty
+ending
+True
+
+
+
+
+Shaking off the paralysis of despair, Nelson whipped up the Winchester and, as before, sighted squarely between those blazing, gemlike eyes.
+Shaking off the paralysis of despair
+Shaking
+True
+
+
+
+
+A fungus vapor which, falling upon exposed flesh, instantly invades the blood and multiplies by millions.
+falling upon exposed flesh
+falling
+True
+
+
+
+
+Swiftly the poisonous mould threw out tiny branches, spreading with astounding rapidity over the skin until, in less than a minute after the grenades had exploded, the whole tumbled heap of dead were covered with a horrible yellow green fungus growth.
+spreading with astounding rapidity over the skin until, in less than a minute after the grenades had exploded, the whole tumbled heap of dead were covered with a horrible yellow green fungus growth.
+spreading
+True
+
+
+
+
+*       *       *       *       *  Warming to a fiercer pitch, the other fixed his guest with a smoldering gaze. "
+Warming to a fiercer pitch, the other fixed his guest with a smoldering gaze. "
+Warming
+False
+
+
+
+
+Issuing at a fast trot from the tube-road terminal, the two Heroes led the way to a vast structure, in which were stabled both the terrific allosauri and the podokesauri, those swift dinosaurs which seemed to serve the Atlanteans as horses.
+Issuing at a fast trot from the tube-road terminal, the two Heroes led the way to a vast structure, in which were stabled both the terrific allosauri and the podokesauri, those swift dinosaurs which seemed to serve the Atlanteans as horses.
+Issuing
+True
+
+
+
+
+"Nothing like cheering up a patient before he goes into the operating room," thought Nelson, and quietly threw off the safety on his Winchester.
+Nothing like cheering up a patient before he goes into the operating room," thought Nelson, and quietly threw off the safety on his Winchester.
+Nothing
+True
+
+
+
+
+Waiting without is an embassy from his Majesty of Jarmuth.
+Waiting without is an embassy from his Majesty of Jarmuth.
+Waiting
+False
+
+
+
+
+Meanwhile Emperor and Captain-General drew to one side, listening to Hero John's impassioned oratory.
+listening to Hero John's impassioned oratory.
+listening
+False
+
+
+
+
+Here Hero Giles broke in and, speaking with the quick, impassioned tones of one whose reactions are violent, pled for confidence in the American. "
+speaking with the quick
+speaking
+True
+
+
+
+
+Then, coming to a decision, he whirled and extended his hand.
+coming to a decision
+coming
+True
+
+
+
+
+Arriving on the nearest border Nelson briefly motioned the herald to halt.
+Arriving on the nearest border Nelson briefly motioned the herald to halt.
+Arriving
+False
+
+
+
+
+Sobbing with joy the six girls fled for dear life just as the first of the allosauri went racing over the plains.
+Sobbing with joy the six girls fled for dear life just as the first of the allosauri went racing over the plains.
+Sobbing
+False
+
+
+
+
+Another allosaurus, whining with eagerness, actually clambered up the back of an assailed giant only to fall back under the blast of a retortii mounted in the howdah.
+whining with eagerness
+whining
+True
+
+
+
+
+Another allosaurus, whining with eagerness, actually clambered up the back of an assailed giant only to fall back under the blast of a retortii mounted in the howdah.
+whining with eagerness
+whining
+True
+
+
+
+
+Muttering among themselves, they were watching him with a curious intentness that aroused deep misgivings in the American's mind, and it was with something like a sigh that he joined the procession forming to proceed to the triumphal feast on which the wealth and luxury of the whole empire of Atlans had been lavished.
+Muttering among themselves
+Muttering
+True
+
+
+
+
+"Soften it, perhaps, depending upon the resistance."
+depending upon the resistance."
+depending
+True
+
+
+
+

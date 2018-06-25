@@ -1,0 +1,248 @@
+Turning with quiet politeness to Foster, he asked him in broken French how he had come on board.
+Turning with quiet politeness to Foster
+Turning
+False
+
+
+
+
+"Do you know that I am an officer in the Navy of his Majesty the King of Great Britain?"
+King of Great Britain?"
+King
+False
+
+
+
+
+Rising from his hard couch, and endeavouring to relieve the aching of the bound arms by change of position, he observed that the cabin hatch was open, and that nothing prevented his going on deck, if so disposed.
+Rising from his hard couch, and endeavouring to relieve the aching of the bound arms by change of position
+Rising
+True
+
+
+
+
+Pointing over the side, he bade his prisoner "look."
+Pointing over the side
+Pointing
+False
+
+
+
+
+Pointing over the side, he bade his prisoner "look."nd beheld in the far distance a three-masted vessel that seemed to bear a strong resemblance to a British man-of-war.
+Pointing over the side
+Pointing
+False
+
+
+
+
+Then, stooping as if to open the little door, he added, in a low voice, "Don' be a fool, massa.
+stooping as if to open the little door
+stooping
+True
+
+
+
+
+The idea of the poor wife in England, toiling for twelve years almost hopelessly to ransom her husband, filled his susceptible heart with pity.
+toiling for twelve years almost hopelessly to ransom her husband
+toiling
+True
+
+
+
+
+Passing through two or three tortuous and narrow lanes, which, however, were thickly studded with shops--that is, with holes in the wall, in which merchandise was displayed outside as well as in--they came to a door which was strictly guarded.
+Passing through two or three tortuous and narrow lanes, which, however, were thickly studded with shops--that is, with holes in the wall, in which merchandise was displayed outside as well as in--they came to a door which was strictly guarded.
+Passing
+True
+
+
+
+
+In character he was amiable and just, according to his light, but dignified and reticent.
+according to his light, but dignified and reticent.
+according
+True
+
+
+
+
+"Tell him that every officer in the service of the King of England is considered a gentleman."
+King of England is considered a gentleman."
+King
+False
+
+
+
+
+"Tell him that every officer in the service of the King of England is considered a gentleman."w das not true.
+King of England is considered a gentleman."w das not true.
+King
+False
+
+
+
+
+more'n a day's work in one hour, judging by de work ob or'nary slabes.
+judging by de work ob or'nary slabes.
+judging
+False
+
+
+
+
+Pointing to the various things to which he referred, the Moor turned and left the apartment.
+Pointing to the various things to which he referred, the Moor turned and left the apartment.
+Pointing
+False
+
+
+
+
+Peter went off to the stables in hot haste, remarking as he ran--  "_
+remarking as he ran--  "_
+remarking
+False
+
+
+
+
+Passing through unchallenged, Dinah at once dived into a maze of narrow streets, and, for the first time since starting, felt comparatively safe.
+Passing through unchallenged
+Passing
+True
+
+
+
+
+Retiring to the coal-hole--or some such dark receptacle--Dinah held her friend in conversation for about a quarter of an hour, during which time several hearty Ethiopian chuckles were heard to burst forth.
+Retiring to the coal-hole--or some such dark receptacle--Dinah held her friend in conversation for about a quarter of an hour, during which time several hearty Ethiopian chuckles were heard to burst forth.
+Retiring
+False
+
+
+
+
+Then, returning to the cellar, Dinah introduced her friend to Hester as Missis Lilly, and Hester to Missis Lilly as Miss Geo'giana.
+returning to the cellar
+returning
+True
+
+
+
+
+Supposing that she had not understood the remark, Hester repeated it.
+Supposing that she had not understood the remark
+Supposing
+False
+
+
+
+
+Supposing that she had not understood the remark, Hester repeated it.
+Supposing that she had not understood the remark
+Supposing
+False
+
+
+
+
+Judging that her companion wished to eat in undisturbed silence, Hester helped herself to some rice, and quietly began supper.
+Judging that her companion wished to eat in undisturbed silence
+Judging
+True
+
+
+
+
+Trusting to some sort of inspiration, he began, with looks and tones of the deepest solemnity, "I s'pose you guess, Massa Osman, dat I've been inwestigatin' that coorious business ob de English gal what runned away?"
+Trusting to some sort of inspiration
+Trusting
+True
+
+
+
+
+The view over the housetops from the little window was absolutely magnificent, including as it did domes, minarets, mosques, palm-trees, shipping, and sea!
+including as it did domes
+including
+True
+
+
+
+
+I may as well however say at once that, if I did know, nothing that you can do would induce me to
+nothing that you can do would induce me to
+nothing
+True
+
+
+
+
+Feeling that he had said quite enough to impress the poor girl with the absolute necessity of being careful, he promised earnestly never again to allude to such dreadful things.
+Feeling that he had said quite enough to impress the poor girl with the absolute necessity of being careful
+Feeling
+False
+
+
+
+
+Finding that this Frenchman spoke English so well, and that they worked together in the same gang during the day
+Finding that this Frenchman spoke English so well, and that they worked together in the same gang during the day
+Finding
+False
+
+
+
+
+Failing of his purpose, he took to thinking about Hester, and the groans which had been but feeble for himself became more intense on her account.
+Failing of his purpose
+Failing
+True
+
+
+
+
+Her father, seeing that further concealment was impossible, and that final separation was inevitable, became desperate.
+seeing that further concealment was impossible, and that final separation was inevitable
+seeing
+True
+
+
+
+
+Seeing that two other soldiers were running to the aid of their fallen comrade, he suddenly gave the signal for the revolt of the slaves.
+Seeing that two other soldiers were running to the aid of their fallen comrade
+Seeing
+False
+
+
+
+
+Passing through this the little party advanced into the suburbs until they reached a part of the road beyond which pedestrians usually found it convenient not to travel after dark.
+Passing through this the little party advanced into the suburbs until they reached a part of the road beyond which pedestrians usually found it convenient not to travel after dark.
+Passing
+False
+
+
+
+
+"Nothing but failure," said the middy, in a desponding tone.
+Nothing but failure," said the middy, in a desponding tone.
+Nothing
+True
+
+
+
+
+Retiring to the window the middy read as follows:--    "
+Retiring to the window the middy read as follows:--    "
+Retiring
+False
+
+
+
+

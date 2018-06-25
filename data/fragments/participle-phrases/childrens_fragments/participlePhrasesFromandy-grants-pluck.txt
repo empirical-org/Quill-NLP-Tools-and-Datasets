@@ -1,0 +1,88 @@
+Mr. Alger's stories are pure in tone, inspiring in influence, and are as popular now as when they were first published, because they were written about real boys who did honest things successfully.
+inspiring in influence, and are as popular now as when they were first published, because they were written about real boys who did honest things successfully.
+inspiring
+True
+
+
+
+
+Mr. Alger's stories are pure in tone, inspiring in influence, and are as popular now as when they were first published, because they were written about real boys who did honest things successfully.been sold since they were first published.
+inspiring in influence, and are as popular now as when they were first published, because they were written about real boys who did honest things successfully.been sold since they were first published.
+inspiring
+True
+
+
+
+
+Starting at three o'clock, the train reached Arden station at five.
+Starting at three o'clock, the train reached Arden station at five.
+Starting
+False
+
+
+
+
+Owing to the liberality of Mr. Gale, of New York, a boarder at the hotel, a prize of ten dollars has been offered to the best oarsman who may compete for it.
+Owing to the liberality of Mr. Gale, of New York, a boarder at the hotel, a prize of ten dollars has been offered to the best oarsman who may compete for it.
+Owing
+True
+
+
+
+
+Then, glancing at it before he presented it to the paying-teller, he found that it was for one hundred and twenty-five dollars.
+glancing at it before he presented it to the paying-teller
+glancing
+True
+
+
+
+
+"Rusticating in a Connecticut town."  "Is the young man with you a brother?
+Rusticating in a Connecticut town."  "Is the young man with you a brother?
+Rusticating
+False
+
+
+
+
+Muttering that there was some mistake, the man hurried away, looking confused.
+Muttering that there was some mistake, the man hurried away, looking confused.
+Muttering
+True
+
+
+
+
+"'What's your friend, Andy Grant, doing in the city?'
+doing in the city?'
+doing
+True
+
+
+
+
+She always receives me very cordially, knowing that we     are intimate friends.
+knowing that we     are intimate friends.
+knowing
+False
+
+
+
+
+About half-past seven, Andy, looking out of the window, saw the stately and dignified figure of Squire Carter coming up the front path.
+looking out of the window
+looking
+True
+
+
+
+
+Then, turning to Robinson with a change of tone, he asked:  "How did you get so much money, Tom Maitland?"
+turning to Robinson with a change of tone
+turning
+True
+
+
+
+

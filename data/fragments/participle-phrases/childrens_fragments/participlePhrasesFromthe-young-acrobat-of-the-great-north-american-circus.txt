@@ -1,0 +1,120 @@
+In an instant a dark, cat-like form, rushing down the aisle, sprang into the ring.
+rushing down the aisle
+rushing
+True
+
+
+
+
+Watson, turning to Ralph with a puzzled look.
+turning to Ralph with a puzzled look.
+turning
+False
+
+
+
+
+Looking about him, he discovered on a chair by the bedside the overalls, and upon them a note and a silver dollar.
+Looking about him
+Looking
+True
+
+
+
+
+Louise, turning to Kit.
+turning to Kit.
+turning
+False
+
+
+
+
+was in his berth in the circus cars, preparing for a refreshing night's rest.
+preparing for a refreshing night's rest.
+preparing
+False
+
+
+
+
+It was now rather lighter, and the blacksmith, peering into his face, saw that it was indeed true--that the boy on the back seat was not Kit Watson at all, but his ex-apprentice, William Morris.
+peering into his face
+peering
+True
+
+
+
+
+Looking to the right, his glance fell upon Jack Dormer, a schoolmate, who had been attending the same academy with him for a year past.
+Looking to the right
+Looking
+True
+
+
+
+
+Yes, I'll call you Kit."etting on famously.
+Kit."etting on famously.
+Kit."etting
+False
+
+
+
+
+Standing near the ticket seller half an hour before the show began, Kit heard his name called.
+Standing near the ticket seller half an hour before the show began
+Standing
+False
+
+
+
+
+Standing on the shoulders of one of the Vincenti brothers, he turned a somersault and landed on the shoulders of the other, standing six to eight feet away.
+Standing on the shoulders of one of the Vincenti brothers
+Standing
+True
+
+
+
+
+Janet took her way homewards, hurrying with quick feet, lest her father should wake up before she arrived.
+hurrying with quick feet, lest her father should wake up before she arrived.
+hurrying
+True
+
+
+
+
+went on Achilles, turning to Stubbs.
+turning to Stubbs.
+turning
+False
+
+
+
+
+He went through several feats, however, hanging from the trapeze with his head down, then quickly recovering himself and swinging by his hands.
+hanging from the trapeze with his head down
+hanging
+True
+
+
+
+
+Remembering that you once lived there, I made inquiries about you in the village.
+Remembering that you once lived there
+Remembering
+False
+
+
+
+
+From time to time Kit receives abject letters, pleading for more money, and sometimes he sends it, but always against the advice of Henry Miller, who says rightly that Stephen Watson already fares better than he deserves.
+pleading for more money, and sometimes he sends it, but always against the advice of Henry Miller, who says rightly that Stephen Watson already fares better than he deserves.
+pleading
+True
+
+
+
+

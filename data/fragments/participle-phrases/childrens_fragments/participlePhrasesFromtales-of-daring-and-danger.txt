@@ -1,0 +1,88 @@
+However, I knew very little Hindustani, nothing of the language the women spoke.
+nothing of the language the women spoke.
+nothing
+True
+
+
+
+
+The garrison was so small that the police were alone ample for the work, supposing that the natural difficulties were not altogether insuperable.
+supposing that the natural difficulties were not altogether insuperable.
+supposing
+False
+
+
+
+
+Occasionally a sea heavier than usual came on board, curling over the bow and falling with a heavy thud on the deck, but for the most part the _Seabird_ breasted the waves easily; the bowsprit had been reefed in to its fullest, thereby adding to the lightness and buoyancy of the boat.
+curling over the bow and falling with a heavy thud on the deck, but for the most part the _Seabird_ breasted the waves easily; the bowsprit had been reefed in to its fullest
+curling
+True
+
+
+
+
+Here, standing at the counter, or seated at numerous small tables, men were drinking villainous liquor, smoking and talking, and paying but scant attention to the strains of the fiddle or the accordion, save when some well-known air was played, when all would join in a boisterous chorus.
+standing at the counter, or seated at numerous small tables
+standing
+True
+
+
+
+
+The latter, feeling that his breakfast had by no means appeased his hunger, now started for a search through the wood, and presently returned to Percy laden with nuts and berries.
+feeling that his breakfast had by no means appeased his hunger
+feeling
+True
+
+
+
+
+Or, The Winning of a Continent.
+Winning of a Continent.
+Winning
+False
+
+
+
+
+_       "Entertaining in the highest degree from beginning to end, and full      of adventure which is all the livelier for its close connection      with history."--_Spectator.
+Entertaining in the highest degree from beginning to end, and full      of adventure which is all the livelier for its close connection      with history."--_Spectator.
+Entertaining
+False
+
+
+
+
+It is a beautiful picture of childhood, teaching by its      impressions and suggestions all noble things."--_British Quarterly      Review.
+teaching by its      impressions and suggestions all noble things."--_British Quarterly      Review.
+teaching
+False
+
+
+
+
+"A gem of the first water, bearing upon every page the signet mark      of genius.
+bearing upon every page the signet mark      of genius.
+bearing
+False
+
+
+
+
+"A gem of the first water, bearing upon every page the signet mark      of genius.alness      that the dream appears to be a solid reality.
+bearing upon every page the signet mark      of genius.alness      that the dream appears to be a solid reality.
+bearing
+False
+
+
+
+
+Or, The Winning of a Continent.
+Winning of a Continent.
+Winning
+False
+
+
+
+

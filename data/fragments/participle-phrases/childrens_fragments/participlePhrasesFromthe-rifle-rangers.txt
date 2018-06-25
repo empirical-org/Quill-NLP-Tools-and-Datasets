@@ -1,0 +1,464 @@
+It separates the turquoise blue of the water from the emerald green of the forest, contrasting with each by its dazzling whiteness.
+contrasting with each by its dazzling whiteness.
+contrasting
+False
+
+
+
+
+The wings of bright birds flash before the eye, passing from tree to tree.
+passing from tree to tree.
+passing
+False
+
+
+
+
+A surface of green is before me, reaching on all sides to the mountain foot; and upon this roam countless herds, tended by mounted "vaqueros" (herdsmen).
+reaching on all sides to the mountain foot; and upon this roam countless herds
+reaching
+True
+
+
+
+
+A small boy ran back and forth upon the banquette, calling for help.
+calling for help.
+calling
+False
+
+
+
+
+Lincoln, brushing past, whispered in my ear, "Cap'n, I understan' these hyur critters better'n
+brushing past
+brushing
+True
+
+
+
+
+"Anything but the trenches; I am sick of them."
+Anything but the trenches; I am sick of them."
+Anything
+False
+
+
+
+
+His rays, prinkling over the waves, caused them to dance and sparkle with a metallic brightness; and it was only after shading my eyes that I could distinguish the tall masts of ships and the burnished towers of the city.
+prinkling over the waves
+prinkling
+True
+
+
+
+
+Emerging from the forest, a brilliant scene burst upon us.
+Emerging from the forest, a brilliant scene burst upon us.
+Emerging
+False
+
+
+
+
+_, crystalline, rose to the height of twenty feet, and, returning in a shower of prismatic globules, stole away through a bed of water-lilies and other aquatic plants, losing itself in a grove of lofty plantain-trees.
+returning in a shower of prismatic globules
+returning
+True
+
+
+
+
+These, growing from the cool watery bed, flung out their broad glistening leaves to the length of twenty feet.
+growing from the cool watery bed
+growing
+True
+
+
+
+
+So pellucid was the water that their little feet were distinctly visible at the bottom, shining like gold.
+shining like gold.
+shining
+False
+
+
+
+
+It was with difficulty I could restrain myself; for, looking in the direction indicated by the lieutenant, I saw a bright object, which I at once recognised as the major's face.
+looking in the direction indicated by the lieutenant
+looking
+True
+
+
+
+
+On one side was Dona Joaquina, holding in her hands a golden rosary with its crucifix.
+holding in her hands a golden rosary with its crucifix.
+holding
+False
+
+
+
+
+Halting for a moment to refill the canteens, we crossed over and ascended the opposite bank.
+Halting for a moment to refill the canteens
+Halting
+False
+
+
+
+
+Pushing through the jungle, we ascended the eminence.
+Pushing through the jungle
+Pushing
+False
+
+
+
+
+Several clumps of timber grew like islands on the plain, adding to the picturesque character of the landscape.
+adding to the picturesque character of the landscape.
+adding
+False
+
+
+
+
+Some of them, straggling from the herd, rambled through the "mottes", or lay stretched out under the shade of some isolated palm-tree.
+straggling from the herd
+straggling
+True
+
+
+
+
+The major, seeing that all eyes were fixed upon him, suddenly straightened himself up in his stirrups, and, swelling with courage and importance, declared, "If that was the case, he would go himself."
+seeing that all eyes were fixed upon him
+seeing
+True
+
+
+
+
+Then, calling upon "Doc" to follow him, he struck the spurs into Hercules, and rode forward at a gallop.
+calling upon "Doc" to follow him
+calling
+True
+
+
+
+
+Not ten feet distant lay the corpse, of his slayer, glistening in its gaudy and picturesque attire.
+glistening in its gaudy and picturesque attire.
+glistening
+True
+
+
+
+
+Clayley, yelling with laughter, pointed to the corner of the rancho.
+yelling with laughter
+yelling
+True
+
+
+
+
+Hanging by the belt of his sabre upon a high picket was the major, kicking and struggling with all his might.
+Hanging by the belt of his sabre upon a high picket was the major, kicking and struggling with all his might.
+Hanging
+False
+
+
+
+
+Hanging by the belt of his sabre upon a high picket was the major, kicking and struggling with all his might.htly drawn by the bulky weight of the wearer, separated his body into two vast rotundities, while his face was distorted and purple with the agony of suspense and suspension.
+Hanging by the belt of his sabre upon a high picket was the major, kicking and struggling with all his might.htly drawn by the bulky weight of the wearer, separated his body into two vast rotundities, while his face was distorted and purple with the agony of suspense and suspension.
+Hanging
+True
+
+
+
+
+His waist-belt, catching upon a sharp picket, held him suspended midway, still under the impression that the Mexicans were close upon his rear.
+catching upon a sharp picket
+catching
+True
+
+
+
+
+His waist-belt, catching upon a sharp picket, held him suspended midway, still under the impression that the Mexicans were close upon his rear.oss the corral, uttering a thick and continuous volley of his choicest oaths.
+catching upon a sharp picket
+catching
+True
+
+
+
+
+Two of these, settling over his head, noosed him around the neck.
+settling over his head
+settling
+True
+
+
+
+
+Rising to his feet, Dubrosc sprang out to the front, and shook his fist in the air with a shout of defiance.
+Rising to his feet
+Rising
+True
+
+
+
+
+Rising to his feet, Dubrosc sprang out to the front, and shook his fist in the air with a shout of defiance.erilleros galloped back; and the artillerists, wheeling the six-pounder, dragged it after, and took up a new position about three hundred yards farther to the rear.
+Rising to his feet
+Rising
+True
+
+
+
+
+At the words `_Mount and follow_', spring to your seats and follow Mr Clayley.
+spring to your seats and follow Mr Clayley.
+spring
+False
+
+
+
+
+Raoul rode in advance, acting as our guide.
+acting as our guide.
+acting
+False
+
+
+
+
+Everything in its own time and place; but a man with a hungry stomach has no stomach for anything but eating.
+Everything in its own time and place; but a man with a hungry stomach has no stomach for anything but eating.
+Everything
+False
+
+
+
+
+Learning from the guide that we had been attacked, he had despatched a trusty servant to the American camp, and Raoul had met the party coming to our rescue.
+Learning from the guide that we had been attacked
+Learning
+True
+
+
+
+
+They lead under the city, opening at various places.
+opening at various places.
+opening
+False
+
+
+
+
+We could see the sentry up against the sky, pacing along the parapet.
+pacing along the parapet.
+pacing
+False
+
+
+
+
+We stole cautiously along the streets, keeping in the darker ones to avoid observation.
+keeping in the darker ones to avoid observation.
+keeping
+False
+
+
+
+
+He was close by me, but, like myself, choking for want of air.
+choking for want of air.
+choking
+True
+
+
+
+
+In ten minutes our "tackle" was ready, and, mounting upon my comrade's shoulders, I flung it carefully at the beam.
+mounting upon my comrade's shoulders
+mounting
+True
+
+
+
+
+This came at length, and, clambering over the rocks, we entered the surf and waded as before.
+clambering over the rocks
+clambering
+True
+
+
+
+
+This we accordingly did, stealing out of camp after tattoo.
+stealing out of camp after tattoo.
+stealing
+False
+
+
+
+
+And you, Monsieur le Capitainely, turning to me, "thank you for this handsome present.
+turning to me, "thank you for this handsome present.
+turning
+True
+
+
+
+
+"Falling over: we are on a precipice that is reckoned dangerous on account of the clay; if your mule should stumble here, the first thing you would strike would be the branches of some trees five hundred feet below, or thereabout.
+Falling over: we are on a precipice that is reckoned dangerous on account of the clay; if your mule should stumble here, the first thing you would strike would be the branches of some trees five hundred feet below, or thereabout.
+Falling
+True
+
+
+
+
+she_ was thus, like an angel, watching over me--painful to think that she might be in the power of my fiendish enemy.
+watching over me--painful to think that she might be in the power of my fiendish enemy.
+watching
+True
+
+
+
+
+his rings flew out, and he fell to the earth, writhing as if in pain!
+writhing as if in pain!
+writhing
+True
+
+
+
+
+Her sister, too, was there, and the Dona Joaquiana, and half a dozen other ladies, rustling in silks and blazing with jewels.
+rustling in silks and blazing with jewels.
+rustling
+True
+
+
+
+
+Wondering at the astuteness of the young Spaniard, I ordered Chane and Raoul to lift me as he directed.
+Wondering at the astuteness of the young Spaniard
+Wondering
+False
+
+
+
+
+Do so!"nd was thrust through, and I could see it in the dim light, flashing with brilliants.
+flashing with brilliants.
+flashing
+True
+
+
+
+
+We lay in the bottom of this for some minutes, panting with fatigue.
+panting with fatigue.
+panting
+False
+
+
+
+
+The next minute the dogs were mute a second time, speaking at intervals in a fierce growl that told us they were at fault.
+speaking at intervals in a fierce growl that told us they were at fault.
+speaking
+False
+
+
+
+
+Raoul, being in the advance, had escaped.
+being in the advance
+being
+True
+
+
+
+
+Raoul, being in the advance, had escaped.ll three, as I thought, dead.
+being in the advance
+being
+True
+
+
+
+
+Feeling that he was once more "in the timber", he began to come to himself.
+Feeling that he was once more "in the timber"
+Feeling
+False
+
+
+
+
+Jarauta, leaping out of his saddle.
+leaping out of his saddle.
+leaping
+False
+
+
+
+
+"According to rank, Lopez," cried Jarauta, seeing that all was ready; "the captain first--do you hear?"
+According to rank
+According
+True
+
+
+
+
+Turning to
+Turning to
+Turning
+False
+
+
+
+
+By daybreak we were again in our saddles, and, riding across another ridge, we struck the Plan River five miles above the bridge, and commenced riding down the stream.
+riding across another ridge
+riding
+True
+
+
+
+
+A few figures only were visible, straggling among the tents: the teamster, the camp-guard, the invalid soldier.
+straggling among the tents: the teamster, the camp-guard, the invalid soldier.
+straggling
+True
+
+
+
+
+A party, consisting of some ten or fifteen men,
+consisting of some ten or fifteen men,
+consisting
+True
+
+
+
+
+Captain!"uiry, when the boy, gasping for breath, shouted out:  "The Mexicans are on the road!"
+gasping for breath
+gasping
+True
+
+
+
+

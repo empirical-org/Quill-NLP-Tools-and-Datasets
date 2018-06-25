@@ -1,0 +1,56 @@
+Arranging for the future never hastens matters.
+Arranging for the future never hastens matters.
+Arranging
+False
+
+
+
+
+Mrs. Staunton, standing in her nightdress in the middle of the room, called Effie in a shrill voice.
+standing in her nightdress in the middle of the room
+standing
+True
+
+
+
+
+Returning to the everyday duties of life had a soothing effect upon her.
+Returning to the everyday duties of life had a soothing effect upon her.
+Returning
+False
+
+
+
+
+"It is torture to live on here, thinking of nothing but how to make a hundred pounds a year pay everything that is expected of it.
+thinking of nothing but how to make a hundred pounds a year pay everything that is expected of it.
+thinking
+False
+
+
+
+
+Suddenly Effie, standing near one of the doors, saw Lawson coming upstairs; she ran to him without a moment's hesitation.
+standing near one of the doors
+standing
+True
+
+
+
+
+Something in his quiet but resolute voice soothed her impatience; she looked up at him as he stood by the mantelpiece, resting one arm on it.
+Something in his quiet but resolute voice soothed her impatience; she looked up at him as he stood by the mantelpiece, resting one arm on it.
+Something
+False
+
+
+
+
+"Take these to Mr. Gering at once," he said.
+Gering at once," he said.
+Gering
+False
+
+
+
+

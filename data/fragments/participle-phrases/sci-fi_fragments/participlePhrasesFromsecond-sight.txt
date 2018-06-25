@@ -1,0 +1,32 @@
+"Something like that.
+Something like that.
+Something
+False
+
+
+
+
+Duggan came to his feet, listening for the sound of battle between Rusche and his captive.
+listening for the sound of battle between Rusche and his captive.
+listening
+False
+
+
+
+
+Huddling in a bed, knees drawn up and head tucked in, trying to gain somehow the safety that an infant once knew.
+Huddling in a bed
+Huddling
+True
+
+
+
+
+These past weeks, working with the rock hogs, had been invaluable.
+working with the rock hogs
+working
+True
+
+
+
+

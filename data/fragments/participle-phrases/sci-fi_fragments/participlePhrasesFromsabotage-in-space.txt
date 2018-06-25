@@ -1,0 +1,328 @@
+Pausing on the slidewalk to stare after the disappearing watch officer, the figure was illuminated by the dim light from the entrance hall.
+Pausing on the slidewalk to stare after the disappearing watch officer, the figure was illuminated by the dim light from the entrance hall.
+Pausing
+False
+
+
+
+
+Feinting to the mid-section and pulling Davison's guard down, Roger hooked his left cleanly to the jaw, following immediately with a haymaker right.
+Feinting to the mid-section and pulling Davison's guard down
+Feinting
+True
+
+
+
+
+Sitting around the room, relaxed, yet concerned, the four cadets discussed the details of the case.
+Sitting around the room
+Sitting
+True
+
+
+
+
+"ger Manning to the stand, please."
+Manning to the stand, please."
+Manning
+False
+
+
+
+
+Astro, standing to one side, looked confused.
+standing to one side
+standing
+True
+
+
+
+
+Assuming that it was sabotage.
+Assuming that it was sabotage.
+Assuming
+False
+
+
+
+
+Nodding in a surprisingly friendly fashion, he said, "I want to commend you two boys on your good work a while ago.
+Nodding in a surprisingly friendly fashion
+Nodding
+True
+
+
+
+
+through the center of the spaceport, weaving in and out of the dozens of spaceships parked on the concrete ramps.
+weaving in and out of the dozens of spaceships parked on the concrete ramps.
+weaving
+False
+
+
+
+
+ASTRO AND ROGER  Laughing to himself
+Laughing to himself
+Laughing
+False
+
+
+
+
+"Looking for a guy."
+Looking for a guy."
+Looking
+False
+
+
+
+
+Standing at the foot of the ladder leading to the main air lock of the _Polaris_, Major Connel turned to Carter Devers angrily.
+Standing at the foot of the ladder leading to the main air lock of the _Polaris_
+Standing
+False
+
+
+
+
+And every time, something like this happens.
+something like this happens.
+something
+False
+
+
+
+
+"Looking for you," she said.
+Looking for you," she said.
+Looking
+False
+
+
+
+
+Tom, disappearing on Mars, Roger and Astro walking off guard duty and stealing a scout, and now this latest sabotage attempt."
+disappearing on Mars
+disappearing
+True
+
+
+
+
+Hopping to the corner, he flopped down on the blankets and, one by one, he began dragging them out.
+Hopping to the corner
+Hopping
+True
+
+
+
+
+Hopping to the corner, he flopped down on the blankets and, one by one, he began dragging them out.
+Hopping to the corner
+Hopping
+True
+
+
+
+
+Sitting on the floor of the van, he maneuvered the top open, then spun around and hopefully looked inside.
+Sitting on the floor of the van
+Sitting
+True
+
+
+
+
+With a final hard smash, the grate gave way, clattering into the recesses of the refrigerating unit.
+clattering into the recesses of the refrigerating unit.
+clattering
+True
+
+
+
+
+Jumping into the truck, he gunned the jets and roared off into the dark Martian night.
+Jumping into the truck
+Jumping
+False
+
+
+
+
+Stopping at the trailing edge of the hull, where it enclosed the four rockets, the big Venusian squatted on his heels, making certain the soles of his space boots stayed in contact with the metal of the hull.
+Stopping at the trailing edge of the hull, where it enclosed the four rockets, the big Venusian squatted on his heels, making certain the soles of his space boots stayed in contact with the metal of the hull.
+Stopping
+True
+
+
+
+
+It was a five-man board of Solar Guard officers, consisting of four captains and one major, who conducted the court-martial in closed session.
+consisting of four captains and one major, who conducted the court-martial in closed session.
+consisting
+True
+
+
+
+
+We are, it is true, nothing but boys in training to become officers of the Solar Guard.
+nothing but boys in training to become officers of the Solar Guard.
+nothing
+True
+
+
+
+
+"While I must compliment Cadet Manning for his admirable statement," he said, "it does not change the decision of this board.
+Manning for his admirable statement," he said, "it does not change the decision of this board.
+Manning
+True
+
+
+
+
+Then, staying in the area, he wandered in and out of the dingy bars and restaurants looking for the man he had seen at the spaceport, the driver of the truck
+staying in the area
+staying
+True
+
+
+
+
+Then, staying in the area, he wandered in and out of the dingy bars and restaurants looking for the man he had seen at the spaceport, the driver of the truckd crashed the fence.
+staying in the area
+staying
+True
+
+
+
+
+in the tunnel, working as a team of a shoveler and a sweeper.
+working as a team of a shoveler and a sweeper.
+working
+False
+
+
+
+
+Changing at the slidewalk intersection, he took off after them, hoping he would not be noticed in the crowd of civilian workers.
+Changing at the slidewalk intersection
+Changing
+True
+
+
+
+
+"Speaking for myself," he said, looking straight at the major, "I'm not afraid of anything that walks.
+Speaking for myself," he said, looking straight at the major, "I'm not afraid of anything that walks.
+Speaking
+True
+
+
+
+
+*       *       *       *       *  Roger and Astro were some distance away from the main gang, working at the tunnel mouth overlooking the hangar area.
+working at the tunnel mouth overlooking the hangar area.
+working
+False
+
+
+
+
+_, the first rocket ship to breach space safely, blasting from Earth to Luna and back again.
+blasting from Earth to Luna and back again.
+blasting
+True
+
+
+
+
+Flipping on the switch that opened a circuit to an outside loud-speaker, he bellowed an order for the area to be cleared.
+Flipping on the switch that opened a circuit to an outside loud-speaker
+Flipping
+False
+
+
+
+
+Moving with amazing speed for a big man, he donned the space suit in the chamber while the pressure was being equalized.
+Moving with amazing speed for a big man
+Moving
+False
+
+
+
+
+Stooping over the empty tube of number six, he examined the ring carefully and began to frown.
+Stooping over the empty tube of number six
+Stooping
+False
+
+
+
+
+Stepping into the air lock, they quickly equalized the pressure and a moment later climbed out on the hull.
+Stepping into the air lock
+Stepping
+False
+
+
+
+
+Switching on the intercom, he ordered Roger and Astro to report to the control deck.
+Switching on the intercom
+Switching
+False
+
+
+
+
+Tom quickly ran over the chain of events, beginning with his abduction on Mars to their appearance on the ship, including the part Barret had played in tricking Roger and Astro into taking the scout.
+beginning with his abduction on Mars to their appearance on the ship, including the part Barret had played in tricking Roger and Astro into taking the scout.
+beginning
+True
+
+
+
+
+"Working on it now, Tom!" yelled Roger over the intercom.
+Working on it now
+Working
+False
+
+
+
+
+"Check!"wing through space on an opposite course.
+Check!"wing through space on an opposite course.
+Check!"wing
+False
+
+
+
+
+Winking at Tom, Astro turned away and suddenly noticed Barret sprawled on the deck, unconscious.
+Winking at Tom
+Winking
+True
+
+
+
+
+Look!"ointing to the scanner screen.
+Look!"ointing to the scanner screen.
+Look!"ointing
+False
+
+
+
+
+Spinning on his heel, Connel left the radar bridge.
+Spinning on his heel
+Spinning
+False
+
+
+
+

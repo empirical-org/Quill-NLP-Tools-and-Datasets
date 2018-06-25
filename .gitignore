@@ -1,0 +1,14 @@
+venv*
+*.pyc
+*.swp
+.DS_Store
+*.tfl*
+.ipynb_checkpoints
+.gitattributes
+models/*.tfl.*
+data/documents
+*.egg-info
+dist
+build
+*.combined.txt
+checkpoint

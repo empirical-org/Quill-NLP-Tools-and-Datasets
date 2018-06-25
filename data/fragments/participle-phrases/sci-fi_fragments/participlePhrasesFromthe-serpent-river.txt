@@ -1,0 +1,48 @@
+Moving like a sluggish snake.
+Moving like a sluggish snake.
+Moving
+False
+
+
+
+
+Its rays were almost horizontal, knifing through a break in the distant mountain skyline.
+knifing through a break in the distant mountain skyline.
+knifing
+False
+
+
+
+
+Its rays were almost horizontal, knifing through a break in the distant mountain skyline.-colored light of evening.
+knifing through a break in the distant mountain skyline.-colored light of evening.
+knifing
+False
+
+
+
+
+Looking through the telescope, obviously he didn't catch the view of the moving trees.
+Looking through the telescope, obviously he didn't catch the view of the moving trees.
+Looking
+False
+
+
+
+
+Swimming before my blurred vision was the face of Vauna.
+Swimming before my blurred vision was the face of Vauna.
+Swimming
+False
+
+
+
+
+If we work carefully--men like you, Linden, working from within, and other agents from EGGWE that are sure to follow.
+working from within, and other agents from EGGWE that are sure to follow.
+working
+True
+
+
+
+

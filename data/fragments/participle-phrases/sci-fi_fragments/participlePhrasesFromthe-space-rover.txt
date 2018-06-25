@@ -1,0 +1,40 @@
+The ship, traveling at a rate of six thousand miles an hour, would miss their little sphere by about a hundred miles.
+traveling at a rate of six thousand miles an hour, would miss their little sphere by about a hundred miles.
+traveling
+True
+
+
+
+
+He could either approach the freighter from against the sun, trusting that the navigation officer on duty would fail to notice the dark blot of the little tender against the blinding glare.
+trusting that the navigation officer on duty would fail to notice the dark blot of the little tender against the blinding glare.
+trusting
+False
+
+
+
+
+Turning to the charts he jotted down a few hasty calculations, and stepped to the controls where he set a new course for the "iron mike" of the space freighter to follow.
+Turning to the charts he jotted down a few hasty calculations, and stepped to the controls where he set a new course for the "iron mike" of the space freighter to follow.
+Turning
+False
+
+
+
+
+Turning to the charts he jotted down a few hasty calculations, and stepped to the controls where he set a new course for the "iron mike" of the space freighter to follow.unced, turning again to the anxious officer.
+Turning to the charts he jotted down a few hasty calculations, and stepped to the controls where he set a new course for the "iron mike" of the space freighter to follow.unced, turning again to the anxious officer.
+Turning
+True
+
+
+
+
+As his anxious eye took in the spherical outline of the battle craft, showing as a silvery crescent to the rear and starboard of them, he recognized it as one of the heavily armored spheres of the Interplanetary Council's fleet with the new long range K-ray disintegrator guns.
+showing as a silvery crescent to the rear and starboard of them
+showing
+True
+
+
+
+

@@ -1,0 +1,64 @@
+"Anything by which I can earn a little; I don't care if it's only sawing wood.
+Anything by which I can earn a little; I don't care if it's only sawing wood.
+Anything
+False
+
+
+
+
+Bowling by Jack.
+Bowling by Jack.
+Bowling
+False
+
+
+
+
+"We ought always to feel so, Timothy.ll, coming from his lips; but it's true for all that."
+coming from his lips; but it's true for all that."
+coming
+True
+
+
+
+
+.  "Nothing like it.
+Nothing like it.
+Nothing
+False
+
+
+
+
+Two were in their shirt sleeves, bending over an engraver's bench.
+bending over an engraver's bench.
+bending
+False
+
+
+
+
+Looking through the crevice, he ascertained that it was a bill that the old man had in his hand.
+Looking through the crevice
+Looking
+False
+
+
+
+
+Then, relapsing into melancholy: "I'm a poor, afflicted creetur, and
+relapsing into melancholy: "I'm a poor
+relapsing
+True
+
+
+
+
+Two hours later, leaning on Capt.
+leaning on Capt.
+leaning
+False
+
+
+
+

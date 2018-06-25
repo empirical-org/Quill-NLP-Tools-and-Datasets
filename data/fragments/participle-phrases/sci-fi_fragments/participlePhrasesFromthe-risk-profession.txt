@@ -1,0 +1,32 @@
+Since, according to Karpin, this was done before McCann's death, the premium money cannot be considered part of the policy, but as part of McCann's cash-on-hand.
+according to Karpin, this was done before McCann's death, the premium money cannot be considered part of the policy, but as part of McCann's cash-on-hand.
+according
+True
+
+
+
+
+This would be the claim, and this is where I would find Karpin, sitting on his property while waiting for the sale to go through.
+sitting on his property while waiting for the sale to go through.
+sitting
+True
+
+
+
+
+Prospectors like Karpin are free-lance men, working for no particular company.
+working for no particular company.
+working
+False
+
+
+
+
+Everything except human company.
+Everything except human company.
+Everything
+False
+
+
+
+

@@ -1,0 +1,24 @@
+[Illustration]  He was an old man, lying on the bed fully clothed, even to his shoes.
+lying on the bed fully clothed
+lying
+True
+
+
+
+
+"Something up?"
+Something up?"
+Something
+False
+
+
+
+
+*       *       *       *  The Captain was on an audio circuit, talking to an Assistant Commissioner. "
+talking to an Assistant Commissioner. "
+talking
+False
+
+
+
+

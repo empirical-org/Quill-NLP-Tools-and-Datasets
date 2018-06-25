@@ -1,0 +1,24 @@
+Being on the outside has its compensations."
+Being on the outside has its compensations."
+Being
+False
+
+
+
+
+Then, choking with emotion, she turned and hurried away.
+choking with emotion
+choking
+True
+
+
+
+
+Nothing like that happened to me.
+Nothing like that happened to me.
+Nothing
+False
+
+
+
+

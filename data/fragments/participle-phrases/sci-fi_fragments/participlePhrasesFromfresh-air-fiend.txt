@@ -1,0 +1,32 @@
+His hand, lying on the rough blanket, was abnormally white.
+lying on the rough blanket
+lying
+True
+
+
+
+
+His hand, lying on the rough blanket, was abnormally white.l the wool.
+lying on the rough blanket
+lying
+True
+
+
+
+
+Moaning in fear, she shook her head.
+Moaning in fear
+Moaning
+False
+
+
+
+
+The tears froze on his cheeks, and he lay inert, thinking of her almost mindlessly fighting for his life in the alien outside.
+thinking of her almost mindlessly fighting for his life in the alien outside.
+thinking
+True
+
+
+
+
