@@ -3,7 +3,7 @@ CREATE TABLE jobs (
   id integer PRIMARY KEY NOT NULL,
   name varchar,
   meta jsonb
-)
+);
 
 
 /* Create Droplets Table
@@ -46,7 +46,7 @@ CREATE TABLE labled_data (
   label varchar NOT NULL,
   job_id integer NOT NULL,
   meta jsonb
-)
+);
 
 /* Create Reductions Table */
 CREATE TABLE reductions (
@@ -54,7 +54,7 @@ CREATE TABLE reductions (
   reduction varchar NOT NULL,
   job_id integer NOT NULL,
   meta jsonb
-)
+);
 
 /* Create Vectors Table */
 CREATE TABLE vectors (
@@ -63,5 +63,5 @@ CREATE TABLE vectors (
   label varchar NOT NULL,
   job_id integer NOT NULL,
   meta jsonb
-)
+);
 
