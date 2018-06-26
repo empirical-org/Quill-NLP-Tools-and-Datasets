@@ -32,7 +32,9 @@ def jobs():
     if request.method == "GET":
         cur = conn.cursor()
         cur.execute("SELECT id,name,state,created FROM jobs WHERE state='running'")
-        return tabulate(cur.fetchall(), headers=['id','name','state','created'])
+        resp_list = cur.fetchall()
+        cur.close()
+        return tabulate(resp_list, headers=['id','name','state','created'])
     elif request.method == "POST":
         # Take a JSON with attributes of job, start job, then redirect to that
         # job's monitoring page (jobs/job_id)
