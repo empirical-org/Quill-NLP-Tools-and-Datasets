@@ -2,6 +2,9 @@
 CREATE TABLE jobs (
   id integer PRIMARY KEY NOT NULL,
   name varchar,
+  state varchar,
+  created timestamp with timezone default now(),
+  updated timestamp with timezone default now(),
   meta jsonb
 );
 
@@ -36,8 +39,11 @@ CREATE TABLE droplets (
   next_backup_window	jsonb,
   tags	varchar[],
   volume_ids	varchar[],
+  created timestamp with timezone default now(),
+  updated timestamp with timezone default now(),
   meta jsonb
 );
+
 
 /* Create Labled Data Table */
 CREATE TABLE labled_data (
@@ -45,6 +51,8 @@ CREATE TABLE labled_data (
   data jsonb NOT NULL,
   label varchar NOT NULL,
   job_id integer NOT NULL,
+  created timestamp with timezone default now(),
+  updated timestamp with timezone default now(),
   meta jsonb
 );
 
@@ -53,6 +61,8 @@ CREATE TABLE reductions (
   id integer PRIMARY KEY NOT NULL,
   reduction varchar NOT NULL,
   job_id integer NOT NULL,
+  created timestamp with timezone default now(),
+  updated timestamp with timezone default now(),
   meta jsonb
 );
 
@@ -62,6 +72,8 @@ CREATE TABLE vectors (
   vector jsonb NOT NULL,
   label varchar NOT NULL,
   job_id integer NOT NULL,
+  created timestamp with timezone default now(),
+  updated timestamp with timezone default now(),
   meta jsonb
 );
 

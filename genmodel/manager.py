@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, jsonify
-import psycopg2
+from tabulate import tabulate
 import os
+import psycopg2
 
 # Connect to Database
 try:
@@ -30,9 +31,8 @@ def man():
 def jobs():
     if request.method == "GET":
         cur = conn.cursor()
-        cur.execute('SELECT * FROM jobs')
-        resp = cur.fetchall()
-        return resp 
+        cur.execute('SELECT id,name,state,created FROM jobs WHERE state="running"')
+        return tabulate(cur.fetchall(), headers=['id','name','state','created'])
     elif request.method == "POST":
         # Take a JSON with attributes of job, start job, then redirect to that
         # job's monitoring page (jobs/job_id)
