@@ -13,7 +13,7 @@ except KeyError as e:
 conn = psycopg2.connect(dbname=DB_NAME,
         user=DB_USER,
         password=DB_PASS,
-        host=localhost,
+        host='localhost',
         port=5432
     )
 
