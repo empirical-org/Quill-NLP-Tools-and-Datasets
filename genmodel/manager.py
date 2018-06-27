@@ -44,10 +44,8 @@ def jobs():
         headers = {}
         headers['Authorization'] = 'Bearer {}'.format(os.environ.get('DO_API_TOKEN', ''))
         headers['Content-Type'] = 'application/json'
-        print(payload)
-        #r = requests.post(create_droplet_url, json=payload, headers=headers)
-        #return jsonify(r.json()), 201
-        return 'ok'
+        r = requests.post(create_droplet_url, json=payload, headers=headers)
+        return jsonify(r.json()), 201
     else:
         return 'Not implemented'
 
