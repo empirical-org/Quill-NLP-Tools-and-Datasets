@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template, jsonify
+import yaml
 from tabulate import tabulate
 import os
 import psycopg2
@@ -36,9 +37,10 @@ def jobs():
         cur.close()
         return tabulate(resp_list, headers=['id','name','state','created'])
     elif request.method == "POST":
+        resp = yaml.loads(request.files['job'])
         # Take a JSON with attributes of job, start job, then redirect to that
         # job's monitoring page (jobs/job_id)
-        return 'Not implemented' 
+        return jsonify(resp), 201
     else:
         return 'Not implemented'
 
