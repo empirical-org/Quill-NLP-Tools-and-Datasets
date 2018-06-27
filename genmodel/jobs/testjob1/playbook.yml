@@ -1,0 +1,7 @@
+---
+- hosts: "{{ do_id }}"
+  remote_user: root
+  tasks:
+  - name: write max was here
+    command: touch /max-was-here
+...
