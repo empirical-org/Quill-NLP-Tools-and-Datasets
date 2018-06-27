@@ -44,7 +44,7 @@ def jobs():
         headers = {}
         headers['Authorization'] = 'Bearer {}'.format(os.environ.get('DO_API_TOKEN', ''))
         headers['Content-Type'] = 'application/json'
-        r = requests.post(create_droplet_url, json=resp,
+        r = requests.post(create_droplet_url, json=payload,
                 headers=headers)
         return jsonify(r.json()), 201
     else:
