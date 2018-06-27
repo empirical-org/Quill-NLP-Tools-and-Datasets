@@ -37,7 +37,7 @@ def jobs():
         cur.close()
         return tabulate(resp_list, headers=['id','name','state','created'])
     elif request.method == "POST":
-        resp = yaml.loads(request.files['job'])
+        resp = yaml.load(request.files['job'])
         # Take a JSON with attributes of job, start job, then redirect to that
         # job's monitoring page (jobs/job_id)
         return jsonify(resp), 201
