@@ -3,6 +3,7 @@ from tabulate import tabulate
 import os
 import psycopg2
 import requests
+import time
 import yaml
 
 # Connect to Database
@@ -39,12 +40,24 @@ def jobs():
         return tabulate(resp_list, headers=['id','name','state','created'])
     elif request.method == "POST":
         create_droplet_url = "https://api.digitalocean.com/v2/droplets"
+        check_droplet_url = "https://api.digitalocean.com/v2/droplets/{}" 
         req = yaml.load(request.files['job'])
         payload = req['job']['droplet']
         headers = {}
         headers['Authorization'] = 'Bearer {}'.format(os.environ.get('DO_API_TOKEN', ''))
         headers['Content-Type'] = 'application/json'
         r = requests.post(create_droplet_url, json=payload, headers=headers)
+        droplet_id = r.json()['droplet']['id']
+        check_droplet_url = check_droplet_url.format(droplet_id)
+        status = ''
+        while status != 'active':
+            time.sleep(8) # no need to check this incessently
+            r1 = requests.get(check_droplet_url, headers=headers)
+            status = r1.json()['action']['status']
+        # TODO:
+        # - run ansible on the droplet to install dependencies, job bundle
+        # - add the job to the master database
+        # - start blah blah, finish this tm
         return jsonify(r.json()), 201
     else:
         return 'Not implemented'
