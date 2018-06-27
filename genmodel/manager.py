@@ -1,8 +1,9 @@
 from flask import Flask, request, render_template, jsonify
-import yaml
 from tabulate import tabulate
 import os
 import psycopg2
+import requests
+import yaml
 
 # Connect to Database
 try:
@@ -37,10 +38,17 @@ def jobs():
         cur.close()
         return tabulate(resp_list, headers=['id','name','state','created'])
     elif request.method == "POST":
-        resp = yaml.load(request.files['job'])
+        create_droplet_url = "https://api.digitalocean.com/v2/droplets"
+        req = yaml.load(request.files['job'])
+        payload = req['job']['droplet']
+        headers = {}
+        headers['Authorization'] = 'Bearer {}'.format(os.environ.get('DO_API_TOKEN', ''))
+        headers['Content-Type'] = 'application/json'
+        r = requests.post(create_droplet_url, json=resp,
+                headers=headers)
         # Take a JSON with attributes of job, start job, then redirect to that
         # job's monitoring page (jobs/job_id)
-        return jsonify(resp), 201
+        return jsonify(r.json()), 201
     else:
         return 'Not implemented'
 
