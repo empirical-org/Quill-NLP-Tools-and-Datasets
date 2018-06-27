@@ -46,8 +46,6 @@ def jobs():
         headers['Content-Type'] = 'application/json'
         r = requests.post(create_droplet_url, json=resp,
                 headers=headers)
-        # Take a JSON with attributes of job, start job, then redirect to that
-        # job's monitoring page (jobs/job_id)
         return jsonify(r.json()), 201
     else:
         return 'Not implemented'
