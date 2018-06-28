@@ -5,6 +5,7 @@ import os
 import psycopg2
 import requests
 import subprocess
+import tarfile
 import threading
 import time
 import yaml
@@ -34,32 +35,103 @@ def set_droplet_names(job_description):
     job_name = job_description['job']['name']
     if job_description['droplet'].get('names') == 'autogenerate':
         names = [job_name + n for n in range(num_names)] 
-        job_description['names'] = names
+        job_description['droplet']['names'] = names
     return job_description
 
 
 def create_droplets(description={}):
-    create_droplet_url = "https://api.digitalocean.com/v2/droplets"
+    create_droplets_url = "https://api.digitalocean.com/v2/droplets"
     payload = description['droplet'] 
     # set names for droplet / droplets 
     headers = {}
     headers['Authorization'] = 'Bearer {}'.format(os.environ.get('DO_API_TOKEN', ''))
     headers['Content-Type'] = 'application/json'
-    r = requests.post(create_droplet_url, json=payload, headers=headers)
-    droplet_id = r.json()['droplet']['id']
-    return droplet_id
+    r = requests.post(create_droplets_url, json=payload, headers=headers)
+
+    # get droplet uids 
+    if description['droplet'].get('names'):
+        droplet_uids = [drop['id'] for drop in r.json()['droplets']]
+    else:
+        droplet_uids = [r.json()['droplet']['id']]
+
+    # update state, set uid for droplets in database
+    for uid in droplet_uids:
+        cur.execute("UPDATE droplets SET uid=?, state='created'", (uid,))
+
+    return droplet_uids
 
 
-def wait_for_droplet_to_be_created(droplet_id):
+def wait_for_droplet_to_be_created(droplet_uid):
     check_droplet_url = "https://api.digitalocean.com/v2/droplets/{}"
-    check_droplet_url = check_droplet_url.format(droplet_id)
+    check_droplet_url = check_droplet_url.format(droplet_uid)
     status = ''
     while status != 'active':
         time.sleep(8) # no need to check this incessently
         r = requests.get(check_droplet_url, headers=headers)
-        status = r.json()['droplet']['status']
+        drop = r.json()['droplet']
+        status = drop['status']
+
+    # update droplet status, and set other attrs
+    cur.execute("""UPDATE droplets 
+                SET status='active',
+                    memory=?,	
+                    vcpus=?,
+                    disk=?,
+                    locked=?,
+                    created_at=?,
+                    status=?,
+                    backup_ids=?,
+                    snapshot_ids=?,
+                    features=?,
+                    region=?,
+                    image=?,
+                    size=?,
+                    size_slug=?,
+                    networks=?,
+                    kernel=?,
+                    next_backup_window=?,
+                    tags=?,
+                    volume_ids=?
+                WHERE uid=?
+                """, (uid, drop['memory'], drop['vcpus'], drop['disk'],
+                    drop['locked'], drop['created_at'], drop['status'],
+                    drop['backup_ids'], drop['snapshot_ids'], drop['features'],
+                    drop['region'], drop['image'], drop['size'],
+                    drop['size_slug'], drop['networks'], drop['kernel'],
+                    drop['next_backup_window'], drop['tags'],
+                    drop['volume_ids'])
+                )
+    conn.commit()
     return status
 
+
+def initizialize_job_in_database(job_name):
+    cur.execute("INSERT INTO jobs (name,state) values (?, ?)",
+            (job_name, 'initialized'))
+    conn.commit()
+    cur.execute('SELECT id FROM jobs WHERE name = ?', (job_name,))
+    return cur.fetchone()[0]
+
+
+def initizialize_droplets_in_database(job_description, job_name, job_id):
+    droplet_ids = []
+    if job_description['droplet'].get('names'):
+        for droplet_name in job_description['droplet']['names']:
+            cur.execute("INSERT INTO droplets (name, job_id) values (?, ?)",
+                    (droplet_name, job_id))
+            conn.commit()
+            cur.execute("SELECT id FROM droplets WHERE name = ?",
+                    (droplet_name,))
+            droplet_ids.append(cur.fetchone()[0])
+    else:
+        droplet_name = job_description['droplet']['name']
+        cur.execute("INSERT INTO droplets (name, job_id) values (?, ?)",
+                (droplet_name, job_id))
+        conn.commit()
+        cur.execute("SELECT id FROM droplets WHERE name = ?",
+                (droplet_name,))
+        droplet_ids.append(cur.fetchone()[0])
+    return droplet_ids
 
 @app.route('/')
 def man():
@@ -74,25 +146,57 @@ def jobs():
         cur.close()
         return tabulate(resp_list, headers=['id','name','state','created'])
     elif request.method == "POST":
-        playbook = request.files['playbook']
-        job_description = request.files['description']
-        job_description = yaml.load(description=job_description)
-        job_description = set_droplet_names(job_description)
+        try:
+            # gather information to create job
+            job_name = request.form['job']
+            with tarfile.open('/root/jobs/{}.tar.gz'.format(job_name)) as tar:
+                # make job description dictionary
+                jd_fname = '{}/description.yml'.format(job_name)
+                job_description = tar.extractfile(jd_fname)
+                job_description = yaml.load(description=job_description)
+                job_description = set_droplet_names(job_description)
+                # save playbook to temporary local file
+                zipped_playbook_fname = '{}/playbook.yml'.format(job_name)
+                playbook = tar.extractfile(zipped_playbook_fname)
+                playbook_fname = 'playbook_{}.yml'.format(str(uuid4())[:8])
+                with open(playbook_fname, 'w') as pb:
+                    pb.write(playbook.read())
 
-        # create droplet
-        droplet_id = create_droplet(description=job_description)
+            # initialize job in database
+            job_id = initizialize_job_in_database(job_name)
+            # initialize droplets in database
+            droplet_ids = initizialize_droplets_in_database(job_description, job_name, job_id)
 
-        # wait for droplet to be created
-        status = wait_for_droplet_to_be_created(droplet_id)
-        #ip_address = r1.json()['droplet']['networks']['v4'][0]['ip_address']
+            # create droplet or droplets (updates droplet state, uid)
+            droplet_uids = create_droplets(description=job_description)
 
-        # run ansible on the droplet to install dependencies, job bundle
-        ansible_command = 'ansible-playbook {} -i /etc/ansible/digital_ocean.py --list-hosts -e do_id={}'.format(playbook, droplet_id)
-        output = subprocess.check_output(['bash','-c', ansible_command])
+            # wait for droplets to be created (updates droplet state and all
+            # other fields )
+            for droplet_id in droplet_ids:
+                status = wait_for_droplet_to_be_created(droplet_id)
+            
+            # wait 10s to make sure all droplets are really online + responsive
+            time.sleep(10)
 
-        # - add the job to the master database
-        # - start blah blah, finish this tm
-        return jsonify(r.json()), 201
+            # run ansible on the droplets to install dependencies, job bundle,
+            # set environment variables, create ssh tunnels, start jobs
+            hosts_string = ':'.join(droplet_ids)
+            ansible_command = 'ansible-playbook {} -i \
+                    /etc/ansible/digital_ocean.py --list-hosts -e \
+                    do_ids={}'.format(playbook_fname, hosts_string)
+            output = subprocess.check_output(['bash','-c', ansible_command])
+
+            # - add the job to the master database
+            # - start blah blah, finish this tm
+            return jsonify(r.json()), 202 # 202 accepted, asyc http code
+        except KeyError as e:
+            return jsonify({'error':'supply form param job w job name'}), 400
+        except tarfile.TarError as e:
+            return jsonify({'error':'job doesnt exist or improperly formatted'}), 400
+        except psycopg2.Error as e:
+            ref = 'https://www.postgresql.org/docs/current/static/errcodes-appendix.html'
+            return jsonify({'error':'pgcode {} ({})'.format(e.pgcode, ref)}), 400
+
     else:
         return 'Not implemented'
 

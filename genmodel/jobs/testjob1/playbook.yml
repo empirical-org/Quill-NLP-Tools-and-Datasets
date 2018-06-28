@@ -1,7 +1,38 @@
 ---
-- hosts: "{{ do_id }}"
+- hosts: "{{ do_ids }}"
   remote_user: root
+  environment:
+    DB_NAME: "{{ lookup('env', 'DB_NAME') }}"
+    DB_PASSWORD: "{{ lookup('env', 'DB_PASSWORD') }}" 
+    DB_PORT: "{{ lookup('env', 'DB_PORT') }}"
+    DB_USER: "{{ lookup('env', 'DB_USER') }}" 
+    JOB_ID: "{{ job_id }}"
+    RABBITMQ_LOCATION: 'localhost'
   tasks:
-  - name: write max was here
-    command: touch /max-was-here
+  - name: Update cache and install pip3 
+    apt:
+      name: python3-pip
+      update_cache: yes
+  - name: Install virtualenv
+    pip:
+      name: virtualenv
+      executable: pip3
+  - name: Extract local job tarball onto remote host 
+    unarchive:
+      src: "{{ job_name }}.tar.gz"
+      dest: /var/lib/jobs/{{ job_name }}
+  - name: Install reducer requirements
+    pip:
+      requirements: /var/lib/jobs/{{ job_name }}/requirements.txt
+      virtualenv: /var/lib/jobs/{{ job_name }}/reducer/venv
+      virtualenv_python: python3
+  - name: Install vectorizer requirements
+    pip:
+      requirements: /var/lib/jobs/{{ job_name }}/requirements.txt
+      virtualenv: /var/lib/jobs/{{ job_name }}/vectorizer/venv
+      virtualenv_python: python3
+  - name: Change the working directory to somedir/ before executing the command.
+    shell: start.sh 
+    args:
+      chdir: var/lib/jobs/{{ job_name }}/
 ...

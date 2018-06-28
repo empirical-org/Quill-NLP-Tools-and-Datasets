@@ -10,6 +10,7 @@ genmodel/
       playbook.yml
       droplet.yml
       labeled_data.csv
+      start.sh
       reducer/
         reducer.py
         requirements.txt
@@ -28,6 +29,7 @@ genmodel/
 + **droplet.yml**. a description of the digital ocean droplet that the reducers
   and vectorizers will run on.
 + **labled_data.csv**. a csv file with two columns, data and label
++ **start.sh**. Starts the reducers,  
 
 ### jobs/<SOME-JOB-NAME>/reducer
 

@@ -1,8 +1,9 @@
+
 /* Create Jobs Table */
-CREATE TABLE jobs (
+CREATE TABLE IF NOT EXISTS jobs (
   id integer PRIMARY KEY NOT NULL,
-  name varchar,
-  state varchar,
+  name varchar UNIQUE,
+  state varchar, -- created, running, finished, 
   created timestamp with time zone default now(),
   updated timestamp with time zone default now(),
   meta jsonb
@@ -16,11 +17,11 @@ CREATE TABLE jobs (
  * https://developers.digitalocean.com/documentation/v2/#deleting-droplets-by-tag
  *
  */
-CREATE TABLE droplets (
+CREATE TABLE IF NOT EXISTS droplets (
   id integer PRIMARY KEY NOT NULL,
-  uid	integer NOT NULL,
+  uid	integer,
   job_id integer NOT NULL,
-  name	varchar NOT NULL,
+  name	varchar UNIQUE NOT NULL,
   memory	integer,
   vcpus	integer,
   disk	integer,
@@ -46,7 +47,7 @@ CREATE TABLE droplets (
 
 
 /* Create Labled Data Table */
-CREATE TABLE labled_data (
+CREATE TABLE IF NOT EXISTS labled_data (
   id integer PRIMARY KEY NOT NULL,
   data jsonb NOT NULL,
   label varchar NOT NULL,
@@ -57,7 +58,7 @@ CREATE TABLE labled_data (
 );
 
 /* Create Reductions Table */
-CREATE TABLE reductions (
+CREATE TABLE IF NOT EXISTS reductions (
   id integer PRIMARY KEY NOT NULL,
   reduction varchar NOT NULL,
   job_id integer NOT NULL,
@@ -66,8 +67,9 @@ CREATE TABLE reductions (
   meta jsonb
 );
 
+
 /* Create Vectors Table */
-CREATE TABLE vectors (
+CREATE TABLE IF NOT EXISTS vectors (
   id integer PRIMARY KEY NOT NULL,
   vector jsonb NOT NULL,
   label varchar NOT NULL,
