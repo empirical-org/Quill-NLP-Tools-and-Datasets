@@ -41,7 +41,7 @@ def set_droplet_names(job_description):
     return job_description
 
 
-def create_droplets(description={}, job_id):
+def create_droplets(description, job_id):
     create_droplets_url = "https://api.digitalocean.com/v2/droplets"
     payload = description['droplet'] 
     # set names for droplet / droplets 
@@ -212,7 +212,7 @@ def jobs():
             droplet_ids = initizialize_droplets_in_database(job_description, job_name, job_id)
 
             # create droplet or droplets (job.state droplets-created)
-            droplet_uids = create_droplets(description=job_description, job_id)
+            droplet_uids = create_droplets(job_description, job_id)
 
             # wait for droplets to be created (updates droplet status and all
             # other fields )
