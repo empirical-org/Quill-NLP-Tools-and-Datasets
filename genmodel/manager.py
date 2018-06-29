@@ -200,6 +200,14 @@ def jobs():
     else:
         return 'Not implemented'
 
+@app.route('/jobs/<job_id>/status', methods=["GET"])
+def get_job_status(job_id):
+    try:
+        cur.execute('SELECT status FROM jobs WHERE job_id=?', (job_id,))
+        return cur.fetchone()[0]
+    except (IndexError, psycopg2.Error) as e:
+        return jsonify({'error':'jobid does not exist'}), 404
+    
 
 @app.route('/jobs/<job_id>', methods=["GET", "PATCH", "DELETE"])
 def job_for_id(job_id):
