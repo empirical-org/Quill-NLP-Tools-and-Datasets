@@ -24,6 +24,7 @@ conn = psycopg2.connect(dbname=DB_NAME,
         host='localhost',
         port=5432
     )
+cur = conn.cursor()
 
 
 
