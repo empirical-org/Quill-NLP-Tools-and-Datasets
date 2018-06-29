@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, jsonify
 from tabulate import tabulate
 from uuid import uuid4
+import csv
 import os
 import psycopg2
 import requests
@@ -40,7 +41,7 @@ def set_droplet_names(job_description):
     return job_description
 
 
-def create_droplets(description={}):
+def create_droplets(description={}, job_id):
     create_droplets_url = "https://api.digitalocean.com/v2/droplets"
     payload = description['droplet'] 
     # set names for droplet / droplets 
@@ -55,9 +56,12 @@ def create_droplets(description={}):
     else:
         droplet_uids = [r.json()['droplet']['id']]
 
-    # update state, set uid for droplets in database
+    # update status, set uid for droplets in database
     for uid in droplet_uids:
-        cur.execute("UPDATE droplets SET uid=?, state='created'", (uid,))
+        cur.execute("UPDATE droplets SET uid=?, status='created'", (uid,))
+
+    # update job state to droplets-created 
+    set_job_state(job_id, 'droplets-created')
 
     return droplet_uids
 
@@ -134,6 +138,33 @@ def initizialize_droplets_in_database(job_description, job_name, job_id):
         droplet_ids.append(cur.fetchone()[0])
     return droplet_ids
 
+
+def add_labled_data_to_database(labled_data_stream, job_id):
+    # drop the job_id_idx for faster inserts
+    cur.execute("DROP INDEX IF EXISTS job_id_idx")
+    conn.commit()
+
+    # insert data
+    reader = csv.reader(labled_data_stream)
+    for row in reader:
+        cur.execute("INSERT INTO labled_data (data, label, job_id) values(%s, %s)",
+                (row[0], row[1], job_id))
+        conn.commit()
+
+    # readd index
+    cur.execute("CREATE INDEX IF NOT EXISTS job_id_idx ON labeled_data (job_id)")
+    conn.commit()
+
+    # update job state to loaded-data 
+    set_job_state(job_id, 'loaded-data')
+
+def set_job_state(job_id, state):
+    # update job state to loaded-data 
+    cur.execute("""UPDATE jobs SET state=%s
+                    WHERE id=%s
+                """, (state,job_id))
+    conn.commit()
+
 @app.route('/')
 def man():
     return 'Not implemented'
@@ -151,36 +182,51 @@ def jobs():
             # gather information to create job
             job_name = request.form['job']
             with tarfile.open('/root/jobs/{}.tar.gz'.format(job_name)) as tar:
+                # save ref to labled data stream 
+                ld_fname = '{}/labeled_data.csv'.format(job_name)
+                labled_data_stream = tar.extractfile(ld_fname)
+
                 # make job description dictionary
                 jd_fname = '{}/description.yml'.format(job_name)
-                job_description = tar.extractfile(jd_fname)
-                job_description = yaml.load(description=job_description)
+                job_description_stream = tar.extractfile(jd_fname)
+                job_description = yaml.load(description=job_description_stream)
+                job_description_stream.close()
                 job_description = set_droplet_names(job_description)
+
                 # save playbook to temporary local file
                 zipped_playbook_fname = '{}/playbook.yml'.format(job_name)
-                playbook = tar.extractfile(zipped_playbook_fname)
+                playbook_stream = tar.extractfile(zipped_playbook_fname)
                 playbook_fname = 'playbook_{}.yml'.format(str(uuid4())[:8])
                 with open(playbook_fname, 'w') as pb:
-                    pb.write(playbook.read())
+                    pb.write(playbook_stream.read())
+                playbook_stream.close()
 
-            # initialize job in database
+            # initialize job in database (job.state, initialized)
             job_id = initizialize_job_in_database(job_name)
+
+            # add labled data to database (job.state, loaded-data)
+            add_labled_data_to_database(labled_data_stream, job_id)
+            labled_data_stream.close()
+
             # initialize droplets in database
             droplet_ids = initizialize_droplets_in_database(job_description, job_name, job_id)
 
-            # create droplet or droplets (updates droplet state, uid)
-            droplet_uids = create_droplets(description=job_description)
+            # create droplet or droplets (job.state droplets-created)
+            droplet_uids = create_droplets(description=job_description, job_id)
 
-            # wait for droplets to be created (updates droplet state and all
+            # wait for droplets to be created (updates droplet status and all
             # other fields )
             for droplet_id in droplet_ids:
                 status = wait_for_droplet_to_be_created(droplet_id)
+
+            # (job.state droplets-active)
+            set_job_state(job_id, 'droplets-active')
             
             # wait 10s to make sure all droplets are really online + responsive
             time.sleep(10)
 
             # run ansible on the droplets to install dependencies, job bundle,
-            # set environment variables, create ssh tunnels, start jobs
+            # set environment variables, create ssh tunnels, start jobs 
             hosts_string = ':'.join(droplet_ids)
             ansible_command = 'ansible-playbook {} -i \
                     /etc/ansible/digital_ocean.py --list-hosts -e \
@@ -201,13 +247,13 @@ def jobs():
     else:
         return 'Not implemented'
 
-@app.route('/jobs/<job_id>/status', methods=["GET"])
+@app.route('/jobs/<job_id>/state', methods=["GET"])
 def get_job_status(job_id):
     try:
-        cur.execute('SELECT status FROM jobs WHERE job_id=?', (job_id,))
-        return cur.fetchone()[0]
+        cur.execute('SELECT state FROM jobs WHERE job_id=?', (job_id,))
+        return jsonify(cur.fetchone()[0]), 200
     except (IndexError, psycopg2.Error) as e:
-        return jsonify({'error':'jobid does not exist'}), 404
+        return jsonify('error'), 404
     
 
 @app.route('/jobs/<job_id>', methods=["GET", "PATCH", "DELETE"])

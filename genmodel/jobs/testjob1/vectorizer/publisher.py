@@ -74,6 +74,26 @@ if __name__ == '__main__':
         q = channel.queue_declare(queue=PRE_VECTORS_QUEUE)
         q_len = q.method.message_count
 
+    # update state to pre-vectors-queued
+    cur.execute("""UPDATE jobs SET state=%s
+                    WHERE id=%s
+                """, ('pre-vectors-queued',JOB_ID))
+    conn.commit()
+
+    # wait until all messages have been acked
+    q = channel.queue_declare(queue=PRE_VECTORS_QUEUE)
+    q_len = q.method.message_count
+    while q_len > 0:
+        sleep(2)
+        q = channel.queue_declare(queue=PRE_VECTORS_QUEUE)
+        q_len = q.method.message_count
+
+    # update state to vectorized
+    cur.execute("""UPDATE jobs SET state=%s
+                    WHERE id=%s
+                """, ('vectorized',JOB_ID))
+    conn.commit()
+
     print("{} has been fully populated.".format(PRE_VECTORS_QUEUE))
     print("Publisher Exiting.")
     cur.close()
