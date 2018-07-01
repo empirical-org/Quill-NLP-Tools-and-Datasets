@@ -236,7 +236,7 @@ def jobs():
                 # make job description dictionary
                 jd_fname = '{}/description.yml'.format(job_name)
                 job_description_stream = tar.extractfile(jd_fname)
-                job_description = yaml.load(description=job_description_stream)
+                job_description = yaml.load(job_description_stream)
                 job_description_stream.close()
                 job_description = set_droplet_names(job_description)
 
