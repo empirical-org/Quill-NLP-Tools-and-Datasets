@@ -1,29 +1,57 @@
 #!/usr/bin/env bash
 
-job_name=$1
-job_id=$2
+# set droplet ID 
+export DROPLET_UID=$(curl -s http://169.254.169.254/metadata/v1/id)
+export DROPLET_NAME=$(curl -s http://169.254.169.254/metadata/v1/hostname)
 
 # Start x reducers
 cpu_count=$(grep -c ^processor /proc/cpuinfo)
-reducer_count=$(( cpu_count / 2 ))
+worker_count=$(( cpu_count / 2 ))
 
 # start reducers
-for i in {1..$reducer_count}
+reducer_processes=()
+for i in {1..$worker_count}
 do
-  /var/lib/jobs/$job_name/reducer/venv/bin/python3 /var/lib/jobs/$job_name/reducer/reducer.py
+  nohup /var/lib/jobs/$JOB_NAME/reducer/venv/bin/python3 /var/lib/jobs/$JOB_NAME/reducer/reducer.py &
+  reducer_processes+=($!)
 done
 
 # wait until reduction is complete
 while [ true ]
 do
-    echo "loop body here..."
-    curl $JOB_MANAGER/jobs/$job_id/status
-    # TODO: if status of job shows reduction is complete, break
     sleep 1m
+    export r=$(curl $JOB_MANAGER/jobs/$JOB_ID/state) && [ $r == \"reduced\" ] && break || continue
+done
+
+# kill all reducers
+for p in "${reducer_processes[@]}"; do
+  kill -9 $p
 done
 
 # start vectorizers
-for i in {1..$reducer_count}
+vectorizer_processes=()
+for i in {1..$worker_count}
 do
-  /var/lib/jobs/$1/vectorizer/venv/bin/python3 /var/lib/jobs/$1/vectorizer/vectorizer.py
+  nohup /var/lib/jobs/$JOB_NAME/vectorizer/venv/bin/python3 /var/lib/jobs/$JOB_NAME/vectorizer/vectorizer.py &
+  vectorizer_processes+=($!)
 done
+
+# wait until vectorization is complete
+while [ true ]
+do
+    sleep 2m
+    export r=$(curl $JOB_MANAGER/jobs/$JOB_ID/state) && [ $r == \"vectorized\" ] && break || continue
+done
+
+# kill all vectorizers
+for p in "${vectorizer_processes[@]}"; do
+  kill -9 $p
+done
+
+# once vectorization is complete, the droplet is no longer needed, droplet makes
+# a DELETE request on itself.
+curl -X DELETE $JOB_MANAGER/droplets/$DROPLET_UID
+
+
+
+

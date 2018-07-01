@@ -28,7 +28,6 @@ conn = psycopg2.connect(dbname=DB_NAME,
 cur = conn.cursor()
 
 
-
 app = Flask(__name__)
 
 
@@ -41,7 +40,7 @@ def set_droplet_names(job_description):
     return job_description
 
 
-def create_droplets(description, job_id):
+def create_droplets(description, job_id, droplet_ids):
     create_droplets_url = "https://api.digitalocean.com/v2/droplets"
     payload = description['droplet'] 
     # set names for droplet / droplets 
@@ -57,8 +56,12 @@ def create_droplets(description, job_id):
         droplet_uids = [r.json()['droplet']['id']]
 
     # update status, set uid for droplets in database
-    for uid in droplet_uids:
-        cur.execute("UPDATE droplets SET uid=?, status='created'", (uid,))
+    for droplet_id in droplet_ids:
+        for uid in droplet_uids:
+            cur.execute("""UPDATE droplets
+                    SET uid=%s, status='created', updated=DEFAULT
+                    WHERE droplet_id=%s""",
+                    (uid,droplet_id))
 
     # update job state to droplets-created 
     set_job_state(job_id, 'droplets-created')
@@ -79,25 +82,26 @@ def wait_for_droplet_to_be_created(droplet_uid):
     # update droplet status, and set other attrs
     cur.execute("""UPDATE droplets 
                 SET status='active',
-                    memory=?,	
-                    vcpus=?,
-                    disk=?,
-                    locked=?,
-                    created_at=?,
-                    status=?,
-                    backup_ids=?,
-                    snapshot_ids=?,
-                    features=?,
-                    region=?,
-                    image=?,
-                    size=?,
-                    size_slug=?,
-                    networks=?,
-                    kernel=?,
-                    next_backup_window=?,
-                    tags=?,
-                    volume_ids=?
-                WHERE uid=?
+                    memory=%s,	
+                    vcpus=%s,
+                    disk=%s,
+                    locked=%s,
+                    created_at=%s,
+                    status=%s,
+                    backup_ids=%s,
+                    snapshot_ids=%s,
+                    features=%s,
+                    region=%s,
+                    image=%s,
+                    size=%s,
+                    size_slug=%s,
+                    networks=%s,
+                    kernel=%s,
+                    next_backup_window=%s,
+                    tags=%s,
+                    volume_ids=%s,
+                    updated=DEFAULT
+                WHERE uid=%s
                 """, (uid, drop['memory'], drop['vcpus'], drop['disk'],
                     drop['locked'], drop['created_at'], drop['status'],
                     drop['backup_ids'], drop['snapshot_ids'], drop['features'],
@@ -111,10 +115,10 @@ def wait_for_droplet_to_be_created(droplet_uid):
 
 
 def initizialize_job_in_database(job_name):
-    cur.execute("INSERT INTO jobs (name,state) values (?, ?)",
+    cur.execute("INSERT INTO jobs (name,state) values (%s, %s)",
             (job_name, 'initialized'))
     conn.commit()
-    cur.execute('SELECT id FROM jobs WHERE name = ?', (job_name,))
+    cur.execute('SELECT id FROM jobs WHERE name = %s', (job_name,))
     return cur.fetchone()[0]
 
 
@@ -122,18 +126,18 @@ def initizialize_droplets_in_database(job_description, job_name, job_id):
     droplet_ids = []
     if job_description['droplet'].get('names'):
         for droplet_name in job_description['droplet']['names']:
-            cur.execute("INSERT INTO droplets (name, job_id) values (?, ?)",
+            cur.execute("INSERT INTO droplets (name, job_id) values (%s, %s)",
                     (droplet_name, job_id))
             conn.commit()
-            cur.execute("SELECT id FROM droplets WHERE name = ?",
+            cur.execute("SELECT id FROM droplets WHERE name = %s",
                     (droplet_name,))
             droplet_ids.append(cur.fetchone()[0])
     else:
         droplet_name = job_description['droplet']['name']
-        cur.execute("INSERT INTO droplets (name, job_id) values (?, ?)",
+        cur.execute("INSERT INTO droplets (name, job_id) values (%s, %s)",
                 (droplet_name, job_id))
         conn.commit()
-        cur.execute("SELECT id FROM droplets WHERE name = ?",
+        cur.execute("SELECT id FROM droplets WHERE name = %s",
                 (droplet_name,))
         droplet_ids.append(cur.fetchone()[0])
     return droplet_ids
@@ -158,6 +162,7 @@ def add_labled_data_to_database(labled_data_stream, job_id):
     # update job state to loaded-data 
     set_job_state(job_id, 'loaded-data')
 
+
 def set_job_state(job_id, state):
     # update job state to loaded-data 
     cur.execute("""UPDATE jobs SET state=%s
@@ -165,9 +170,51 @@ def set_job_state(job_id, state):
                 """, (state,job_id))
     conn.commit()
 
+
+def run_job(job_description, job_id, job_name, labled_data_stream, playbook_fname):
+    try:
+
+        # add labled data to database (job.state, loaded-data)
+        add_labled_data_to_database(labled_data_stream, job_id)
+        labled_data_stream.close()
+
+        # initialize droplets in database
+        droplet_ids = initizialize_droplets_in_database(job_description, job_name, job_id)
+
+        # create droplet or droplets (job.state droplets-created)
+        droplet_uids = create_droplets(job_description, job_id, droplet_ids)
+
+        # wait for droplets to be created (updates droplet status and all
+        # other fields )
+        for droplet_id in droplet_ids:
+            status = wait_for_droplet_to_be_created(droplet_id)
+
+        # (job.state droplets-active)
+        set_job_state(job_id, 'droplets-active')
+        
+        # wait 10s to make sure all droplets are really online + responsive
+        time.sleep(10)
+
+        # run ansible on the droplets to install dependencies, job bundle,
+        # set environment variables, create ssh tunnels, start jobs 
+        hosts_string = ':'.join(droplet_ids)
+        ansible_command = 'ansible-playbook {} -i \
+                /etc/ansible/digital_ocean.py --list-hosts -e \
+                hosts_string={} -e job_id={} -e job_name={}'.format(
+                        playbook_fname, hosts_string, job_id, job_name)
+        output = subprocess.check_output(['bash','-c', ansible_command])
+        with open('/root/jobs/{}-{}.log'.format(job_name, job_id), 'a') as l:
+            l.write('Finished Successfully.')
+    except psycopg2.Error as e:
+        ref = '\nhttps://www.postgresql.org/docs/current/static/errcodes-appendix.html'
+        with open('/root/jobs/{}-{}.log'.format(job_name, job_id), 'a') as l:
+            l.write('ERROR: pgcode {}'.format(e.pgcode) + ref)
+
+
 @app.route('/')
 def man():
-    return 'Not implemented'
+    with open('README.md') as f:
+        return f.read()
 
 @app.route('/jobs', methods=["GET", "POST"])
 def jobs():
@@ -204,38 +251,12 @@ def jobs():
             # initialize job in database (job.state, initialized)
             job_id = initizialize_job_in_database(job_name)
 
-            # add labled data to database (job.state, loaded-data)
-            add_labled_data_to_database(labled_data_stream, job_id)
-            labled_data_stream.close()
-
-            # initialize droplets in database
-            droplet_ids = initizialize_droplets_in_database(job_description, job_name, job_id)
-
-            # create droplet or droplets (job.state droplets-created)
-            droplet_uids = create_droplets(job_description, job_id)
-
-            # wait for droplets to be created (updates droplet status and all
-            # other fields )
-            for droplet_id in droplet_ids:
-                status = wait_for_droplet_to_be_created(droplet_id)
-
-            # (job.state droplets-active)
-            set_job_state(job_id, 'droplets-active')
-            
-            # wait 10s to make sure all droplets are really online + responsive
-            time.sleep(10)
-
-            # run ansible on the droplets to install dependencies, job bundle,
-            # set environment variables, create ssh tunnels, start jobs 
-            hosts_string = ':'.join(droplet_ids)
-            ansible_command = 'ansible-playbook {} -i \
-                    /etc/ansible/digital_ocean.py --list-hosts -e \
-                    do_ids={}'.format(playbook_fname, hosts_string)
-            output = subprocess.check_output(['bash','-c', ansible_command])
-
-            # - add the job to the master database
-            # - start blah blah, finish this tm
-            return jsonify(r.json()), 202 # 202 accepted, asyc http code
+            thr = threading.Thread(target=run_job, args=(job_description,
+                job_id, job_name, labled_data_stream, playbook_fname), kwargs={})
+            thr.start() # Will run "post_job"
+            if thr.is_alive():
+                return jsonify(r.json()), 202 # 202 accepted, asyc http code
+            return jsonify('Unexpected error. Please check with sys admin', 500)
         except KeyError as e:
             return jsonify({'error':'supply form param job w job name'}), 400
         except tarfile.TarError as e:
@@ -244,19 +265,17 @@ def jobs():
             ref = 'https://www.postgresql.org/docs/current/static/errcodes-appendix.html'
             return jsonify({'error':'pgcode {} ({})'.format(e.pgcode, ref)}), 400
 
-    else:
-        return 'Not implemented'
 
 @app.route('/jobs/<job_id>/state', methods=["GET"])
 def get_job_status(job_id):
     try:
-        cur.execute('SELECT state FROM jobs WHERE job_id=?', (job_id,))
+        cur.execute('SELECT state FROM jobs WHERE job_id=%s', (job_id,))
         return jsonify(cur.fetchone()[0]), 200
     except (IndexError, psycopg2.Error) as e:
         return jsonify('error'), 404
-    
 
-@app.route('/jobs/<job_id>', methods=["GET", "PATCH", "DELETE"])
+
+@app.route('/jobs/<job_id>', methods=["GET", "DELETE"])
 def job_for_id(job_id):
     if request.method == "GET":
         # Job monitoring for a specific job
@@ -272,5 +291,33 @@ def job_for_id(job_id):
     return job_id
 
 
+@app.route('/droplets/<droplet_uid>', methods=["DELETE"])
+def individual_droplet(droplet_uid):
+    # find droplet uid
+    cur.execute('''UPDATE droplet SET updated=DEFAULT, status="destroying"
+            WHERE uid=%s''',(droplet_uid)) 
+    conn.commit()
+    # send delete request to D.O api
+    delete_droplets_url = "https://api.digitalocean.com/v2/droplets/{}".format(
+            droplet_uid)
+    headers = {}
+    headers['Authorization'] = 'Bearer {}'.format(os.environ.get('DO_API_TOKEN', ''))
+    r = requests.delete(delete_droplets_url, headers=headers)
+    if r.status_code == 204:
+        # update droplet state in db to deleted
+        cur.execute('''UPDATE droplet
+                SET updated=DEFAULT, status="destroyed"
+                WHERE uid=%s''',(droplet_uid)) 
+        conn.commit()
+        return '', 204
+    else:
+        cur.execute('''UPDATE droplet
+                SET updated=DEFAULT, status="failed-to-destroy",
+                meta=jsonb_set(meta, '{destroy_failed_response}', %s)
+                WHERE uid=%s''',(droplet_uid, r.text)) 
+        conn.commit()
+        return '', 400
+
+
 if __name__ == '__main__':
-    app.run(port=5000, host= '0.0.0.0', debug=True)
+    app.run(port=5000, host='127.0.0.1', debug=True)

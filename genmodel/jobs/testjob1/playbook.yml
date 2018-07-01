@@ -1,5 +1,5 @@
 ---
-- hosts: "{{ do_ids }}"
+- hosts: "{{ hosts_string }}"
   remote_user: root
   environment:
     DB_NAME: "{{ lookup('env', 'DB_NAME') }}"
@@ -7,7 +7,17 @@
     DB_PORT: "{{ lookup('env', 'DB_PORT') }}"
     DB_USER: "{{ lookup('env', 'DB_USER') }}" 
     JOB_ID: "{{ job_id }}"
+    JOB_NAME: "{{ job_name }}"
+    MAX_QUEUE_LEN: 500 
+    PRE_REDUCTIONS_QUEUE_BASE: 'pre-reductions'
+    PRE_VECTORS_QUEUE_BASE: 'pre-vectors' 
     RABBITMQ_LOCATION: 'localhost'
+    REDUCER_PREFETCH_COUNT: 10 
+    REDUCTIONS_QUEUE_BASE: 'reductions' 
+    VECTORIZER_PREFETCH_COUNT: 10
+    VECTORS_QUEUE_BASE: 'vectors'
+    WRITER_PREFETCH_COUNT: 100 
+    JOB_MANAGER: 'http://localhost:5000'
   tasks:
   - name: Update cache and install pip3 
     apt:
@@ -17,10 +27,25 @@
     pip:
       name: virtualenv
       executable: pip3
+  - name: Install python-dev (psycopg2 requirement)
+    apt:
+       name: python-dev
+  - name: Install libpq-dev (psycopg2 requirement)
+    apt:
+      name: libpq-dev
   - name: Extract local job tarball onto remote host 
     unarchive:
       src: "{{ job_name }}.tar.gz"
       dest: /var/lib/jobs/{{ job_name }}
+  - name: Install autossh to create long-running ssh tunnels
+    apt:
+      name: autossh
+  - name: Create SSH tunnels to rabbitmq server
+    shell: autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -N -L 5672:localhost:5672 root@206.81.5.140 &
+  - name: Create SSH tunnels to postgres server
+    shell: autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -N -L 5432:localhost:5432 root@206.81.5.140 &
+  - name: Create SSH tunnels to nlp-job-manager server
+    shell: autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -N -L 5000:localhost:5000 root@206.81.5.140 &
   - name: Install reducer requirements
     pip:
       requirements: /var/lib/jobs/{{ job_name }}/requirements.txt
@@ -31,8 +56,8 @@
       requirements: /var/lib/jobs/{{ job_name }}/requirements.txt
       virtualenv: /var/lib/jobs/{{ job_name }}/vectorizer/venv
       virtualenv_python: python3
-  - name: Change the working directory to somedir/ before executing the command.
-    shell: start.sh 
+  - name: Change the working directory, then execute start script
+    shell: nohup ./start.sh > {{ job_name }}.log 2>&1 </dev/null & 
     args:
       chdir: var/lib/jobs/{{ job_name }}/
 ...

@@ -32,7 +32,7 @@ if __name__ == '__main__':
 
     # Check if a publisher is already running for this job, if so exit, if not
     # mark that one is running then continue.
-    cur.execute("""UPDATE jobs SET meta=jsonb_set(meta, '{reduction_publisher}', %s)
+    cur.execute("""UPDATE jobs SET meta=jsonb_set(meta, '{reduction_publisher}', %s), updated=DEFAULT
                     WHERE NOT(meta ? 'reduction_publisher')
                     AND id=%s
                 """, (DROPLET_NAME,JOB_ID))
@@ -73,7 +73,7 @@ if __name__ == '__main__':
         q_len = q.method.message_count
 
     # update state to pre-reductions-queued
-    cur.execute("""UPDATE jobs SET state=%s
+    cur.execute("""UPDATE jobs SET state=%s, updated=DEFAULT
                     WHERE id=%s
                 """, ('pre-reductions-queued',JOB_ID))
     conn.commit()
@@ -87,7 +87,7 @@ if __name__ == '__main__':
         q_len = q.method.message_count
 
     # update state to vectorized
-    cur.execute("""UPDATE jobs SET state=%s
+    cur.execute("""UPDATE jobs SET state=%s, updated=DEFAULT
                     WHERE id=%s
                 """, ('reduced',JOB_ID))
     conn.commit()

@@ -10,6 +10,7 @@ tar -zcvf $(basename $1).tar.gz $1
 scp $(basename $1).tar.gz root@206.81.5.140:jobs
 
 # supply name of job in post request to start job
-curl -d "job=$(basename $1)" -X POST 206.81.5.140:5000/jobs
+#curl -d "job=$(basename $1)" -X POST 206.81.5.140:5000/jobs
+curl -d "job=$(basename $1)" -X POST localhost:5000/jobs
 
 

@@ -13,8 +13,8 @@ try:
     JOB_ID = os.environ['JOB_ID']
     JOB_NAME = os.environ['JOB_NAME']
     RABBIT = os.environ.get('RABBITMQ_LOCATION', 'localhost')
-    REDUCTIONS_BASE = os.environ['REDUCTIONS_QUEUE_BASE']
-    REDUCTIONS_QUEUE = REDUCTIONS_BASE + '_' + JOB_NAME
+    VECTORS_BASE = os.environ['VECTORS_QUEUE_BASE']
+    VECTORS_QUEUE = VECTORS_BASE + '_' + JOB_NAME
     WRITER_PREFETCH_COUNT = os.environ.get('WRITER_PREFETCH_COUNT', 100)
 except KeyError as e:
     raise Exception('Warning: Important environment variables were not set')
@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
     # Check if a writer is already running for this job, if so, exit, if not
     # mark that one is running then continue.
-    cur.execute("""UPDATE jobs SET meta=jsonb_set(meta, '{vector_writer}', %s)
+    cur.execute("""UPDATE jobs SET meta=jsonb_set(meta, '{vector_writer}', %s), updated=DEFAULT
                     WHERE NOT(meta ? 'vector_writer')
                     AND id=%s
                 """, (DROPLET_NAME,JOB_ID))

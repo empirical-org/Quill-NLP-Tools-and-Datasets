@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS jobs (
  */
 CREATE TABLE IF NOT EXISTS droplets (
   id integer PRIMARY KEY NOT NULL,
-  uid	integer,
+  uid	integer UNIQUE,
   job_id integer NOT NULL,
   name	varchar UNIQUE NOT NULL,
   memory	integer,
