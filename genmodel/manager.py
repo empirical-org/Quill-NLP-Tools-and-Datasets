@@ -174,12 +174,14 @@ def set_job_state(job_id, state):
 
 def run_job(job_description, job_id, job_name, labeled_data_fname, playbook_fname):
     try:
+        print('started job')
 
         # add labeled data to database (job.state, loaded-data)
         add_labeled_data_to_database(labeled_data_fname, job_id)
 
         # initialize droplets in database
         droplet_ids = initizialize_droplets_in_database(job_description, job_name, job_id)
+        print('middle job')
 
         # create droplet or droplets (job.state droplets-created)
         droplet_uids = create_droplets(job_description, job_id, droplet_ids)
@@ -191,6 +193,7 @@ def run_job(job_description, job_id, job_name, labeled_data_fname, playbook_fnam
 
         # (job.state droplets-active)
         set_job_state(job_id, 'droplets-active')
+        print('middle job 2')
         
         # wait 10s to make sure all droplets are really online + responsive
         time.sleep(10)
