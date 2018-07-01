@@ -35,7 +35,7 @@ def set_droplet_names(job_description):
     num_names = job_description['job']['droplet_count']
     job_name = job_description['job']['name']
     if job_description['droplet'].get('names') == 'autogenerate':
-        names = [job_name + n for n in range(num_names)] 
+        names = [job_name + str(n) for n in range(num_names)] 
         job_description['droplet']['names'] = names
     return job_description
 
