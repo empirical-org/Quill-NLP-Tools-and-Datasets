@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS droplets (
 
 
 /* Create Labled Data Table */
-CREATE TABLE IF NOT EXISTS labled_data (
+CREATE TABLE IF NOT EXISTS labeled_data (
   id integer PRIMARY KEY NOT NULL,
   data jsonb NOT NULL,
   label varchar NOT NULL,

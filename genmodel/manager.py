@@ -143,15 +143,15 @@ def initizialize_droplets_in_database(job_description, job_name, job_id):
     return droplet_ids
 
 
-def add_labled_data_to_database(labled_data_stream, job_id):
+def add_labeled_data_to_database(labeled_data_stream, job_id):
     # drop the job_id_idx for faster inserts
     cur.execute("DROP INDEX IF EXISTS job_id_idx")
     conn.commit()
 
     # insert data
-    reader = csv.reader(labled_data_stream)
+    reader = csv.reader(labeled_data_stream)
     for row in reader:
-        cur.execute("INSERT INTO labled_data (data, label, job_id) values(%s, %s)",
+        cur.execute("INSERT INTO labeled_data (data, label, job_id) values(%s, %s)",
                 (row[0], row[1], job_id))
         conn.commit()
 
@@ -171,12 +171,12 @@ def set_job_state(job_id, state):
     conn.commit()
 
 
-def run_job(job_description, job_id, job_name, labled_data_stream, playbook_fname):
+def run_job(job_description, job_id, job_name, labeled_data_stream, playbook_fname):
     try:
 
-        # add labled data to database (job.state, loaded-data)
-        add_labled_data_to_database(labled_data_stream, job_id)
-        labled_data_stream.close()
+        # add labeled data to database (job.state, loaded-data)
+        add_labeled_data_to_database(labeled_data_stream, job_id)
+        labeled_data_stream.close()
 
         # initialize droplets in database
         droplet_ids = initizialize_droplets_in_database(job_description, job_name, job_id)
@@ -229,9 +229,9 @@ def jobs():
             # gather information to create job
             job_name = request.form['job']
             with tarfile.open('/root/jobs/{}.tar.gz'.format(job_name)) as tar:
-                # save ref to labled data stream 
+                # save ref to labeled data stream
                 ld_fname = '{}/labeled_data.csv'.format(job_name)
-                labled_data_stream = tar.extractfile(ld_fname)
+                labeled_data_stream = tar.extractfile(ld_fname)
 
                 # make job description dictionary
                 jd_fname = '{}/description.yml'.format(job_name)
@@ -252,7 +252,7 @@ def jobs():
             job_id = initizialize_job_in_database(job_name)
 
             thr = threading.Thread(target=run_job, args=(job_description,
-                job_id, job_name, labled_data_stream, playbook_fname), kwargs={})
+                job_id, job_name, labeled_data_stream, playbook_fname), kwargs={})
             thr.start() # Will run "post_job"
             if thr.is_alive():
                 return jsonify(r.json()), 202 # 202 accepted, asyc http code
