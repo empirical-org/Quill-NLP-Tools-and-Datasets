@@ -244,7 +244,7 @@ def jobs():
                 zipped_playbook_fname = '{}/playbook.yml'.format(job_name)
                 playbook_stream = tar.extractfile(zipped_playbook_fname)
                 playbook_fname = 'playbook_{}.yml'.format(str(uuid4())[:8])
-                with open(playbook_fname, 'w') as pb:
+                with open(playbook_fname, 'wb') as pb:
                     pb.write(playbook_stream.read())
                 playbook_stream.close()
 
