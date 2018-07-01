@@ -1,7 +1,7 @@
 
 /* Create Jobs Table */
 CREATE TABLE IF NOT EXISTS jobs (
-  id integer PRIMARY KEY NOT NULL,
+  id serial PRIMARY KEY NOT NULL,
   name varchar UNIQUE,
   state varchar, -- created, running, finished, 
   created timestamp with time zone default now(),
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS jobs (
  *
  */
 CREATE TABLE IF NOT EXISTS droplets (
-  id integer PRIMARY KEY NOT NULL,
+  id serial PRIMARY KEY NOT NULL,
   uid	integer UNIQUE,
   job_id integer NOT NULL,
   name	varchar UNIQUE NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS droplets (
 
 /* Create Labled Data Table */
 CREATE TABLE IF NOT EXISTS labeled_data (
-  id integer PRIMARY KEY NOT NULL,
+  id serial PRIMARY KEY NOT NULL,
   data jsonb NOT NULL,
   label varchar NOT NULL,
   job_id integer NOT NULL,
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS labeled_data (
 
 /* Create Reductions Table */
 CREATE TABLE IF NOT EXISTS reductions (
-  id integer PRIMARY KEY NOT NULL,
+  id serial PRIMARY KEY NOT NULL,
   reduction varchar NOT NULL,
   job_id integer NOT NULL,
   created timestamp with time zone default now(),
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS reductions (
 
 /* Create Vectors Table */
 CREATE TABLE IF NOT EXISTS vectors (
-  id integer PRIMARY KEY NOT NULL,
+  id serial PRIMARY KEY NOT NULL,
   vector jsonb NOT NULL,
   label varchar NOT NULL,
   job_id integer NOT NULL,
