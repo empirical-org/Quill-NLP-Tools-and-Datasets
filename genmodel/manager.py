@@ -143,24 +143,25 @@ def initizialize_droplets_in_database(job_description, job_name, job_id):
     return droplet_ids
 
 
-def add_labeled_data_to_database(labeled_data_stream, job_id):
-    # drop the job_id_idx for faster inserts
-    cur.execute("DROP INDEX IF EXISTS job_id_idx")
-    conn.commit()
-
-    # insert data
-    reader = csv.reader(labeled_data_stream)
-    for row in reader:
-        cur.execute("INSERT INTO labeled_data (data, label, job_id) values(%s, %s)",
-                (row[0], row[1], job_id))
+def add_labeled_data_to_database(labeled_data_fname, job_id):
+    with open(labeled_data_fname, 'r') as labeled_data_stream:
+        # drop the job_id_idx for faster inserts
+        cur.execute("DROP INDEX IF EXISTS job_id_idx")
         conn.commit()
 
-    # readd index
-    cur.execute("CREATE INDEX IF NOT EXISTS job_id_idx ON labeled_data (job_id)")
-    conn.commit()
+        # insert data
+        reader = csv.reader(labeled_data_stream)
+        for row in reader:
+            cur.execute("INSERT INTO labeled_data (data, label, job_id) values(%s, %s)",
+                    (row[0], row[1], job_id))
+            conn.commit()
 
-    # update job state to loaded-data 
-    set_job_state(job_id, 'loaded-data')
+        # readd index
+        cur.execute("CREATE INDEX IF NOT EXISTS job_id_idx ON labeled_data (job_id)")
+        conn.commit()
+
+        # update job state to loaded-data 
+        set_job_state(job_id, 'loaded-data')
 
 
 def set_job_state(job_id, state):
@@ -171,12 +172,11 @@ def set_job_state(job_id, state):
     conn.commit()
 
 
-def run_job(job_description, job_id, job_name, labeled_data_stream, playbook_fname):
+def run_job(job_description, job_id, job_name, labeled_data_fname, playbook_fname):
     try:
 
         # add labeled data to database (job.state, loaded-data)
-        add_labeled_data_to_database(labeled_data_stream, job_id)
-        labeled_data_stream.close()
+        add_labeled_data_to_database(labeled_data_fname, job_id)
 
         # initialize droplets in database
         droplet_ids = initizialize_droplets_in_database(job_description, job_name, job_id)
@@ -232,6 +232,10 @@ def jobs():
                 # save ref to labeled data stream
                 ld_fname = '{}/labeled_data.csv'.format(job_name)
                 labeled_data_stream = tar.extractfile(ld_fname)
+                labeled_data_fname = 'labeled_data_{}.csv'.format(str(uuid4())[:8])
+                with open(labeled_data_fname, 'wb') as ld:
+                    ld.write(labeled_data_stream.read())
+                labeled_data_stream.close()
 
                 # make job description dictionary
                 jd_fname = '{}/description.yml'.format(job_name)
@@ -252,10 +256,10 @@ def jobs():
             job_id = initizialize_job_in_database(job_name)
 
             thr = threading.Thread(target=run_job, args=(job_description,
-                job_id, job_name, labeled_data_stream, playbook_fname), kwargs={})
+                job_id, job_name, labeled_data_fname, playbook_fname), kwargs={})
             thr.start() # Will run "post_job"
             if thr.is_alive():
-                return jsonify(r.json()), 202 # 202 accepted, asyc http code
+                return jsonify('Job initialized. Working.'), 202 # 202 accepted, asyc http code
             return jsonify('Unexpected error. Please check with sys admin', 500)
         except KeyError as e:
             return jsonify({'error':'supply form param job w job name'}), 400
