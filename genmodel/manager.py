@@ -121,7 +121,7 @@ def wait_for_droplet_to_be_created(droplet_uid):
                     volume_ids=%s,
                     updated=DEFAULT
                 WHERE uid=%s
-                """, (uid, drop['memory'], drop['vcpus'], drop['disk'],
+                """, (droplet_uid, drop['memory'], drop['vcpus'], drop['disk'],
                     drop['locked'], drop['created_at'], drop['status'],
                     drop['backup_ids'], drop['snapshot_ids'], drop['features'],
                     drop['region'], drop['image'], drop['size'],
