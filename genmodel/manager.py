@@ -7,6 +7,7 @@ import logging
 import os
 import psycopg2
 import requests
+import shlex
 import subprocess
 import tarfile
 import threading
@@ -238,11 +239,11 @@ def run_job(job_description, job_id, job_name, labeled_data_fname, playbook_fnam
         # set environment variables, create ssh tunnels, start jobs 
         logger.info("installing dependencies and starting jobs on remote droplet(s)")
         hosts_string = ','.join([str(d_uid) for d_uid in droplet_uids])
-        ansible_command = 'ansible-playbook {} -i \
+        ansible_command = 'bash ansible-playbook {} -i \
                 /etc/ansible/digital_ocean.py -e \
                 hosts_string={} -e job_id={} -e job_name={}'.format(
                         playbook_fname, hosts_string, job_id, job_name)
-        output = subprocess.check_output(['bash','-c', ansible_command])
+        output = subprocess.check_output(shlex.split(ansible_command))
         logger.info("droplets working, job {}-{} started successfully".format(
             job_name, job_id))
         logger.info(output)
