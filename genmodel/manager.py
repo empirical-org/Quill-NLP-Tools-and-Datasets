@@ -67,11 +67,15 @@ def create_droplets(description, job_id, droplet_ids):
 
     # update status, set uid for droplets in database
     for droplet_id in droplet_ids:
+        logger.debug('updating droplet with id ' + droplet_id)
         for uid in droplet_uids:
+            logger.debug('setting uid  to {} for droplet with id {}'.format(
+                uid, droplet_id))
             cur.execute("""UPDATE droplets
                     SET uid=%s, status='created', updated=DEFAULT
                     WHERE id=%s""",
                     (uid,droplet_id))
+            conn.commit()
 
     # update job state to droplets-created 
     set_job_state(job_id, 'droplets-created')
