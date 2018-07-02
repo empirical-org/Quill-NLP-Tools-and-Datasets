@@ -70,7 +70,7 @@ def create_droplets(description, job_id, droplet_ids):
         for uid in droplet_uids:
             cur.execute("""UPDATE droplets
                     SET uid=%s, status='created', updated=DEFAULT
-                    WHERE droplet_id=%s""",
+                    WHERE id=%s""",
                     (uid,droplet_id))
 
     # update job state to droplets-created 
