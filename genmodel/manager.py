@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, jsonify
 from tabulate import tabulate
 from uuid import uuid4
 import csv
+import logging
 import os
 import psycopg2
 import requests
@@ -10,6 +11,15 @@ import tarfile
 import threading
 import time
 import yaml
+
+# set up logging
+logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
+    filename='/root/jobs/jobmanager.log',
+    datefmt='%d-%m-%Y:%H:%M:%S',
+    level=logging.DEBUG)
+logger = logging.getLogger('job-manager-api')
+
+
 
 # Connect to Database
 try:
@@ -144,28 +154,30 @@ def initizialize_droplets_in_database(job_description, job_name, job_id):
 
 
 def add_labeled_data_to_database(labeled_data_fname, job_id):
-    with open(labeled_data_fname, 'r') as labeled_data_stream:
-        # drop the job_id_idx for faster inserts
-        cur.execute("DROP INDEX IF EXISTS job_id_idx")
-        conn.commit()
-
-        print('I am in add labeled data to db')
-
-        # insert data
-        reader = csv.reader(labeled_data_stream)
-        for row in reader:
-            print(row)
-            cur.execute("INSERT INTO labeled_data (data, label, job_id) values(%s, %s, %s)",
-                    (row[0], row[1], job_id))
+    try:
+        with open(labeled_data_fname, 'r') as labeled_data_stream:
+            # drop the job_id_idx for faster inserts
+            cur.execute("DROP INDEX IF EXISTS job_id_idx")
             conn.commit()
-        print('I am in add labeled data to db 2')
+            logger.debug("adding labled data to database...")
+            # insert data
+            reader = csv.reader(labeled_data_stream)
+            for row in reader:
+                logger.debug('read row, {}'.format(row))
+                cur.execute("INSERT INTO labeled_data (data, label, job_id) values(%s, %s, %s)",
+                        (row[0], row[1], job_id))
+                conn.commit()
 
-        # readd index
-        cur.execute("CREATE INDEX IF NOT EXISTS job_id_idx ON labeled_data (job_id)")
-        conn.commit()
+            # readd index
+            cur.execute("CREATE INDEX IF NOT EXISTS job_id_idx ON labeled_data (job_id)")
+            conn.commit()
 
-        # update job state to loaded-data 
-        set_job_state(job_id, 'loaded-data')
+            # update job state to loaded-data 
+            set_job_state(job_id, 'loaded-data')
+    except psycopg2.Error as e:
+        conn.rollback()
+        logger.error('there was an issue adding labeled data to the database')
+        raise e
 
 
 def set_job_state(job_id, state):
