@@ -4,4 +4,5 @@ from time import sleep
 
 def get_reduction(data):
     sleep(5)
-    return (data[0],)
+    # look at the first character
+    return (data['data'][0],)
