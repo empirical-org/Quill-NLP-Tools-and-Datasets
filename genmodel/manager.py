@@ -215,8 +215,8 @@ def run_job(job_description, job_id, job_name, labeled_data_fname, playbook_fnam
         # wait for droplets to be created (updates droplet status and all
         # other fields )
         logger.info("waiting for droplets to be created")
-        for droplet_id in droplet_ids:
-            status = wait_for_droplet_to_be_created(droplet_id)
+        for droplet_uid in droplet_uids:
+            status = wait_for_droplet_to_be_created(droplet_uid)
 
         # (job.state droplets-active)
         set_job_state(job_id, 'droplets-active')
