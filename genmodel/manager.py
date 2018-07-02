@@ -177,6 +177,7 @@ def add_labeled_data_to_database(labeled_data_fname, job_id):
     except psycopg2.Error as e:
         conn.rollback()
         logger.error('there was an issue adding labeled data to the database')
+        logger.error(e)
         raise e
 
 
