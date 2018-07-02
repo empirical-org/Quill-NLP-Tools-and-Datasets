@@ -98,38 +98,45 @@ def wait_for_droplet_to_be_created(droplet_uid):
         logger.debug('waiting for droplet with uid {}.  current status {}'.format(
             droplet_uid, status))
 
-    # update droplet status, and set other attrs
-    cur.execute("""UPDATE droplets 
-                SET status='active',
-                    memory=%s,	
-                    vcpus=%s,
-                    disk=%s,
-                    locked=%s,
-                    created_at=%s,
-                    status=%s,
-                    backup_ids=%s,
-                    snapshot_ids=%s,
-                    features=%s,
-                    region=%s,
-                    image=%s,
-                    size=%s,
-                    size_slug=%s,
-                    networks=%s,
-                    kernel=%s,
-                    next_backup_window=%s,
-                    tags=%s,
-                    volume_ids=%s,
-                    updated=DEFAULT
-                WHERE uid=%s
-                """, (droplet_uid, drop['memory'], drop['vcpus'], drop['disk'],
-                    drop['locked'], drop['created_at'], drop['status'],
-                    drop['backup_ids'], drop['snapshot_ids'], drop['features'],
-                    drop['region'], drop['image'], drop['size'],
-                    drop['size_slug'], drop['networks'], drop['kernel'],
-                    drop['next_backup_window'], drop['tags'],
-                    drop['volume_ids'])
-                )
-    conn.commit()
+    try:
+        # update droplet status, and set other attrs
+        cur.execute("""UPDATE droplets 
+                    SET status='active',
+                        memory=%s,	
+                        vcpus=%s,
+                        disk=%s,
+                        locked=%s,
+                        created_at=%s,
+                        status=%s,
+                        backup_ids=%s,
+                        snapshot_ids=%s,
+                        features=%s,
+                        region=%s,
+                        image=%s,
+                        size=%s,
+                        size_slug=%s,
+                        networks=%s,
+                        kernel=%s,
+                        next_backup_window=%s,
+                        tags=%s,
+                        volume_ids=%s,
+                        updated=DEFAULT
+                    WHERE uid=%s
+                    """, (droplet_uid, drop['memory'], drop['vcpus'], drop['disk'],
+                        drop['locked'], drop['created_at'], drop['status'],
+                        drop['backup_ids'], drop['snapshot_ids'], drop['features'],
+                        drop['region'], drop['image'], drop['size'],
+                        drop['size_slug'], drop['networks'], drop['kernel'],
+                        drop['next_backup_window'], drop['tags'],
+                        drop['volume_ids'])
+                    )
+        conn.commit()
+    except psycopg2.Error as e:
+        logger.error(e)
+        raise(e)
+    except Exception as e:
+        logger.error(e)
+        raise(e)
     return status
 
 
@@ -220,7 +227,6 @@ def run_job(job_description, job_id, job_name, labeled_data_fname, playbook_fnam
 
         # (job.state droplets-active)
         set_job_state(job_id, 'droplets-active')
-        print('middle job 2')
         
         # wait 10s to make sure all droplets are really online + responsive
         time.sleep(10)
