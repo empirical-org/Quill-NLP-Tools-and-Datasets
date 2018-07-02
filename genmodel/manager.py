@@ -102,8 +102,7 @@ def wait_for_droplet_to_be_created(droplet_uid):
     try:
         # update droplet status, and set other attrs
         cur.execute("""UPDATE droplets 
-                    SET status='active',
-                        memory=%s,	
+                    SET memory=%s,	
                         vcpus=%s,
                         disk=%s,
                         locked=%s,
