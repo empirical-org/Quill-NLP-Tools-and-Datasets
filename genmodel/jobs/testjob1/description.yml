@@ -16,6 +16,8 @@ droplet:
     - 3d:14:8c:7b:cb:3f:ba:79:0d:71:c0:9a:d9:7f:c7:3f
     # nlp-job-manager's ssh key fingerprint
     - a6:43:e5:2c:b7:b0:61:8b:49:62:9d:28:53:e8:60:a9
+    # nlp-job-manager-root's ssh key fingerprint
+    - 27:f7:b1:a0:18:e6:9d:9c:46:ba:44:4b:84:cd:dc:a4
   backups: false
   ipv6: false
   # https://developers.digitalocean.com/documentation/v2/#create-multiple-droplets
