@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# ensure envars are loaded
+source /root/.bash_profile
+
 # set droplet ID 
 export DROPLET_UID=$(curl -s http://169.254.169.254/metadata/v1/id)
 export DROPLET_NAME=$(curl -s http://169.254.169.254/metadata/v1/hostname)
