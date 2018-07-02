@@ -132,10 +132,11 @@ def wait_for_droplet_to_be_created(droplet_uid):
                     )
         conn.commit()
     except psycopg2.Error as e:
-        logger.error(e)
+        logger.error(e.pgerror)
+        logger.error(str(e))
         raise(e)
     except Exception as e:
-        logger.error(e)
+        logger.error(str(e))
         raise(e)
     return status
 
