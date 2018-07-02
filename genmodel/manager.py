@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, jsonify
 from tabulate import tabulate
 from uuid import uuid4
 import csv
+import json
 import logging
 import os
 import psycopg2
@@ -122,12 +123,15 @@ def wait_for_droplet_to_be_created(droplet_uid):
                         volume_ids=%s,
                         updated=DEFAULT
                     WHERE uid=%s
-                    """, (droplet_uid, drop['memory'], drop['vcpus'], drop['disk'],
-                        drop['locked'], drop['created_at'], drop['status'],
-                        drop['backup_ids'], drop['snapshot_ids'], drop['features'],
-                        drop['region'], drop['image'], drop['size'],
-                        drop['size_slug'], drop['networks'], drop['kernel'],
-                        drop['next_backup_window'], drop['tags'],
+                    """, (droplet_uid, drop['memory'], drop['vcpus'],
+                        drop['disk'], drop['locked'], drop['created_at'],
+                        drop['status'], drop['backup_ids'],
+                        drop['snapshot_ids'], drop['features'],
+                        json.dumps(drop['region']), json.dumps(drop['image']),
+                        json.dumps(drop['size']), drop['size_slug'],
+                        json.dumps(drop['networks']),
+                        json.dumps(drop['kernel']),
+                        json.dumps(drop['next_backup_window']), drop['tags'],
                         drop['volume_ids'])
                     )
         conn.commit()
