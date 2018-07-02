@@ -90,9 +90,13 @@ def wait_for_droplet_to_be_created(droplet_uid):
     status = ''
     while status != 'active':
         time.sleep(8) # no need to check this incessently
+        headers = {}
+        headers['Authorization'] = 'Bearer {}'.format(os.environ.get('DO_API_TOKEN', ''))
         r = requests.get(check_droplet_url, headers=headers)
         drop = r.json()['droplet']
         status = drop['status']
+        logger.debug('waiting for droplet with uid {}.  current status {}'.format(
+            droplet_uid, status))
 
     # update droplet status, and set other attrs
     cur.execute("""UPDATE droplets 
