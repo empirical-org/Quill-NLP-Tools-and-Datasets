@@ -10,9 +10,9 @@ try:
     PRE_REDUCTIONS_BASE = os.environ['PRE_REDUCTIONS_QUEUE_BASE']
     PRE_REDUCTIONS_QUEUE = PRE_REDUCTIONS_BASE + '_' + JOB_NAME
     RABBIT = os.environ.get('RABBITMQ_LOCATION', 'localhost')
-    REDUCTIONS_QUEUE = REDUCTIONS_BASE + '_' + JOB_NAME
-    REDUCTIONS_BASE = os.environ['REDUCTIONS_QUEUE_BASE']
     REDUCER_PREFETCH_COUNT = os.environ.get('REDUCER_PREFETCH_COUNT', 10)
+    REDUCTIONS_BASE = os.environ['REDUCTIONS_QUEUE_BASE']
+    REDUCTIONS_QUEUE = REDUCTIONS_BASE + '_' + JOB_NAME
 except KeyError as e:
     raise Exception('Warning: Important environment variables were not set')
 

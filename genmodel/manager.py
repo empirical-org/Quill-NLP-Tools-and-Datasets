@@ -246,7 +246,6 @@ def run_job(job_description, job_id, job_name, labeled_data_fname, playbook_fnam
         subprocess.call(shlex.split(ansible_command))
         logger.info("droplets working, job {}-{} started successfully".format(
             job_name, job_id))
-        logger.info(output)
     except psycopg2.Error as e:
         ref = 'https://www.postgresql.org/docs/current/static/errcodes-appendix.html'
         logger.error('pgcode {}'.format(e.pgcode) + ref)
