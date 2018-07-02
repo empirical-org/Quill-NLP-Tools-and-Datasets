@@ -191,20 +191,21 @@ def set_job_state(job_id, state):
 
 def run_job(job_description, job_id, job_name, labeled_data_fname, playbook_fname):
     try:
-        print('started job')
-
+        logger.info("adding labeled data to database")
         # add labeled data to database (job.state, loaded-data)
         add_labeled_data_to_database(labeled_data_fname, job_id)
 
         # initialize droplets in database
+        logger.info("initializing droplets in database")
         droplet_ids = initizialize_droplets_in_database(job_description, job_name, job_id)
-        print('middle job')
 
         # create droplet or droplets (job.state droplets-created)
+        logger.info("creating droplet(s)")
         droplet_uids = create_droplets(job_description, job_id, droplet_ids)
 
         # wait for droplets to be created (updates droplet status and all
         # other fields )
+        logger.info("waiting for droplets to be created")
         for droplet_id in droplet_ids:
             status = wait_for_droplet_to_be_created(droplet_id)
 
@@ -217,18 +218,18 @@ def run_job(job_description, job_id, job_name, labeled_data_fname, playbook_fnam
 
         # run ansible on the droplets to install dependencies, job bundle,
         # set environment variables, create ssh tunnels, start jobs 
+        logger.info("installing dependencies and starting jobs on remote droplet(s)")
         hosts_string = ':'.join(droplet_ids)
         ansible_command = 'ansible-playbook {} -i \
                 /etc/ansible/digital_ocean.py --list-hosts -e \
                 hosts_string={} -e job_id={} -e job_name={}'.format(
                         playbook_fname, hosts_string, job_id, job_name)
         output = subprocess.check_output(['bash','-c', ansible_command])
-        with open('/root/jobs/{}-{}.log'.format(job_name, job_id), 'a') as l:
-            l.write('Finished Successfully.')
+        logger.info("droplets working, job {}-{} started successfully".format(
+            job_name, job_id))
     except psycopg2.Error as e:
         ref = '\nhttps://www.postgresql.org/docs/current/static/errcodes-appendix.html'
-        with open('/root/jobs/{}-{}.log'.format(job_name, job_id), 'a') as l:
-            l.write('ERROR: pgcode {}'.format(e.pgcode) + ref)
+        logger.error('pgcode {}'.format(e.pgcode) + ref)
 
 
 @app.route('/')
@@ -274,14 +275,11 @@ def jobs():
 
             # initialize job in database (job.state, initialized)
             job_id = initizialize_job_in_database(job_name)
-
-            #thr = threading.Thread(target=run_job, args=(job_description,
-            #    job_id, job_name, labeled_data_fname, playbook_fname), kwargs={})
-            #thr.start() # Will run "post_job"
-            #if thr.is_alive():
-            #    return jsonify('Job initialized. Working.'), 202 # 202 accepted, asyc http code
-            run_job(job_description, job_id, job_name, labeled_data_fname,
-                    playbook_fname)
+            thr = threading.Thread(target=run_job, args=(job_description,
+                job_id, job_name, labeled_data_fname, playbook_fname), kwargs={})
+            thr.start() # Will run "post_job"
+            if thr.is_alive():
+                return jsonify('Job initialized. Working.'), 202 # 202 accepted, asyc http code
             return jsonify('Unexpected error. Please check with sys admin', 500)
         except KeyError as e:
             return jsonify({'error':'supply form param job w job name'}), 400
