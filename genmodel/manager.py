@@ -67,7 +67,8 @@ def create_droplets(description, job_id, droplet_ids):
 
     # update status, set uid for droplets in database
     for droplet_id in droplet_ids:
-        logger.debug('updating droplet with id ' + droplet_id)
+        logger.debug('updating droplet with id {}'.format(
+            droplet_id))
         for uid in droplet_uids:
             logger.debug('setting uid  to {} for droplet with id {}'.format(
                 uid, droplet_id))
