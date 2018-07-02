@@ -1,28 +1,43 @@
 ---
 - hosts: "{{ hosts_string }}"
   remote_user: root
-  environment:
-    DB_NAME: "{{ lookup('env', 'DB_NAME') }}"
-    DB_PASSWORD: "{{ lookup('env', 'DB_PASSWORD') }}" 
-    DB_PORT: "{{ lookup('env', 'DB_PORT') }}"
-    DB_USER: "{{ lookup('env', 'DB_USER') }}" 
-    JOB_ID: "{{ job_id }}"
-    JOB_NAME: "{{ job_name }}"
-    MAX_QUEUE_LEN: 500 
-    PRE_REDUCTIONS_QUEUE_BASE: 'pre-reductions'
-    PRE_VECTORS_QUEUE_BASE: 'pre-vectors' 
-    RABBITMQ_LOCATION: 'localhost'
-    REDUCER_PREFETCH_COUNT: 10 
-    REDUCTIONS_QUEUE_BASE: 'reductions' 
-    VECTORIZER_PREFETCH_COUNT: 10
-    VECTORS_QUEUE_BASE: 'vectors'
-    WRITER_PREFETCH_COUNT: 100 
-    JOB_MANAGER: 'http://localhost:5000'
+  gather_facts: False
+  pre_tasks:
+  - name: Install python if not present
+    raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
   tasks:
+  - name: Add environment variables to .bash_profile
+    shell: echo "export {{ item }}" >> ~/.bash_profile
+    with_items:
+    - DB_NAME={{ lookup('env', 'DB_NAME') }}
+    - DB_PASS={{ lookup('env', 'DB_PASS') }}
+    - DB_PORT={{ lookup('env', 'DB_PORT') }}
+    - DB_USER={{ lookup('env', 'DB_USER') }} 
+    - JOB_ID={{ job_id }}
+    - JOB_NAME={{ job_name }}
+    - MAX_QUEUE_LEN=500 
+    - PRE_REDUCTIONS_QUEUE_BASE='pre-reductions'
+    - PRE_VECTORS_QUEUE_BASE='pre-vectors' 
+    - RABBITMQ_LOCATION='localhost'
+    - REDUCER_PREFETCH_COUNT=10 
+    - REDUCTIONS_QUEUE_BASE='reductions' 
+    - VECTORIZER_PREFETCH_COUNT=10
+    - VECTORS_QUEUE_BASE='vectors'
+    - WRITER_PREFETCH_COUNT=100 
+    - JOB_MANAGER='http://localhost:5000'
+  - name: Install python
+    apt:
+      name: python3
+      update_cache: yes
   - name: Update cache and install pip3 
     apt:
       name: python3-pip
       update_cache: yes
+  - name: Install psql
+    apt: name={{item}} state=present
+    with_items:
+    - postgresql-client-common
+    - postgresql-client
   - name: Install virtualenv
     pip:
       name: virtualenv
@@ -33,31 +48,43 @@
   - name: Install libpq-dev (psycopg2 requirement)
     apt:
       name: libpq-dev
+  - name: Creates directory for job tarball
+    file: path=/var/lib/jobs state=directory
   - name: Extract local job tarball onto remote host 
     unarchive:
-      src: "{{ job_name }}.tar.gz"
-      dest: /var/lib/jobs/{{ job_name }}
+      src: /root/jobs/{{ job_name }}.tar.gz
+      dest: /var/lib/jobs
+  - name: Copy private key to remote servers to allow communication with this host 
+    copy:
+      src: /root/sharedkeys/id_ecdsa
+      dest: /root/.ssh/id_ecdsa
+      owner: root
+      group: root
+      mode: 0600
+  - name: Copy public key to remote servers to allow communication with this host 
+    copy:
+      src: /root/sharedkeys/id_ecdsa.pub
+      dest: /root/.ssh/id_ecdsa.pub
+      owner: root
+      group: root
+      mode: 0644
+  - name: Add job manager master server to known hosts 
+    local_action: shell ssh-keyscan {{ inventory_hostname }} >> ~/.ssh/known_hosts
   - name: Install autossh to create long-running ssh tunnels
     apt:
       name: autossh
-  - name: Create SSH tunnels to rabbitmq server
-    shell: autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -N -L 5672:localhost:5672 root@206.81.5.140 &
-  - name: Create SSH tunnels to postgres server
-    shell: autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -N -L 5432:localhost:5432 root@206.81.5.140 &
-  - name: Create SSH tunnels to nlp-job-manager server
-    shell: autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -N -L 5000:localhost:5000 root@206.81.5.140 &
   - name: Install reducer requirements
     pip:
-      requirements: /var/lib/jobs/{{ job_name }}/requirements.txt
+      requirements: /var/lib/jobs/{{ job_name }}/reducer/requirements.txt
       virtualenv: /var/lib/jobs/{{ job_name }}/reducer/venv
       virtualenv_python: python3
   - name: Install vectorizer requirements
     pip:
-      requirements: /var/lib/jobs/{{ job_name }}/requirements.txt
+      requirements: /var/lib/jobs/{{ job_name }}/vectorizer/requirements.txt
       virtualenv: /var/lib/jobs/{{ job_name }}/vectorizer/venv
       virtualenv_python: python3
   - name: Change the working directory, then execute start script
     shell: nohup ./start.sh > {{ job_name }}.log 2>&1 </dev/null & 
     args:
-      chdir: var/lib/jobs/{{ job_name }}/
+      chdir: /var/lib/jobs/{{ job_name }}/
 ...

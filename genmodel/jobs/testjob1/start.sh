@@ -4,6 +4,11 @@
 export DROPLET_UID=$(curl -s http://169.254.169.254/metadata/v1/id)
 export DROPLET_NAME=$(curl -s http://169.254.169.254/metadata/v1/hostname)
 
+# create ssh tunnels for connection to rabbitmq, the database, and the api
+autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -N -L 5672:localhost:5672 root@206.81.5.140 &
+autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -N -L 5432:localhost:5432 root@206.81.5.140 &
+autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -N -L 5000:localhost:5000 root@206.81.5.140 &
+
 # Start x reducers
 cpu_count=$(grep -c ^processor /proc/cpuinfo)
 worker_count=$(( cpu_count / 2 ))
