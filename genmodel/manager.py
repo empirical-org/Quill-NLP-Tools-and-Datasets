@@ -66,17 +66,17 @@ def create_droplets(description, job_id, droplet_ids):
         droplet_uids = [r.json()['droplet']['id']]
 
     # update status, set uid for droplets in database
-    for droplet_id in droplet_ids:
+    for i, droplet_id in enumerate(droplet_ids):
         logger.debug('updating droplet with id {}'.format(
             droplet_id))
-        for uid in droplet_uids:
-            logger.debug('setting uid  to {} for droplet with id {}'.format(
-                uid, droplet_id))
-            cur.execute("""UPDATE droplets
-                    SET uid=%s, status='created', updated=DEFAULT
-                    WHERE id=%s""",
-                    (uid,droplet_id))
-            conn.commit()
+        uid = droplet_uids[i]
+        logger.debug('setting uid  to {} for droplet with id {}'.format(
+            uid, droplet_id))
+        cur.execute("""UPDATE droplets
+                SET uid=%s, status='created', updated=DEFAULT
+                WHERE id=%s""",
+                (uid,droplet_id))
+        conn.commit()
 
     # update job state to droplets-created 
     set_job_state(job_id, 'droplets-created')
