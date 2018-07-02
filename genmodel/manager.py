@@ -154,6 +154,7 @@ def add_labeled_data_to_database(labeled_data_fname, job_id):
         # insert data
         reader = csv.reader(labeled_data_stream)
         for row in reader:
+            print(row)
             cur.execute("INSERT INTO labeled_data (data, label, job_id) values(%s, %s, %s)",
                     (row[0], row[1], job_id))
             conn.commit()
@@ -274,6 +275,7 @@ def jobs():
         except tarfile.TarError as e:
             return jsonify({'error':'job doesnt exist or improperly formatted'}), 400
         except psycopg2.Error as e:
+            conn.rollback()
             ref = 'https://www.postgresql.org/docs/current/static/errcodes-appendix.html'
             return jsonify({'error':'pgcode {} ({})'.format(e.pgcode, ref)}), 400
 
