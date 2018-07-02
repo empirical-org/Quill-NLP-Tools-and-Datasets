@@ -237,7 +237,7 @@ def run_job(job_description, job_id, job_name, labeled_data_fname, playbook_fnam
         # run ansible on the droplets to install dependencies, job bundle,
         # set environment variables, create ssh tunnels, start jobs 
         logger.info("installing dependencies and starting jobs on remote droplet(s)")
-        hosts_string = ':'.join([str(d_id) for d_id in droplet_ids])
+        hosts_string = ':'.join([str(d_uid) for d_uid in droplet_uids])
         ansible_command = 'ansible-playbook {} -i \
                 /etc/ansible/digital_ocean.py --list-hosts -e \
                 hosts_string={} -e job_id={} -e job_name={}'.format(
@@ -247,7 +247,7 @@ def run_job(job_description, job_id, job_name, labeled_data_fname, playbook_fnam
             job_name, job_id))
         logger.info(output)
     except psycopg2.Error as e:
-        ref = '\nhttps://www.postgresql.org/docs/current/static/errcodes-appendix.html'
+        ref = 'https://www.postgresql.org/docs/current/static/errcodes-appendix.html'
         logger.error('pgcode {}'.format(e.pgcode) + ref)
 
 
