@@ -7,7 +7,7 @@ import random
 try:
     DROPLET_NAME = os.environ['DROPLET_NAME']
     DB_NAME = os.environ.get('DB_NAME', 'nlp')
-    DB_PASSWORD = os.environ.get('DB_PASSWORD', '')
+    DB_PASSWORD = os.environ.get('DB_PASS', '')
     DB_USER = os.environ.get('DB_USER', DB_NAME)
     JOB_ID = os.environ['JOB_ID']
     JOB_NAME = os.environ['JOB_NAME']

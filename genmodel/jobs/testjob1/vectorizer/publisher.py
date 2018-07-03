@@ -6,7 +6,7 @@ import psycopg2
 
 try:
     DB_NAME = os.environ.get('DB_NAME', 'nlp')
-    DB_PASSWORD = os.environ.get('DB_PASSWORD', '')
+    DB_PASSWORD = os.environ.get('DB_PASS', '')
     DB_USER = os.environ.get('DB_USER', DB_NAME)
     DROPLET_NAME = os.environ['DROPLET_NAME']
     JOB_ID = os.environ['JOB_ID']
