@@ -243,6 +243,7 @@ def run_job(job_description, job_id, job_name, labeled_data_fname, playbook_fnam
                 /etc/ansible/digital_ocean.py -e \
                 hosts_string={} -e job_id={} -e job_name={}'.format(
                         playbook_fname, hosts_string, job_id, job_name)
+        logger.info(ansible_command)
         subprocess.call(shlex.split(ansible_command))
         logger.info("droplets working, job {}-{} started successfully".format(
             job_name, job_id))

@@ -4,9 +4,7 @@
   gather_facts: False
   pre_tasks:
   - name: Update and upgrade apt packages 
-    apt:
-      upgrade: yes
-      update_cache: yes
+    raw: apt -y update && apt -y upgrade
   - name: Install python if not present
     raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
     retries: 2
