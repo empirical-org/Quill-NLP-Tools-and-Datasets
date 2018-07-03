@@ -3,8 +3,14 @@
   remote_user: root
   gather_facts: False
   pre_tasks:
+  - name: Update and upgrade apt packages 
+    apt:
+      upgrade: yes
+      update_cache: yes
   - name: Install python if not present
     raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+    retries: 2
+    delay: 2
   tasks:
   - name: Add environment variables to .bash_profile
     shell: echo "export {{ item }}" >> ~/.bash_profile
