@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 from time import sleep
 import os
-import json
 import pika
 import psycopg2
 import random

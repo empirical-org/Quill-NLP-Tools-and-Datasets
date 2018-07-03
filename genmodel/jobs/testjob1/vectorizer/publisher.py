@@ -33,16 +33,16 @@ if __name__ == '__main__':
 
     # Check if a publisher is already running for this job, if so exit, if not
     # mark that one is running then continue.
-    cur.execute("""UPDATE jobs SET meta=jsonb_set(meta, '{vector_publisher}', '%s'), updated=DEFAULT
+    cur.execute("""UPDATE jobs SET meta=jsonb_set(meta, '{vector_publisher}', %s), updated=DEFAULT
                     WHERE NOT(meta ? 'vector_publisher')
                     AND id=%s
-                """, (DROPLET_NAME,JOB_ID))
+                """, (json.dumps(DROPLET_NAME),JOB_ID))
     conn.commit()
     cur.execute("""SELECT COUNT(*) FROM jobs
                     WHERE meta->'vector_publisher'=%s
                     AND id=%s
                 """,
-            (DROPLET_NAME,JOB_ID))
+            (json.dumps(DROPLET_NAME),JOB_ID))
     continue_running = cur.fetchone()[0] == 1
     if not continue_running:
         raise Exception('This job already has a dedicated vector publisher. Exiting')
@@ -68,7 +68,7 @@ if __name__ == '__main__':
                 'label': n[1]})
             # add the sent string to the queue
             channel.basic_publish(exchange='', routing_key=PRE_VECTORS_QUEUE,
-                    body=sent_str)
+                    body=json.dumps(sent_str))
             q = channel.queue_declare(queue=PRE_VECTORS_QUEUE)
             q_len = q.method.message_count
         sleep(1) # when the q length reaches x, take a little break

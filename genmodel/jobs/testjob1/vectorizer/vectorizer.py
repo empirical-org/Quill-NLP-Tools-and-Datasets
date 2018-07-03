@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from vectorizer_helper import get_vector
+import json
 import os
 import pika
 import re
@@ -22,7 +23,7 @@ def handle_message(ch, method, properties, body):
     try:
         vector = get_vector(body)
         channel.basic_publish(exchange='', routing_key=VECTORS_QUEUE,
-                body=vector)
+                body=json.dumps(vector))
     except Exception as e:
         print(e) # log exception, but just move on
     ch.basic_ack(delivery_tag=method.delivery_tag)
