@@ -69,7 +69,7 @@
       group: root
       mode: 0644
   - name: Turn off strict host checking (allows autossh)
-    shell: echo "export {{ item }}" >> ~/.ssh/config
+    shell: echo "{{ item }}" >> ~/.ssh/config
     with_items:
     - 'Host *'
     - '  StrictHostKeyChecking no'
