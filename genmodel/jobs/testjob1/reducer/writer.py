@@ -40,7 +40,7 @@ if __name__ == '__main__':
 
     # Check if a writer is already running for this job, if so, exit, if not
     # mark that one is running then continue.
-    cur.execute("""UPDATE jobs SET meta=jsonb_set(meta, '{reduction_writer}', %s), updated=DEFAULT
+    cur.execute("""UPDATE jobs SET meta=jsonb_set(meta, '{reduction_writer}', '%s'), updated=DEFAULT
                     WHERE NOT(meta ? 'reduction_writer')
                     AND id=%s
                 """, (DROPLET_NAME,JOB_ID))
