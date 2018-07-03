@@ -17,12 +17,14 @@ except KeyError as e:
     raise Exception('Warning: Important environment variables were not set')
 
 def handle_message(ch, method, properties, body):
+    body = body.decode("utf-8") 
     try:
         for reduction in get_reduction(body):
             channel.basic_publish(exchange='', routing_key=REDUCTIONS_QUEUE,
                     body=reduction)
     except Exception as e:
         print(e) # log exception, but just move on
+        raise(e)
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 

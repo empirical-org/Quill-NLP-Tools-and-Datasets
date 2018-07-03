@@ -56,6 +56,7 @@ print('Vectorizing sentence keys...')
 # {indices={5:1, 6:2, 500:1, 6003:2} num_reductions=5000}
 # {indicies={index:count, index:count, ...} reductions=num_reductions}
 def get_vector(string):
+    string = string.decode("utf-8") 
     result = {'indices':{}, 'reductions':num_reductions}
     for reduction in get_reduction(string):
         index = reduction2idx.get(reduction)
