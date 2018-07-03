@@ -7,7 +7,7 @@ droplet:
   names: autogenerate
   region: nyc1
   # size c-8 is typical for production, 512mb is smallest
-  size: 512mb
+  size: c-8 
   image: ubuntu-16-04-x64
   ssh_keys:
     # donald's ssh key fingerprint
