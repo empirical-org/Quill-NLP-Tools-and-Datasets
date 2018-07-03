@@ -313,7 +313,7 @@ def jobs():
 @app.route('/jobs/<job_id>/state', methods=["GET"])
 def get_job_status(job_id):
     try:
-        cur.execute('SELECT state FROM jobs WHERE job_id=%s', (job_id,))
+        cur.execute('SELECT state FROM jobs WHERE id=%s', (job_id,))
         return jsonify(cur.fetchone()[0]), 200
     except (IndexError, psycopg2.Error) as e:
         return jsonify('error'), 404
