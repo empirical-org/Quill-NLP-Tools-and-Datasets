@@ -12,6 +12,14 @@ autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -N -L 5672:l
 autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -N -L 5432:localhost:5432 root@206.81.5.140 &
 autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -N -L 5000:localhost:5000 root@206.81.5.140 &
 
+# start pre-reduction publisher
+nohup /var/lib/jobs/$JOB_NAME/reducer/venv/bin/python3 /var/lib/jobs/$JOB_NAME/reducer/publisher.py &
+prereduction_publisher_process=$!
+
+# start reduction writer
+nohup /var/lib/jobs/$JOB_NAME/reducer/venv/bin/python3 /var/lib/jobs/$JOB_NAME/reducer/writer.py &
+reduction_writer_process=$!
+
 # Start x reducers
 cpu_count=$(grep -c ^processor /proc/cpuinfo)
 worker_count=$(( cpu_count / 2 ))
@@ -35,6 +43,17 @@ done
 for p in "${reducer_processes[@]}"; do
   kill -9 $p
 done
+# kill prereduction publisher and reduction writer
+kill -9 $prereduction_publisher_process
+kill -9 $reduction_writer_process
+
+# start pre-vectorization publisher
+nohup /var/lib/jobs/$JOB_NAME/vectorizer/venv/bin/python3 /var/lib/jobs/$JOB_NAME/vectorizer/publisher.py &
+prevectorization_publisher_process=$!
+
+# start vectorization writer
+nohup /var/lib/jobs/$JOB_NAME/vectorizer/venv/bin/python3 /var/lib/jobs/$JOB_NAME/vectorizer/writer.py &
+vectorization_writer_process=$!
 
 # start vectorizers
 vectorizer_processes=()
@@ -55,6 +74,9 @@ done
 for p in "${vectorizer_processes[@]}"; do
   kill -9 $p
 done
+# kill prevectorization publisher and vectorization writer
+kill -9 $prevectorization_publisher_process
+kill -9 $vectorization_writer_process
 
 # once vectorization is complete, the droplet is no longer needed, droplet makes
 # a DELETE request on itself.
