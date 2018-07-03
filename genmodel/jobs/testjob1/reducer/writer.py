@@ -20,7 +20,8 @@ except KeyError as e:
     raise Exception('Warning: Important environment variables were not set')
 
 # Connect to the database
-conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD)
+conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD,
+        host='localhost')
 cur = conn.cursor()
 
 # #Steps:

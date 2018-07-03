@@ -27,7 +27,8 @@ except KeyError as e:
 
 if __name__ == '__main__':
     # Connect to the database
-    conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD)
+    conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD,
+            host='localhost')
     cur = conn.cursor()
 
     # Check if a publisher is already running for this job, if so exit, if not

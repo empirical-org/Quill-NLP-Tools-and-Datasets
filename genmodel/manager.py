@@ -232,8 +232,8 @@ def run_job(job_description, job_id, job_name, labeled_data_fname, playbook_fnam
         # (job.state droplets-active)
         set_job_state(job_id, 'droplets-active')
         
-        # wait 10s to make sure all droplets are really online + responsive
-        time.sleep(10)
+        # wait a minute to make sure all droplets are really online + responsive
+        time.sleep(60)
 
         # run ansible on the droplets to install dependencies, job bundle,
         # set environment variables, create ssh tunnels, start jobs 

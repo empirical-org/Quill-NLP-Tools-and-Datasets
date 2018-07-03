@@ -6,7 +6,7 @@
   - name: Update apt packages
     raw: apt -y update
   - name: Install python if not present
-    raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal) || apt install -y python3)
+    raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
     retries: 2
     delay: 2
   tasks:
