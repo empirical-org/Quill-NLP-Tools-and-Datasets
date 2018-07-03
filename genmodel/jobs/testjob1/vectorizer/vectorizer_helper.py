@@ -13,7 +13,7 @@ import re
 DB_HOST = 'localhost'
 DB_NAME = os.environ.get('DB_NAME', 'nlp')
 DB_PASSWORD = os.environ.get('DB_PASSWORD', '')
-DB_PORT = int(os.environ.get('DB_PORT', '5432'))
+DB_PORT = int(os.environ.get('DB_PORT', 5432))
 DB_USER = os.environ.get('DB_USER', DB_NAME)
 JOB_ID = os.environ.get('JOB_ID')
 

@@ -11,7 +11,7 @@ try:
     DROPLET_NAME = os.environ['DROPLET_NAME']
     JOB_ID = os.environ['JOB_ID']
     JOB_NAME = os.environ['JOB_NAME']
-    MAX_QUEUE_LEN = os.environ.get('MAX_QUEUE_LEN', 500)
+    MAX_QUEUE_LEN = int(os.environ.get('MAX_QUEUE_LEN', 500))
     PRE_VECTORS_BASE = os.environ['PRE_VECTORS_QUEUE_BASE']
     PRE_VECTORS_QUEUE = PRE_VECTORS_BASE + '_' + JOB_NAME
     RABBIT = os.environ.get('RABBITMQ_LOCATION', 'localhost')

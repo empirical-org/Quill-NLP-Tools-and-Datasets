@@ -15,7 +15,7 @@ try:
     RABBIT = os.environ.get('RABBITMQ_LOCATION', 'localhost')
     REDUCTIONS_BASE = os.environ['REDUCTIONS_QUEUE_BASE']
     REDUCTIONS_QUEUE = REDUCTIONS_BASE + '_' + JOB_NAME
-    WRITER_PREFETCH_COUNT = os.environ.get('WRITER_PREFETCH_COUNT', 100)
+    WRITER_PREFETCH_COUNT = int(os.environ.get('WRITER_PREFETCH_COUNT', 100))
 except KeyError as e:
     raise Exception('Warning: Important environment variables were not set')
 
