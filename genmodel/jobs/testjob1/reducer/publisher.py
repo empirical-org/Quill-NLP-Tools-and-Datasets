@@ -48,8 +48,8 @@ if __name__ == '__main__':
     if not continue_running:
         raise Exception('This job already has a dedicated reduction publisher. Exiting')
 
-    # Issue select statements
-    cur.execute("SELECT data from labeled_data WHERE job_id=%s ORDER BY RANDOM()",
+    # Issue select statements - cast to json from jsonb
+    cur.execute("SELECT data::json from labeled_data WHERE job_id=%s ORDER BY RANDOM()",
             (JOB_ID,))
 
     # Connect to pika

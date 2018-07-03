@@ -11,7 +11,7 @@ import re
 
 DB_HOST = 'localhost'
 DB_NAME = os.environ.get('DB_NAME', 'nlp')
-DB_PASSWORD = os.environ.get('DB_PASSWORD', '')
+DB_PASSWORD = os.environ.get('DB_PASS', '')
 DB_PORT = int(os.environ.get('DB_PORT', 5432))
 DB_USER = os.environ.get('DB_USER', DB_NAME)
 JOB_ID = os.environ.get('JOB_ID')
@@ -56,7 +56,6 @@ print('Vectorizing sentence keys...')
 # {indices={5:1, 6:2, 500:1, 6003:2} num_reductions=5000}
 # {indicies={index:count, index:count, ...} reductions=num_reductions}
 def get_vector(string):
-    string = string.decode("utf-8") 
     result = {'indices':{}, 'reductions':num_reductions}
     for reduction in get_reduction(string):
         index = reduction2idx.get(reduction)

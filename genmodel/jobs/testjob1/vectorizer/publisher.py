@@ -47,8 +47,8 @@ if __name__ == '__main__':
     if not continue_running:
         raise Exception('This job already has a dedicated vector publisher. Exiting')
 
-    # Issue select statements
-    cur.execute("SELECT data,label from labeled_data WHERE job_id=%s ORDER BY RANDOM()",
+    # Issue select statements - cast data to json from jsonb
+    cur.execute("SELECT data::json,label from labeled_data WHERE job_id=%s ORDER BY RANDOM()",
             (JOB_ID,))
 
     # Connect to pika
@@ -68,7 +68,7 @@ if __name__ == '__main__':
                 'label': n[1]})
             # add the sent string to the queue
             channel.basic_publish(exchange='', routing_key=PRE_VECTORS_QUEUE,
-                    body=json.dumps(sent_str))
+                    body=sent_str)
             q = channel.queue_declare(queue=PRE_VECTORS_QUEUE)
             q_len = q.method.message_count
         sleep(1) # when the q length reaches x, take a little break
