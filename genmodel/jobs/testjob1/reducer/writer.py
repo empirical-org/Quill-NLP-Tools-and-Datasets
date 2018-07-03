@@ -30,6 +30,7 @@ cur = conn.cursor()
 # 2. Write reduced strings to database 
 
 def handle_message(ch, method, properties, body):
+    body = body.decode('utf-8')
     cur.execute('INSERT INTO reductions (reduction, job_id) VALUES (%s, %s)',
             (body,JOB_ID))
     conn.commit()

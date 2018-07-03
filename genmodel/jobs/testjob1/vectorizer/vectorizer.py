@@ -20,6 +20,7 @@ except KeyError as e:
 
 
 def handle_message(ch, method, properties, body):
+    body = body.decode('utf-8')
     try:
         vector = get_vector(body)
         channel.basic_publish(exchange='', routing_key=VECTORS_QUEUE,
