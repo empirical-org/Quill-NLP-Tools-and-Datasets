@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from psycopg2.extras import execute_values
+import json
 import os
 import pika
 import psycopg2
-from psycopg2.extras import execute_values
 
 try:
     DB_NAME = os.environ.get('DB_NAME', 'nlp')
@@ -40,16 +41,16 @@ if __name__ == '__main__':
 
     # Check if a writer is already running for this job, if so, exit, if not
     # mark that one is running then continue.
-    cur.execute("""UPDATE jobs SET meta=jsonb_set(meta, '{reduction_writer}', '%s'), updated=DEFAULT
+    cur.execute("""UPDATE jobs SET meta=jsonb_set(meta, '{reduction_writer}', %s), updated=DEFAULT
                     WHERE NOT(meta ? 'reduction_writer')
                     AND id=%s
-                """, (DROPLET_NAME,JOB_ID))
+                """, (json.dumps(DROPLET_NAME),JOB_ID))
     conn.commit()
     cur.execute("""SELECT COUNT(*) FROM jobs
                     WHERE meta->'reduction_writer'=%s
                     AND id=%s
                 """,
-            (DROPLET_NAME,JOB_ID))
+            (json.dumps(DROPLET_NAME),JOB_ID))
     continue_running = cur.fetchone()[0] == 1
     if not continue_running:
         raise Exception('This job already has a dedicated reduction writer. Exiting')
