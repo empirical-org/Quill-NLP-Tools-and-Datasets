@@ -30,7 +30,7 @@ cur.execute('''SELECT reduction,job_id,count(*) from reductions
             GROUP BY reduction
             HAVING count(*) > 2
             ORDER BY count(*) desc, reduction;''',
-            (JOB_ID))
+            (JOB_ID,))
 
 
 # with ~2 million total sentences the number of unique reductions was a little

@@ -26,7 +26,7 @@ worker_count=$(( cpu_count / 2 ))
 
 # start reducers
 reducer_processes=()
-for i in {1..$worker_count}
+for i in $(seq 1 $worker_count)
 do
   nohup /var/lib/jobs/$JOB_NAME/reducer/venv/bin/python3 /var/lib/jobs/$JOB_NAME/reducer/reducer.py &
   reducer_processes+=($!)
@@ -57,7 +57,7 @@ vectorization_writer_process=$!
 
 # start vectorizers
 vectorizer_processes=()
-for i in {1..$worker_count}
+for i in $(seq 1 $worker_count)
 do
   nohup /var/lib/jobs/$JOB_NAME/vectorizer/venv/bin/python3 /var/lib/jobs/$JOB_NAME/vectorizer/vectorizer.py &
   vectorizer_processes+=($!)
