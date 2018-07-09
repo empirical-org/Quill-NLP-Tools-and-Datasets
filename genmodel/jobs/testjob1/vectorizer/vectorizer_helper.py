@@ -25,7 +25,7 @@ cur = conn.cursor()
 
 
 # Select unique reductions in order of regularity, must occur at least thrice 
-cur.execute('''SELECT reduction,job_id,count(*) from reductions
+cur.execute('''SELECT reduction,count(*) from reductions
             WHERE job_id=%s 
             GROUP BY reduction
             HAVING count(*) > 2

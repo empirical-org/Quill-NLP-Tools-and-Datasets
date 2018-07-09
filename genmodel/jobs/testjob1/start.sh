@@ -12,6 +12,9 @@ autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -N -L 5672:l
 autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -N -L 5432:localhost:5432 root@206.81.5.140 &
 autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -N -L 5000:localhost:5000 root@206.81.5.140 &
 
+# wait for ssh tunnels to be created, ready to go
+sleep 10s 
+
 # start pre-reduction publisher
 nohup /var/lib/jobs/$JOB_NAME/reducer/venv/bin/python3 /var/lib/jobs/$JOB_NAME/reducer/publisher.py &
 prereduction_publisher_process=$!
@@ -22,7 +25,8 @@ reduction_writer_process=$!
 
 # Start x reducers
 cpu_count=$(grep -c ^processor /proc/cpuinfo)
-worker_count=$(( cpu_count / 2 ))
+#worker_count=$(( cpu_count / 2 ))
+worker_count=$(( cpu_count / 1 ))
 
 # start reducers
 reducer_processes=()
