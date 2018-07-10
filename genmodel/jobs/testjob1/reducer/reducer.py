@@ -9,7 +9,7 @@ import re
 # set up logging
 log_filename='reducer_{}.log'.format(os.getpid())
 logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname) [%(filename)s:%(lineno)d] %(message)s',
-    filename='/var/log/nlpjobs/{}.log'.format(log_filename),
+    filename='/var/log/nlpjob/{}'.format(log_filename),
     datefmt='%Y-%m-%dT%H:%M:%S%z',
     level=logging.DEBUG)
 logger = logging.getLogger('reducer')
