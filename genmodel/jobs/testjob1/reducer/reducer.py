@@ -1,9 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from reducer_helper import get_reduction
+import logging
 import os
 import pika
 import re
+
+# set up logging
+log_filename='reducer_{}.log'.format(os.getpid())
+logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname) [%(filename)s:%(lineno)d] %(message)s',
+    filename='/var/log/nlpjobs/{}.log'.format(log_filename),
+    datefmt='%Y-%m-%dT%H:%M:%S%z',
+    level=logging.DEBUG)
+logger = logging.getLogger('reducer')
 
 try:
     JOB_NAME = os.environ['JOB_NAME']
@@ -14,6 +23,7 @@ try:
     REDUCTIONS_BASE = os.environ['REDUCTIONS_QUEUE_BASE']
     REDUCTIONS_QUEUE = REDUCTIONS_BASE + '_' + JOB_NAME
 except KeyError as e:
+    logger.critical("important environment variables were not set.")
     raise Exception('Warning: Important environment variables were not set')
 
 def handle_message(ch, method, properties, body):
@@ -22,9 +32,9 @@ def handle_message(ch, method, properties, body):
         for reduction in get_reduction(body):
             channel.basic_publish(exchange='', routing_key=REDUCTIONS_QUEUE,
                     body=reduction)
+        logger.info("successfully reduced message")
     except Exception as e:
-        print(e) # log exception, but just move on
-        raise(e)
+        logger.error("problem handling message - {}".format(e))
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 

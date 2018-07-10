@@ -1,0 +1,24 @@
+---
+# this is friom the D.O setup example. If it doesn't work, try modifying
+# https://raw.githubusercontent.com/elastic/beats/master/filebeat/filebeat.yml
+# or check it out for more options if needed
+filebeat:
+  prospectors:
+    -
+      paths:
+        - /var/log/nlpjobs/*
+      input_type: log
+      document_type: nlpjoblog
+  registry_file: /var/lib/filebeat/registry
+output:
+  logstash:
+    hosts: ["logs.quill.org:5044"]
+    bulk_max_size: 1024
+    tls:
+      certificate_authorities: ["/etc/pki/tls/certs/logstash-forwarder.crt"]
+shipper:
+
+logging:
+  files:
+    rotateeverybytes: 10485760 # = 10MB
+...
