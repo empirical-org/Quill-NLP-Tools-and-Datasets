@@ -98,11 +98,11 @@
     copy:
       src: /root/certs/logstash-forwarder.crt
       dest: /etc/pki/tls/certs/logstash-forwarder.crt
-  - name: Install filebeat package: create the Beats source list
+  - name: Install filebeat package, create the Beats source list
     shell: echo "deb https://packages.elastic.co/beats/apt stable main" |  tee -a /etc/apt/sources.list.d/beats.list
-  - name: Install filebeat package: add elastic search GPG key
+  - name: Install filebeat package, add elastic search GPG key
     shell: wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add - 
-  - name: Install filebeat package: finish install
+  - name: Install filebeat package, finish install
     apt:
       name: filebeat
       update_cache: yes
