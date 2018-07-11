@@ -131,7 +131,7 @@
       virtualenv: /var/lib/jobs/{{ job_name }}/vectorizer/venv
       virtualenv_python: python3
   - name: Change the working directory, then execute start script
-    shell: nohup ./start.sh > /var/logs/jobrunnerlogs/{{ job_name }}.log 2>&1 </dev/null &
+    shell: nohup ./start.sh > /var/log/jobrunnerlogs/{{ job_name }}.log 2>&1 </dev/null &
     args:
       chdir: /var/lib/jobs/{{ job_name }}/
       executable: /bin/bash
