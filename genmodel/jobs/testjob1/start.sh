@@ -43,13 +43,22 @@ do
     export r=$(curl $JOB_MANAGER/jobs/$JOB_ID/state) && [ $r == \"reduced\" ] && break || continue
 done
 
+
+# TODO: bad code, remove this - fix should be in reducers where job state is
+# updated
+# wait for all reducers in queue to finish
+sleep 5m
+
+
+# TODO: should we kill reducers and reduction publishers?  maybe just don't
+# bother?
 # kill all reducers
-for p in "${reducer_processes[@]}"; do
-  kill -9 $p
-done
+#for p in "${reducer_processes[@]}"; do
+#  kill -9 $p
+#done
 # kill prereduction publisher and reduction writer
-kill -9 $prereduction_publisher_process
-kill -9 $reduction_writer_process
+#kill -9 $prereduction_publisher_process
+#kill -9 $reduction_writer_process
 
 # start pre-vectorization publisher
 nohup /var/lib/jobs/$JOB_NAME/vectorizer/venv/bin/python3 /var/lib/jobs/$JOB_NAME/vectorizer/publisher.py &

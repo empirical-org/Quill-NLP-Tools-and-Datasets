@@ -18,7 +18,7 @@ log_format = '%(levelname)s %(asctime)s {pid} {filename} %(lineno)d %(message)s'
 logging.basicConfig(format=log_format,
     filename='/var/log/reducerlogs/{}'.format(log_filename),
     datefmt='%Y-%m-%dT%H:%M:%S%z',
-    level=logging.DEBUG)
+    level=logging.INFO)
 logger = logging.getLogger('publisher')
 
 try:
@@ -63,7 +63,7 @@ if __name__ == '__main__':
             (json.dumps(DROPLET_NAME), JOB_ID))
     continue_running = cur.fetchone()[0] == 1
     if not continue_running:
-        logger.info('job already has dedicated publisher')
+        logger.info('job already has dedicated pre-reductions publisher, exiting')
         raise Exception('This job already has a dedicated reduction publisher. Exiting')
 
     # Issue select statements - cast to json from jsonb
@@ -86,7 +86,7 @@ if __name__ == '__main__':
             # add the sent string to the queue
             channel.basic_publish(exchange='', routing_key=PRE_REDUCTIONS_QUEUE,
                     body=json.dumps(sent_str))
-            logger.debug('queued pre-reduction')
+            logger.info('queued pre-reduction')
             q = channel.queue_declare(queue=PRE_REDUCTIONS_QUEUE)
             q_len = q.method.message_count
         sleep(1) # when the q length reaches x, take a little break

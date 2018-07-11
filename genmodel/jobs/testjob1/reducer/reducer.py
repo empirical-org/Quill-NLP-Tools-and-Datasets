@@ -18,7 +18,7 @@ log_format = '%(levelname)s %(asctime)s {pid} {filename} %(lineno)d %(message)s'
 logging.basicConfig(format=log_format,
     filename='/var/log/reducerlogs/{}'.format(log_filename),
     datefmt='%Y-%m-%dT%H:%M:%S%z',
-    level=logging.DEBUG)
+    level=logging.INFO)
 logger = logging.getLogger('reducer')
 
 try:

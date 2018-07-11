@@ -19,7 +19,7 @@ log_format = '%(levelname)s %(asctime)s {pid} {filename} %(lineno)d %(message)s'
 logging.basicConfig(format=log_format,
     filename='/var/log/reducerlogs/{}'.format(log_filename),
     datefmt='%Y-%m-%dT%H:%M:%S%z',
-    level=logging.DEBUG)
+    level=logging.INFO)
 logger = logging.getLogger('writer')
 
 try:
@@ -52,7 +52,7 @@ def handle_message(ch, method, properties, body):
         cur.execute('INSERT INTO reductions (reduction, job_id) VALUES (%s, %s)',
                 (body,JOB_ID))
         conn.commit()
-        logger.debug('inserted reduction')
+        logger.info('inserted reduction')
     except psycopg2.Error as e:
         logger.error('psycopg2 error, {}'.format(e.diag.message_primary))
         conn.rollback()
