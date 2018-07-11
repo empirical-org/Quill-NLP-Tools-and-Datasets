@@ -13,14 +13,21 @@ import tarfile
 import threading
 import time
 import yaml
+import socket
+
+FNAME=os.path.basename(__file__)
+PID=os.getpid()
+HOST=socket.gethostname()
 
 # set up logging
-logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
-    filename='/root/jobs/jobmanager.log',
-    datefmt='%d-%m-%Y:%H:%M:%S',
+log_filename='nlpjobmanagerapi_{}.log'.format(os.getpid())
+log_format = '%(levelname) %(asctime)s {pid} {filename} %(lineno)d %(message)s'.format(
+        pid=PID, filename=FNAME)
+logging.basicConfig(format=log_format,
+    filename='/var/log/nlpjobmanagerapilogs/{}'.format(log_filename),
+    datefmt='%Y-%m-%dT%H:%M:%S%z',
     level=logging.DEBUG)
-logger = logging.getLogger('job-manager-api')
-
+logger = logging.getLogger('nlpjobmanagerapi')
 
 
 # Connect to Database
