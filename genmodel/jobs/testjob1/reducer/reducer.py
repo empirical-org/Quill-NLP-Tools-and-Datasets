@@ -5,11 +5,18 @@ import logging
 import os
 import pika
 import re
+import socket
+
+FNAME=os.path.basename(__file__)
+PID=os.getpid()
+HOST=socket.gethostname()
 
 # set up logging
 log_filename='reducer_{}.log'.format(os.getpid())
-logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname) [%(filename)s:%(lineno)d] %(message)s',
-    filename='/var/log/nlpjob/{}'.format(log_filename),
+log_format = '%(levelname) %(asctime)s {pid} {filename} %(lineno)d %(message)s'.format(
+        pid=PID, filename=FNAME)
+logging.basicConfig(format=log_format,
+    filename='/var/log/reducerlogs/{}'.format(log_filename),
     datefmt='%Y-%m-%dT%H:%M:%S%z',
     level=logging.DEBUG)
 logger = logging.getLogger('reducer')
@@ -24,7 +31,7 @@ try:
     REDUCTIONS_QUEUE = REDUCTIONS_BASE + '_' + JOB_NAME
 except KeyError as e:
     logger.critical("important environment variables were not set.")
-    raise Exception('Warning: Important environment variables were not set')
+    raise Exception('important environment variables were not set')
 
 def handle_message(ch, method, properties, body):
     body = body.decode('utf-8')
@@ -32,7 +39,7 @@ def handle_message(ch, method, properties, body):
         for reduction in get_reduction(body):
             channel.basic_publish(exchange='', routing_key=REDUCTIONS_QUEUE,
                     body=reduction)
-        logger.info("successfully reduced message")
+        logger.debug("queued reduction")
     except Exception as e:
         logger.error("problem handling message - {}".format(e))
     ch.basic_ack(delivery_tag=method.delivery_tag)

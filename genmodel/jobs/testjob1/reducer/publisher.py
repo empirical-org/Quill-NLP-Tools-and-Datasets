@@ -4,6 +4,21 @@ import os
 import pika
 import psycopg2
 import random
+import socket
+
+FNAME=os.path.basename(__file__)
+PID=os.getpid()
+HOST=socket.gethostname()
+
+# set up logging
+log_filename='publisher_{}.log'.format(os.getpid())
+log_format = '%(levelname) %(asctime)s {pid} {filename} %(lineno)d %(message)s'.format(
+        pid=PID, filename=FNAME)
+logging.basicConfig(format=log_format,
+    filename='/var/log/reducerlogs/{}'.format(log_filename),
+    datefmt='%Y-%m-%dT%H:%M:%S%z',
+    level=logging.DEBUG)
+logger = logging.getLogger('publisher')
 
 try:
     DROPLET_NAME = os.environ['DROPLET_NAME']
@@ -17,6 +32,7 @@ try:
     PRE_REDUCTIONS_QUEUE = PRE_REDUCTIONS_BASE + '_' + JOB_NAME
     RABBIT = os.environ.get('RABBITMQ_LOCATION', 'localhost')
 except KeyError as e:
+    logger.critical("important environment variables were not set")
     raise Exception('Warning: Important environment variables were not set')
 
 
@@ -46,6 +62,7 @@ if __name__ == '__main__':
             (json.dumps(DROPLET_NAME), JOB_ID))
     continue_running = cur.fetchone()[0] == 1
     if not continue_running:
+        logger.info('job already has dedicated publisher')
         raise Exception('This job already has a dedicated reduction publisher. Exiting')
 
     # Issue select statements - cast to json from jsonb
@@ -68,9 +85,11 @@ if __name__ == '__main__':
             # add the sent string to the queue
             channel.basic_publish(exchange='', routing_key=PRE_REDUCTIONS_QUEUE,
                     body=json.dumps(sent_str))
+            logger.debug('queued pre-reduction')
             q = channel.queue_declare(queue=PRE_REDUCTIONS_QUEUE)
             q_len = q.method.message_count
         sleep(1) # when the q length reaches x, take a little break
+        logger.debug('pre reductions queue at capacity, sleeping')
         q = channel.queue_declare(queue=PRE_REDUCTIONS_QUEUE)
         q_len = q.method.message_count
 
@@ -79,6 +98,7 @@ if __name__ == '__main__':
                     WHERE id=%s
                 """, ('pre-reductions-queued',JOB_ID))
     conn.commit()
+    logger.info('all pre-reductions have been queued. waiting for acks')
 
     # wait until all messages have been acked
     q = channel.queue_declare(queue=PRE_REDUCTIONS_QUEUE)
@@ -88,13 +108,14 @@ if __name__ == '__main__':
         q = channel.queue_declare(queue=PRE_REDUCTIONS_QUEUE)
         q_len = q.method.message_count
 
-    # update state to vectorized
+    logger.info('all pre-reductions have been acked. setting state to reduced.')
+
+    # update state to reduced
     cur.execute("""UPDATE jobs SET state=%s, updated=DEFAULT
                     WHERE id=%s
                 """, ('reduced',JOB_ID))
     conn.commit()
 
-    print("{} has been fully populated.".format(PRE_REDUCTIONS_QUEUE))
-    print("Publisher Exiting.")
+    logger.info('exiting')
     cur.close()
     conn.close()

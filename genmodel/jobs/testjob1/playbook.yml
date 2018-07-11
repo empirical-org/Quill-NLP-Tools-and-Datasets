@@ -93,15 +93,16 @@
       state: directory
     with_items:
       - /etc/pki/tls/certs
-      - /var/log/nlpjob
+      - /var/log/reducerlogs
+      - /var/log/jobrunnerlogs
   - name: Copy the SSL Certificate for the ELK server (nlp job log manager) into place
     copy:
-      src: /root/certs/logstash-forwarder.crt
+      src: /etc/pki/tls/certs/logstash-forwarder.crt
       dest: /etc/pki/tls/certs/logstash-forwarder.crt
   - name: Install filebeat package, create the Beats source list
     shell: echo "deb https://packages.elastic.co/beats/apt stable main" |  tee -a /etc/apt/sources.list.d/beats.list
   - name: Install filebeat package, add elastic search GPG key
-    shell: wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add - 
+    shell: wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | apt-key add - 
   - name: Install filebeat package, finish install
     apt:
       name: filebeat
@@ -116,6 +117,8 @@
       state: restarted
       enabled: yes
       name: filebeat
+  - name: Restart filebeat (2)
+    shell: update-rc.d filebeat defaults 95 10
   # Prepare vectorizer and reducer and start job
   - name: Install reducer requirements
     pip:
@@ -128,7 +131,7 @@
       virtualenv: /var/lib/jobs/{{ job_name }}/vectorizer/venv
       virtualenv_python: python3
   - name: Change the working directory, then execute start script
-    shell: nohup ./start.sh > {{ job_name }}.log 2>&1 </dev/null &
+    shell: nohup ./start.sh > /var/logs/jobrunnerlogs/{{ job_name }}.log 2>&1 </dev/null &
     args:
       chdir: /var/lib/jobs/{{ job_name }}/
       executable: /bin/bash
