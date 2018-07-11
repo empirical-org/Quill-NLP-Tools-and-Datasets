@@ -39,7 +39,7 @@ def handle_message(ch, method, properties, body):
         for reduction in get_reduction(body):
             channel.basic_publish(exchange='', routing_key=REDUCTIONS_QUEUE,
                     body=reduction)
-        logger.debug("queued reduction")
+        logger.info("queued reduction")
     except Exception as e:
         logger.error("problem handling message - {}".format(e))
     ch.basic_ack(delivery_tag=method.delivery_tag)
