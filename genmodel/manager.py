@@ -21,7 +21,7 @@ HOST=socket.gethostname()
 
 # set up logging
 log_filename='nlpjobmanagerapi_{}.log'.format(os.getpid())
-log_format = '%(levelname) %(asctime)s {pid} {filename} %(lineno)d %(message)s'.format(
+log_format = '%(levelname)s %(asctime)s {pid} {filename} %(lineno)d %(message)s'.format(
         pid=PID, filename=FNAME)
 logging.basicConfig(format=log_format,
     filename='/var/log/nlpjobmanagerapilogs/{}'.format(log_filename),
