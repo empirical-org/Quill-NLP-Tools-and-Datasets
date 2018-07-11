@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from psycopg2.extras import execute_values
 import json
+import logging
 import os
 import pika
 import psycopg2

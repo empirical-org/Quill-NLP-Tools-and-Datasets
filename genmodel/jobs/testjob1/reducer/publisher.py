@@ -1,5 +1,6 @@
 from time import sleep
 import json
+import logging
 import os
 import pika
 import psycopg2
