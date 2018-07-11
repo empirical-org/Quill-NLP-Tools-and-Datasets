@@ -186,13 +186,12 @@ def add_labeled_data_to_database(labeled_data_fname, job_id):
             # drop the job_id_idx for faster inserts
             cur.execute("DROP INDEX IF EXISTS job_id_idx")
             conn.commit()
-            logger.debug("adding labled data to database...")
             # insert data
             reader = csv.reader(labeled_data_stream)
             for row in reader:
-                logger.debug('read row, {}'.format(row))
                 cur.execute("INSERT INTO labeled_data (data, label, job_id) values(%s, %s, %s)",
                         (row[0], row[1], job_id))
+                logger.debug('inserted labeled database row')
                 conn.commit()
 
             # readd index
