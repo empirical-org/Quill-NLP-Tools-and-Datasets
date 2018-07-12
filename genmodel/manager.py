@@ -359,7 +359,7 @@ def job_for_id(job_id):
 @app.route('/droplets/<droplet_uid>', methods=["DELETE"])
 def individual_droplet(droplet_uid):
     # find droplet uid
-    cur.execute('''UPDATE droplet SET updated=DEFAULT, status="destroying"
+    cur.execute('''UPDATE droplets SET updated=DEFAULT, status="destroying"
             WHERE uid=%s''',(droplet_uid,)) 
     conn.commit()
     # send delete request to D.O api
@@ -370,13 +370,13 @@ def individual_droplet(droplet_uid):
     r = requests.delete(delete_droplets_url, headers=headers)
     if r.status_code == 204:
         # update droplet state in db to deleted
-        cur.execute('''UPDATE droplet
+        cur.execute('''UPDATE droplets
                 SET updated=DEFAULT, status="destroyed"
                 WHERE uid=%s''',(droplet_uid,)) 
         conn.commit()
         return '', 204
     else:
-        cur.execute('''UPDATE droplet
+        cur.execute('''UPDATE droplets
                 SET updated=DEFAULT, status="failed-to-destroy",
                 meta=jsonb_set(meta, '{destroy_failed_response}', %s)
                 WHERE uid=%s''',(droplet_uid, r.text)) 
