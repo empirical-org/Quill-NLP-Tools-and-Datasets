@@ -83,13 +83,19 @@ do
     export r=$(curl $JOB_MANAGER/jobs/$JOB_ID/state) && [ $r == \"vectorized\" ] && break || continue
 done
 
-# kill all vectorizers
-for p in "${vectorizer_processes[@]}"; do
-  kill -9 $p
-done
-# kill prevectorization publisher and vectorization writer
-kill -9 $prevectorization_publisher_process
-kill -9 $vectorization_writer_process
+# TODO: bad code, remove this - fix should be in reducers where job state is
+# updated
+# wait for all reducers in queue to finish
+sleep 5m
+
+## TODO: do we need to kill these? we delete the droplet anyway. commenting out
+## kill all vectorizers
+#for p in "${vectorizer_processes[@]}"; do
+#  kill -9 $p
+#done
+## kill prevectorization publisher and vectorization writer
+#kill -9 $prevectorization_publisher_process
+#kill -9 $vectorization_writer_process
 
 # once vectorization is complete, the droplet is no longer needed, droplet makes
 # a DELETE request on itself.
