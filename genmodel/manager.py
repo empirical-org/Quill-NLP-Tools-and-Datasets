@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template, jsonify
+from shutil import copyfile
 from tabulate import tabulate
 from uuid import uuid4
 import csv
@@ -8,12 +9,12 @@ import os
 import psycopg2
 import requests
 import shlex
+import socket
 import subprocess
 import tarfile
 import threading
 import time
 import yaml
-import socket
 
 FNAME=os.path.basename(__file__)
 PID=os.getpid()
@@ -215,7 +216,8 @@ def set_job_state(job_id, state):
     conn.commit()
 
 
-def run_job(job_description, job_id, job_name, labeled_data_fname, playbook_fname):
+def run_job(job_description, job_id, job_name, labeled_data_fname,
+        playbook_fname, job_tarball_fname):
     try:
         logger.info("adding labeled data to database")
         # add labeled data to database (job.state, loaded-data)
@@ -259,6 +261,10 @@ def run_job(job_description, job_id, job_name, labeled_data_fname, playbook_fnam
         logger.info('removing temporary files created for this job')
         os.remove(playbook_fname)
         os.remove(labeled_data_fname)
+
+        logger.info('archive job tarball')
+        archived_filename = '/var/lib/jobs/archived/{}.tar.gz'.format(job_id)
+        copyfile(job_tarball_fname, archived_filename)
     except psycopg2.Error as e:
         ref = 'https://www.postgresql.org/docs/current/static/errcodes-appendix.html'
         logger.error('pgcode {}'.format(e.pgcode) + ref)
@@ -281,7 +287,8 @@ def jobs():
         try:
             # gather information to create job
             job_name = request.form['job']
-            with tarfile.open('/root/jobs/{}.tar.gz'.format(job_name)) as tar:
+            job_tarball_fname = '/root/jobs/{}.tar.gz'.format(job_name)
+            with tarfile.open(job_tarball) as tar:
                 # save ref to labeled data stream
                 ld_fname = '{}/labeled_data.csv'.format(job_name)
                 labeled_data_stream = tar.extractfile(ld_fname)
@@ -308,7 +315,8 @@ def jobs():
             # initialize job in database (job.state, initialized)
             job_id = initizialize_job_in_database(job_name)
             thr = threading.Thread(target=run_job, args=(job_description,
-                job_id, job_name, labeled_data_fname, playbook_fname), kwargs={})
+                job_id, job_name, labeled_data_fname, playbook_fname,
+                job_tarball_fname), kwargs={})
             thr.start() # Will run "post_job"
             if thr.is_alive():
                 return jsonify('Job initialized. Working.'), 202 # 202 accepted, asyc http code
