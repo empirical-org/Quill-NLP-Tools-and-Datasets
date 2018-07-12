@@ -288,7 +288,7 @@ def jobs():
             # gather information to create job
             job_name = request.form['job']
             job_tarball_fname = '/root/jobs/{}.tar.gz'.format(job_name)
-            with tarfile.open(job_tarball) as tar:
+            with tarfile.open(job_tarball_fname) as tar:
                 # save ref to labeled data stream
                 ld_fname = '{}/labeled_data.csv'.format(job_name)
                 labeled_data_stream = tar.extractfile(ld_fname)
