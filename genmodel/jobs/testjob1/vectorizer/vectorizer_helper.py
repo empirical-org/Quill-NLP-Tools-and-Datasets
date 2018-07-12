@@ -70,7 +70,8 @@ conn.close()
 # {indicies={index:count, index:count, ...} reductions=num_reductions}
 def get_vector(string):
     result = {'indices':{}, 'reductions':num_reductions}
-    pre_reduction = json.dumps({'data':string})
+    pre_reduction = json.dumps(string['sent_str'])
+    logger.error('Pre reduction is, {}'.format(pre_reduction))
     for reduction in get_reduction(pre_reduction):
         logger.error('my bad reduction is, {}'.format(reduction))
         index = reduction2idx.get(reduction)
