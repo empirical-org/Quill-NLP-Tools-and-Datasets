@@ -360,7 +360,7 @@ def job_for_id(job_id):
 def individual_droplet(droplet_uid):
     # find droplet uid
     cur.execute('''UPDATE droplet SET updated=DEFAULT, status="destroying"
-            WHERE uid=%s''',(droplet_uid)) 
+            WHERE uid=%s''',(droplet_uid,)) 
     conn.commit()
     # send delete request to D.O api
     delete_droplets_url = "https://api.digitalocean.com/v2/droplets/{}".format(
@@ -372,7 +372,7 @@ def individual_droplet(droplet_uid):
         # update droplet state in db to deleted
         cur.execute('''UPDATE droplet
                 SET updated=DEFAULT, status="destroyed"
-                WHERE uid=%s''',(droplet_uid)) 
+                WHERE uid=%s''',(droplet_uid,)) 
         conn.commit()
         return '', 204
     else:
