@@ -34,8 +34,8 @@ except KeyError as e:
     raise Exception('important environment variables were not set')
 
 def handle_message(ch, method, properties, body):
-    body = body.decode('utf-8')
     try:
+        body = body.decode('utf-8')
         for reduction in get_reduction(body):
             channel.basic_publish(exchange='', routing_key=REDUCTIONS_QUEUE,
                     body=reduction)

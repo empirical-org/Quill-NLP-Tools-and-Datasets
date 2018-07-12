@@ -1,8 +1,26 @@
 from time import sleep
 import json
+import logging
 import os
 import pika
 import psycopg2
+import socket
+
+
+FNAME=os.path.basename(__file__)
+PID=os.getpid()
+HOST=socket.gethostname()
+
+# set up logging
+log_filename='publisher_{}.log'.format(os.getpid())
+log_format = '%(levelname)s %(asctime)s {pid} {filename} %(lineno)d %(message)s'.format(
+        pid=PID, filename=FNAME)
+logging.basicConfig(format=log_format,
+    filename='/var/log/vectorizerlogs/{}'.format(log_filename),
+    datefmt='%Y-%m-%dT%H:%M:%S%z',
+    level=logging.INFO)
+logger = logging.getLogger('publisher')
+
 
 try:
     DB_NAME = os.environ.get('DB_NAME', 'nlp')
@@ -16,6 +34,7 @@ try:
     PRE_VECTORS_QUEUE = PRE_VECTORS_BASE + '_' + JOB_NAME
     RABBIT = os.environ.get('RABBITMQ_LOCATION', 'localhost')
 except KeyError as e:
+    logger.critical('import environment variables were not set')
     raise Exception('Warning: Important environment variables were not set')
 
 
@@ -45,6 +64,7 @@ if __name__ == '__main__':
             (json.dumps(DROPLET_NAME),JOB_ID))
     continue_running = cur.fetchone()[0] == 1
     if not continue_running:
+        logger.info('job has dedicated vector publisher. exiting')
         raise Exception('This job already has a dedicated vector publisher. Exiting')
 
     # Issue select statements - cast data to json from jsonb
@@ -69,9 +89,11 @@ if __name__ == '__main__':
             # add the sent string to the queue
             channel.basic_publish(exchange='', routing_key=PRE_VECTORS_QUEUE,
                     body=sent_str)
+            logger.info('queued pre-vector')
             q = channel.queue_declare(queue=PRE_VECTORS_QUEUE)
             q_len = q.method.message_count
         sleep(1) # when the q length reaches x, take a little break
+        logger.debug('pre vectors queue at capacity, sleeping')
         q = channel.queue_declare(queue=PRE_VECTORS_QUEUE)
         q_len = q.method.message_count
 
@@ -80,6 +102,7 @@ if __name__ == '__main__':
                     WHERE id=%s
                 """, ('pre-vectors-queued',JOB_ID))
     conn.commit()
+    logger.info('all pre-vectors have been queued. waiting for acks')
 
     # wait until all messages have been acked
     q = channel.queue_declare(queue=PRE_VECTORS_QUEUE)
@@ -89,13 +112,15 @@ if __name__ == '__main__':
         q = channel.queue_declare(queue=PRE_VECTORS_QUEUE)
         q_len = q.method.message_count
 
+    logger.info('all pre-vectors have been acked. setting state to vectorized.')
+
     # update state to vectorized
     cur.execute("""UPDATE jobs SET state=%s, updated=DEFAULT
                     WHERE id=%s
                 """, ('vectorized',JOB_ID))
     conn.commit()
 
-    print("{} has been fully populated.".format(PRE_VECTORS_QUEUE))
-    print("Publisher Exiting.")
+    logger.info('exiting')
+
     cur.close()
     conn.close()

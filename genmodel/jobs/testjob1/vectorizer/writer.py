@@ -2,9 +2,25 @@
 # -*- coding: utf-8 -*-
 from psycopg2.extras import execute_values
 import json
+import logging
 import os
 import pika
 import psycopg2
+import socket
+
+FNAME=os.path.basename(__file__)
+PID=os.getpid()
+HOST=socket.gethostname()
+
+# set up logging
+log_filename='writer_{}.log'.format(os.getpid())
+log_format = '%(levelname)s %(asctime)s {pid} {filename} %(lineno)d %(message)s'.format(
+        pid=PID, filename=FNAME)
+logging.basicConfig(format=log_format,
+    filename='/var/log/vectorizerlogs/{}'.format(log_filename),
+    datefmt='%Y-%m-%dT%H:%M:%S%z',
+    level=logging.INFO)
+logger = logging.getLogger('writer')
 
 try:
     DB_NAME = os.environ.get('DB_NAME', 'nlp')
@@ -18,6 +34,7 @@ try:
     VECTORS_QUEUE = VECTORS_BASE + '_' + JOB_NAME
     WRITER_PREFETCH_COUNT = int(os.environ.get('WRITER_PREFETCH_COUNT', 100))
 except KeyError as e:
+    logger.critical('important environment variables were not set')
     raise Exception('Warning: Important environment variables were not set')
 
 # Connect to the database
@@ -30,10 +47,20 @@ cur = conn.cursor()
 # 2. Write reduced strings to database 
 
 def handle_message(ch, method, properties, body):
-    body = body.decode('utf-8')
-    cur.execute('INSERT INTO vectors (vector, job_id) VALUES (%s,%s)',
-            (body,JOB_ID))
-    conn.commit()
+    try:
+        body = body.decode('utf-8')
+        cur.execute('INSERT INTO vectors (vector, job_id) VALUES (%s,%s)',
+                (body,JOB_ID))
+        conn.commit()
+        logger.info('inserted vector')
+    except psycopg2.Error as e:
+        logger.error('problem handling message, psycopg2 error, {}'.format(
+            e.diag.message_primary))
+        conn.rollback()
+    except UnicodeError as e:
+        logger.error("problem handling message, unicode error - {}".format(
+            e))
+
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
@@ -53,6 +80,7 @@ if __name__ == '__main__':
             (json.dumps(DROPLET_NAME),JOB_ID))
     continue_running = cur.fetchone()[0] == 1
     if not continue_running:
+        logger.info('job has dedicated vector writer. exiting')
         raise Exception('This job already has a dedicated vector writer. Exiting')
 
     connection = pika.BlockingConnection(pika.ConnectionParameters(RABBIT))

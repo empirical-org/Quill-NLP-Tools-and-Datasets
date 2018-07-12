@@ -2,9 +2,26 @@
 # -*- coding: utf-8 -*-
 from vectorizer_helper import get_vector
 import json
+import logging
 import os
 import pika
 import re
+import socket
+
+
+FNAME=os.path.basename(__file__)
+PID=os.getpid()
+HOST=socket.gethostname()
+
+# set up logging
+log_filename='vectorizer_{}.log'.format(os.getpid())
+log_format = '%(levelname)s %(asctime)s {pid} {filename} %(lineno)d %(message)s'.format(
+        pid=PID, filename=FNAME)
+logging.basicConfig(format=log_format,
+    filename='/var/log/vectorizerlogs/{}'.format(log_filename),
+    datefmt='%Y-%m-%dT%H:%M:%S%z',
+    level=logging.INFO)
+logger = logging.getLogger('vectorizer')
 
 try:
     JOB_NAME = os.environ['JOB_NAME']
@@ -15,6 +32,7 @@ try:
     VECTORS_BASE = os.environ['VECTORS_QUEUE_BASE']
     VECTORS_QUEUE = VECTORS_BASE + '_' + JOB_NAME
 except KeyError as e:
+    logger.critical('important environment variables were not set')
     raise Exception('Warning: Important environment variables were not set')
 
 
@@ -25,8 +43,9 @@ def handle_message(ch, method, properties, body):
         vector = get_vector(body)
         channel.basic_publish(exchange='', routing_key=VECTORS_QUEUE,
                 body=json.dumps(vector))
+        logger.info('queued vector')
     except Exception as e:
-        print(e) # log exception, but just move on
+        logger.error("problem handling message - {}".format(e))
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 

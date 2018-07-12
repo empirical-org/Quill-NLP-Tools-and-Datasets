@@ -6,6 +6,23 @@ import pika
 import psycopg2
 import random
 import re
+import logging
+import socket
+
+
+FNAME=os.path.basename(__file__)
+PID=os.getpid()
+HOST=socket.gethostname()
+
+# set up logging
+log_filename='vectorizer_helper_{}.log'.format(os.getpid())
+log_format = '%(levelname)s %(asctime)s {pid} {filename} %(lineno)d %(message)s'.format(
+        pid=PID, filename=FNAME)
+logging.basicConfig(format=log_format,
+    filename='/var/log/vectorizerlogs/{}'.format(log_filename),
+    datefmt='%Y-%m-%dT%H:%M:%S%z',
+    level=logging.INFO)
+logger = logging.getLogger('vectorizer_helper')
 
 # Constants
 
@@ -16,13 +33,10 @@ DB_PORT = int(os.environ.get('DB_PORT', 5432))
 DB_USER = os.environ.get('DB_USER', DB_NAME)
 JOB_ID = os.environ.get('JOB_ID')
 
-print('Connecting to the database... ')
-
 # Connect to postgres
 conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD,
         port=DB_PORT, host=DB_HOST)
 cur = conn.cursor()
-
 
 # Select unique reductions in order of regularity, must occur at least thrice 
 cur.execute('''SELECT reduction,count(*) from reductions
@@ -42,10 +56,6 @@ num_reductions = len(reduction2idx)
 # close connections to database
 cur.close()
 conn.close()
-
-# Vectorizing sentence keys ################################################
-print('Vectorizing sentence keys...')
-
 
 # vectors must be convertable to  a numpy array. 
 # NOTE: storing the number of reductions on each object is not necessary and is

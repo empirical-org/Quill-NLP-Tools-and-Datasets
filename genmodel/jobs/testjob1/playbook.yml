@@ -93,8 +93,9 @@
       state: directory
     with_items:
       - /etc/pki/tls/certs
-      - /var/log/reducerlogs
       - /var/log/jobrunnerlogs
+      - /var/log/reducerlogs
+      - /var/log/vectorizerlogs
   - name: Copy the SSL Certificate for the ELK server (nlp job log manager) into place
     copy:
       src: /etc/pki/tls/certs/logstash-forwarder.crt

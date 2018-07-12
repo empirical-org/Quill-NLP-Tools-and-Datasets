@@ -47,15 +47,19 @@ cur = conn.cursor()
 # 2. Write reduced strings to database 
 
 def handle_message(ch, method, properties, body):
-    body = body.decode('utf-8')
     try:
+        body = body.decode('utf-8')
         cur.execute('INSERT INTO reductions (reduction, job_id) VALUES (%s, %s)',
                 (body,JOB_ID))
         conn.commit()
         logger.info('inserted reduction')
     except psycopg2.Error as e:
-        logger.error('psycopg2 error, {}'.format(e.diag.message_primary))
+        logger.error('problem handling message, psycopg2 error, {}'.format(
+            e.diag.message_primary))
         conn.rollback()
+    except UnicodeError as e:
+        logger.error("problem handling message, unicode error - {}".format(
+            e))
         
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
