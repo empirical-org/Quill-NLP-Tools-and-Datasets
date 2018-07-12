@@ -250,9 +250,15 @@ def run_job(job_description, job_id, job_name, labeled_data_fname, playbook_fnam
                 hosts_string={} -e job_id={} -e job_name={}'.format(
                         playbook_fname, hosts_string, job_id, job_name)
         logger.info(ansible_command)
+        # subprocess.call is blocking, and this is IMPORTANT.
+        # if we switch to Popen, make sure the call is blocking.
         subprocess.call(shlex.split(ansible_command))
         logger.info("droplets working, job {}-{} started successfully".format(
             job_name, job_id))
+
+        logger.info('removing temporary files created for this job')
+        os.remove(playbook_fname)
+        os.remove(labeled_data_fname)
     except psycopg2.Error as e:
         ref = 'https://www.postgresql.org/docs/current/static/errcodes-appendix.html'
         logger.error('pgcode {}'.format(e.pgcode) + ref)
