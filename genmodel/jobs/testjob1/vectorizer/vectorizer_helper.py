@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from reducer_helper import get_reduction
 from time import sleep
+import json
+import logging
 import os
 import pika
 import psycopg2
 import random
 import re
-import logging
 import socket
-from reducer_helper import get_reduction
 
 
 FNAME=os.path.basename(__file__)
@@ -68,7 +69,8 @@ conn.close()
 # {indicies={index:count, index:count, ...} reductions=num_reductions}
 def get_vector(string):
     result = {'indices':{}, 'reductions':num_reductions}
-    for reduction in get_reduction(string):
+    pre_reduction = json.dumps({'data':string})
+    for reduction in get_reduction(pre_reduction):
         index = reduction2idx.get(reduction)
         if index:
             result['indices'][index] = result['indices'].get(index, 0) + 1
