@@ -8,6 +8,7 @@ import random
 import re
 import logging
 import socket
+from reducer_helper import get_reduction
 
 
 FNAME=os.path.basename(__file__)
