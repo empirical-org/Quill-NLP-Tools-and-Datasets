@@ -77,7 +77,7 @@ def get_vector(pre_vector):
         logger.error('my bad reduction is, {}'.format(reduction))
         index = reduction2idx.get(reduction)
         logger.error('this is None I think, {}'.format(index))
-        if index:
+        if index != None:
             result['indices'][index] = result['indices'].get(index, 0) + 1
     return result
 
