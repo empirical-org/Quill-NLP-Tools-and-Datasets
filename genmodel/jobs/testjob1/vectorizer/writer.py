@@ -49,8 +49,10 @@ cur = conn.cursor()
 def handle_message(ch, method, properties, body):
     try:
         body = body.decode('utf-8')
-        cur.execute('INSERT INTO vectors (vector, job_id) VALUES (%s,%s)',
-                (body,JOB_ID))
+        vector = json.dumps(json.loads(body)['vector'])
+        label = json.loads(body)['label']
+        cur.execute('INSERT INTO vectors (vector,label,job_id) VALUES (%s,%s,%s)',
+                (vector,label,JOB_ID))
         conn.commit()
         logger.info('inserted vector')
     except psycopg2.Error as e:

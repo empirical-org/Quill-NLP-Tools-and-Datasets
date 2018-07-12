@@ -47,7 +47,7 @@ done
 # TODO: bad code, remove this - fix should be in reducers where job state is
 # updated
 # wait for all reducers in queue to finish
-sleep 5m
+sleep 1m
 
 
 # TODO: should we kill reducers and reduction publishers?  maybe just don't
