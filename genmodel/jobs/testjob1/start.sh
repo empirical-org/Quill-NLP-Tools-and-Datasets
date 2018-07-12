@@ -86,7 +86,7 @@ done
 # TODO: bad code, remove this - fix should be in reducers where job state is
 # updated
 # wait for all reducers in queue to finish
-sleep 5m
+sleep 1m
 
 ## TODO: do we need to kill these? we delete the droplet anyway. commenting out
 ## kill all vectorizers
