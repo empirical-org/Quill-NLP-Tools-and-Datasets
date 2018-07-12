@@ -84,6 +84,8 @@ if __name__ == '__main__':
             n = cur.fetchone()
             sent_str = n if n is None else n[0]
             # add the sent string to the queue
+            # TODO: is this adding a null string to the queue? doesn't seem to
+            # cause issues if it is..
             channel.basic_publish(exchange='', routing_key=PRE_REDUCTIONS_QUEUE,
                     body=json.dumps(sent_str))
             logger.info('queued pre-reduction')

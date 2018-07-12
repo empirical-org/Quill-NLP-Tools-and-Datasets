@@ -84,11 +84,11 @@ if __name__ == '__main__':
     while sent_str:
         while q_len < MAX_QUEUE_LEN and sent_str:
             n = cur.fetchone()
-            sent_str = n if n is None else json.dumps({'sent_str': n[0],
-                'label': n[1]})
+            sent_str = n if n is None else {'sent_str': n[0], 'label': n[1]}
             # add the sent string to the queue
+            # TODO: is this adding a null string to the queue
             channel.basic_publish(exchange='', routing_key=PRE_VECTORS_QUEUE,
-                    body=sent_str)
+                    body=json.dumps(sent_str))
             logger.info('queued pre-vector')
             q = channel.queue_declare(queue=PRE_VECTORS_QUEUE)
             q_len = q.method.message_count
