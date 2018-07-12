@@ -68,9 +68,10 @@ conn.close()
 # Ex:
 # {indices={5:1, 6:2, 500:1, 6003:2} num_reductions=5000}
 # {indicies={index:count, index:count, ...} reductions=num_reductions}
-def get_vector(string):
+def get_vector(pre_vector):
+    pre_vector_dict = json.loads(pre_vector)
     result = {'indices':{}, 'reductions':num_reductions}
-    pre_reduction = json.dumps(string['sent_str'])
+    pre_reduction = json.dumps(pre_vector_dict['sent_str'])
     logger.error('Pre reduction is, {}'.format(pre_reduction))
     for reduction in get_reduction(pre_reduction):
         logger.error('my bad reduction is, {}'.format(reduction))
