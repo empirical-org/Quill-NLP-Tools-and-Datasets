@@ -52,7 +52,6 @@ cur.execute('''SELECT reduction,count(*) from reductions
 # with ~2 million total sentences the number of unique reductions was a little
 # over 290k. ~94k had more than 2 occurrences
 reduction2idx = {n[0]: i for i, n in enumerate(cur)} 
-logger.error('lookie here, {}'.format(reduction2idx))
 num_reductions = len(reduction2idx)
 
 # close connections to database
@@ -72,11 +71,8 @@ def get_vector(pre_vector):
     pre_vector_dict = json.loads(pre_vector)
     result = {'indices':{}, 'reductions':num_reductions}
     pre_reduction = json.dumps(pre_vector_dict['sent_str'])
-    logger.error('Pre reduction is, {}'.format(pre_reduction))
     for reduction in get_reduction(pre_reduction):
-        logger.error('my bad reduction is, {}'.format(reduction))
         index = reduction2idx.get(reduction)
-        logger.error('this is None I think, {}'.format(index))
         if index != None:
             result['indices'][index] = result['indices'].get(index, 0) + 1
     return result
