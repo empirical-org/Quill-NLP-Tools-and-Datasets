@@ -15,6 +15,7 @@ filebeat:
         - /var/log/reducerlogs/*
         - /var/log/jobrunnerlogs/*
         - /var/log/vectorizerlogs/*
+        - /var/log/systemmonitorlogs/*
         # - /var/log/auth.log
         # - /var/log/syslog
         # - /var/log/*.log
