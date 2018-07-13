@@ -21,7 +21,7 @@ logger = logging.getLogger('reducer')
 psi_msg = "cpu%:{} cpuCnt:{} mem%:{}"
 
 while True:
-    time.sleep(5)
+    time.sleep(1)
     cp = psutil.cpu_percent()
     cc = psutil.cpu_count()
     vm = psutil.virtual_memory().percent
