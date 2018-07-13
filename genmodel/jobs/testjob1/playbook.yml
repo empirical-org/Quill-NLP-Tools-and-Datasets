@@ -120,6 +120,12 @@
       name: filebeat
   - name: Restart filebeat (2)
     shell: update-rc.d filebeat defaults 95 10
+  # Prepare system monitor to run
+  - name: Install system monitor requirements 
+    pip:
+      requirements: /var/lib/jobs/{{ job_name }}/requirements.txt
+      virtualenv: /var/lib/jobs/{{ job_name }}/venv
+      virtualenv_python: python3
   # Prepare vectorizer and reducer and start job
   - name: Install reducer requirements
     pip:
