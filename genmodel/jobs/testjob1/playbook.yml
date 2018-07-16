@@ -20,7 +20,7 @@
     - DB_USER={{ lookup('env', 'DB_USER') }} 
     - JOB_ID={{ job_id }}
     - JOB_NAME={{ job_name }}
-    - MAX_QUEUE_LEN=500
+    - MAX_QUEUE_LEN=5000
     - PRE_REDUCTIONS_QUEUE_BASE='pre-reductions'
     - PRE_VECTORS_QUEUE_BASE='pre-vectors' 
     - RABBITMQ_LOCATION='localhost'
