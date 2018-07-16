@@ -24,7 +24,7 @@ psi_msg = "{} {} {}"
 while True:
     time.sleep(1)
     cc = psutil.cpu_count()
-    cp = psutil.cpu_percent() / cpu_count
+    cp = psutil.cpu_percent() / cc
     cp = round(cp, 2)
     vm = psutil.virtual_memory().percent
     logger.info(psi_msg.format(cp, cc, vm))
