@@ -15,6 +15,9 @@ autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -N -L 5000:l
 # wait for ssh tunnels to be created, ready to go
 sleep 10s 
 
+# test connection to api, attempt to establish one if it doesn't exist 
+curl localhost:5000 || autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -N -L 5000:localhost:5000 root@206.81.5.140 &
+
 # start the system monitor script
 nohup /var/lib/jobs/$JOB_NAME/venv/bin/python3 /var/lib/jobs/$JOB_NAME/system_monitor.py &
 
