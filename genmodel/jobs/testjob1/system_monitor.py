@@ -19,7 +19,7 @@ logging.basicConfig(format=log_format,
 logger = logging.getLogger('reducer')
 
 # periodic sytem info message
-psi_msg = "cpu%:{} cpuCnt:{} mem%:{}"
+psi_msg = "{} {} {}"
 
 while True:
     time.sleep(1)
