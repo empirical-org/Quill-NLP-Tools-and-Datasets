@@ -1,7 +1,7 @@
 ---
 job:
   name: &job_name testjob1
-  droplet_count: 2
+  droplet_count: 10
 droplet:
   # supply name or names. name is str, names is [] or autogenerate
   names: autogenerate
