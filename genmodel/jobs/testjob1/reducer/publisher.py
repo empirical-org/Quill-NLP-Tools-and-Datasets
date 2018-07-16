@@ -77,30 +77,23 @@ if __name__ == '__main__':
     # Declare queue if doesn't exist, get reference to queue
     q = channel.queue_declare(queue=PRE_REDUCTIONS_QUEUE)
     q_len = q.method.message_count
-    sent_str = True # loop must run at least once!
+    some_pre_reductions_not_queued = True
 
-    while sent_str:
+    while some_pre_reductions_not_queued:
         messages = []
-        while q_len < MAX_QUEUE_LEN and sent_str:
-            n = cur.fetchone()
-            sent_str = n if n is None else n[0]
-            # add the sent string to the queue
-            # TODO: is this adding a null string to the queue? doesn't seem to
-            # cause issues if it is..
+        for row in cur.fetchmany(MAX_QUEUE_LEN):
+            sent_str = row[0]
             channel.basic_publish(exchange='', routing_key=PRE_REDUCTIONS_QUEUE,
                     body=json.dumps(sent_str))
             messages.append('queued pre-reduction')
-            # since writing to a file takes time, publish to the queue then
-            # write to a file later
-            #logger.info('queued pre-reduction') # writ
-            q = channel.queue_declare(queue=PRE_REDUCTIONS_QUEUE)
-            q_len = q.method.message_count
         for message in messages:
             logger.info(message)
-        logger.debug('pre reductions queue at capacity, sleeping')
-        sleep(.1) # when the q length reaches x, take a little break
         q = channel.queue_declare(queue=PRE_REDUCTIONS_QUEUE)
         q_len = q.method.message_count
+        if q_len > MAX_QUEUE_LEN:
+            sleep(1) # max speed w sleep (1) is MAX_QUEUE_LEN / s
+            logger.info('pre reductions queue at capacity, sleeping')
+        some_pre_reductions_not_queued = cur.rowcount >= 0
 
     # update state to pre-reductions-queued
     cur.execute("""UPDATE jobs SET state=%s, updated=DEFAULT
