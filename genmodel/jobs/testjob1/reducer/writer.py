@@ -42,6 +42,20 @@ conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD,
         host='localhost')
 cur = conn.cursor()
 
+class LogManager():
+    def __init__(self):
+        self.messages = []
+        self.max_len = 1000
+
+log_mgr = LogManager()
+def add_logger_info(msg):
+    """Add a logger info message, write when messages reach certain length"""
+    log_mgr.messages.append(msg)
+    if len(log_mgr.messages) > log_mgr.max_len:
+        for m in log_mgr.messages:
+            logger.info(m)
+        log_mgr.messages = []
+
 # #Steps:
 # 1. Read reduced strings from Reduction Queue
 # 2. Write reduced strings to database 
@@ -52,7 +66,8 @@ def handle_message(ch, method, properties, body):
         cur.execute('INSERT INTO reductions (reduction, job_id) VALUES (%s, %s)',
                 (body,JOB_ID))
         conn.commit()
-        logger.info('inserted reduction')
+        #logger.info('inserted reduction')
+        add_logger_info('inserted reduction')
     except psycopg2.Error as e:
         logger.error('problem handling message, psycopg2 error, {}'.format(
             e.diag.message_primary))

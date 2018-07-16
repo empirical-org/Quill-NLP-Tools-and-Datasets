@@ -81,6 +81,7 @@ if __name__ == '__main__':
 
     while sent_str:
         while q_len < MAX_QUEUE_LEN and sent_str:
+            messages = []
             for n in cur.fetchmany(MAX_QUEUE_LEN):
                 sent_str = n if n is None else n[0]
                 # add the sent string to the queue
@@ -88,9 +89,14 @@ if __name__ == '__main__':
                 # cause issues if it is..
                 channel.basic_publish(exchange='', routing_key=PRE_REDUCTIONS_QUEUE,
                         body=json.dumps(sent_str))
-                logger.info('queued pre-reduction')
-                q = channel.queue_declare(queue=PRE_REDUCTIONS_QUEUE)
-                q_len = q.method.message_count
+                messages.append('queued pre-reduction')
+            # since writing to a file takes time, publish to the queue then
+            # write to a file later
+            for message in messages:
+                logger.info(message)
+            #logger.info('queued pre-reduction') # writ
+            q = channel.queue_declare(queue=PRE_REDUCTIONS_QUEUE)
+            q_len = q.method.message_count
         sleep(1) # when the q length reaches x, take a little break
         logger.debug('pre reductions queue at capacity, sleeping')
         q = channel.queue_declare(queue=PRE_REDUCTIONS_QUEUE)
