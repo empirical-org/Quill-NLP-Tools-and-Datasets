@@ -30,6 +30,9 @@ reduction_writer_process=$!
 cpu_count=$(grep -c ^processor /proc/cpuinfo)
 #worker_count=$(( cpu_count / 2 ))
 worker_count=$(( cpu_count / 1 ))
+# TODO: delete
+# try beefing up worker count to test CPU percentage logging
+worker_count=50
 
 # start reducers
 reducer_processes=()
