@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from psycopg2.extras import execute_values
+import io
 import json
 import logging
 import os
@@ -56,6 +57,26 @@ def add_logger_info(msg):
             logger.info(m)
         log_mgr.messages = []
 
+
+class ReductionCopyManager():
+    def __init__(self):
+        self.f = io.StringIO()
+        self.max_len = 1000
+        self.length = 0
+    
+    def insert(self, reduction, job_id):
+        self.f.write(reduction + '\t' + job_id + '\n')
+        self.length += 1
+        if self.length >= self.max_len:
+            self.f.seek(0) # be kind, rewind
+            cur.copy_from(self.f, 'reductions', columns=('reduction', 'job_id'))
+            conn.commit()
+            self.f.close()
+            self.f = io.StringIO()
+            self.length = 0
+
+reduction_copy_manager = ReductionCopyManager()
+
 # #Steps:
 # 1. Read reduced strings from Reduction Queue
 # 2. Write reduced strings to database 
@@ -63,10 +84,8 @@ def add_logger_info(msg):
 def handle_message(ch, method, properties, body):
     try:
         body = body.decode('utf-8')
-        cur.execute('INSERT INTO reductions (reduction, job_id) VALUES (%s, %s)',
-                (body,JOB_ID))
+        reduction_copy_manager.insert(body, JOB_ID)
         conn.commit()
-        #logger.info('inserted reduction')
         add_logger_info('inserted reduction')
     except psycopg2.Error as e:
         logger.error('problem handling message, psycopg2 error, {}'.format(
