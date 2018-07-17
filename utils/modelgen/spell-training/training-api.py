@@ -32,20 +32,13 @@ def training_data(job_id):
     first_vec = cur.fetchone()
     input_vector_length = 0 if (first_vec is None) else first_vec[0]['reductions']
 
+    num_classes = max([int(l) for v, l in training_examples], default=-1) + 1
+
     data = {
         'training_examples': training_examples,
         'num_examples': num_examples,
-        'input_vector_length': input_vector_length
-    }
-    return jsonify(data)
-
-
-# Returns number of classes we are classifying
-# TODO: Populate using DB data instead of hardcoding
-@app.route('/num_classes')
-def num_classes():
-    data = {
-        'num_classes': 2
+        'input_vector_length': input_vector_length,
+        'num_classes': num_classes
     }
     return jsonify(data)
 
