@@ -42,6 +42,42 @@ conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD,
         host='localhost')
 cur = conn.cursor()
 
+class LogManager():
+    def __init__(self):
+        self.messages = []
+        self.max_len = 1000
+
+log_mgr = LogManager()
+def add_logger_info(msg):
+    """Add a logger info message, write when messages reach certain length"""
+    log_mgr.messages.append(msg)
+    if len(log_mgr.messages) > log_mgr.max_len:
+        for m in log_mgr.messages:
+            logger.info(m)
+        log_mgr.messages = []
+
+
+class VectorCopyManager():
+    def __init__(self):
+        self.f = io.StringIO()
+        self.max_len = 1000
+        self.length = 0
+    
+    def insert(self, vector, label, job_id):
+        self.f.write('{}\t{}\t{}\n'.format(
+            vector, label, job_id))
+        self.length += 1
+        if self.length >= self.max_len:
+            self.f.seek(0) # be kind, rewind
+            cur.copy_from(self.f, 'vectors',
+                    columns=('vector','label','job_id'))
+            conn.commit()
+            self.f.close()
+            self.f = io.StringIO()
+            self.length = 0
+
+vector_copy_manager = VectorCopyManager()
+
 # #Steps:
 # 1. Read reduced strings from Reduction Queue
 # 2. Write reduced strings to database 
@@ -51,10 +87,9 @@ def handle_message(ch, method, properties, body):
         body = body.decode('utf-8')
         vector = json.dumps(json.loads(body)['vector'])
         label = json.loads(body)['label']
-        cur.execute('INSERT INTO vectors (vector,label,job_id) VALUES (%s,%s,%s)',
-                (vector,label,JOB_ID))
+        vector_copy_manager.insert(vector, label, JOB_ID)
         conn.commit()
-        logger.info('inserted vector')
+        add_logger_info('inserted vector')
     except psycopg2.Error as e:
         logger.error('problem handling message, psycopg2 error, {}'.format(
             e.diag.message_primary))
