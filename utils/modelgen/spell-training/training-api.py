@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import jsonify
+from flask import request
 import psycopg2
 import os
 import json
@@ -16,15 +17,11 @@ DB_HOST = 'localhost'
 conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD, port=DB_PORT, host=DB_HOST)
 cur = conn.cursor()
 
-# Returns the training data
-# TODO: Populate using DB data instead of hardcoding
+# Returns training_examples for a given job_id from offset to limit
 @app.route('/<int:job_id>')
 def training_data(job_id):
-    # pre_vector is dict. of index:count that can be reconstructed into a vector
-    # num_reductions is the dimension of that vector
-    offset = 0
-    limit = 5000
-    # TODO: Actually include offset, limit as parameters
+    offset = request.args.get('offset', None)
+    limit = request.args.get('limit', None)
     cur.execute('SELECT vector,label FROM vectors WHERE job_id=%s OFFSET %s LIMIT %s', (job_id, offset, limit))
     training_examples = [(v,l) for v,l in cur]
     data = {
@@ -60,5 +57,14 @@ def num_examples():
     num_examples = cur.fetchone()[0]
     data = {
         'num_examples': num_examples
+    }
+    return jsonify(data)
+
+# An endpoint solely for testing, returns all vectors in table
+@app.route('/all_vectors')
+def all_vectors():
+    cur.execute('SELECT * FROM vectors')
+    data = {
+        'all_vectors': [x for x in cur]
     }
     return jsonify(data)
