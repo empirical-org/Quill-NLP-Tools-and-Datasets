@@ -28,9 +28,13 @@ def training_data(job_id):
     cur.execute('SELECT count(*) FROM vectors WHERE job_id=%s', (job_id, ))
     num_examples = cur.fetchone()[0]
 
+    cur.execute('SELECT vector FROM vectors WHERE job_id=%s LIMIT 1', (job_id, ))
+    vector_len = cur.fetchone()[0]['reductions']
+
     data = {
         'training_examples': training_examples,
-        'num_examples': num_examples
+        'num_examples': num_examples,
+        'vector_len': vector_len
     }
     return jsonify(data)
 
