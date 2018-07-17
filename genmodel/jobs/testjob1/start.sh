@@ -82,12 +82,6 @@ do
   vectorizer_processes+=($!)
 done
 
-# TODO: these lines are temporary - short circuit things while we are testing
-# once vectorization is complete, the droplet is no longer needed, droplet makes
-# a DELETE request on itself.
-curl -X DELETE $JOB_MANAGER/droplets/$DROPLET_UID
-sleep 20s
-
 
 # wait until vectorization is complete
 while [ true ]

@@ -7,6 +7,7 @@ import os
 import pika
 import psycopg2
 import socket
+import io
 
 FNAME=os.path.basename(__file__)
 PID=os.getpid()
