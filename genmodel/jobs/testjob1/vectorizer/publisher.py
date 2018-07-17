@@ -80,22 +80,26 @@ if __name__ == '__main__':
     q_len = q.method.message_count
     sent_str = True # loop must run at least once!
     label = None
+    some_pre_vectors_not_queued = True
 
-    while sent_str:
-        while q_len < MAX_QUEUE_LEN and sent_str:
-            n = cur.fetchone()
-            sent_str = n if n is None else {'sent_str': n[0], 'label': n[1]}
-            # add the sent string to the queue
-            # TODO: is this adding a null string to the queue
+    while some_pre_vectors_not_queued:
+        messages = []
+        some_pre_vectors_not_queued = False
+        for row in cur.fetchmany(MAX_QUEUE_LEN):
+            some_pre_reductions_not_queued = True # at least one row
+            sent_str = {'sent_str': n[0], 'label': n[1]}
             channel.basic_publish(exchange='', routing_key=PRE_VECTORS_QUEUE,
                     body=json.dumps(sent_str))
-            logger.info('queued pre-vector')
-            q = channel.queue_declare(queue=PRE_VECTORS_QUEUE)
-            q_len = q.method.message_count
-        sleep(1) # when the q length reaches x, take a little break
-        logger.debug('pre vectors queue at capacity, sleeping')
+            messages.append('queued pre-vector')
+        for message in messages:
+            logger.info(message)
         q = channel.queue_declare(queue=PRE_VECTORS_QUEUE)
         q_len = q.method.message_count
+        while q_len > MAX_QUEUE_LEN:
+            sleep(.1) # max speed w sleep (1) is MAX_QUEUE_LEN / s
+            logger.info('pre vectors queue at capacity, sleeping')
+            q = channel.queue_declare(queue=PRE_VECTORS_QUEUE)
+            q_len = q.method.message_count
 
     # update state to pre-vectors-queued
     cur.execute("""UPDATE jobs SET state=%s, updated=DEFAULT
