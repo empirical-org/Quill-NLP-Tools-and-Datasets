@@ -18,28 +18,25 @@ conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD, port
 cur = conn.cursor()
 
 # Returns training_examples for a given job_id from offset to limit
+# If full_info parameter is greater than 0, will return extra architecture info
 @app.route('/<int:job_id>')
 def training_data(job_id):
-    offset = request.args.get('offset', None)
-    limit = request.args.get('limit', None)
+    offset = request.args.get('offset', 0)
+    limit = request.args.get('limit', 0)
     cur.execute('SELECT vector,label FROM vectors WHERE job_id=%s OFFSET %s LIMIT %s', (job_id, offset, limit))
     training_examples = [(v,l) for v,l in cur]
+    data = { 'training_examples': training_examples }
 
-    cur.execute('SELECT count(*) FROM vectors WHERE job_id=%s', (job_id, ))
-    num_examples = cur.fetchone()[0]
+    if int(request.args.get('full_info', 0)) > 0:
+        cur.execute('SELECT label FROM vectors WHERE job_id=%s', (job_id, ))
+        all_labels = [int(l[0]) for l in cur]
+        data['num_classes'] = max(all_labels, default=-1) + 1
+        data['num_examples'] = len(all_labels)
 
-    cur.execute('SELECT vector FROM vectors WHERE job_id=%s LIMIT 1', (job_id, ))
-    first_vec = cur.fetchone()
-    input_vector_length = 0 if (first_vec is None) else first_vec[0]['reductions']
+        cur.execute('SELECT vector FROM vectors WHERE job_id=%s LIMIT 1', (job_id, ))
+        first_vec = cur.fetchone()
+        data['input_vector_length'] = 0 if (first_vec is None) else first_vec[0]['reductions']
 
-    num_classes = max([int(l) for v, l in training_examples], default=-1) + 1
-
-    data = {
-        'training_examples': training_examples,
-        'num_examples': num_examples,
-        'input_vector_length': input_vector_length,
-        'num_classes': num_classes
-    }
     return jsonify(data)
 
 # An endpoint solely for testing, returns all vectors in table
