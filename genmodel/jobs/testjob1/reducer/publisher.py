@@ -78,10 +78,11 @@ if __name__ == '__main__':
     q = channel.queue_declare(queue=PRE_REDUCTIONS_QUEUE)
     q_len = q.method.message_count
     some_pre_reductions_not_queued = True
-
     while some_pre_reductions_not_queued:
         messages = []
+        some_pre_reductions_not_queued = False
         for row in cur.fetchmany(MAX_QUEUE_LEN):
+            some_pre_reductions_not_queued = True # at least one row
             sent_str = row[0]
             channel.basic_publish(exchange='', routing_key=PRE_REDUCTIONS_QUEUE,
                     body=json.dumps(sent_str))
@@ -90,10 +91,11 @@ if __name__ == '__main__':
             logger.info(message)
         q = channel.queue_declare(queue=PRE_REDUCTIONS_QUEUE)
         q_len = q.method.message_count
-        if q_len > MAX_QUEUE_LEN:
-            sleep(1) # max speed w sleep (1) is MAX_QUEUE_LEN / s
+        while q_len > MAX_QUEUE_LEN:
+            sleep(.1) # max speed w sleep (1) is MAX_QUEUE_LEN / s
             logger.info('pre reductions queue at capacity, sleeping')
-        some_pre_reductions_not_queued = cur.rowcount >= 0
+            q = channel.queue_declare(queue=PRE_REDUCTIONS_QUEUE)
+            q_len = q.method.message_count
 
     # update state to pre-reductions-queued
     cur.execute("""UPDATE jobs SET state=%s, updated=DEFAULT

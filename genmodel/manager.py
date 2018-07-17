@@ -188,12 +188,16 @@ def add_labeled_data_to_database(labeled_data_fname, job_id):
             cur.execute("DROP INDEX IF EXISTS job_id_idx")
             conn.commit()
             # insert data
-            reader = csv.reader(labeled_data_stream)
-            for row in reader:
-                cur.execute("INSERT INTO labeled_data (data, label, job_id) values(%s, %s, %s)",
-                        (row[0], row[1], job_id))
-                logger.debug('inserted labeled database row')
-                conn.commit()
+
+            cur.copy_from(labeled_data_stream, 'labeled_data', columns=('data',
+                'label', 'job_id'))
+            conn.commit()
+            #reader = csv.reader(labeled_data_stream)
+            #for row in reader:
+            #    cur.execute("INSERT INTO labeled_data (data, label, job_id) values(%s, %s, %s)",
+            #            (row[0], row[1], job_id))
+            #    logger.debug('inserted labeled database row')
+            #    conn.commit()
 
             # readd index
             cur.execute("CREATE INDEX IF NOT EXISTS job_id_idx ON labeled_data (job_id)")
@@ -275,6 +279,7 @@ def man():
     with open('README.md') as f:
         return f.read()
 
+
 @app.route('/jobs', methods=["GET", "POST"])
 def jobs():
     if request.method == "GET":
@@ -287,6 +292,10 @@ def jobs():
         try:
             # gather information to create job
             job_name = request.form['job']
+
+            # initialize job in database (job.state, initialized)
+            job_id = initizialize_job_in_database(job_name)
+
             job_tarball_fname = '/root/jobs/{}.tar.gz'.format(job_name)
             with tarfile.open(job_tarball_fname) as tar:
                 # save ref to labeled data stream
@@ -294,8 +303,11 @@ def jobs():
                 labeled_data_stream = tar.extractfile(ld_fname)
                 labeled_data_fname = 'labeled_data_{}.csv'.format(str(uuid4())[:8])
                 with open(labeled_data_fname, 'wb') as ld:
-                    ld.write(labeled_data_stream.read())
-                labeled_data_stream.close()
+                    reader = csv.reader(labeled_data_stream)
+                    for row in reader:
+                        ld.write(row[0] + '\t' + row[1] + '\t' + job_id + '\n')
+                    ld.close()
+                    labeled_data_stream.close()
 
                 # make job description dictionary
                 jd_fname = '{}/description.yml'.format(job_name)
@@ -312,8 +324,6 @@ def jobs():
                     pb.write(playbook_stream.read())
                 playbook_stream.close()
 
-            # initialize job in database (job.state, initialized)
-            job_id = initizialize_job_in_database(job_name)
             thr = threading.Thread(target=run_job, args=(job_description,
                 job_id, job_name, labeled_data_fname, playbook_fname,
                 job_tarball_fname), kwargs={})
