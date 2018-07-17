@@ -302,12 +302,18 @@ def jobs():
                 ld_fname = '{}/labeled_data.csv'.format(job_name)
                 labeled_data_stream = tar.extractfile(ld_fname)
                 labeled_data_fname = 'labeled_data_{}.csv'.format(str(uuid4())[:8])
-                with open(labeled_data_fname, 'wb') as ld:
-                    reader = csv.reader(labeled_data_stream)
-                    for row in reader:
-                        ld.write(row[0] + '\t' + row[1] + '\t' + job_id + '\n')
-                    ld.close()
+                with open('tmp.csv', 'wb') as ld:
+                    ld.write(labeled_data_stream.read())
                     labeled_data_stream.close()
+                with open(labeled_data_fname, 'w') as ld:
+                    csvf = open('tmp.csv', 'r')
+                    reader = csv.reader(csvf)
+                    for row in reader:
+                        ld.write('{}\t{}\t{}\n'.format(row[0],row[1],job_id))
+                    ld.close()
+                    csvf.close()
+                    os.remove('tmp.csv')
+
 
                 # make job description dictionary
                 jd_fname = '{}/description.yml'.format(job_name)
