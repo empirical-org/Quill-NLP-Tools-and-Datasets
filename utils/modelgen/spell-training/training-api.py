@@ -28,11 +28,17 @@ def training_data(job_id):
     cur.execute('SELECT count(*) FROM vectors WHERE job_id=%s', (job_id, ))
     num_examples = cur.fetchone()[0]
 
+    cur.execute('SELECT vector FROM vectors WHERE job_id=%s LIMIT 1', (job_id, ))
+    first_vec = cur.fetchone()
+    input_vector_length = 0 if (first_vec is None) else first_vec[0]['reductions']
+
     data = {
         'training_examples': training_examples,
-        'num_examples': num_examples
+        'num_examples': num_examples,
+        'input_vector_length': input_vector_length
     }
     return jsonify(data)
+
 
 # Returns number of classes we are classifying
 # TODO: Populate using DB data instead of hardcoding
