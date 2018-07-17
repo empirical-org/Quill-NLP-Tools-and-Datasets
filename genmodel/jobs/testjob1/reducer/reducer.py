@@ -22,22 +22,6 @@ logging.basicConfig(format=log_format,
     level=logging.INFO)
 logger = logging.getLogger('reducer')
 
-# new async log mgr
-class LogManager():
-    def __init__(self):
-        self.messages = []
-        self.max_len = 1000
-
-log_mgr = LogManager()
-def add_logger_info(msg):
-    """Add a logger info message, write when messages reach certain length"""
-    log_mgr.messages.append(msg)
-    if len(log_mgr.messages) > log_mgr.max_len:
-        for m in log_mgr.messages:
-            logger.info(m)
-        log_mgr.messages = []
-# end
-
 
 try:
     JOB_NAME = os.environ['JOB_NAME']
@@ -57,8 +41,7 @@ def handle_message(ch, method, properties, body):
         for reduction in get_reduction(body):
             channel.basic_publish(exchange='', routing_key=REDUCTIONS_QUEUE,
                     body=reduction)
-        #logger.info("queued reductions")
-        add_logger_info('queued reductions')
+        logger.info("queued reductions")
     except Exception as e:
         logger.error("problem handling message - {}".format(e))
     ch.basic_ack(delivery_tag=method.delivery_tag)
