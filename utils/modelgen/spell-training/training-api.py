@@ -28,24 +28,9 @@ def training_data(job_id):
     cur.execute('SELECT count(*) FROM vectors WHERE job_id=%s', (job_id, ))
     num_examples = cur.fetchone()[0]
 
-    cur.execute('SELECT vector FROM vectors WHERE job_id=%s LIMIT 1', (job_id, ))
-    vector_len = cur.fetchone()[0]['reductions']
-
     data = {
         'training_examples': training_examples,
-        'num_examples': num_examples,
-        'vector_len': vector_len
-    }
-    return jsonify(data)
-
-# Returns length of each input vector
-# TODO: Populate using DB data instead of hardcoding
-@app.route('/input_vector_length')
-def input_vector_length():
-    cur.execute('SELECT vector FROM vectors LIMIT 1')
-    vector_len = json.loads(cur.fetchone()[0])['reductions']
-    data = {
-        'input_vector_length': vector_len
+        'num_examples': num_examples
     }
     return jsonify(data)
 
