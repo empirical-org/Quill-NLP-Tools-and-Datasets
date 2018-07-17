@@ -24,8 +24,13 @@ def training_data(job_id):
     limit = request.args.get('limit', None)
     cur.execute('SELECT vector,label FROM vectors WHERE job_id=%s OFFSET %s LIMIT %s', (job_id, offset, limit))
     training_examples = [(v,l) for v,l in cur]
+
+    cur.execute('SELECT count(*) FROM vectors WHERE job_id=%s', (job_id, ))
+    num_examples = cur.fetchone()[0]
+
     data = {
-        'training_examples': training_examples
+        'training_examples': training_examples,
+        'num_examples': num_examples
     }
     return jsonify(data)
 
@@ -46,17 +51,6 @@ def input_vector_length():
 def num_classes():
     data = {
         'num_classes': 2
-    }
-    return jsonify(data)
-
-# Returns the number of total examples
-# TODO: Populate using DB data instead of hardcoding
-@app.route('/num_examples')
-def num_examples():
-    cur.execute('SELECT count(*) FROM vectors')
-    num_examples = cur.fetchone()[0]
-    data = {
-        'num_examples': num_examples
     }
     return jsonify(data)
 
