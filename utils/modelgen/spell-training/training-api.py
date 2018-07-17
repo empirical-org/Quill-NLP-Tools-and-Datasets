@@ -2,6 +2,7 @@ from flask import Flask
 from flask import jsonify
 import psycopg2
 import os
+import json
 app = Flask(__name__)
 
 # Database access constants
@@ -17,16 +18,17 @@ cur = conn.cursor()
 
 # Returns the training data
 # TODO: Populate using DB data instead of hardcoding
-@app.route('/')
-def training_data():
+@app.route('/<int:job_id>')
+def training_data(job_id):
     # pre_vector is dict. of index:count that can be reconstructed into a vector
     # num_reductions is the dimension of that vector
+    offset = 0
+    limit = 5000
+    # TODO: Actually include offset, limit as parameters
+    cur.execute('SELECT vector,label FROM vectors WHERE job_id=%s OFFSET %s LIMIT %s', (job_id, offset, limit))
+    training_examples = [(v,l) for v,l in cur]
     data = {
-        'training_examples': [
-            {'pre_vector': {5:1, 6:2, 500:1}, 'label': 1},
-            {'pre_vector': {5:1, 2000:1}, 'label': 0}
-        ],
-        'vector_length': 5000
+        'training_examples': training_examples
     }
     return jsonify(data)
 
