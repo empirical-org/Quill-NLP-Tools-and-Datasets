@@ -97,6 +97,7 @@
       - /var/log/reducerlogs
       - /var/log/vectorizerlogs
       - /var/log/systemmonitorlogs
+      - /var/log/trainerlogs
   - name: Copy the SSL Certificate for the ELK server (nlp job log manager) into place
     copy:
       src: /etc/pki/tls/certs/logstash-forwarder.crt
