@@ -400,5 +400,49 @@ def individual_droplet(droplet_uid):
         return '', 400
 
 
+@app.route('/jobs/<int:job_id>/vectors')
+def training_data(job_id):
+    '''Returns training_examples for a given job_id from offset to limit
+    If full_info parameter is greater than 0, will return extra architecture
+    info,
+    GET /jobs/139/vectors?offset=0&limit=10&full_info=1
+    {
+    "labeled_vectors": [{"vector":{"indices": {"0": 1}, "reductions": 3}, "label":0},
+                        {"vector":{"indices": {"1": 1}, "reductions": 3}, "label":1},
+                        ...],
+    "vector_length": 3, # non-negative int or -1 if vector length is inconsistent
+    "num_labeled_vectors": 1600000, # non-negative int
+    "num_classes": 2, # pos integer, probably 2 or more
+    }
+    '''
+    offset = request.args.get('offset', 0)
+    limit = request.args.get('limit', 0)
+    cur.execute('SELECT vector,label FROM vectors WHERE job_id=%s OFFSET %s LIMIT %s',
+            (job_id, offset, limit))
+    training_examples = [{'vector':v,'label':l} for v,l in cur]
+    data = { 'labeled_vectors': training_examples }
+
+    if int(request.args.get('full_info', 0)) > 0:
+        cur.execute("SELECT vector->>'reductions' AS num_reductions FROM vectors WHERE job_id=%s GROUP BY num_reductions",
+                (job_id,))
+        unique_num_reductions = cur.fetchall() # [[5000]]
+        if len(unique_num_reductions) > 1:
+            # the vector length for this job is inconsistent! set vector_length
+            # to -1
+            data['vector_length'] = -1
+        else:
+            data['vector_length'] = unique_num_reductions[0][0]
+
+        cur.execute("SELECT count(*) FROM vectors WHERE job_id=%s",
+                (job_id,))
+        data['num_labeled_vectors'] = cur.fetchone()[0]
+
+        cur.execute('SELECT count(*) FROM (SELECT label FROM vectors WHERE job_id=%s GROUP BY label) AS all_vecs_for_job'
+                (job_id,))
+        data['num_classes'] = cur.fetchone()[0]
+
+    return jsonify(data)
+
+
 if __name__ == '__main__':
     app.run(port=5000, host='127.0.0.1', debug=True)
