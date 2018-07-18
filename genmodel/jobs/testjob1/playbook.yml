@@ -19,6 +19,7 @@
     - DB_PORT={{ lookup('env', 'DB_PORT') }}
     - DB_USER={{ lookup('env', 'DB_USER') }} 
     - JOB_ID={{ job_id }}
+    - JOB_MANAGER='http://localhost:5000'
     - JOB_NAME={{ job_name }}
     - MAX_QUEUE_LEN=5000
     - PRE_REDUCTIONS_QUEUE_BASE='pre-reductions'
@@ -26,10 +27,11 @@
     - RABBITMQ_LOCATION='localhost'
     - REDUCER_PREFETCH_COUNT=10 
     - REDUCTIONS_QUEUE_BASE='reductions' 
+    - SPELL_PASS={{ lookup('env', 'SPELL_PASS') }}
+    - SPELL_USERNAME={{ lookup('env', 'SPELL_USERNAME') }}
     - VECTORIZER_PREFETCH_COUNT=10
     - VECTORS_QUEUE_BASE='vectors'
     - WRITER_PREFETCH_COUNT=100 
-    - JOB_MANAGER='http://localhost:5000'
   # General system config
   - name: Install python
     apt:
@@ -139,6 +141,13 @@
       requirements: /var/lib/jobs/{{ job_name }}/vectorizer/requirements.txt
       virtualenv: /var/lib/jobs/{{ job_name }}/vectorizer/venv
       virtualenv_python: python3
+  - name: Install train requirements (installs spell)
+    pip:
+      requirements: /var/lib/jobs/{{ job_name }}/train/requirements.txt
+      virtualenv: /var/lib/jobs/{{ job_name }}/train/venv
+      virtualenv_python: python3
+  - name: Login to spell
+    shell: spell login --identity {{ lookup('env', 'SPELL_USERNAME') }} --password {{ lookup('env', 'SPELL_PASS') }}
   - name: Change the working directory, then execute start script
     shell: nohup ./start.sh > /var/log/jobrunnerlogs/{{ job_name }}.log 2>&1 </dev/null &
     args:
