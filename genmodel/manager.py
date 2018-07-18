@@ -437,10 +437,9 @@ def training_data(job_id):
                 (job_id,))
         data['num_labeled_vectors'] = cur.fetchone()[0]
 
-        cur.execute('SELECT count(*) FROM (SELECT label FROM vectors WHERE job_id=%s GROUP BY label) AS all_vecs_for_job'
+        cur.execute("SELECT count(*) FROM (SELECT label FROM vectors WHERE job_id=%s GROUP BY label) AS all_vecs_for_job",
                 (job_id,))
-        data['num_classes'] = 3 
-        #data['num_classes'] = cur.fetchone()[0]
+        data['num_classes'] = cur.fetchone()[0]
 
     return jsonify(data)
 
