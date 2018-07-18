@@ -47,11 +47,28 @@ def become_wizard():
 
 
 def cast_spell():
+    inline_pip_args = ""
+    with open('spell/requirements.txt') as f:
+        for dep in f:
+            inline_pip_args += '--pip {} '.format(dep)
 
+    # v100 is the rocket ship, k80 is a volvo
+    spell_script = "spell run {pipargs} --env SECRET={secret} --env \
+            JOB_ID={job_id} --env API_URL={api_url} --python3 -t k80 python \
+            spell/train.py".format(
+            secret="TODO", job_id=JOB_ID, api_url="http://206.81.5.140:5000",
+            pipargs=inline_pip_args)
+    subprocess.call([spell_script])
+    logger.info('Avada kedavra!!')
 
 if __name__ == '__main__':
     # attempt to register as wizard
+    logger.info('registering as wizard...')
     i_got_my_letter =  become_wizard()
     # cast spell
     if i_got_my_letter:
+        logger.info('casting spell...')
         cast_spell()
+    else:
+        logger.info("you're a muggle harry.")
+
