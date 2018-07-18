@@ -10,35 +10,29 @@ import gc
 
 # Fetching data from API #######################################################
 
-api_url = "http://127.0.0.1:5000" # Currently set to localhost
+API_URL = "http://127.0.0.1:5000" # Currently set to localhost
+JOB_ID = 139
+JOB_URL = API_URL + '/' + str(JOB_ID)
 
-# Returns list of training_examples from API, each training_example is (pre_vector, label)
+# Returns list of labeled_vectors from API, each training_example is (deflated_vector, label)
 # Returned object is in format: [({5:1, 6:2, 5000:1}, 1), ...]
 # TODO: Set up pagination using offset and limit here. Will pass as params in the request.
-def get_training_examples(offset, limit):
-    r = requests.get(url=api_url)
-    examples_json = r.json()['training_examples']
-    return [(example['pre_vector'], example['label']) for example in examples_json]
+def get_labeled_vectors(offset, limit):
+    payload = {'offset': offset, 'limit': limit, 'full_info': 0}
+    r = requests.get(url=JOB_URL, params=payload)
+    examples_json = r.json()['labeled_vector']
+    return [(example['vector'], example['label']) for example in examples_json]
 
-# Returns the length of vectors for our training examples
-def get_input_vector_length():
-    r = requests.get(api_url + "/input_vector_length")
-    return r.json()['input_vector_length']
+def get_model_info():
+    payload = {'offset': 0, 'limit': 0, 'full_info': 1}
+    r = requests.get(url=JOB_URL, params=payload)
+    info_json = r.json()
+    return info_json['input_vector_length'], info_json['num_classes'], info_json['num_examples']
 
-# Returns the number of classes we are trying to distinguish between
-def get_num_classes():
-    r = requests.get(api_url + "/num_classes")
-    return r.json()['num_classes']
-
-# Returns the number of training examples in database
-def get_num_examples():
-    r = requests.get(api_url + "/num_examples")
-    return r.json()['num_examples']
-
-# Given a pre_vector (dictionary), return its vector (sparse np array)
-def inflate(pre_vector, vec_len):
+# Given a deflated_vector (dictionary), return its vector (sparse np array)
+def inflate(deflated_vec, vec_len):
     result = np.zeros(vec_len)
-    for idx, count in pre_vector.items():
+    for idx, count in deflated_vec.items():
         result[int(idx)] = count
     return result
 
@@ -49,24 +43,23 @@ def inflate(pre_vector, vec_len):
 def build_model(input_vec_length, num_classes):
     tf.reset_default_graph() # This resets all parameters and variables, leave this here
     net = tflearn.input_data([None, input_vec_length])                # Input
-    net = tflearn.fully_connected(net, 200, activation='ReLU')    # Hidden
-    net = tflearn.fully_connected(net, 25, activation='ReLU')     # Hidden
-    net = tflearn.fully_connected(net, 2, activation='softmax')   # Output
+    net = tflearn.fully_connected(net, 10, activation='ReLU')     # Hidden
+    net = tflearn.fully_connected(net, num_classes, activation='softmax')   # Output
     net = tflearn.regression(net, optimizer='sgd', learning_rate=0.1, loss='categorical_crossentropy')
     model = tflearn.DNN(net)
     return model
 
 
 # Trains model in successive slabs by pulling slabs of data from the API
-def train_model(model, input_vec_length, num_classes, slab_size, save_file):
+def train_model(model, num_classes, slab_size, save_file):
     print("Training TF model...")
-    num_examples = get_num_examples()
+    _, _, num_examples = get_model_info()
     start_pos = 0
     while start_pos < num_examples:
         end_pos = min(start_pos + slab_size, num_examples)
-        examples = get_training_examples(start_pos, slab_size)
+        examples = get_labeled_vectors(start_pos, slab_size)
         print('Fitting model with start: {}, end: {}'.format(start_pos, end_pos))
-        x_train = np.asarray([inflate(pre_vec, input_vec_length) for pre_vec, _ in examples])
+        x_train = np.asarray([inflate(vec['indices'], vec['reductions']) for vec, _ in examples])
         y_train = to_categorical(np.asarray([lab for _, lab in examples]), num_classes)
         model.fit(x_train, y_train, validation_set=0.1, show_metric=True, batch_size=128, n_epoch=5)
 
@@ -82,10 +75,10 @@ def train_model(model, input_vec_length, num_classes, slab_size, save_file):
     model.save(save_file)
     print('-----')
     print('Success! Your model was built and saved.')
+    return model
 
-
-INPUT_VEC_LEN = get_input_vector_length()
-NUM_CLASSES = get_num_classes()
+SAVE_FILE = 'test-model.tfl'
+INPUT_VEC_LEN, NUM_CLASSES, _ = get_model_info()
 print("Building Tensorflow model...")
 model = build_model(input_vec_length=INPUT_VEC_LEN, num_classes=NUM_CLASSES)
-train_model(model, INPUT_VEC_LEN, NUM_CLASSES, slab_size=10000, save_file='test-model.tfl')
+model = train_model(model, NUM_CLASSES, slab_size=30000, save_file=SAVE_FILE)
