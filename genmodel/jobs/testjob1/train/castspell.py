@@ -21,6 +21,9 @@ logger = logging.getLogger('trainer')
 try:
     JOB_ID = os.environ['JOB_ID']
     DROPLET_NAME = os.environ['DROPLET_NAME']
+    DB_NAME = os.environ.get('DB_NAME', 'nlp')
+    DB_PASSWORD = os.environ.get('DB_PASS', '')
+    DB_USER = os.environ.get('DB_USER', DB_NAME)
 except KeyError as e:
     logger.info('critical environment variables were not set. exiting')
     raise e
