@@ -1,4 +1,5 @@
 import json
+import shlex
 import logging
 import os
 import socket
@@ -56,7 +57,7 @@ def cast_spell():
         for dep in f:
             inline_pip_args += '--pip {} '.format(dep.replace('\n', ''))
 
-     v100 is the rocket ship, k80 is a volvo
+    #v100 is the rocket ship, k80 is a volvo
     spell_script = 'spell run {pipargs} --env SECRET={secret} --env \
             JOB_ID={job_id} --env API_URL={api_url} --python3 -t k80 "python \
             spell/train.py"'.format(
