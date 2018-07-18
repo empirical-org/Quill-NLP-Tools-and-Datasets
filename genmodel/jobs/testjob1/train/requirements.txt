@@ -1,6 +1,1 @@
-html5lib==0.9999999
-numpy==1.14.5
 requests==2.19.1
-spell==0.14.5
-tensorflow==1.7.0
-tflearn==0.3.2
