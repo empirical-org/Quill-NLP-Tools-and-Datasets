@@ -3,6 +3,7 @@ import logging
 import os
 import socket
 import subprocess
+import psycopg2
 
 FNAME=os.path.basename(__file__)
 PID=os.getpid()
