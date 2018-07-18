@@ -95,6 +95,10 @@ done
 # wait for all reducers in queue to finish
 sleep 1m
 
+# attempt to cast spells (train tf model) 
+nohup /var/lib/jobs/$JOB_NAME/train/venv/bin/python3 /var/lib/jobs/$JOB_NAME/train/castspell.py &
+spellcast_process=$!
+
 ## TODO: do we need to kill these? we delete the droplet anyway. commenting out
 ## kill all vectorizers
 #for p in "${vectorizer_processes[@]}"; do
