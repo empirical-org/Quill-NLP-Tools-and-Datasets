@@ -58,9 +58,10 @@ def cast_spell():
             inline_pip_args += '--pip {} '.format(dep.replace('\n', ''))
 
     #v100 is the rocket ship, k80 is a volvo
-    spell_script = 'spell run {pipargs} --env SECRET={secret} --env \
-            JOB_ID={job_id} --env API_URL={api_url} --python3 -t k80 "python \
-            spell/train.py"'.format(
+    spell_script = 'spell run {pipargs} --env SECRET={secret} --env JOB_ID={job_id} \
+            --framework \
+            tensorflow==1.7.0 --env API_URL={api_url} --python3 \
+            -t k80 "python spell/train.py"'.format(
             secret="TODO", job_id=JOB_ID, api_url="http://206.81.5.140:5000",
             pipargs=inline_pip_args)
     subprocess.call(shlex.split(spell_script))
