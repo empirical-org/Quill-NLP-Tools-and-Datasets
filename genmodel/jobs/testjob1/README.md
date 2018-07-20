@@ -47,3 +47,4 @@ includes vectorizer.py, a requirements.txt, and any files vectorizer.py relies
 on. It also includes a publisher and writer for the vectorizer that writes to
 the database.
 
+

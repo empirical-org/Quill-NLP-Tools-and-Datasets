@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, jsonify
+f\rom flask import Flask, request, render_template, jsonify
 from shutil import copyfile
 from tabulate import tabulate
 from uuid import uuid4
@@ -221,7 +221,7 @@ def set_job_state(job_id, state):
 
 
 def run_job(job_description, job_id, job_name, labeled_data_fname,
-        playbook_fname, job_tarball_fname):
+        playbook_fname, job_hash):
     try:
         logger.info("adding labeled data to database")
         # add labeled data to database (job.state, loaded-data)
@@ -253,8 +253,10 @@ def run_job(job_description, job_id, job_name, labeled_data_fname,
         hosts_string = ','.join([str(d_uid) for d_uid in droplet_uids])
         ansible_command = 'ansible-playbook {} -i \
                 /etc/ansible/digital_ocean.py -e \
-                hosts_string={} -e job_id={} -e job_name={}'.format(
-                        playbook_fname, hosts_string, job_id, job_name)
+                hosts_string={} -e job_id={} -e job_name={} \
+                -e job_hash={}'.format(
+                        playbook_fname, hosts_string, job_id, job_name,
+                        job_hash)
         logger.info(ansible_command)
         # subprocess.call is blocking, and this is IMPORTANT.
         # if we switch to Popen, make sure the call is blocking.
@@ -263,12 +265,6 @@ def run_job(job_description, job_id, job_name, labeled_data_fname,
             job_name, job_id))
 
         logger.info('removing temporary files created for this job')
-        os.remove(playbook_fname)
-        os.remove(labeled_data_fname)
-
-        logger.info('archive job tarball')
-        archived_filename = '/var/lib/jobs/archived/{}.tar.gz'.format(job_id)
-        copyfile(job_tarball_fname, archived_filename)
     except psycopg2.Error as e:
         ref = 'https://www.postgresql.org/docs/current/static/errcodes-appendix.html'
         logger.error('pgcode {}'.format(e.pgcode) + ref)
@@ -292,47 +288,53 @@ def jobs():
         try:
             # gather information to create job
             job_name = request.form['job']
+            job_hash = request.form['hash']
+            working_dir = '/var/lib/jobs/{}/{}'.format(
+                    job_name, job_hash)
+            job_location = '/root/nlp/genmodel/jobs/{}'.format(job_name)
+            labeled_data_location = '{}/labeled_data.csv'.format(
+                    working_dir)
+            labeled_data_db_format = '{}/ld.dbf'.format(
+                    working_dir)
 
             # initialize job in database (job.state, initialized)
-            job_id = initizialize_job_in_database(job_name)
+            job_id = initizialize_job_in_database(job_name, job_hash)
 
-            job_tarball_fname = '/root/jobs/{}.tar.gz'.format(job_name)
-            with tarfile.open(job_tarball_fname) as tar:
-                # save ref to labeled data stream
-                ld_fname = '{}/labeled_data.csv'.format(job_name)
-                labeled_data_stream = tar.extractfile(ld_fname)
-                labeled_data_fname = 'labeled_data_{}.csv'.format(str(uuid4())[:8])
-                with open('tmp.csv', 'wb') as ld:
-                    ld.write(labeled_data_stream.read())
-                    labeled_data_stream.close()
-                with open(labeled_data_fname, 'w') as ld:
-                    csvf = open('tmp.csv', 'r')
-                    reader = csv.reader(csvf)
-                    for row in reader:
-                        ld.write('{}\t{}\t{}\n'.format(row[0],row[1],job_id))
-                    ld.close()
-                    csvf.close()
-                    os.remove('tmp.csv')
+            # checkout hash and extract important files to temp location
+            add_files_to_working_dir = 'cd /root/nlp && git pull && git checkout \
+            {job_hash} && cp -a {job_location} {working_dir}'.format(
+                    job_hash=job_hash, job_location=job_location,
+                    working_dir=working_dir)
+            subprocess.call(shlex.split(add_files_to_working_dir))
+            # unzip labeled data
+            subprocess.call(shlex.split('gunzip {}.gz'.format(
+                labeled_data_location)))
 
+            # move labeled data to file formatted for easy copy into postgres 
+            # then rezip csv of labeled data
+            with open(labeled_data_db_format, 'w') as ld:
+                csvf = open(labeled_data_location, 'r')
+                reader = csv.reader(csvf)
+                for row in reader:
+                    ld.write('{}\t{}\t{}\n'.format(row[0],row[1],job_id))
+                ld.close()
+                csvf.close()
+                subprocess.call(shlex.split('gzip {}'.format(
+                    labeled_data_location)))
 
-                # make job description dictionary
-                jd_fname = '{}/description.yml'.format(job_name)
-                job_description_stream = tar.extractfile(jd_fname)
-                job_description = yaml.load(job_description_stream)
-                job_description_stream.close()
-                job_description = set_droplet_names(job_description)
+            # make job description dictionary
+            jd_fname = '{}/{}/description.yml'.format(working_dir, job_name)
+            with open(jd_fname, 'r') as jdf:
+                job_description = yaml.load(jdf)
+            job_description = set_droplet_names(job_description)
 
-                # save playbook to temporary local file
-                zipped_playbook_fname = '{}/playbook.yml'.format(job_name)
-                playbook_stream = tar.extractfile(zipped_playbook_fname)
-                playbook_fname = 'playbook_{}.yml'.format(str(uuid4())[:8])
-                with open(playbook_fname, 'wb') as pb:
-                    pb.write(playbook_stream.read())
-                playbook_stream.close()
+            playbook_fname = '{}/{}/playbook.yml'.format(working_dir,
+                    job_name)
 
+            # run job
             thr = threading.Thread(target=run_job, args=(job_description,
-                job_id, job_name, labeled_data_fname, playbook_fname,
-                job_tarball_fname), kwargs={})
+                job_id, job_name, labeled_data_db_format, playbook_fname
+                job_hash), kwargs={})
             thr.start() # Will run "post_job"
             if thr.is_alive():
                 return jsonify('Job initialized. Working.'), 202 # 202 accepted, asyc http code

@@ -58,10 +58,9 @@
       name: libpq-dev
   - name: Creates directory for job tarball
     file: path=/var/lib/jobs state=directory
-  # Extract job tarball
-  - name: Extract local job tarball onto remote host 
-    unarchive:
-      src: /root/jobs/{{ job_name }}.tar.gz
+  - name: Move job repository to remote host 
+    copy:
+      src: /var/lib/jobs/{{ job_name }}/{{ job_hash }}/{{ job_name }}
       dest: /var/lib/jobs
   # Networking (communication w nlp-job-manager)
   - name: Copy private key to remote servers to allow communication with this host 
