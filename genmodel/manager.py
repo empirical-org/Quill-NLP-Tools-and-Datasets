@@ -4,6 +4,7 @@ from tabulate import tabulate
 from uuid import uuid4
 import csv
 import json
+from git import Repo
 import logging
 import os
 import psycopg2
@@ -301,21 +302,27 @@ def jobs():
             # create working directory
             create_working_dir = 'mkdir -p {}'.format(working_dir)
             subprocess.call(shlex.split(create_working_dir))
+
             
             # see if directory is locked, if it is, suggest trying later
-            see_if_working_dir_locked = 'cd {} && cat locked'.format(
-                    working_dir)
-            unlocked = subprocess.call(shlex.split(see_if_working_dir_locked))
-            if not unlocked: # non-zero code
+            if os.path.isfile('{}/locked'.format(working_dir)): # non-zero code
                 raise Exception('Another job has locked the directory, try again'
                 'later.  If the error persists, talk to the system admin.')
 
             # checkout hash and extract important files to temp location
-            add_files_to_working_dir = 'cd {jobs_dir} && \
-                    ls {working_dir}/.git || git clone {repo} {job_name} && \
-                    cd {working_dir} && git pull && \
-                    git checkout {job_hash} && touch locked'
-            subprocess.call(shlex.split(add_files_to_working_dir))
+            os.chdir(jobs_dir)
+            if not os.path.isdir('{}/.git'.format(working_dir)):
+                os.chdir(jobs_dir)
+                Repo.clone_from(repo_url, job_name)
+            os.chdir(working_dir)
+            ro = Repo(working_dir)
+            ro.remotes.origin.pull()
+            ro.git.checkout(job_hash)
+
+
+            pull_checkout_lock = 'git pull && git checkout {} && touch locked'.format(
+                    job_hash)
+            subprocess.call(shlex.split(pull_checkout_lock), shell=True)
 
             # move labeled data to file formatted for easy copy into postgres 
             with open(labeled_data_db_format, 'w') as ld:
@@ -337,7 +344,7 @@ def jobs():
             # run job
             thr = threading.Thread(target=run_job, args=(job_description,
                 job_id, job_name, labeled_data_db_format, playbook_fname,
-                job_hash, working_dir, repo), kwargs={})
+                job_hash, working_dir, repo_url), kwargs={})
             thr.start() # Will run "post_job"
             if thr.is_alive():
                 return jsonify('Job initialized. Working.'), 202 # 202 accepted, asyc http code
