@@ -336,7 +336,7 @@ def jobs():
 
             # run job
             thr = threading.Thread(target=run_job, args=(job_description,
-                job_id, job_name, labeled_data_db_format, playbook_fname
+                job_id, job_name, labeled_data_db_format, playbook_fname,
                 job_hash, working_dir, repo), kwargs={})
             thr.start() # Will run "post_job"
             if thr.is_alive():
