@@ -192,12 +192,6 @@ def add_labeled_data_to_database(labeled_data_fname, job_id):
             cur.copy_from(labeled_data_stream, 'labeled_data', columns=('data',
                 'label', 'job_id'))
             conn.commit()
-            #reader = csv.reader(labeled_data_stream)
-            #for row in reader:
-            #    cur.execute("INSERT INTO labeled_data (data, label, job_id) values(%s, %s, %s)",
-            #            (row[0], row[1], job_id))
-            #    logger.debug('inserted labeled database row')
-            #    conn.commit()
 
             # readd index
             cur.execute("CREATE INDEX IF NOT EXISTS job_id_idx ON labeled_data (job_id)")
