@@ -267,6 +267,7 @@ def run_job(job_description, job_id, job_name, labeled_data_fname,
         logger.error('pgcode {}'.format(e.pgcode) + ref)
 
 
+
 @app.route('/')
 def man():
     with open('README.md') as f:
@@ -382,6 +383,50 @@ def job_for_id(job_id):
         # writers and workers. Purge the queue.
         return 'DELETE job #' + job_id
     return job_id
+
+@app.route('/jobs/<int:job_id>/spell', methods=["POST"])
+def cast_spell(job_id):
+    try:
+        # get hash for job if job exists
+        cursor.execute('SELECT hash FROM jobs WHERE id=%s', (job_id,))
+        job_hash = cursor.fetchone()[0]
+        # create working directory
+        jobs_dir = '/var/lib/jobs'
+        working_dir = '{}/{}'.format(
+                jobs_dir, job_name)
+        train_dir = '{}/train'.format(working_dir)
+        create_working_dir = 'mkdir -p {}'.format(working_dir)
+        subprocess.call(shlex.split(create_working_dir))
+        # see if directory is locked, if it is, suggest trying later
+        if os.path.isfile('{}/locked'.format(working_dir)): # non-zero code
+            raise Exception('Another job has locked the directory, try again'
+            'later.  If the error persists, talk to the system admin.')
+        # checkout hash and extract important files to temp location
+        os.chdir(jobs_dir)
+        if not os.path.isdir('{}/.git'.format(working_dir)):
+            os.chdir(jobs_dir)
+            Repo.clone_from(repo_url, job_name)
+        os.chdir(working_dir)
+        ro = Repo(working_dir)
+        ro.remotes.origin.fetch()
+        # checkout commit version
+        ro.git.checkout(job_hash)
+        # lock directory
+        Path('{}/locked'.format(working_dir)).touch()
+        # change to training dir
+        os.chdir(train_dir)
+        # create virtualenv if non existent
+        subprocess.call(shlex.split('virtualenv -p python3 venv'))
+        # install dependencies
+        subprocess.call(shlex.split('pip install -r requirements.txt'))
+        # cast spell (non blocking, faster return)
+        subprocess.Popen(shlex.split('./venv/bin/python castspell.py'))
+        # unlock
+        os.remove('{}/locked'.format(working_dir))
+        # 202, initiated # 202 accepted, asyc http code
+        return jsonify('Spell training session launched for job.'), 202
+    except Exception as e:
+        return jsonify({'error':str(e)}), 400 
 
 
 @app.route('/droplets/<droplet_uid>', methods=["DELETE"])
