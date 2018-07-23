@@ -319,10 +319,7 @@ def jobs():
             ro.remotes.origin.fetch()
             ro.git.checkout(job_hash)
 
-
-            pull_checkout_lock = 'git pull && git checkout {} && touch locked'.format(
-                    job_hash)
-            subprocess.call(shlex.split(pull_checkout_lock), shell=True)
+            subprocess.call(shlex.split('touch locked'), shell=True)
 
             # move labeled data to file formatted for easy copy into postgres 
             with open(labeled_data_db_format, 'w') as ld:
