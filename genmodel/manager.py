@@ -388,8 +388,8 @@ def job_for_id(job_id):
 def cast_spell(job_id):
     try:
         # get hash for job if job exists
-        cursor.execute('SELECT hash FROM jobs WHERE id=%s', (job_id,))
-        job_hash = cursor.fetchone()[0]
+        cur.execute('SELECT name,hash FROM jobs WHERE id=%s', (job_id,))
+        job_name, job_hash = cur.fetchone()
         # create working directory
         jobs_dir = '/var/lib/jobs'
         working_dir = '{}/{}'.format(
