@@ -316,7 +316,7 @@ def jobs():
                 Repo.clone_from(repo_url, job_name)
             os.chdir(working_dir)
             ro = Repo(working_dir)
-            ro.remotes.origin.pull()
+            ro.remotes.origin.fetch()
             ro.git.checkout(job_hash)
 
 
