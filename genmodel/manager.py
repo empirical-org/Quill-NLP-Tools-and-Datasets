@@ -6,6 +6,7 @@ import csv
 import json
 from git import Repo
 import logging
+from pathlib import Path
 import os
 import psycopg2
 import requests
@@ -319,7 +320,7 @@ def jobs():
             ro.remotes.origin.fetch()
             ro.git.checkout(job_hash)
 
-            subprocess.call(shlex.split('touch locked'), shell=True)
+            Path('{}/locked'.format(working_dir)).touch()
 
             # move labeled data to file formatted for easy copy into postgres 
             with open(labeled_data_db_format, 'w') as ld:
