@@ -152,11 +152,11 @@ def wait_for_droplet_to_be_created(droplet_uid):
     return status
 
 
-def initizialize_job_in_database(job_name):
-    cur.execute("INSERT INTO jobs (name,state,meta) values (%s, %s,'{}')",
-            (job_name, 'initialized'))
+def initizialize_job_in_database(job_name, commit_hash):
+    cur.execute("INSERT INTO jobs (name,state,meta, hash) values (%s, %s,'{}',%s)",
+            (job_name, 'initialized', commit_hash))
     conn.commit()
-    cur.execute('SELECT id FROM jobs WHERE name = %s', (job_name,))
+    cur.execute('SELECT id FROM jobs WHERE hash = %s', (commit_hash,))
     return cur.fetchone()[0]
 
 
