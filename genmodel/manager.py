@@ -221,7 +221,7 @@ def set_job_state(job_id, state):
 
 
 def run_job(job_description, job_id, job_name, labeled_data_fname,
-        playbook_fname, job_hash):
+        playbook_fname, job_hash, working_dir, repo):
     try:
         logger.info("adding labeled data to database")
         # add labeled data to database (job.state, loaded-data)
@@ -254,9 +254,9 @@ def run_job(job_description, job_id, job_name, labeled_data_fname,
         ansible_command = 'ansible-playbook {} -i \
                 /etc/ansible/digital_ocean.py -e \
                 hosts_string={} -e job_id={} -e job_name={} \
-                -e job_hash={}'.format(
+                -e job_hash={} -e repo={}'.format(
                         playbook_fname, hosts_string, job_id, job_name,
-                        job_hash)
+                        job_hash, repo)
         logger.info(ansible_command)
         # subprocess.call is blocking, and this is IMPORTANT.
         # if we switch to Popen, make sure the call is blocking.
@@ -264,7 +264,8 @@ def run_job(job_description, job_id, job_name, labeled_data_fname,
         logger.info("droplets working, job {}-{} started successfully".format(
             job_name, job_id))
 
-        logger.info('removing temporary files created for this job')
+        logger.info('removing lock file created for this job...')
+        os.remove('{}/locked'.format(working_dir))
     except psycopg2.Error as e:
         ref = 'https://www.postgresql.org/docs/current/static/errcodes-appendix.html'
         logger.error('pgcode {}'.format(e.pgcode) + ref)
@@ -289,9 +290,12 @@ def jobs():
             # gather information to create job
             job_name = request.form['job']
             job_hash = request.form['hash']
-            working_dir = '/var/lib/jobs/{}/{}'.format(
-                    job_name, job_hash)
-            job_location = '/root/nlp/genmodel/jobs/{}'.format(job_name)
+            repo_url = request.form['repo']
+
+            # 
+            jobs_dir = '/var/lib/jobs'
+            working_dir = '{}/{}'.format(
+                    jobs_dir, job_name)
             labeled_data_location = '{}/labeled_data.csv'.format(
                     working_dir)
             labeled_data_db_format = '{}/ld.dbf'.format(
@@ -300,18 +304,26 @@ def jobs():
             # initialize job in database (job.state, initialized)
             job_id = initizialize_job_in_database(job_name, job_hash)
 
+            # create working directory
+            create_working_dir = 'mkdir -p {}'.format(working_dir)
+            subprocess.call(shlex.split(create_working_dir))
+            
+            # see if directory is locked, if it is, suggest trying later
+            see_if_working_dir_locked = 'cd {} && cat locked'.format(
+                    working_dir)
+            unlocked = subprocess.call(shlex.split(see_if_working_dir_locked))
+            if not unlocked: # non-zero code
+                raise Exception('Another job has locked the directory, try again'
+                'later.  If the error persists, talk to the system admin.')
+
             # checkout hash and extract important files to temp location
-            add_files_to_working_dir = 'cd /root/nlp && git pull && git checkout \
-            {job_hash} && cp -a {job_location} {working_dir}'.format(
-                    job_hash=job_hash, job_location=job_location,
-                    working_dir=working_dir)
+            add_files_to_working_dir = 'cd {jobs_dir} && \
+                    ls {working_dir}/.git || git clone {repo} {job_name} && \
+                    cd {working_dir} && git pull && \
+                    git checkout {job_hash} && touch locked'
             subprocess.call(shlex.split(add_files_to_working_dir))
-            # unzip labeled data
-            subprocess.call(shlex.split('gunzip {}.gz'.format(
-                labeled_data_location)))
 
             # move labeled data to file formatted for easy copy into postgres 
-            # then rezip csv of labeled data
             with open(labeled_data_db_format, 'w') as ld:
                 csvf = open(labeled_data_location, 'r')
                 reader = csv.reader(csvf)
@@ -319,22 +331,19 @@ def jobs():
                     ld.write('{}\t{}\t{}\n'.format(row[0],row[1],job_id))
                 ld.close()
                 csvf.close()
-                subprocess.call(shlex.split('gzip {}'.format(
-                    labeled_data_location)))
 
             # make job description dictionary
-            jd_fname = '{}/{}/description.yml'.format(working_dir, job_name)
+            jd_fname = '{}/description.yml'.format(working_dir)
             with open(jd_fname, 'r') as jdf:
                 job_description = yaml.load(jdf)
             job_description = set_droplet_names(job_description)
 
-            playbook_fname = '{}/{}/playbook.yml'.format(working_dir,
-                    job_name)
+            playbook_fname = '{}/playbook.yml'.format(working_dir)
 
             # run job
             thr = threading.Thread(target=run_job, args=(job_description,
                 job_id, job_name, labeled_data_db_format, playbook_fname
-                job_hash), kwargs={})
+                job_hash, working_dir, repo), kwargs={})
             thr.start() # Will run "post_job"
             if thr.is_alive():
                 return jsonify('Job initialized. Working.'), 202 # 202 accepted, asyc http code
@@ -347,6 +356,8 @@ def jobs():
             conn.rollback()
             ref = 'https://www.postgresql.org/docs/current/static/errcodes-appendix.html'
             return jsonify({'error':'pgcode {} ({})'.format(e.pgcode, ref)}), 400
+        except Exception as e:
+            return jsonify({'error':str(e)}), 555
 
 
 @app.route('/jobs/<job_id>/state', methods=["GET"])

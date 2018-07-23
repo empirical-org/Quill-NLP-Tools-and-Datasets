@@ -2,20 +2,36 @@
 
 # $./runjob.sh path/to/job
 # example: ./runjob.sh testjob1
+# ./runjob.sh --job=myliljob --hash=
 
-# create job tarball
-tar -zcvf $(basename $1).tar.gz $1
+for i in "$@"
+do
+case $i in
+    -j=*|--job=*)
+    JOB="${i#*=}"
+    shift # past argument=value
+    ;;
+    -h=*|--hash=*)
+    HASH="${i#*=}"
+    shift # past argument=value
+    ;;
+    -r=*|--repo=*)
+    REPO="${i#*=}"
+    shift # past argument=value
+    ;;
+    *)
+    ;;
+esac
+done
+echo "JOB             = ${JOB}"
+echo "HASH            = ${HASH}"
+echo "REPO            = ${REPO}"
 
-# upload the job tarball to the server with scp
-scp $(basename $1).tar.gz root@206.81.5.140:jobs
-
-
-HERE=$PWD
-HASH=$(cd $1 && git log -n 1 --pretty=format:"%H")
-cd $HERE
-
-# supply name of job in post request to start job
-#curl -d "job=$(basename $1)" -X POST 206.81.5.140:5000/jobs
-curl -d "job=$(basename $1)" -X POST localhost:5000/jobs
-
+if [ -z ${JOB} ] || [ -z ${HASH} ] || [ -z ${REPO} ]
+then
+  echo 'important variables are not set'
+  exit 1
+else
+  curl -d "job=${JOB}&hash=${HASH}&repo=${REPO}" -X POST localhost:5000/jobs
+fi
 
