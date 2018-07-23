@@ -1,4 +1,4 @@
-f\rom flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify
 from shutil import copyfile
 from tabulate import tabulate
 from uuid import uuid4
