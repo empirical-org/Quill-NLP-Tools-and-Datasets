@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS droplets (
   id serial PRIMARY KEY NOT NULL,
   uid	integer UNIQUE,
   job_id integer NOT NULL,
-  name	varchar UNIQUE NOT NULL,
+  name	varchar NOT NULL,
   memory	integer,
   vcpus	integer,
   disk	integer,
