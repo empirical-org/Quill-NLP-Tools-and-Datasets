@@ -420,7 +420,7 @@ def cast_spell(job_id):
         # install dependencies
         subprocess.call(shlex.split('pip install -r requirements.txt'))
         # cast spell (non blocking, faster return)
-        subprocess.call(shlex.split('export JOB_ID={}'.format(job_id)))
+        os.environ['JOB_ID'] = str(job_id)
         subprocess.Popen(shlex.split('./venv/bin/python castspell.py'))
         # unlock
         os.remove('{}/locked'.format(working_dir))
