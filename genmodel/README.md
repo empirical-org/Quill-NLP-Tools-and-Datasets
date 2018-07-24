@@ -11,6 +11,11 @@ specified configuration in the sql/ folder.
 This folder also contains a script that can be used to kick off jobs.  It lives
 in the jobs folder and has it's documentation with it.
 
+## Running in production
+
+In production, the server is gunicorn, we run the api using a command like
+`gunicorn -w 4 -b 0.0.0.0:5000 manager:app` on the server.
+
 ## Training Jobs
 
 In order to fully understand how the nlp pipeline works it is important to
