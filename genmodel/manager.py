@@ -444,7 +444,7 @@ def job_for_id(job_id):
 @app.route('/jobs/<int:job_id>/spell', methods=["POST"])
 def try_to_cast_spell(job_id):
     try:
-        i_got_my_letter = become_wizard(str(uuid.uuid4()), job_id)
+        i_got_my_letter = become_wizard(str(uuid4()), job_id)
         if i_got_my_letter:
             thr = threading.Thread(target=cast_spell, args=(job_id,
                 ), kwargs={})
