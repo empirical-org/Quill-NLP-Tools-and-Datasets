@@ -11,5 +11,11 @@ specified configuration in the sql/ folder.
 This folder also contains a script that can be used to kick off jobs.  It lives
 in the jobs folder and has it's documentation with it.
 
+## Training Jobs
 
+In order to fully understand how the nlp pipeline works it is important to
+understand the concept of a training job.  Training jobs use specify rules for
+job creation and can be used in tandem with this api to launch nlp jobs that
+produce useable models.  please see our [nlp pipeline example
+job](https://github.com/empirical-org/nlp-example-job).
 
