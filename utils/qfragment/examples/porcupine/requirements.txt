@@ -1,0 +1,5 @@
+flask==0.12.2
+gunicorn==19.7.1
+https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-2.0.0/en_core_web_lg-2.0.0.tar.gz
+qfragment==0.0.18
+sqlalchemy==1.2.6

@@ -1,0 +1,27 @@
+#!python
+
+from gutenfetch import OUTPUT_DIR
+from gutenfetch import fetch_bookshelf
+import sys
+
+def print_help():
+    print('gutenfetch [command] [..args..]')
+    print('')
+    print('')
+    print('available commands:')
+    print('')
+    print(' bookshelf START_URL OUTPUT_DIR')
+    print(' ')
+    print('     START_URL: url for a gutenberg project bookshelf page')
+    print('     OUTPUT_DIR: the name of the folder inside of \
+            {}'.format(OUTPUT_DIR))
+
+
+if __name__ == '__main__':
+    if len(sys.argv) > 1 and sys.argv[1] == 'bookshelf':
+        if len(sys.argv) == 4:
+            fetch_bookshelf(sys.argv[2], sys.argv[3])
+        else:
+            print_help()
+    else:
+        print_help()
