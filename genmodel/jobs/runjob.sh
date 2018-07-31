@@ -33,5 +33,5 @@ then
   exit 1
 else
   echo curl --user $JM_USER:$JM_PASS -d "job=${JOB}&hash=${HASH}&repo=${REPO}" -X POST 206.81.5.140/jobs
+  curl --user $JM_USER:$JM_PASS -d "job=${JOB}&hash=${HASH}&repo=${REPO}" -X POST 206.81.5.140/jobs
 fi
-
