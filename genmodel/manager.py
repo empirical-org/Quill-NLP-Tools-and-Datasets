@@ -279,6 +279,7 @@ def set_job_state(job_id, state):
 def run_job(job_description, job_id, job_name, labeled_data_fname,
         playbook_fname, job_hash, working_dir, repo):
     try:
+        logger.info("Inside run_job")
         logger.info("adding labeled data to database")
         # add labeled data to database (job.state, loaded-data)
         add_labeled_data_to_database(labeled_data_fname, job_id)
