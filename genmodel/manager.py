@@ -29,7 +29,7 @@ log_format = '%(levelname)s %(asctime)s {pid} {filename} %(lineno)d %(message)s'
 logging.basicConfig(format=log_format,
     filename='/var/log/nlpjobmanagerapilogs/{}'.format(log_filename),
     datefmt='%Y-%m-%dT%H:%M:%S%z',
-    level=logging.INFO)
+    level=logging.DEBUG) # Changed by Eric Aug. 1
 logger = logging.getLogger('nlpjobmanagerapi')
 
 
