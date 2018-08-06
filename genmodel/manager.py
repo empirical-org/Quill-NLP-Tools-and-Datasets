@@ -120,7 +120,6 @@ def set_droplet_names(job_description):
 
 
 def create_droplets(description, job_id, droplet_ids):
-    logger.info("Inside create_droplets")
     create_droplets_url = "https://api.digitalocean.com/v2/droplets"
     payload = description['droplet'] 
     # set names for droplet / droplets 
@@ -128,6 +127,8 @@ def create_droplets(description, job_id, droplet_ids):
     headers['Authorization'] = 'Bearer {}'.format(os.environ.get('DO_API_TOKEN', ''))
     headers['Content-Type'] = 'application/json'
     r = requests.post(create_droplets_url, json=payload, headers=headers)
+    logger.info('DO request response:')
+    logger.info(r.json())
 
     # get droplet uids 
     logger.info("Sent request, request status is ", r.status_code)
@@ -136,7 +137,6 @@ def create_droplets(description, job_id, droplet_ids):
     else:
         droplet_uids = [r.json()['droplet']['id']]
 
-    logger.info("Droplet IDs are, ", droplet_ids)
     # update status, set uid for droplets in database
     for i, droplet_id in enumerate(droplet_ids):
         logger.debug('updating droplet with id {}'.format(
