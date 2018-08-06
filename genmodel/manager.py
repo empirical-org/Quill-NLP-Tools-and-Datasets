@@ -131,7 +131,6 @@ def create_droplets(description, job_id, droplet_ids):
     logger.info(r.json())
 
     # get droplet uids 
-    logger.info("Sent request, request status is ", r.status_code)
     if description['droplet'].get('names'):
         droplet_uids = [drop['id'] for drop in r.json()['droplets']]
     else:
