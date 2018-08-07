@@ -214,10 +214,11 @@ def wait_for_droplet_to_be_created(droplet_uid):
 
 
 def initizialize_job_in_database(job_name, commit_hash):
-    cur.execute("INSERT INTO jobs (name,state,meta, hash) values (%s, %s,'{}',%s)",
-            (job_name, 'initialized', commit_hash))
+    job_obj = json.dumps({'hash':commit_hash, 'name':job_name})
+    cur.execute("INSERT INTO nlpjobs (data) VALUES (%s)", (job_obj,))
     conn.commit()
-    cur.execute('SELECT id FROM jobs WHERE hash = %s', (commit_hash,))
+    cur.execute("SELECT id FROM nlpjobs WHERE data->>'hash' = %s",
+            (commit_hash,))
     return cur.fetchone()[0]
 
 
