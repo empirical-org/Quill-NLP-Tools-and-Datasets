@@ -240,7 +240,7 @@ def update_active_droplets(droplet_objects, job_id):
 
 def set_job_state(job_id, state):
     cur.execute("UPDATE nlpjobs SET data = jsonb_set(data, '{state}', %s) WHERE id=%s",
-        (json.loads(state), job_id))
+        (json.dumps(state), job_id))
     conn.commit()
 
 
