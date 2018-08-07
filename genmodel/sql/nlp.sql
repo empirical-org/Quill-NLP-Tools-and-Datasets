@@ -1,6 +1,6 @@
 
 /* NLP JOBS OBJECT STORE */
-CREATE TABLE IF NOT EXISTS nlp-jobs (
+CREATE TABLE IF NOT EXISTS nlpjobs (
   id serial PRIMARY KEY NOT NULL,
   data jsonb,
   created timestamp with time zone default now(),
@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS nlp-jobs (
 );
 
 /* NLP DATA OBJECT STORE */
-CREATE TABLE IF NOT EXISTS nlp-data (
+CREATE TABLE IF NOT EXISTS nlpdata (
   id serial PRIMARY KEY NOT NULL,
   name varchar UNIQUE,
   data jsonb,
