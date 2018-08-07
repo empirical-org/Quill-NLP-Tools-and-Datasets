@@ -29,7 +29,7 @@ log_format = '%(levelname)s %(asctime)s {pid} {filename} %(lineno)d %(message)s'
 logging.basicConfig(format=log_format,
     filename='/var/log/nlpjobmanagerapilogs/{}'.format(log_filename),
     datefmt='%Y-%m-%dT%H:%M:%S%z',
-    level=logging.INFO)
+    level=logging.DEBUG) # Changed by Eric Aug. 1
 logger = logging.getLogger('nlpjobmanagerapi')
 
 
@@ -127,6 +127,8 @@ def create_droplets(description, job_id, droplet_ids):
     headers['Authorization'] = 'Bearer {}'.format(os.environ.get('DO_API_TOKEN', ''))
     headers['Content-Type'] = 'application/json'
     r = requests.post(create_droplets_url, json=payload, headers=headers)
+    logger.info('DO request response:')
+    logger.info(r.json())
 
     # get droplet uids 
     if description['droplet'].get('names'):
@@ -276,6 +278,7 @@ def set_job_state(job_id, state):
 def run_job(job_description, job_id, job_name, labeled_data_fname,
         playbook_fname, job_hash, working_dir, repo):
     try:
+        logger.info("Inside run_job")
         logger.info("adding labeled data to database")
         # add labeled data to database (job.state, loaded-data)
         add_labeled_data_to_database(labeled_data_fname, job_id)
