@@ -1,121 +1,72 @@
 
-/* Create Jobs Table */
-CREATE TABLE IF NOT EXISTS jobs (
+/* NLP JOBS OBJECT STORE */
+CREATE TABLE IF NOT EXISTS nlp-jobs (
   id serial PRIMARY KEY NOT NULL,
-  name varchar,
-  hash varchar UNIQUE,
-  state varchar, -- created, running, finished, 
+  data jsonb,
   created timestamp with time zone default now(),
-  updated timestamp with time zone default now(),
-  meta jsonb
+  updated timestamp with time zone default now()
 );
 
-
-/* Create Droplets Table
- * 
- * droplets can be deleted by tag, so tagging a droplet with it's job_id might
- * be a sensible choice so that all droplets can be deleted at once.
- * https://developers.digitalocean.com/documentation/v2/#deleting-droplets-by-tag
- *
- */
-CREATE TABLE IF NOT EXISTS droplets (
+/* NLP DATA OBJECT STORE */
+CREATE TABLE IF NOT EXISTS nlp-data (
   id serial PRIMARY KEY NOT NULL,
-  uid	integer UNIQUE,
-  job_id integer NOT NULL,
-  name	varchar NOT NULL,
-  memory	integer,
-  vcpus	integer,
-  disk	integer,
-  locked	boolean,
-  created_at	varchar,
-  status	varchar,
-  backup_ids	varchar[],
-  snapshot_ids	varchar[],
-  features	varchar[],
-  region	jsonb,
-  image	jsonb,
-  size	jsonb,
-  size_slug	varchar,
-  networks	jsonb,
-  kernel	jsonb,
-  next_backup_window	jsonb,
-  tags	varchar[],
-  volume_ids	varchar[],
+  name varchar UNIQUE,
+  data jsonb,
   created timestamp with time zone default now(),
-  updated timestamp with time zone default now(),
-  meta jsonb
+  updated timestamp with time zone default now()
 );
 
+/* explanation:
+A jobs object store is shared for all nlp jobs. NLP jobs may use data, or
+produce data, another object store is therefore extant to store data that might
+be shared. 
 
-/* Create Labled Data Table */
-CREATE TABLE IF NOT EXISTS labeled_data (
-  id serial PRIMARY KEY NOT NULL,
-  data jsonb NOT NULL,
-  label varchar NOT NULL,
-  job_id integer NOT NULL,
-  created timestamp with time zone default now(),
-  updated timestamp with time zone default now(),
-  meta jsonb
-);
+For example, 
 
-/* Create Reductions Table */
-CREATE TABLE IF NOT EXISTS reductions (
-  id serial PRIMARY KEY NOT NULL,
-  reduction varchar NOT NULL,
-  job_id integer NOT NULL,
-  created timestamp with time zone default now(),
-  updated timestamp with time zone default now(),
-  meta jsonb
-);
+take a job called nlp-catsort-job, which generates a model that can, given
+arbitrary text, determine if it is a name that would be good for a cat. The job
+has 3 steps,
 
+  1. load data
+  2. preprocess
+  3. train tensorflow model
 
-/* Create Vectors Table */
-CREATE TABLE IF NOT EXISTS vectors (
-  id serial PRIMARY KEY NOT NULL,
-  vector jsonb NOT NULL,
-  label varchar NOT NULL,
-  job_id integer NOT NULL,
-  created timestamp with time zone default now(),
-  updated timestamp with time zone default now(),
-  meta jsonb
-);
+Load Data.
 
+First we must add a bunch of cat names to our database, 1.6 million of them.
+Since we might use this cat data in a different job also, it will be stored in
+the data object store.
 
+INSERT INTO nlp-data (name, data) VALUES (
+  'cat_names', '["gigi", "fifi", "sweetie", "Jamie   ", "Hunter", "hunter", "grahm", ...]'); 
 
-/* Triggers and Functions */
+Great, we've inserted our 1.6 million cat names into the database.
 
+Preprocess.
 
-CREATE FUNCTION row_updated() RETURNS TRIGGER
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-  NEW.updated := current_date;
-  RETURN NEW;
-END;
-$$;
+Next we have to preprocess.  Trailing whitespace, capitalization, duplicate
+removal, etc. We can easily grab out cat names dataset and use it for all our
+needs.  Then we can add the preprocessed data to our job (since it was generated
+by our job after all and will be used by the job). or to the data object store
+if that is more sensible. For now, let's imagine that we have a distributed
+system that pre-processes the cat names in parallel. Everytime a cat name is
+preprocessed it
+  
+  1. gets added to a queue to be written to the database by a single writer.
+  2. gets written to the database
 
+This order ensures that the object representing the current run of the job is
+not being updated in two places at once.
 
-CREATE TRIGGER trigger_job_update
-  BEFORE UPDATE ON jobs
-  FOR EACH ROW
-  EXECUTE PROCEDURE row_updated();
+UPDATE nlp-jobs
+SET data = jsonb_set(
+  data::jsonb,
+  array['preprocessed_cat_names'],
+  (data->'preprocessed_cat_names')::jsonb || '["jamie"]'::jsonb) 
+WHERE id = 7;
 
-CREATE TRIGGER trigger_droplet_update
-  BEFORE UPDATE ON droplets
-  FOR EACH ROW
-  EXECUTE PROCEDURE row_updated();
+Train.
 
-CREATE TRIGGER trigger_labeled_data_update
-  BEFORE UPDATE ON labeled_data
-  FOR EACH ROW
-  EXECUTE PROCEDURE row_updated();
-
-CREATE TRIGGER trigger_reduction_update
-  BEFORE UPDATE ON reductions
-  FOR EACH ROW
-  EXECUTE PROCEDURE row_updated();
-
-CREATE TRIGGER trigger_vector_update
-  BEFORE UPDATE ON vectors
-  FOR EACH ROW
-  EXECUTE PROCEDURE row_updated();
+To train, all we might have to do is read from the generated data. This might
+involve adding temporary indexes before running select statements.
+*/
