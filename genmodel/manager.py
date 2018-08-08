@@ -285,7 +285,7 @@ def run_job(job_description, job_id, job_name,
         # subprocess.call is blocking, and this is IMPORTANT.
         # if we switch to Popen, make sure the call is blocking.
         ansiblelogfile = '/var/log/playbooklogs/{}_ansible.log'.format(job_id)
-        with open(ansiblelogfile) as logf:
+        with open(ansiblelogfile, 'w') as logf:
             subprocess.call(shlex.split(ansible_command),
                     stdout=logf,stderr=subprocess.STDOUT)
         logger.info("droplets working, job {}-{} started successfully".format(
