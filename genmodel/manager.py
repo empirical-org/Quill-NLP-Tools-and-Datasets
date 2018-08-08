@@ -140,7 +140,7 @@ def create_droplets(description, job_id, droplet_objects):
 
     # update status, set uid for droplets in database
     for i, droplet_obj in enumerate(droplet_objects):
-        droplet_obj['uid'] = i
+        droplet_obj['uid'] = droplet_uids[i]
 
     # replace the droplet objects with the new ones that include uid
     logger.debug('add uid to droplets {}'.format(i))
