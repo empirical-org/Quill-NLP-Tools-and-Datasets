@@ -399,7 +399,7 @@ def try_to_cast_spell(job_id):
 
 @app.route('/droplets/<droplet_uid>', methods=["DELETE"])
 def individual_droplet(droplet_uid):
-    logger.info('attempting to delete droplet with uid {}'.format(droplet_obj))
+    logger.info('attempting to delete droplet with uid {}'.format(droplet_uid))
     # send delete request to D.O api
     delete_droplets_url = "https://api.digitalocean.com/v2/droplets/{}".format(
             droplet_uid)
