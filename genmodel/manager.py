@@ -273,6 +273,7 @@ def run_job(job_description, job_id, job_name,
         # run ansible on the droplets to install dependencies, job bundle,
         # set environment variables, create ssh tunnels, start jobs 
         logger.info("installing dependencies and starting jobs on remote droplet(s)")
+        droplet_uids = [d['uid'] for d in droplet_objects]
         hosts_string = ','.join([str(d_uid) for d_uid in droplet_uids])
         ansible_command = 'ansible-playbook {} -i \
                 /etc/ansible/digital_ocean.py -e \
