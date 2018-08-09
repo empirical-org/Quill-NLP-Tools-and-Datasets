@@ -32,7 +32,5 @@ then
   echo 'important variables are not set'
   exit 1
 else
-  curl --user $JM_USER:$JM_PASS -d "job=${JOB}&hash=${HASH}&repo=${REPO}" -X POST 206.81.5.140:10600/jobs
+  curl --user $JM_USER:$JM_PASS -d "job=${JOB}&hash=${HASH}&repo=${REPO}" -X POST 206.81.5.140/jobs
 fi
-
-
