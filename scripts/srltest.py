@@ -12,7 +12,7 @@ def group_by_main_verb(sentences):
     groups = defaultdict(list)
     for sentence in sentences:
         if len(sentence["verbs"]) > 3:
-            main_verb = sentence["verbs"][3][0].split("(")[0]  # verbs are strings like "allow (should)"
+            main_verb = sentence["verbs"][3][0].split("(")[0].strip()  # verbs are strings like "allow (should)"
             groups[main_verb].append(sentence)
         else:
             groups["-"].append(sentence)
@@ -66,18 +66,41 @@ def parse_srl_output(srl_output_list, topic_model, dictionary):
 
         all_sentences.append(sentence_info)
 
+    output = {"name": prompt,
+              "children": []}
+
     main_verb_groups = group_by_main_verb(all_sentences)
     for main_verb in main_verb_groups:
         print("--")
         print(main_verb)
 
+        verb_output = {"name": main_verb,
+                       "children": []}
+
+        topic_dictionary = defaultdict(list)
         for sentence in main_verb_groups[main_verb]:
             if len(sentence["verbs"]) > 3:
-                text = " ".join(sentence["verbs"][3])
+                argument_strings = []
+                for verb_frame in sentence["verbs"][3:]:
+                    argument_strings += verb_frame[1:]
+                text = " ".join(argument_strings)
                 lemmas = lemmatize(text)
                 topics = get_topics_in_document(lemmas, dictionary, topic_model)
                 topics.sort(key=lambda x: x[1], reverse=True)
                 print(sentence["response"], topics[0])
+                topic_dictionary[topics[0][0]].append(sentence["response"])
+
+        for topic in topic_dictionary:
+            topic_branch = {"name": f"topic{topic}",
+                          "children": []}
+
+            for response in topic_dictionary[topic]:
+                topic_branch["children"].append({"name": response,
+                                                "value": 1})
+
+            verb_output["children"].append(topic_branch)
+
+        output["children"].append(verb_output)
 
         """
         texts = []
@@ -111,6 +134,12 @@ def parse_srl_output(srl_output_list, topic_model, dictionary):
         print("\t".join(output_list))
     """
 
+    with open("tree.json", "w") as o:
+        json.dump(output, o)
+
+    topics = list(topic_model.print_topics())
+    with open("topics.json", "w") as o:
+        json.dump(topics, o)
 
 prompt = "Schools should not allow junk food to be sold on campus"
 f = "scripts/data/sentences.txt"
