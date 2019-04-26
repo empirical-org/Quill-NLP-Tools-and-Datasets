@@ -1,0 +1,30 @@
+import ndjson
+from tqdm import tqdm
+import plac
+from allennlp.models.archival import load_archive
+from allennlp.predictors import Predictor
+from quillnlp.models.basic_topic_classifier import BasicTopicClassifier
+from quillnlp.dataset_readers.quill_responses import QuillResponsesDatasetReader
+from quillnlp.predictors.topic import TopicPredictor
+
+
+def main(test_file, model):
+
+    with open(test_file) as i:
+        inputs = ndjson.load(i)
+
+    archive = load_archive(model)
+    predictor = Predictor.from_archive(archive, 'topic_classifier')
+
+    correct = 0
+    for input in tqdm(inputs):
+        result = predictor.predict_json(input)
+        if result["label"] == input["label"]:
+            correct += 1
+
+    accuracy = correct/len(inputs)
+    print(correct, "/", len(inputs), "=", accuracy)
+
+
+if __name__ == "__main__":
+    plac.call(main)
