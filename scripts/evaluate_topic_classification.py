@@ -1,6 +1,7 @@
 import ndjson
 from tqdm import tqdm
 import plac
+from sklearn.metrics import classification_report
 from allennlp.models.archival import load_archive
 from allennlp.predictors import Predictor
 from quillnlp.models.basic_topic_classifier import BasicTopicClassifier
@@ -17,14 +18,19 @@ def main(test_file, model):
     predictor = Predictor.from_archive(archive, 'topic_classifier')
 
     correct = 0
+    predicted = []
+    gold = []
     for input in tqdm(inputs):
         result = predictor.predict_json(input)
+        predicted.append(result["label"])
+        gold.append(input["label"])
         if result["label"] == input["label"]:
             correct += 1
 
     accuracy = correct/len(inputs)
     print(correct, "/", len(inputs), "=", accuracy)
 
+    print(classification_report(gold, predicted))
 
 if __name__ == "__main__":
     plac.call(main)

@@ -18,15 +18,16 @@
       "token_embedders": {
         "tokens": {
           "type": "embedding",
-          "embedding_dim": 300,
-          "trainable": true
+          "pretrained_file": "/home/yves/data/embeddings/glove/glove.6B.100d.txt",
+          "embedding_dim": 100,
+          "trainable": false
         }
       }
     },
     "seq2vec_encoder": {
       "type": "lstm",
       "bidirectional": true,
-      "input_size": 300,
+      "input_size": 100,
       "hidden_size": 100,
       "num_layers": 1,
       "dropout": 0.5
