@@ -45,4 +45,12 @@ Note: this means that switching branches could mean changes to notebook state.
 Be aware of this and don't be alarmed.
 
 
+## Run AllenNLP Experiments
 
+### Training
+
+allennlp train experiments/junkfood_because_topic_classifier_cpu.json -s /tmp/junkfood_because/ --include-package quillnlp
+
+### Demo
+
+python -m allennlp.service.server_simple --archive-path /tmp/junkfood_because/model.tar.gz --field-name text --port 8234 --predictor topic_classifier --include-package quillnlp
