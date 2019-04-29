@@ -9,9 +9,9 @@
         }
      }
   },
-  "train_data_path": "data/interim/junkfood_but_train.ndjson",
-  "validation_data_path": "data/interim/junkfood_but_dev.ndjson",
-  "test_data_path": "data/interim/junkfood_but_test.ndjson",
+  "train_data_path": "data/interim/junkfood_because_train.ndjson",
+  "validation_data_path": "data/interim/junkfood_because_dev.ndjson",
+  "test_data_path": "data/interim/junkfood_because_test.ndjson",
   "model": {
     "type": "basic_topic_classifier",
     "text_field_embedder": {
