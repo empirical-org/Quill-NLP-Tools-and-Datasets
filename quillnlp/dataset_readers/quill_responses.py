@@ -1,7 +1,10 @@
 from typing import Dict
 import json
 import logging
+import spacy
+import neuralcoref
 
+from copy import deepcopy
 from overrides import overrides
 
 from allennlp.common.file_utils import cached_path
@@ -14,6 +17,8 @@ from allennlp.data.token_indexers import TokenIndexer, SingleIdTokenIndexer
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
+nlp = spacy.load('en')
+neuralcoref.add_to_pipe(nlp)
 
 @DatasetReader.register("quill_responses")
 class QuillResponsesDatasetReader(DatasetReader):
@@ -65,6 +70,26 @@ class QuillResponsesDatasetReader(DatasetReader):
 
     @overrides
     def text_to_instance(self, text: str, label: str = None) -> Instance:
+        prompt = "Schools should not allow junk food to be sold on campus"
+        print("T", text)
+        doc = nlp(prompt + " " + text)
+        copied_doc = spacy.tokens.Doc(nlp.vocab, words=[t.orth_ for t in doc])
+
+        def replace_token_in_doc(doc, token_index, new_string):
+            tokens = [t.orth_ for t in doc]
+            tokens[token_index] = new_string
+            new_doc = spacy.tokens.Doc(nlp.vocab, words=tokens)
+            return new_doc
+
+        if doc._.has_coref:
+            for cluster in doc._.coref_clusters:
+                if str(cluster[1]) == "they":
+                    antecedent = str(cluster[0]).lower()
+                    copied_doc = replace_token_in_doc(copied_doc, cluster[1].start, antecedent)
+
+        text = copied_doc.text.strip()
+        text = text.replace(prompt, "").strip()
+        print("=>", text)
         tokenized_text = self._tokenizer.tokenize(text)
         text_field = TextField(tokenized_text, self._token_indexers)
         fields = {'tokens': text_field}
