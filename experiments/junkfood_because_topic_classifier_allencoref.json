@@ -1,6 +1,6 @@
 {
   "dataset_reader": {
-    "type": "quill_responses",
+    "type": "quill_responses_allennlp",
     "tokenizer": {
         "type": "word",
         "word_splitter": {
@@ -18,9 +18,8 @@
       "token_embedders": {
         "tokens": {
           "type": "embedding",
-          "pretrained_file": "/home/yves/data/embeddings/glove/glove.6B.300d.txt",
           "embedding_dim": 300,
-          "trainable": false
+          "trainable": true
         }
       }
     },
