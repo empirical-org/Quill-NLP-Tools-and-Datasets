@@ -1,22 +1,32 @@
 import json
+import spacy
 from quillnlp.utils import detokenize
-from quillnlp.preprocess import lemmatize
+from quillnlp.preprocess import lemmatize, postag
 from quillnlp.cluster import cluster
 import re
 from collections import defaultdict
 from quillnlp.topics import find_topics, get_topics_in_document, print_topics
 
+en = spacy.load("en")
+
 
 def group_by_main_verb(sentences):
 
-    groups = defaultdict(list)
+    groups = {"-": {"-": []}}
     for sentence in sentences:
         if len(sentence["verbs"]) > 3:
             main_verb = sentence["verbs"][3][0].split("(")[0].strip()  # verbs are strings like "allow (should)"
-            groups[main_verb].append(sentence)
+            main_verb_arg0 = sentence["verbs"][3][1].lower()
+            if main_verb_arg0 not in groups:
+                groups[main_verb_arg0] = {}
+            if main_verb not in groups[main_verb_arg0]:
+                groups[main_verb_arg0][main_verb] = []
+            groups[main_verb_arg0][main_verb].append(sentence)
         else:
-            groups["-"].append(sentence)
+            groups["-"]["-"].append(sentence)
 
+    #print(json.dumps(groups, indent=4))
+    #input()
     return groups
 
 
@@ -69,38 +79,46 @@ def parse_srl_output(srl_output_list, topic_model, dictionary):
     output = {"name": prompt,
               "children": []}
 
-    main_verb_groups = group_by_main_verb(all_sentences)
-    for main_verb in main_verb_groups:
+    grouped_responses = group_by_main_verb(all_sentences)
+    for main_subj in grouped_responses:
         print("--")
-        print(main_verb)
+        print(main_subj)
 
-        verb_output = {"name": main_verb,
-                       "children": []}
+        main_subject_branch = {"name": main_subj,
+                               "children": []}
 
-        topic_dictionary = defaultdict(list)
-        for sentence in main_verb_groups[main_verb]:
-            if len(sentence["verbs"]) > 3:
-                argument_strings = []
-                for verb_frame in sentence["verbs"][3:]:
-                    argument_strings += verb_frame[1:]
-                text = " ".join(argument_strings)
-                lemmas = lemmatize(text)
-                topics = get_topics_in_document(lemmas, dictionary, topic_model)
-                topics.sort(key=lambda x: x[1], reverse=True)
-                print(sentence["response"], topics[0])
-                topic_dictionary[topics[0][0]].append(sentence["response"])
+        for main_verb in grouped_responses[main_subj]:
+            print("-", main_verb)
+            topic_dictionary = defaultdict(list)
+            main_verb_branch = {"name": main_verb,
+                                "children": []}
+            for sentence in grouped_responses[main_subj][main_verb]:
+                if len(sentence["verbs"]) > 3:
+                    argument_strings = []
+                    for verb_frame in sentence["verbs"][3:]:
+                        argument_strings += verb_frame[1:]
+                    text = " ".join(argument_strings)
 
-        for topic in topic_dictionary:
-            topic_branch = {"name": f"topic{topic}",
-                          "children": []}
+                    lemmas = lemmatize(text)
+                    topics = get_topics_in_document(lemmas, dictionary, topic_model)
+                    topics.sort(key=lambda x: x[1], reverse=True)
+                    print(sentence["response"], topics[0])
+                    best_topic = topics[0][0]
+                    topic_dictionary[best_topic].append(sentence["response"])
 
-            for response in topic_dictionary[topic]:
-                topic_branch["children"].append({"name": response,
-                                                "value": 1})
+            for topic in topic_dictionary:
+                topic_branch = {"name": f"topic{topic}",
+                                "children": []}
 
-            verb_output["children"].append(topic_branch)
+                for response in topic_dictionary[topic]:
+                    topic_branch["children"].append({"name": response,
+                                                    "value": 1})
 
-        output["children"].append(verb_output)
+                main_verb_branch["children"].append(topic_branch)
+
+            main_subject_branch["children"].append(main_verb_branch)
+
+        output["children"].append(main_subject_branch)
 
         """
         texts = []
@@ -123,8 +141,7 @@ def parse_srl_output(srl_output_list, topic_model, dictionary):
             print(c, sentence["response"])
         """
 
-
-    """
+    # This is the output for the Google doc
     for sentence in all_sentences:
         output_list = [sentence["response"], " ".join(sentence["meta"][1:])]  # strip the first "meta" label: main clause
         for verb in sentence["verbs"][3:]:
@@ -132,14 +149,15 @@ def parse_srl_output(srl_output_list, topic_model, dictionary):
                 output_list.append(item)
 
         print("\t".join(output_list))
-    """
 
+    # This is the output for the visualization tree.
     with open("tree.json", "w") as o:
         json.dump(output, o)
 
     topics = list(topic_model.print_topics())
     with open("topics.json", "w") as o:
         json.dump(topics, o)
+
 
 prompt = "Schools should not allow junk food to be sold on campus"
 f = "scripts/data/sentences.txt"
@@ -150,15 +168,14 @@ with open(f) as i:
         line = line.strip()
         responses.append(line)
 
-"""
-srl_out = perform_srl(responses, prompt)
-with open("srl_out.json", "w") as o:
-    json.dump(srl_out, o)
-"""
-
 topic_model, dictionary = find_topics([lemmatize(r) for r in responses], num_topics=5)
 
 with open("srl_out.json", "r") as i:
     srl_out = json.load(i)
+
+# correct sentences
+for x in srl_out:
+    x["sentence"] = x["sentence"].replace(prompt, prompt + " ")
+
 parse_srl_output(srl_out, topic_model, dictionary)
 print_topics(topic_model)

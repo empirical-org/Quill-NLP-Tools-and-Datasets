@@ -13,6 +13,7 @@ class TopicPredictor(Predictor):
     def predict_json(self, json_dict: JsonDict) -> JsonDict:
         text = json_dict['text']
         instance = self._dataset_reader.text_to_instance(text=text)
+        print("I", instance)
         output = self.predict_instance(instance)
 
         probs = output["probs"]

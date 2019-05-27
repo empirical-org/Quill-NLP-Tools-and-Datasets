@@ -18,3 +18,8 @@ def lemmatize(text, lowercase=True, remove_stopwords=True):
         lemmas = [t.lemma_ for t in doc]
 
     return lemmas
+
+
+def postag(text):
+    doc = nlp(text)
+    return [t.tag_ for t in doc]

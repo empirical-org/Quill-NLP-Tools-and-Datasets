@@ -57,7 +57,15 @@ allennlp predict /tmp/junkfood_because/model.tar.gz data/interim/junkfood_becaus
 
 ### Evaluation
 
+- with AllenNLP:
+
+allennlp evaluate /tmp/junkfood_but_coref/model.tar.gz data/interim/junkfood_but_test.ndjson --include-package quillnlp
+
+- with our own custom script:
+
 python scripts/evaluate_topic_classification.py data/interim/junkfood_because_test.ndjson /tmp/junkfood_because/model.tar.gz
+
+
 
 ### Demo
 

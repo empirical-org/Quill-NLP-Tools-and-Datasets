@@ -20,8 +20,9 @@ def main(test_file, model):
     correct = 0
     predicted = []
     gold = []
-    for input in tqdm(inputs):
+    for input in inputs:
         result = predictor.predict_json(input)
+        print(input["text"], "\nC:", input["label"], "\nP:", result["label"])
         predicted.append(result["label"])
         gold.append(input["label"])
         if result["label"] == input["label"]:
