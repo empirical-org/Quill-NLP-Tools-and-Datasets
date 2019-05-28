@@ -7,6 +7,9 @@ import re
 from collections import defaultdict
 from quillnlp.topics import find_topics, get_topics_in_document, print_topics
 
+from allennlp.predictors.predictor import Predictor
+
+predictor = Predictor.from_path("https://s3-us-west-2.amazonaws.com/allennlp/models/coref-model-2018.02.05.tar.gz")
 en = spacy.load("en")
 
 
@@ -30,11 +33,56 @@ def group_by_main_verb(sentences):
     return groups
 
 
-def identify_argument(verb, argument_number):
+def identify_argument(verb, argument_number, words):
+    indexes = []
+    arg_tokens = []
+    #print("V", verb)
+    tags_words = list(zip(verb["tags"], words))
+    for idx, (tag, word) in enumerate(tags_words):
+        if tag.endswith(f"ARG{argument_number}"):
+            arg_tokens.append(word)
+            indexes.append(idx)
+
+    if len(indexes) > 0:
+        start_end_indexes = [indexes[0], indexes[-1]]
+        arg_string = detokenize(" ".join(arg_tokens))
+
+        return arg_string, start_end_indexes
+    else:
+        return "-", []
+
+    """
     arg0 = re.search(f"\[ARG{argument_number}: (.*?)\]", verb["description"])
     if arg0:
         return arg0.group(1)
+    """
     return "-"
+
+
+def get_coreference_dictionary(sentence):
+    """
+    Takes a sentence a returns a dictionary where word indices are mapped to their
+    antecedent token
+    :param sentence:
+    :return: a coreferent dictionary, e.g. {"13-13": "Schools"}
+    """
+    prediction = predictor.predict(document=sentence)
+
+    corefs = {}
+    print("P", prediction["clusters"])
+    for cluster in prediction["clusters"]:
+        print(cluster)
+        antecedent_token_start = cluster[0][0]
+        antecedent_token_end = cluster[0][1]
+        antecedent_token = prediction["document"][antecedent_token_start: antecedent_token_end + 1]
+        for coreferent in cluster[1:]:
+            coreferent_token_start = coreferent[0]
+            coreferent_token_end = coreferent[1]
+            coreferent_token = prediction["document"][coreferent_token_start:coreferent_token_end + 1]
+            print(coreferent_token, "=>", antecedent_token)
+            coreferent_token_location = str(coreferent_token_start) + "-" + str(coreferent_token_end)
+            corefs[coreferent_token_location] = detokenize(" ".join(antecedent_token))
+    return corefs
 
 
 def parse_srl_output(srl_output_list, topic_model, dictionary):
@@ -51,6 +99,10 @@ def parse_srl_output(srl_output_list, topic_model, dictionary):
                          "meta": [],
                          "verbs": []}
 
+        corefs = get_coreference_dictionary(sent["sentence"])
+
+        print("SRL", sent["srl"])
+
         auxiliary = None
         for verb in sent["srl"]["verbs"]:
             verb_string = verb["verb"].lower()
@@ -64,15 +116,26 @@ def parse_srl_output(srl_output_list, topic_model, dictionary):
                 auxiliary = verb_string
 
             else:
-                arg0_string = detokenize(identify_argument(verb, 0))
-                arg1_string = detokenize(identify_argument(verb, 1))
-                arg2_string = detokenize(identify_argument(verb, 2))
+                arg0_string, arg0_indices = identify_argument(verb, 0, sent["srl"]["words"])
+                arg1_string, arg1_indices = identify_argument(verb, 1, sent["srl"]["words"])
+                arg2_string, arg2_indices = identify_argument(verb, 2, sent["srl"]["words"])
+
+                print("ARG0", arg0_string, arg0_indices)
+                print("ARG1", arg1_string, arg1_indices)
+
+                arg0_location = "-".join([str(x) for x in arg0_indices])
+                if arg0_location in corefs:
+                    print(arg0_string, "=>", corefs[arg0_location])
+                    arg0_antecedent = corefs[arg0_location]
+                else:
+                    arg0_antecedent = arg0_string
 
                 if auxiliary is not None:
                     verb_string += f" ({auxiliary})"
                     auxiliary = None
 
-                sentence_info["verbs"].append([verb_string, arg0_string, arg1_string, arg2_string])
+                if arg0_string != "I":  # Exclude constructions like "I think", "I guess", etc.
+                    sentence_info["verbs"].append([verb_string, arg0_string, arg0_antecedent, arg1_string, arg2_string])
 
         all_sentences.append(sentence_info)
 

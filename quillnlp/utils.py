@@ -1,4 +1,8 @@
 import re
+import spacy
+
+
+nlp = spacy.load("en")
 
 
 def detokenize(s):
@@ -7,9 +11,6 @@ def detokenize(s):
     s = re.sub("\s+([;:,\.\?!])", "\\1", s)
     s = re.sub("\s+(n't)", "\\1", s)
     return s
-
-
-import re
 
 
 def extract_referents_from_xml_tagged_strings(strings):
@@ -32,3 +33,4 @@ def extract_referents_from_xml_tagged_strings(strings):
                           "id": matched_id})
         print(spans)
         yield {"text": s_scrubbed, "refs": spans}
+
