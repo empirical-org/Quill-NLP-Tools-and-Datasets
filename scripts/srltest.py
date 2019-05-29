@@ -1,21 +1,16 @@
 import json
 import spacy
-import re
 from collections import defaultdict
 
 from allennlp.models.archival import load_archive
+from allennlp.predictors.predictor import Predictor
 
 from quillnlp.utils import detokenize
-from quillnlp.preprocess import lemmatize, postag
-from quillnlp.topics import find_topics, get_topics_in_document, print_topics
 from quillnlp.models.basic_topic_classifier import BasicTopicClassifier
 from quillnlp.dataset_readers.quill_responses import QuillResponsesDatasetReader
 from quillnlp.predictors.topic import TopicPredictor
 
-
-from allennlp.predictors.predictor import Predictor
-
-predictor = Predictor.from_path("https://s3-us-west-2.amazonaws.com/allennlp/models/coref-model-2018.02.05.tar.gz")
+coref_predictor = Predictor.from_path("https://s3-us-west-2.amazonaws.com/allennlp/models/coref-model-2018.02.05.tar.gz")
 en = spacy.load("en")
 
 VERB_MAP = {"s": "be",
@@ -25,7 +20,14 @@ VERB_MAP = {"s": "be",
 
 SUBJECTS_TO_IGNORE = set(["I", "some", "some people"])
 
+
+PROMPT = "Schools should not allow junk food to be sold on campus"
 CLASSIFIER_FILE = "models/junkfood_but_topic_classifier_glove.tar.gz"
+INPUT_FILE = "scripts/data/sentences.txt"
+SRL_OUTPUT_FILE = "srl_out.json"
+MODAL_VERBS = set(["will", "shall", "may", "might", "can", "could", "must", "ought to",
+                   "should", "would", "used to", "need"])
+AUX_VERBS = set(["do", "does"])
 
 
 def group_by_main_verb(sentences):
@@ -85,7 +87,7 @@ def get_coreference_dictionary(sentence):
     :param sentence:
     :return: a coreferent dictionary, e.g. {"13-13": "Schools"}
     """
-    prediction = predictor.predict(document=sentence)
+    prediction = coref_predictor.predict(document=sentence)
 
     corefs = {}
     print("P", prediction["clusters"])
@@ -113,11 +115,9 @@ def create_visualization_data(all_sentences, output_file):
     """
 
     archive = load_archive(CLASSIFIER_FILE)
-    predictor = Predictor.from_archive(archive, 'topic_classifier')
+    classifier = Predictor.from_archive(archive, 'topic_classifier')
 
-
-    output = {"name": prompt,
-              "children": []}
+    output = {"name": PROMPT, "children": []}
 
     grouped_responses = group_by_main_verb(all_sentences)
     for main_subj in grouped_responses:
@@ -138,12 +138,9 @@ def create_visualization_data(all_sentences, output_file):
                     for verb_frame in sentence["verbs"][3:]:
                         argument_strings += verb_frame[1:]
 
-
-                    result = predictor.predict_json({"text": sentence["response"]})
-                    #print(input["text"], "\nC:", input["label"], "\nP:", result["label"])
-                    best_topic = result["label"]
-
-                    topic_dictionary[best_topic].append(sentence["response"])
+                    result = classifier.predict_json({"text": sentence["response"]})
+                    topic = result["label"]
+                    topic_dictionary[topic].append(sentence["response"])
 
             for topic in topic_dictionary:
                 topic_branch = {"name": topic,
@@ -163,15 +160,54 @@ def create_visualization_data(all_sentences, output_file):
         json.dump(output, o)
 
 
-def parse_srl_output(srl_output_list, topic_model, dictionary):
+def read_srl_output(srl_output_file):
+    """
+    Reads the output from the AllenNLP Semantic Role Labelling model.
+    :param srl_output_file:
+    :return:
+    """
+    with open(srl_output_file) as i:
+        srl_out = json.load(i)
 
-    modal_verbs = set(["will", "shall", "may", "might", "can", "could", "must", "ought to",
-                       "should", "would", "used to", "need"])
+    for x in srl_out:
+        x["sentence"] = x["sentence"].replace(PROMPT, PROMPT + " ")
 
-    aux_verbs = set(["do", "does"])
+    return srl_out
+
+
+def write_output(all_sentences, output_file):
+    """
+    Writes tab-separated output that can be imported in a Google Spreadsheet.
+    :param all_sentences:
+    :param output_file:
+    :return:
+    """
+
+    with open(output_file, "w") as o:
+        columns = ["response", "verb construction", "main verb", "extracted arg0", "intended arg0", "arg1", "arg2"]
+        o.write("\t".join(columns) + "\n")
+        for sentence in all_sentences:
+            output_list = [sentence["response"], " ".join(sentence["meta"][1:])]  # strip the first "meta" label: main clause
+            for verb in sentence["verbs"][3:]:
+                for item in verb:
+                    output_list.append(item)
+
+            print("\t".join(output_list))
+            o.write("\t".join(output_list) + "\n")
+
+
+def main():
+
+    responses = []
+    with open(INPUT_FILE) as i:
+        for line in i:
+            line = line.strip()
+            responses.append(line)
+
+    srl_out = read_srl_output(SRL_OUTPUT_FILE)
 
     all_sentences = []
-    for sent in srl_output_list:
+    for sent in srl_out:
         sentence_info = {"sentence": sent["sentence"],
                          "response": sent["response"],
                          "meta": [],
@@ -179,18 +215,16 @@ def parse_srl_output(srl_output_list, topic_model, dictionary):
 
         corefs = get_coreference_dictionary(sent["sentence"])
 
-        print("SRL", sent["srl"])
-
         auxiliary = None
         for verb in sent["srl"]["verbs"]:
             verb_string = verb["verb"].lower()
             verb_string = VERB_MAP.get(verb_string, verb_string)
 
-            if verb_string in modal_verbs:
+            if verb_string in MODAL_VERBS:
                 sentence_info["meta"].append("modal")
                 auxiliary = verb_string
 
-            elif verb_string in aux_verbs:
+            elif verb_string in AUX_VERBS:
                 sentence_info["meta"].append("auxiliary")
                 auxiliary = verb_string
 
@@ -198,9 +232,6 @@ def parse_srl_output(srl_output_list, topic_model, dictionary):
                 arg0_string, arg0_indices = identify_argument(verb, 0, sent["srl"]["words"])
                 arg1_string, arg1_indices = identify_argument(verb, 1, sent["srl"]["words"])
                 arg2_string, arg2_indices = identify_argument(verb, 2, sent["srl"]["words"])
-
-                print("ARG0", arg0_string, arg0_indices)
-                print("ARG1", arg1_string, arg1_indices)
 
                 arg0_location = "-".join([str(x) for x in arg0_indices])
                 if arg0_location in corefs:
@@ -219,40 +250,8 @@ def parse_srl_output(srl_output_list, topic_model, dictionary):
         all_sentences.append(sentence_info)
 
     create_visualization_data(all_sentences, "tree.json")
-
-    # This is the output for the Google doc
-    columns = ["response", "verb construction", "main verb", "extracted arg0", "intended arg0", "arg1", "arg2"]
-    print("\t".join(columns))
-    for sentence in all_sentences:
-        output_list = [sentence["response"], " ".join(sentence["meta"][1:])]  # strip the first "meta" label: main clause
-        for verb in sentence["verbs"][3:]:
-            for item in verb:
-                output_list.append(item)
-
-        print("\t".join(output_list))
-
-    topics = list(topic_model.print_topics())
-    with open("topics.json", "w") as o:
-        json.dump(topics, o)
+    write_output(all_sentences, "output.tsv")
 
 
-prompt = "Schools should not allow junk food to be sold on campus"
-f = "scripts/data/sentences.txt"
-
-responses = []
-with open(f) as i:
-    for line in i:
-        line = line.strip()
-        responses.append(line)
-
-topic_model, dictionary = find_topics([lemmatize(r) for r in responses], num_topics=5)
-
-with open("srl_out.json", "r") as i:
-    srl_out = json.load(i)
-
-# correct sentences
-for x in srl_out:
-    x["sentence"] = x["sentence"].replace(prompt, prompt + " ")
-
-parse_srl_output(srl_out, topic_model, dictionary)
-print_topics(topic_model)
+if __name__ == "__main__":
+    main()
