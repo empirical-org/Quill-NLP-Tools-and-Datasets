@@ -117,7 +117,7 @@ def create_visualization_data(all_sentences, output_file):
     archive = load_archive(CLASSIFIER_FILE)
     classifier = Predictor.from_archive(archive, 'topic_classifier')
 
-    output = {"name": PROMPT, "children": []}
+    output = {"name": PROMPT + " but", "children": []}
 
     grouped_responses = group_by_main_verb(all_sentences)
     for main_subj in grouped_responses:
@@ -139,25 +139,48 @@ def create_visualization_data(all_sentences, output_file):
                         argument_strings += verb_frame[1:]
 
                     result = classifier.predict_json({"text": sentence["response"]})
+                    print(result)
                     topic = result["label"]
                     topic_dictionary[topic].append(sentence["response"])
 
             for topic in topic_dictionary:
-                topic_branch = {"name": topic,
+                topic_branch = {"name": f"Topic: {topic}",
                                 "children": []}
 
                 for response in topic_dictionary[topic]:
-                    topic_branch["children"].append({"name": response,
+                    topic_branch["children"].append({"name": PROMPT + " " + response,
                                                     "value": 1})
 
                 main_verb_branch["children"].append(topic_branch)
 
-            main_subject_branch["children"].append(main_verb_branch)
+            if len(main_verb_branch["children"]) > 0:
+                main_subject_branch["children"].append(main_verb_branch)
 
-        output["children"].append(main_subject_branch)
+        # Exclude all responses where there is only one response (e.g. one subject).
+        # The goal here is to show the more frequent items to help people parse it.
+        if len(main_subject_branch["children"]) > 1:
+            output["children"].append(main_subject_branch)
+
+    # Add the number of items to each node and sort.
+    total = 0
+    for verb in output["children"]:
+        verb_total = 0
+        for subject in verb["children"]:
+            subject_total = 0
+            for topic in subject["children"]:
+                topic["name"] = f"{topic['name']} ({len(topic['children'])})"
+                subject_total += len(topic["children"])
+            subject["name"] = f"{subject['name']} ({subject_total})"
+            subject["children"] = sorted(subject["children"], key=lambda x: x["name"])
+            verb_total += subject_total
+        verb["name"] = f"{verb['name']} ({verb_total})"
+        verb["children"] = sorted(verb["children"], key=lambda x: x["name"])
+        total += verb_total
+    output["name"] = f"{output['name']} ({total})"
+    output["children"] = sorted(output["children"], key=lambda x: x["name"])
 
     with open(output_file, "w") as o:
-        json.dump(output, o)
+        json.dump(output, o, sort_keys=True)
 
 
 def read_srl_output(srl_output_file):

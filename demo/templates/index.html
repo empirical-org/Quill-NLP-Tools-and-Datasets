@@ -24,8 +24,8 @@
 </body>
 <script src="//d3js.org/d3.v3.min.js"></script>
 <script>
-var margin = {top: 20, right: 120, bottom: 20, left: 300},
-    width = 1600 - margin.right - margin.left,
+var margin = {top: 20, right: 0, bottom: 20, left: 300},
+    width = 3000 - margin.right - margin.left,
     height = 1600 - margin.top - margin.bottom;
 var i = 0,
     duration = 750,
@@ -54,13 +54,12 @@ d3.json("{{ url_for('static', filename='tree.json') }}", function(error, flare) 
   root.children.forEach(collapse);
   update(root);
 });
-d3.select(self.frameElement).style("height", "800px");
 function update(source) {
   // Compute the new tree layout.
   var nodes = tree.nodes(root).reverse(),
       links = tree.links(nodes);
   // Normalize for fixed-depth.
-  nodes.forEach(function(d) { d.y = d.depth * 180; });
+  nodes.forEach(function(d) { d.y = d.depth * 250; });
   // Update the nodes…
   var node = svg.selectAll("g.node")
       .data(nodes, function(d) { return d.id || (d.id = ++i); });
