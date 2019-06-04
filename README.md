@@ -7,25 +7,26 @@ Notebooks, scrapers, corpora, and utilities built and maintained Quill.org.
 
 ```bash
 .
+├── data            # data we use for our experiments
+    ├── interim     # preprocessed data
+    ├── raw         # original, unprocessed data
+    └── validated   # validated gold standard data for evaluation
+│    
+├── demo            # D3 visualization that demonstrates NLP capabilities
+├── experiments     # the json configuration files for our experiments
+├── genmodel
+├── models          # saved models for classification and other NLP tasks
+├── notebooks       # Jupyter notebooks for data exploration & simple experiments
+├── quillnlp        # the main package with the NLP code, including the dataset readers,
+│                   # models and predictors for AllenNLP
+├── scrapers        # data collection tools
+├── scripts         # scripts for data processing, etc.
+├── tests           # unit and more high-level tests
+├── utils           # useful tools and scripts including document parsing
 ├── LICENSE
-├── README.md
-├── __init__.py
-├── data
-├── models
-├── notebooks
-├── scrapers
-├── tests
-└── utils
+├── README.md       # this file
+└── __init__.py
 ```
-
-Here is some information about each.
-
- * **data.** structured and unstructured documents
- * **models.** generated tensorflow models
- * **notebooks.** jupyter notebooks
- * **scrapers.** data collection tools
- * **tests.** high level tests
- * **utils.** useful tools and scripts including document parsing
 
 ## Show version control how to deal with ipynb files
 
@@ -64,8 +65,6 @@ allennlp evaluate /tmp/junkfood_but_coref/model.tar.gz data/interim/junkfood_but
 - with our own custom script:
 
 python scripts/evaluate_topic_classification.py data/interim/junkfood_because_test.ndjson /tmp/junkfood_because/model.tar.gz
-
-
 
 ### Demo
 
