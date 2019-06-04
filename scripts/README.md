@@ -9,5 +9,18 @@ These roles are:
 - arg1: the 'patient': the entity that undergoes an action or undergoes a change of state
 - arg2: the 'beneficiary': the entity for whose benefit the action was performed
 
-`srltest.py` applies the AllenNLP semantic role labelling model to a set of example responses about junk food
-and post-processes the results.
+
+### SRL script
+
+`srltest.py` creates a json file that we use for a D3 visualization of student responses. 
+It follows the following procedure: 
+
+1. Read the output of the AllenNLP Semantic Role Labeller for a set of our responses.
+2. Perform co-reference resolution on the full sentences. 
+3. Identify the main verb in the responses, using a few simple rules.
+4. Group every response first by arg0 (mostly the subject), and then by main verb, combining
+the results of the Semantic Role Labelling and co-reference resolution.
+5. Use one of our topic classifiers to predict the topic. 
+6. Output the tree to a json file.
+
+

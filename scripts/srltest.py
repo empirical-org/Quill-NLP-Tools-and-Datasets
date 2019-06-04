@@ -30,7 +30,7 @@ MODAL_VERBS = set(["will", "shall", "may", "might", "can", "could", "must", "oug
 AUX_VERBS = set(["do", "does"])
 
 
-def group_by_main_verb(sentences):
+def group_by_arg0_and_verb(sentences):
     """
     Groups the sentences by their main verb and its arg0. This is needed to produce the
     clustered data for the D3 visualization.
@@ -114,45 +114,39 @@ def create_visualization_data(all_sentences, output_file):
     :return:
     """
 
+    # Load the topic classifier we will use for assigning the topics
     archive = load_archive(CLASSIFIER_FILE)
     classifier = Predictor.from_archive(archive, 'topic_classifier')
 
+    # Initialize the json object with the prompt as root.
     output = {"name": PROMPT + " but", "children": []}
 
-    grouped_responses = group_by_main_verb(all_sentences)
-    for main_subj in grouped_responses:
-        print("--")
-        print(main_subj)
+    # Group the responses by arg0 and main verb.
+    grouped_responses = group_by_arg0_and_verb(all_sentences)
 
-        main_subject_branch = {"name": main_subj,
-                               "children": []}
+    for main_subj in grouped_responses:
+        main_subject_branch = {"name": main_subj, "children": []}
 
         for main_verb in grouped_responses[main_subj]:
-            print("-", main_verb)
+            main_verb_branch = {"name": main_verb, "children": []}
+
+            # Group the responses by topic
             topic_dictionary = defaultdict(list)
-            main_verb_branch = {"name": main_verb,
-                                "children": []}
             for sentence in grouped_responses[main_subj][main_verb]:
-                if len(sentence["verbs"]) > 3:
-                    argument_strings = []
-                    for verb_frame in sentence["verbs"][3:]:
-                        argument_strings += verb_frame[1:]
+                result = classifier.predict_json({"text": sentence["response"]})
+                topic = result["label"]
+                topic_dictionary[topic].append(sentence["response"])
 
-                    result = classifier.predict_json({"text": sentence["response"]})
-                    print(result)
-                    topic = result["label"]
-                    topic_dictionary[topic].append(sentence["response"])
-
+            # Create the topic subtree for the verb
             for topic in topic_dictionary:
-                topic_branch = {"name": f"Topic: {topic}",
-                                "children": []}
+                topic_branch = {"name": f"Topic: {topic}", "children": []}
 
                 for response in topic_dictionary[topic]:
-                    topic_branch["children"].append({"name": PROMPT + " " + response,
-                                                    "value": 1})
+                    topic_branch["children"].append({"name": PROMPT + " " + response, "value": 1})
 
                 main_verb_branch["children"].append(topic_branch)
 
+            # Add all responses for this verb to the tree
             if len(main_verb_branch["children"]) > 0:
                 main_subject_branch["children"].append(main_verb_branch)
 
@@ -161,7 +155,7 @@ def create_visualization_data(all_sentences, output_file):
         if len(main_subject_branch["children"]) > 1:
             output["children"].append(main_subject_branch)
 
-    # Add the number of items to each node and sort.
+    # Add the number of items to each node and sort the children alphabetically
     total = 0
     for verb in output["children"]:
         verb_total = 0
@@ -221,59 +215,68 @@ def write_output(all_sentences, output_file):
 
 def main():
 
-    responses = []
-    with open(INPUT_FILE) as i:
-        for line in i:
-            line = line.strip()
-            responses.append(line)
-
+    # Read AllenNLP's SRL output.
     srl_out = read_srl_output(SRL_OUTPUT_FILE)
 
-    all_sentences = []
+    sentences = []
     for sent in srl_out:
         sentence_info = {"sentence": sent["sentence"],
                          "response": sent["response"],
                          "meta": [],
                          "verbs": []}
 
+        # Perform coreference resolution on the full sentence
         corefs = get_coreference_dictionary(sent["sentence"])
 
+        # For each of the verbs in the sentence, preprocess the verb and identify its arguments.
         auxiliary = None
         for verb in sent["srl"]["verbs"]:
+
+            # Preprocess the verb using a few simple rules, e.g. ca => can, etc.
             verb_string = verb["verb"].lower()
             verb_string = VERB_MAP.get(verb_string, verb_string)
 
+            # If the verb is a modal, add this information to the metadata and
+            # add the verb as an auxiliary to the next main verb.
             if verb_string in MODAL_VERBS:
                 sentence_info["meta"].append("modal")
                 auxiliary = verb_string
 
+            # If the verb is an auxiliary, add this information to the metadata and
+            # add the verb as an auxiliary to the next main verb.
             elif verb_string in AUX_VERBS:
                 sentence_info["meta"].append("auxiliary")
                 auxiliary = verb_string
 
             else:
+                # Identify the arguments and their indices
                 arg0_string, arg0_indices = identify_argument(verb, 0, sent["srl"]["words"])
                 arg1_string, arg1_indices = identify_argument(verb, 1, sent["srl"]["words"])
                 arg2_string, arg2_indices = identify_argument(verb, 2, sent["srl"]["words"])
 
+                # If arg0 is in the coreference dictionary, identify its antecedent (the "implied subject").
+                # If not, take the arg0 itself as "implied subject".
                 arg0_location = "-".join([str(x) for x in arg0_indices])
                 if arg0_location in corefs:
-                    print(arg0_string, "=>", corefs[arg0_location])
                     arg0_antecedent = corefs[arg0_location]
                 else:
                     arg0_antecedent = arg0_string
 
+                # Add the auxiliary to the verb string.
                 if auxiliary is not None:
                     verb_string += f" ({auxiliary})"
                     auxiliary = None
 
-                if arg0_string not in SUBJECTS_TO_IGNORE:  # Exclude constructions like "I think", "I guess", etc.
+                # Add the verb information to the sentence information.
+                # Exclude constructions like "I think", "I guess", etc. on the basis of a
+                # list of subjects we want to ignore.
+                if arg0_string not in SUBJECTS_TO_IGNORE:
                     sentence_info["verbs"].append([verb_string, arg0_string, arg0_antecedent, arg1_string, arg2_string])
 
-        all_sentences.append(sentence_info)
+        sentences.append(sentence_info)
 
-    create_visualization_data(all_sentences, "tree.json")
-    write_output(all_sentences, "output.tsv")
+    create_visualization_data(sentences, "tree.json")
+    write_output(sentences, "output.tsv")
 
 
 if __name__ == "__main__":

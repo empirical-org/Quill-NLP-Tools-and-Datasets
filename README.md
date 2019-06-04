@@ -45,27 +45,3 @@ not versioned, but that regular code changes will still be reflected.
 Note: this means that switching branches could mean changes to notebook state.
 Be aware of this and don't be alarmed.
 
-
-## Run AllenNLP Experiments
-
-### Training
-
-allennlp train experiments/junkfood_because_topic_classifier_cpu.json -s /tmp/junkfood_because/ --include-package quillnlp
-
-### Prediction
-
-allennlp predict /tmp/junkfood_because/model.tar.gz data/interim/junkfood_because_test.ndjson --include-package quillnlp --predictor topic_classifier
-
-### Evaluation
-
-- with AllenNLP:
-
-allennlp evaluate /tmp/junkfood_but_coref/model.tar.gz data/interim/junkfood_but_test.ndjson --include-package quillnlp
-
-- with our own custom script:
-
-python scripts/evaluate_topic_classification.py data/interim/junkfood_because_test.ndjson /tmp/junkfood_because/model.tar.gz
-
-### Demo
-
-python -m allennlp.service.server_simple --archive-path /tmp/junkfood_because/model.tar.gz --field-name text --port 8234 --predictor topic_classifier --include-package quillnlp
