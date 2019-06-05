@@ -4,7 +4,8 @@ from flask import Flask, render_template
 app = application = Flask(__name__, static_url_path='/static')
 
 JSON_FILES = {"junkfood": "tree.json",
-              "trucks": "selfdrivingtrucks_because.json"}
+              "trucks_because": "selfdrivingtrucks_because.json",
+              "trucks_so": "selfdrivingtrucks_so.json"}
 
 
 @app.route("/")

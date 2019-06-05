@@ -26,15 +26,15 @@ SUBJECTS_TO_IGNORE = set(["I", "some", "some people"])
 #SRL_OUTPUT_FILE = "srl_out.json"
 #NUMBER_OF_VERBS_IN_PROMPT = 3
 
-PROMPT = "The United States is investing in self-driving trucks because"
+PROMPT = "The United States is investing in self-driving trucks, so"
 CLASSIFIER_FILE = None
-INPUT_FILE = "data/raw/selfdrivingtrucks_because.tsv"
-SRL_OUTPUT_FILE = "scripts/data/selfdrivingtrucks_because_srl.json"
+INPUT_FILE = "data/raw/selfdrivingtrucks_so.tsv"
+SRL_OUTPUT_FILE = "scripts/data/selfdrivingtrucks_so_srl.json"
 NUMBER_OF_VERBS_IN_PROMPT = 3
 
 
-OUTPUT_VISUALIZATION_FILE = "selfdrivingtrucks_because.json"
-OUTPUT_TSV_FILE = "selfdrivingtrucks_because.tsv"
+OUTPUT_VISUALIZATION_FILE = "selfdrivingtrucks_so.json"
+OUTPUT_TSV_FILE = "selfdrivingtrucks_so.tsv"
 
 MODAL_VERBS = set(["will", "shall", "may", "might", "can", "could", "must", "ought to",
                    "should", "would", "used to", "need"])
