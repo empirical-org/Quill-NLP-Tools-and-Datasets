@@ -20,11 +20,22 @@ VERB_MAP = {"s": "be",
 
 SUBJECTS_TO_IGNORE = set(["I", "some", "some people"])
 
+#PROMPT = "Schools should not allow junk food to be sold on campus"
+#CLASSIFIER_FILE = "models/junkfood_but_topic_classifier_glove.tar.gz"
+#INPUT_FILE = "scripts/data/sentences.txt"
+#SRL_OUTPUT_FILE = "srl_out.json"
+#NUMBER_OF_VERBS_IN_PROMPT = 3
 
-PROMPT = "Schools should not allow junk food to be sold on campus"
-CLASSIFIER_FILE = "models/junkfood_but_topic_classifier_glove.tar.gz"
-INPUT_FILE = "scripts/data/sentences.txt"
-SRL_OUTPUT_FILE = "srl_out.json"
+PROMPT = "The United States is investing in self-driving trucks because"
+CLASSIFIER_FILE = None
+INPUT_FILE = "data/raw/selfdrivingtrucks_because.tsv"
+SRL_OUTPUT_FILE = "scripts/data/selfdrivingtrucks_because_srl.json"
+NUMBER_OF_VERBS_IN_PROMPT = 3
+
+
+OUTPUT_VISUALIZATION_FILE = "selfdrivingtrucks_because.json"
+OUTPUT_TSV_FILE = "selfdrivingtrucks_because.tsv"
+
 MODAL_VERBS = set(["will", "shall", "may", "might", "can", "could", "must", "ought to",
                    "should", "would", "used to", "need"])
 AUX_VERBS = set(["do", "does"])
@@ -40,9 +51,9 @@ def group_by_arg0_and_verb(sentences):
 
     groups = {"-": {"-": []}}
     for sentence in sentences:
-        if len(sentence["verbs"]) > 3:
-            main_verb = sentence["verbs"][3][0].split("(")[0].strip()  # verbs are strings like "allow (should)"
-            main_verb_arg0 = sentence["verbs"][3][2].lower()
+        if len(sentence["verbs"]) > NUMBER_OF_VERBS_IN_PROMPT:
+            main_verb = sentence["verbs"][NUMBER_OF_VERBS_IN_PROMPT][0].split("(")[0].strip()  # verbs are strings like "allow (should)"
+            main_verb_arg0 = sentence["verbs"][NUMBER_OF_VERBS_IN_PROMPT][2].lower()
             if main_verb_arg0 not in groups:
                 groups[main_verb_arg0] = {}
             if main_verb not in groups[main_verb_arg0]:
@@ -63,6 +74,7 @@ def identify_argument(verb, argument_number, words):
     indexes = []
     arg_tokens = []
 
+    print(words)
     tags_words = list(zip(verb["tags"], words))
     for idx, (tag, word) in enumerate(tags_words):
         if tag.endswith(f"ARG{argument_number}"):
@@ -90,9 +102,9 @@ def get_coreference_dictionary(sentence):
     prediction = coref_predictor.predict(document=sentence)
 
     corefs = {}
-    print("P", prediction["clusters"])
+    print(sentence)
+    print(prediction["clusters"])
     for cluster in prediction["clusters"]:
-        print(cluster)
         antecedent_token_start = cluster[0][0]
         antecedent_token_end = cluster[0][1]
         antecedent_token = prediction["document"][antecedent_token_start: antecedent_token_end + 1]
@@ -115,11 +127,14 @@ def create_visualization_data(all_sentences, output_file):
     """
 
     # Load the topic classifier we will use for assigning the topics
-    archive = load_archive(CLASSIFIER_FILE)
-    classifier = Predictor.from_archive(archive, 'topic_classifier')
+    if CLASSIFIER_FILE:
+        archive = load_archive(CLASSIFIER_FILE)
+        classifier = Predictor.from_archive(archive, 'topic_classifier')
+    else:
+        classifier = None
 
     # Initialize the json object with the prompt as root.
-    output = {"name": PROMPT + " but", "children": []}
+    output = {"name": PROMPT, "children": []}
 
     # Group the responses by arg0 and main verb.
     grouped_responses = group_by_arg0_and_verb(all_sentences)
@@ -130,21 +145,25 @@ def create_visualization_data(all_sentences, output_file):
         for main_verb in grouped_responses[main_subj]:
             main_verb_branch = {"name": main_verb, "children": []}
 
-            # Group the responses by topic
-            topic_dictionary = defaultdict(list)
-            for sentence in grouped_responses[main_subj][main_verb]:
-                result = classifier.predict_json({"text": sentence["response"]})
-                topic = result["label"]
-                topic_dictionary[topic].append(sentence["response"])
+            if classifier:
+                # Group the responses by topic
+                topic_dictionary = defaultdict(list)
+                for sentence in grouped_responses[main_subj][main_verb]:
+                    result = classifier.predict_json({"text": sentence["response"]})
+                    topic = result["label"]
+                    topic_dictionary[topic].append(sentence["response"])
 
-            # Create the topic subtree for the verb
-            for topic in topic_dictionary:
-                topic_branch = {"name": f"Topic: {topic}", "children": []}
+                # Create the topic subtree for the verb
+                for topic in topic_dictionary:
+                    topic_branch = {"name": f"Topic: {topic}", "children": []}
 
-                for response in topic_dictionary[topic]:
-                    topic_branch["children"].append({"name": PROMPT + " " + response, "value": 1})
+                    for response in topic_dictionary[topic]:
+                        topic_branch["children"].append({"name": PROMPT + " " + response, "value": 1})
 
-                main_verb_branch["children"].append(topic_branch)
+                    main_verb_branch["children"].append(topic_branch)
+            else:
+                main_verb_branch["children"] = [{"name": PROMPT + " " + r["response"], "value": 1} for r in
+                                                grouped_responses[main_subj][main_verb]]
 
             # Add all responses for this verb to the tree
             if len(main_verb_branch["children"]) > 0:
@@ -161,9 +180,12 @@ def create_visualization_data(all_sentences, output_file):
         verb_total = 0
         for subject in verb["children"]:
             subject_total = 0
-            for topic in subject["children"]:
-                topic["name"] = f"{topic['name']} ({len(topic['children'])})"
-                subject_total += len(topic["children"])
+            if classifier:
+                for topic in subject["children"]:
+                    topic["name"] = f"{topic['name']} ({len(topic['children'])})"
+                    subject_total += len(topic["children"])
+            else:
+                subject_total = len(subject["children"])
             subject["name"] = f"{subject['name']} ({subject_total})"
             subject["children"] = sorted(subject["children"], key=lambda x: x["name"])
             verb_total += subject_total
@@ -186,9 +208,6 @@ def read_srl_output(srl_output_file):
     with open(srl_output_file) as i:
         srl_out = json.load(i)
 
-    for x in srl_out:
-        x["sentence"] = x["sentence"].replace(PROMPT, PROMPT + " ")
-
     return srl_out
 
 
@@ -205,11 +224,10 @@ def write_output(all_sentences, output_file):
         o.write("\t".join(columns) + "\n")
         for sentence in all_sentences:
             output_list = [sentence["response"], " ".join(sentence["meta"][1:])]  # strip the first "meta" label: main clause
-            for verb in sentence["verbs"][3:]:
+            for verb in sentence["verbs"][NUMBER_OF_VERBS_IN_PROMPT:]:
                 for item in verb:
                     output_list.append(item)
 
-            print("\t".join(output_list))
             o.write("\t".join(output_list) + "\n")
 
 
@@ -261,6 +279,9 @@ def main():
                     arg0_antecedent = corefs[arg0_location]
                 else:
                     arg0_antecedent = arg0_string
+                print(corefs)
+                print("SA", arg0_string, arg0_antecedent)
+                print(arg0_location)
 
                 # Add the auxiliary to the verb string.
                 if auxiliary is not None:
@@ -275,8 +296,8 @@ def main():
 
         sentences.append(sentence_info)
 
-    create_visualization_data(sentences, "tree.json")
-    write_output(sentences, "output.tsv")
+    create_visualization_data(sentences, OUTPUT_VISUALIZATION_FILE)
+    write_output(sentences, OUTPUT_TSV_FILE)
 
 
 if __name__ == "__main__":

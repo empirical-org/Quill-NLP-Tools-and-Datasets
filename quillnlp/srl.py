@@ -9,7 +9,7 @@ def perform_srl(responses, prompt):
     sentences = [{"sentence": prompt + " " + response} for response in responses]
     output = predictor.predict_batch_json(sentences)
 
-    full_output = [{"sentence": prompt + response,
+    full_output = [{"sentence": prompt + " " + response,
                     "response": response,
                     "srl": srl} for (response, srl) in zip(responses, output)]
 
