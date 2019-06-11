@@ -1,4 +1,5 @@
 import json
+import csv
 import spacy
 from collections import defaultdict
 
@@ -32,9 +33,14 @@ INPUT_FILE = "data/raw/selfdrivingtrucks_so.tsv"
 SRL_OUTPUT_FILE = "scripts/data/selfdrivingtrucks_so_srl.json"
 NUMBER_OF_VERBS_IN_PROMPT = 3
 
+PROMPT = "Large amounts of meat consumption are harming the environment, so "
+CLASSIFIER_FILE = None
+INPUT_FILE = "data/raw/eating_meat_so.tsv"
+SRL_OUTPUT_FILE = "scripts/data/eating_meat_so_srl.json"
+NUMBER_OF_VERBS_IN_PROMPT = 2
 
-OUTPUT_VISUALIZATION_FILE = "selfdrivingtrucks_so.json"
-OUTPUT_TSV_FILE = "selfdrivingtrucks_so.tsv"
+OUTPUT_VISUALIZATION_FILE = "eatingmeat_so.json"
+OUTPUT_TSV_FILE = "eatingmeat_so.tsv"
 
 MODAL_VERBS = set(["will", "shall", "may", "might", "can", "could", "must", "ought to",
                    "should", "would", "used to", "need"])
@@ -219,16 +225,17 @@ def write_output(all_sentences, output_file):
     :return:
     """
 
-    with open(output_file, "w") as o:
+    with open(output_file, "w") as csvfile:
         columns = ["response", "verb construction", "main verb", "extracted arg0", "intended arg0", "arg1", "arg2"]
-        o.write("\t".join(columns) + "\n")
+        csvwriter = csv.writer(csvfile, delimiter="\t")
+        csvwriter.writerow(columns)
         for sentence in all_sentences:
             output_list = [sentence["response"], " ".join(sentence["meta"][1:])]  # strip the first "meta" label: main clause
             for verb in sentence["verbs"][NUMBER_OF_VERBS_IN_PROMPT:]:
                 for item in verb:
                     output_list.append(item)
 
-            o.write("\t".join(output_list) + "\n")
+            csvwriter.writerow(output_list)
 
 
 def main():
