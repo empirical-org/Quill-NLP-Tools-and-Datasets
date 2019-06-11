@@ -1,6 +1,12 @@
 # Quill NLP Tools and Datasets
-
 Notebooks, scrapers, corpora, and utilities built and maintained Quill.org.
+
+## About the Repo
+This repo contains all of our data for Quill.org's machine learning models. This includes both grammar models that will be used across multiple products, and the algorthims for Quill Comprehension, a product that builds critical thinking skills. Quill Comprehension uses a topic classification algorthim to identify the main pieces of evidence in a student's writing in order to serve feedback that pushes the student to use more precise evidence. 
+
+
+## Quill Comprehension's Grading Logic
+To understand the grading process for Quill Comprehension, please click on the link below to see a document that explains the steps of the grading process. To process this data, Quill first uses a script that helps us extract features from the student's writing for both the data labelling process and the machine learning models. This script incorporates AllenNLP. You can find an explanation of what the script does, and why each step is necessary. [Find the document here.](https://www.notion.so/Quill-Comprehension-Grading-Logic-395e3ba566484790a9187ddeb7cdfc6a#e34312ec6830435ba5e1c5b70737898e)
 
 
 ## Structure
