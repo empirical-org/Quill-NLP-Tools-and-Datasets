@@ -4,7 +4,10 @@ import numpy as np
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.linear_model import LogisticRegression
+<<<<<<< HEAD
 from sklearn.metrics import classification_report
+=======
+>>>>>>> be4a272084b27af5121af3ffdff5134e5c4c5081
 
 
 @click.command()
