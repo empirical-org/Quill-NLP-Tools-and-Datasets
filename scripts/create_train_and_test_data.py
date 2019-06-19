@@ -1,22 +1,22 @@
 # Splits up tsv data files in a training and test portion and saves them
 # to an ndjson output file.
 
-from sklearn.model_selection import train_test_split
-import ndjson
 import os
 
-files = ["data/raw/junkfood_because.tsv", "data/raw/junkfood_but.tsv"]
-prompt = "Schools should not allow junk food to be sold on campus "
+from sklearn.model_selection import train_test_split
+import ndjson
+import click
 
-for f in files:
-
+@click.command()
+@click.option('--input_file', help='input file')
+def prepare_data(input_file):
     texts, labels = [], []
-    with open(f) as i:
+    with open(input_file) as i:
         for line in i:
             line = line.strip().split("\t")
             if len(line) == 2:
                 text, label = line
-                texts.append(prompt + text)
+                texts.append(text)
                 labels.append(label)
 
     texts_train, texts_test, labels_train, labels_test = \
@@ -30,9 +30,9 @@ for f in files:
     data_test = [{"text": text, "label": label} for text, label in zip(texts_test, labels_test)]
 
     target_path = "data/interim"
-    target_file_train = os.path.basename(f).replace(".tsv", "_train_withprompt.ndjson")
-    target_file_dev = os.path.basename(f).replace(".tsv", "_dev_withprompt.ndjson")
-    target_file_test = os.path.basename(f).replace(".tsv", "_test_withprompt.ndjson")
+    target_file_train = os.path.basename(input_file).replace(".tsv", "_train.ndjson")
+    target_file_dev = os.path.basename(input_file).replace(".tsv", "_dev.ndjson")
+    target_file_test = os.path.basename(input_file).replace(".tsv", "_test.ndjson")
 
     target_file_train = os.path.join(target_path, target_file_train)
     target_file_dev = os.path.join(target_path, target_file_dev)
@@ -46,3 +46,7 @@ for f in files:
 
     with open(target_file_test, "w") as o:
         ndjson.dump(data_test, o)
+
+
+if __name__ == '__main__':
+    prepare_data()
