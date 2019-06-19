@@ -51,3 +51,68 @@ not versioned, but that regular code changes will still be reflected.
 Note: this means that switching branches could mean changes to notebook state.
 Be aware of this and don't be alarmed.
 
+## Experiments how-to
+
+Make sure you have python3 installed on your machine.
+
+1. Start a virtual environment and activate it: 
+
+```
+$virtualenv env --python python3
+$source env/bin/activate
+```
+
+2. Install the required dependencies: 
+
+```$pip install -r requirements.txt```
+
+3. Prepare the data: 
+
+3.1 Put all labelled data in a file. This should be a tab-separated file
+with two columns. The first column contains the sentence (prompt and response),
+the second column contains the label. Save this file in the directory `data/raw`
+
+3.2 Process the file with the script `create_train_and_test_data`: 
+
+```python scripts/create_train_and_test_data.py --input_file data/raw/example.tsv```
+
+This will create three ndjson files in the `data/interim` directory: a train file
+with the training data, a dev file with the development data and a test file with 
+the test data.
+
+3.3 Download the English spaCy model: 
+
+```python -m spacy download en```
+
+4. Run the baseline experiments:
+
+```python scripts/train_baseline.py --train data/interim/example_train.ndjson --test data/interim/example_test.ndjson```
+
+This will train a simple classifier. After evaluation, it prints out an 
+accuracy and performance per label.
+
+5. Run the AllenNLP experiments. 
+
+5.1 Create a configuration file in the `experiments` directory. Start from 
+`example.json`, where you fill in the paths to your train, dev (validation)
+and test files. If your machine does not have a GPU, set `cuda_device` (towards
+the bottom) to `-1`. Otherwise, set it to 0. Since our experiments are small,
+they can be run without a GPU.
+
+5.2 Train an AllenNLP model:
+
+```allennlp train experiments/example.json -s /tmp/example --include-package quillnlp```
+
+5.3 Evaluate the AllenNLP model. We have our own script for this,
+`evaluate_topic_classification`, which takes as first argument the test file,
+and as second argument the directory where the model was saved:
+
+```python scripts/evaluate_topic_classification.py data/interim/example_test.ndjson /tmp/example/```
+
+6. Run the Google Sentence Encoder scripts:
+
+```python scripts/sentence_encoder_tests.py --train data/interim/example_train.ndjson --dev data/interim/example_dev.ndjson --test data/interim/example_est.ndjson --out /tmp/classifier```
+
+7. Deactivate the virtual environment: 
+
+```deactivate```
