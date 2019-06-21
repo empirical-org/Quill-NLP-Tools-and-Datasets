@@ -20,3 +20,4 @@ checkpoint
 data/fragments
 db
 nohup.out
+env/*
