@@ -131,11 +131,11 @@ Evaluate the AllenNLP model. We have our own script for this,
 `evaluate_topic_classification`, which takes as first argument the test file,
 and as second argument the directory where the model was saved:
 
-```python scripts/evaluate_topic_classification.py data/interim/example_test.ndjson /tmp/example/```
+```python3 -m scripts.evaluate_topic_classification data/interim/example_test.ndjson /tmp/example/```
 
 #### Run the Google Sentence Encoder scripts:
 
-```python scripts/sentence_encoder_tests.py --train data/interim/example_train.ndjson --dev data/interim/example_dev.ndjson --test data/interim/example_est.ndjson --out /tmp/classifier```
+```python3 scripts/sentence_encoder_tests.py --train data/interim/example_train.ndjson --dev data/interim/example_dev.ndjson --test data/interim/example_test.ndjson --out /tmp/classifier```
 
 #### Deactivate the virtual environment:
 
