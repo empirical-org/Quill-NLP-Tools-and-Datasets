@@ -96,7 +96,7 @@ From the directory root:
 source env/bin/activate
 ```
 ```
-python scripts/create_train_and_test_data.py --input_file data/raw/example.tsv
+python3 scripts/create_train_and_test_data.py --input_file data/raw/example.tsv
 
 ```
 
@@ -106,7 +106,7 @@ the test data.
 
 #### Run the baseline experiments:
 
-```python scripts/train_baseline.py --train data/interim/example_train.ndjson --test data/interim/example_test.ndjson```
+```python3 scripts/train_baseline.py --train data/interim/example_train.ndjson --test data/interim/example_test.ndjson```
 
 This will train a simple classifier. After evaluation, it prints out an
 accuracy and performance per label.
