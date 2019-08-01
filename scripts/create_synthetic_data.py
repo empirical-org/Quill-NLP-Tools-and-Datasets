@@ -5,6 +5,9 @@ with Google translate. Use as follows:
 
 lang: the language via which to do the backtranslation
 data_file: the source file that will be translated line per line
+
+To connect with Google Translate, the environment variable
+GOOGLE_APPLICATION_CREDENTIALS needs to refer to the key file
 """
 
 import os
@@ -12,8 +15,6 @@ import os
 import ndjson
 import click
 from google.cloud import translate
-
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/yves/comprehension-9fb9d027f66f.json"
 
 # Instantiates a client
 translate_client = translate.Client()
