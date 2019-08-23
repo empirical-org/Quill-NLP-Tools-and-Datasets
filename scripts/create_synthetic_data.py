@@ -21,8 +21,8 @@ translate_client = translate.Client()
 
 
 @click.command()
-@click.option('--lang', help='The language via which to do the backtranslation')
-@click.option('--filename', help='The input file')
+@click.argument('lang', help='The language via which to do the backtranslation')
+@click.argument('filename', help='The input file')
 def generate(filename, lang):
     with open(filename) as i:
         items = ndjson.load(i)
