@@ -10,16 +10,36 @@ from pytorch_transformers.optimization import AdamW, WarmupLinearSchedule
 from pytorch_transformers.modeling_bert import BertModel
 
 
-def warmup_linear(x, warmup=0.002):
-    if x < warmup:
-        return x/warmup
-    return 1.0 - x
-
-
 def train(model: BertModel, train_dataloader: DataLoader, dev_dataloader: DataLoader,
-          batch_size, gradient_accumulation_steps, device, num_train_epochs=20,
-          warmup_proportion=0.1, learning_rate=1e-5, patience=5,
-          output_dir="/tmp/", model_file_name="model.bin"):
+          batch_size: int, gradient_accumulation_steps: int, device, num_train_epochs: int=20,
+          warmup_proportion: float=0.1, learning_rate: float=1e-5, patience: int=5,
+          output_dir: str="/tmp/", model_file_name:str="model.bin") -> str:
+    """
+    Trains a BERT Model on a set of training data, tuning it on a set of development data
+
+    Args:
+        model: the BertModel that will be trained
+        train_dataloader: a DataLoader with training data
+        dev_dataloader: a DataLoader with development data (for early stopping)
+        batch_size: the batch size for training
+        gradient_accumulation_steps: the number of steps that gradients will be accumulated
+        device: the device where training will take place ("cpu" or "cuda")
+        num_train_epochs: the maximum number of training epochs
+        warmup_proportion: the proportion of training steps for which the learning rate will be warmed up
+        learning_rate: the initial learning rate
+        patience: the number of epochs after which training will stop if no improvement on the dev
+                  set is observed
+        output_dir: the directory where the model will be saved
+        model_file_name: the filename of the model file
+
+    Returns: the path to the trained model
+
+    """
+
+    def warmup_linear(x, warmup=0.002):
+        if x < warmup:
+            return x / warmup
+        return 1.0 - x
 
     output_model_file = os.path.join(output_dir, model_file_name)
 
@@ -33,7 +53,6 @@ def train(model: BertModel, train_dataloader: DataLoader, dev_dataloader: DataLo
         ]
 
     optimizer = AdamW(optimizer_grouped_parameters, lr=learning_rate, correct_bias=False)
-    scheduler = WarmupLinearSchedule(optimizer, warmup_steps=100, t_total=num_train_steps)
 
     global_step = 0
     loss_history = []
@@ -83,6 +102,18 @@ def train(model: BertModel, train_dataloader: DataLoader, dev_dataloader: DataLo
 
 
 def evaluate(model: BertModel, dataloader: DataLoader, device: str) -> (int, List[int], List[int]):
+    """
+    Evaluates a Bert Model on a labelled data set.
+
+    Args:
+        model: the BertModel to be evaluated
+        dataloader: the DataLoader with the test data
+        device: the device where evaluation will take place ("cpu" or "cuda")
+
+    Returns: a tuple with (the evaluation loss, a list with the correct labels,
+            and a list with the predicted labels)
+
+    """
 
     model.eval()
 
