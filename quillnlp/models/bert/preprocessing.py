@@ -1,12 +1,8 @@
 import torch
 from torch.utils.data import TensorDataset, DataLoader
-from typing import List, Dict
+from typing import List, Dict, Union
 
 from pytorch_transformers.tokenization_bert import BertTokenizer
-from pytorch_transformers.modeling_bert import BertForSequenceClassification
-
-
-import numpy as np
 
 
 class BertInputItem(object):
@@ -17,10 +13,13 @@ class BertInputItem(object):
         input_ids: the ids of the input tokens
         input_mask: a list of booleans that indicates what tokens should be masked
         segment_ids: a list of segment ids for the tokens
-        label_id: a label id for the input
+        label_id: a label id or a list of label ids for the input
     """
 
-    def __init__(self, input_ids: List[int], input_mask: List[int], segment_ids: List[int], label_id: int):
+    def __init__(self, input_ids: List[int],
+                 input_mask: List[int],
+                 segment_ids: List[int],
+                 label_id: Union[int or List[int]]):
         self.input_ids = input_ids
         self.input_mask = input_mask
         self.segment_ids = segment_ids
@@ -29,7 +28,9 @@ class BertInputItem(object):
 
 def create_label_vocabulary(data: List[Dict]) -> Dict:
     """
-    Creates a dictionary that maps the labels in the data to their id.
+    Creates a dictionary that maps the labels in the data to their id. This
+    works for both single-label data (where the "label" property is a string),
+    and multi-label data (where the "label" property is a list.
 
     Args:
         data: a list of data items as dicts of the form {"text": ..., "label": ...}
@@ -40,8 +41,12 @@ def create_label_vocabulary(data: List[Dict]) -> Dict:
 
     label2idx = {}
     for item in data:
-        if item["label"] not in label2idx:
+        if type(item["label"]) == str and item["label"] not in label2idx:
             label2idx[item["label"]] = len(label2idx)
+        elif type(item["label"]) == "list":
+            for l in item["label"]:
+                if l not in label2idx:
+                    label2idx[l] = len(label2idx)
 
     return label2idx
 
@@ -86,7 +91,10 @@ def convert_data_to_input_items(examples: List[Dict], label2idx: Dict,
         assert len(input_mask) == max_seq_length
         assert len(segment_ids) == max_seq_length
 
-        label_id = label2idx[ex["label"]]
+        if type(ex["label"]) == str:
+            label_id = label2idx[ex["label"]]
+        elif type(ex["label"]) == list:
+            label_id = [label2idx[x] for x in ex["label"]]
 
         input_items.append(
             BertInputItem(input_ids=input_ids,
@@ -119,23 +127,24 @@ def get_data_loader(input_items: List[BertInputItem], batch_size: int, shuffle: 
     return dataloader
 
 
-def preprocess(data: List[Dict], label2idx: Dict,
-               max_seq_length: int, tokenizer: BertTokenizer,
+def preprocess(data: List[Dict], model: str,
+               label2idx: Dict, max_seq_length: int,
                batch_size, shuffle=True) -> DataLoader:
     """
     Runs the full preprocessing pipeline on a list of data items.
 
     Args:
         data: a list of examples as dicts of the form {"text": ..., "label": ...}
+        model: the name of the BERT model
         label2idx: a dict that maps label strings to label ids
         max_seq_length: the maximum sequence length for the input items
-        tokenizer: the tokenizer that will be used to tokenize the text
         batch_size: the batch size
         shuffle: indicates whether the data should be shuffled or not.
 
     Returns: a DataLoader for the input items
     """
 
+    tokenizer = BertTokenizer.from_pretrained(model)
     bert_items = convert_data_to_input_items(data, label2idx, max_seq_length, tokenizer)
     dataloader = get_data_loader(bert_items, batch_size, shuffle)
 

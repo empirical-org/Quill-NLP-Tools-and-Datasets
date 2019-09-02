@@ -4,10 +4,12 @@ from typing import List, Dict
 import torch
 import numpy as np
 from tqdm import tqdm_notebook as tqdm, trange
+from torch.nn import Sigmoid
 from torch.utils.data import DataLoader
+from quillnlp.models.bert.models import BertForMultiLabelSequenceClassification
 
 from pytorch_transformers.optimization import AdamW, WarmupLinearSchedule
-from pytorch_transformers.modeling_bert import BertModel
+from pytorch_transformers.modeling_bert import BertModel, BertForSequenceClassification
 
 
 def train(model: BertModel, train_dataloader: DataLoader, dev_dataloader: DataLoader,
@@ -128,10 +130,17 @@ def evaluate(model: BertModel, dataloader: DataLoader, device: str) -> (int, Lis
         with torch.no_grad():
             tmp_eval_loss, logits = model(input_ids, segment_ids, input_mask, label_ids)
 
-        outputs = np.argmax(logits.to('cpu'), axis=1)
-        label_ids = label_ids.to('cpu').numpy()
+        if type(model) == BertForSequenceClassification:
+            outputs = np.argmax(logits.to('cpu'), axis=1)
+            label_ids = label_ids.to('cpu').numpy()
+            predicted_labels += list(outputs)
 
-        predicted_labels += list(outputs)
+        elif type(model) == BertForMultiLabelSequenceClassification:
+            sig = Sigmoid()
+            outputs = sig(logits).to('cpu').numpy()
+            label_ids = label_ids.to('cpu').numpy()
+            predicted_labels += list(outputs >= 0.5)
+
         correct_labels += list(label_ids)
 
         eval_loss += tmp_eval_loss.mean().item()
