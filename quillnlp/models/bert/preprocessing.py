@@ -1,4 +1,5 @@
 import torch
+import numpy as np
 from torch.utils.data import TensorDataset, DataLoader
 from typing import List, Dict, Union
 
@@ -43,7 +44,7 @@ def create_label_vocabulary(data: List[Dict]) -> Dict:
     for item in data:
         if type(item["label"]) == str and item["label"] not in label2idx:
             label2idx[item["label"]] = len(label2idx)
-        elif type(item["label"]) == "list":
+        elif type(item["label"]) == list:
             for l in item["label"]:
                 if l not in label2idx:
                     label2idx[l] = len(label2idx)
@@ -94,7 +95,9 @@ def convert_data_to_input_items(examples: List[Dict], label2idx: Dict,
         if type(ex["label"]) == str:
             label_id = label2idx[ex["label"]]
         elif type(ex["label"]) == list:
-            label_id = [label2idx[x] for x in ex["label"]]
+            label_id = np.zeros(len(label2idx))
+            for label in ex["label"]:
+                label_id[label2idx[label]] = 1
 
         input_items.append(
             BertInputItem(input_ids=input_ids,
@@ -119,7 +122,12 @@ def get_data_loader(input_items: List[BertInputItem], batch_size: int, shuffle: 
     all_input_ids = torch.tensor([f.input_ids for f in input_items], dtype=torch.long)
     all_input_mask = torch.tensor([f.input_mask for f in input_items], dtype=torch.long)
     all_segment_ids = torch.tensor([f.segment_ids for f in input_items], dtype=torch.long)
-    all_label_ids = torch.tensor([f.label_id for f in input_items], dtype=torch.long)
+
+    if type(input_items[0].label_id) == int:
+        all_label_ids = torch.tensor([f.label_id for f in input_items], dtype=torch.long)
+    elif type(input_items[0].label_id) == np.ndarray:
+        all_label_ids = torch.tensor([f.label_id for f in input_items], dtype=torch.float)
+
     data = TensorDataset(all_input_ids, all_input_mask, all_segment_ids, all_label_ids)
 
     dataloader = DataLoader(data, shuffle=shuffle, batch_size=batch_size)
