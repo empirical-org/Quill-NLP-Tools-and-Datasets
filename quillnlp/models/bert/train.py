@@ -8,11 +8,13 @@ from torch.nn import Sigmoid
 from torch.utils.data import DataLoader
 from quillnlp.models.bert.models import BertForMultiLabelSequenceClassification
 
-from pytorch_transformers.optimization import AdamW, WarmupLinearSchedule
-from pytorch_transformers.modeling_bert import BertModel, BertForSequenceClassification
+from transformers.optimization import AdamW, WarmupLinearSchedule
+from transformers.modeling_bert import BertForSequenceClassification
+from transformers.modeling_distilbert import DistilBertForSequenceClassification
+from transformers.modeling_utils import PreTrainedModel
 
 
-def train(model: BertModel, train_dataloader: DataLoader, dev_dataloader: DataLoader,
+def train(model: PreTrainedModel, train_dataloader: DataLoader, dev_dataloader: DataLoader,
           batch_size: int, gradient_accumulation_steps: int, device, num_train_epochs: int=20,
           warmup_proportion: float=0.1, learning_rate: float=1e-5, patience: int=5,
           output_dir: str="/tmp/", model_file_name:str="model.bin") -> str:
@@ -20,7 +22,7 @@ def train(model: BertModel, train_dataloader: DataLoader, dev_dataloader: DataLo
     Trains a BERT Model on a set of training data, tuning it on a set of development data
 
     Args:
-        model: the BertModel that will be trained
+        model: the model that will be trained
         train_dataloader: a DataLoader with training data
         dev_dataloader: a DataLoader with development data (for early stopping)
         batch_size: the batch size for training
@@ -66,7 +68,10 @@ def train(model: BertModel, train_dataloader: DataLoader, dev_dataloader: DataLo
         for step, batch in enumerate(tqdm(train_dataloader, desc="Training iteration")):
             batch = tuple(t.to(device) for t in batch)
             input_ids, input_mask, segment_ids, label_ids = batch
-            outputs = model(input_ids, segment_ids, input_mask, label_ids)
+            if type(model) == BertForSequenceClassification or type(model) == BertForMultiLabelSequenceClassification:
+                outputs = model(input_ids, attention_mask=input_mask, token_type_ids=segment_ids, labels=label_ids)
+            elif type(model) == DistilBertForSequenceClassification:
+                outputs = model(input_ids, attention_mask=input_mask, labels=label_ids)
             loss = outputs[0]
 
             if gradient_accumulation_steps > 1:
@@ -103,7 +108,7 @@ def train(model: BertModel, train_dataloader: DataLoader, dev_dataloader: DataLo
     return output_model_file
 
 
-def evaluate(model: BertModel, dataloader: DataLoader, device: str) -> (int, List[int], List[int]):
+def evaluate(model: PreTrainedModel, dataloader: DataLoader, device: str) -> (int, List[int], List[int]):
     """
     Evaluates a Bert Model on a labelled data set.
 
@@ -128,9 +133,13 @@ def evaluate(model: BertModel, dataloader: DataLoader, device: str) -> (int, Lis
         input_ids, input_mask, segment_ids, label_ids = batch
 
         with torch.no_grad():
-            tmp_eval_loss, logits = model(input_ids, segment_ids, input_mask, label_ids)
+            if type(model) == BertForSequenceClassification or type(model) == BertForMultiLabelSequenceClassification:
+                tmp_eval_loss, logits = model(input_ids, attention_mask=input_mask,
+                                              token_type_ids=segment_ids, labels=label_ids)
+            elif type(model) == DistilBertForSequenceClassification:
+                tmp_eval_loss, logits = model(input_ids, attention_mask=input_mask, labels=label_ids)
 
-        if type(model) == BertForSequenceClassification:
+        if type(model) == BertForSequenceClassification or type(model) == DistilBertForSequenceClassification:
             outputs = np.argmax(logits.to('cpu'), axis=1)
             label_ids = label_ids.to('cpu').numpy()
             predicted_labels += list(outputs)

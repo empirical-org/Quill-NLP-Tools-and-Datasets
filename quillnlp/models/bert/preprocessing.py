@@ -3,7 +3,8 @@ import numpy as np
 from torch.utils.data import TensorDataset, DataLoader
 from typing import List, Dict, Union
 
-from pytorch_transformers.tokenization_bert import BertTokenizer
+from transformers.tokenization_bert import BertTokenizer
+from transformers.tokenization_distilbert import DistilBertTokenizer
 
 
 class BertInputItem(object):
@@ -17,10 +18,12 @@ class BertInputItem(object):
         label_id: a label id or a list of label ids for the input
     """
 
-    def __init__(self, input_ids: List[int],
+    def __init__(self, text: str,
+                 input_ids: List[int],
                  input_mask: List[int],
                  segment_ids: List[int],
                  label_id: Union[int or List[int]]):
+        self.text = text
         self.input_ids = input_ids
         self.input_mask = input_mask
         self.segment_ids = segment_ids
@@ -100,7 +103,8 @@ def convert_data_to_input_items(examples: List[Dict], label2idx: Dict,
                 label_id[label2idx[label]] = 1
 
         input_items.append(
-            BertInputItem(input_ids=input_ids,
+            BertInputItem(text=ex["text"],
+                          input_ids=input_ids,
                           input_mask=input_mask,
                           segment_ids=segment_ids,
                           label_id=label_id))
@@ -136,8 +140,7 @@ def get_data_loader(input_items: List[BertInputItem], batch_size: int, shuffle: 
 
 
 def preprocess(data: List[Dict], model: str,
-               label2idx: Dict, max_seq_length: int,
-               batch_size, shuffle=True) -> DataLoader:
+               label2idx: Dict, max_seq_length: int) -> List[BertInputItem]:
     """
     Runs the full preprocessing pipeline on a list of data items.
 
@@ -146,14 +149,13 @@ def preprocess(data: List[Dict], model: str,
         model: the name of the BERT model
         label2idx: a dict that maps label strings to label ids
         max_seq_length: the maximum sequence length for the input items
-        batch_size: the batch size
-        shuffle: indicates whether the data should be shuffled or not.
 
-    Returns: a DataLoader for the input items
+    Returns: a list of BertInputItems
     """
-
-    tokenizer = BertTokenizer.from_pretrained(model)
+    if "distilbert" in model:
+        tokenizer = DistilBertTokenizer.from_pretrained(model)
+    else:
+        tokenizer = BertTokenizer.from_pretrained(model)
     bert_items = convert_data_to_input_items(data, label2idx, max_seq_length, tokenizer)
-    dataloader = get_data_loader(bert_items, batch_size, shuffle)
 
-    return dataloader
+    return bert_items

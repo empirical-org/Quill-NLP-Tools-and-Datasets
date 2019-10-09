@@ -1,6 +1,7 @@
 import torch
 from torch import nn
-from pytorch_transformers.modeling_bert import BertPreTrainedModel, BertModel, BertForSequenceClassification
+from transformers.modeling_bert import BertPreTrainedModel, BertModel, BertForSequenceClassification
+from transformers.modeling_distilbert import DistilBertForSequenceClassification
 
 
 class BertForMultiLabelSequenceClassification(BertPreTrainedModel):
@@ -14,8 +15,8 @@ class BertForMultiLabelSequenceClassification(BertPreTrainedModel):
         self.bert = BertModel(config)
         self.dropout = nn.Dropout(config.hidden_dropout_prob)
         self.classifier = nn.Linear(config.hidden_size, self.config.num_labels)
+        self.init_weights()
 
-        self.apply(self.init_weights)
 
     def forward(self, input_ids, token_type_ids=None, attention_mask=None, labels=None,
                 position_ids=None, head_mask=None):
@@ -45,6 +46,7 @@ class BertForSequenceEmbeddings(BertPreTrainedModel):
     def __init__(self, config):
         super(BertForSequenceEmbeddings, self).__init__(config)
         self.num_labels = config.num_labels
+        print("NUM", config.num_labels)
 
         self.bert = BertModel(config)
         self.dropout = nn.Dropout(config.hidden_dropout_prob)
@@ -80,10 +82,19 @@ def get_bert_classifier(model_type: str, num_labels: int,
     """
     if model_file:
         model_state_dict = torch.load(model_file, map_location=lambda storage, loc: storage)
-        model = BertForSequenceClassification.from_pretrained(model_type, state_dict=model_state_dict,
+
+        if "distilbert" in model_type:
+            model = DistilBertForSequenceClassification.from_pretrained(model_type,
+                                                                        state_dict=model_state_dict,
+                                                                        num_labels=num_labels)
+        else:
+            model = BertForSequenceClassification.from_pretrained(model_type, state_dict=model_state_dict,
                                                               num_labels=num_labels)
     else:
-        model = BertForSequenceClassification.from_pretrained(model_type, num_labels=num_labels)
+        if "distilbert" in model_type:
+            model = DistilBertForSequenceClassification.from_pretrained(model_type, num_labels=num_labels)
+        else:
+            model = BertForSequenceClassification.from_pretrained(model_type, num_labels=num_labels)
 
     model.to(device)
     return model
