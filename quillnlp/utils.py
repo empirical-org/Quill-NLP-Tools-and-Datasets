@@ -1,19 +1,59 @@
 import re
+
+from typing import List, Generator, Dict
+
 import spacy
 
 
 nlp = spacy.load("en")
 
 
-def detokenize(s):
-    """ Detokenize a string by removing spaces before punctuation."""
-    s = re.sub("\s+([;:,\.\?!])", "\\1", s)
-    s = re.sub("\s+(n't)", "\\1", s)
-    s = s.replace(" - ", "-")
-    return s
+def detokenize(text: str) -> str:
+    """
+    Detokenize a text by removing spaces before punctuation. This is
+    a very simple detokenization function that will sometimes fail, but
+    will usually give good results.
+
+    Args:
+        text: the text to be detokenized
+
+    Returns: the detokenized text
+
+    """
+    text = re.sub("\s+([;:,\.\?!])", "\\1", text)
+    text = re.sub("\s+(n't)", "\\1", text)
+    text = text.replace(" - ", "-")
+    return text
 
 
-def extract_referents_from_xml_tagged_strings(strings):
+def tokenize(text: str) -> List[str]:
+    """
+    Tokenize a text with the English spaCy tokenizer.
+
+    Args:
+        text: the text to be tokenized
+
+    Returns: the list of tokens in the string
+
+    """
+    """ Tokenize a string with the English spaCy tokenizer. """
+    doc = nlp(text)
+    tokens = [t.orth_ for t in doc]
+    return tokens
+
+
+def extract_referents_from_xml_tagged_strings(strings: List[str]) -> Generator[Dict, None, None]:
+    """
+    Extracts coreference information from strings with coreference tags, such as
+    <ref id=0>Schools</ref> should not allow <ref id=1>junk food</ref>
+    to be sold on campus but <ref id=1>it</ref> generates money for schools
+
+    Args:
+        strings: the xml strings to be parsed
+
+    Returns: a generator with coreference dictionaries
+
+    """
     re_tagged_referent = re.compile(
         r"<ref[ ]+id=(?P<id>(\?|-?\d+))[ ]*>(?P<string>.+?)</ref>")
     for string in strings:
@@ -33,4 +73,3 @@ def extract_referents_from_xml_tagged_strings(strings):
                           "id": matched_id})
         print(spans)
         yield {"text": s_scrubbed, "refs": spans}
-

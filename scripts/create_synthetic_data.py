@@ -14,10 +14,8 @@ import os
 
 import ndjson
 import click
-from google.cloud import translate
 
-# Instantiates a client
-translate_client = translate.Client()
+from quillnlp.data.synthetic import generate_synthetic_data
 
 
 @click.command()
@@ -27,19 +25,7 @@ def generate(filename, lang):
     with open(filename) as i:
         items = ndjson.load(i)
 
-    translated_items = []
-    for item in items:
-        translation = translate_client.translate(item["text"], target_language=lang)
-        back_translation = translate_client.translate(translation["translatedText"],
-                                                      target_language="en")
-
-        print(item["text"])
-        print(translation["translatedText"])
-        print(back_translation["translatedText"])
-        print("")
-
-        translated_items.append({"text": back_translation["translatedText"],
-                                 "label": item["label"]})
+    translated_items = generate_synthetic_data(items, lang)
 
     basename = os.path.basename(filename)
     basename_without_extension = os.path.splitext(basename)[0]
