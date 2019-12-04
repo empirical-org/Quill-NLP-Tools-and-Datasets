@@ -11,7 +11,7 @@ from allennlp.predictors.predictor import Predictor
 
 VERB_MAP = {"s": "be",
             "is": "be",
-            "'s": "be", 
+            "'s": "be",
             "are": "be",
             "ca": "can",
             "wo": "will",
@@ -102,45 +102,48 @@ def write_output(all_sentences, num_verbs_prompt, output_file):
 @click.argument('srl_file')
 def preprocess(srl_file):
 
-    # Read AllenNLP's SRL output.
+    # 1. Read the SRL output from the SRL file.
     with open(srl_file) as i:
         srl_out = json.load(i)
 
+    # 2. Get the prompt from the SRL output and determine the number of verbs in the prompt.
     prompt = get_prompt_from_srl_output(srl_out[0])
     num_verbs_prompt = get_number_of_verbs_in_prompt(prompt, srl_out[0])
 
     sentences = []
+
+    # 3. For every sentence:
     for sent in srl_out:
         sentence_info = {"sentence": sent["sentence"],
                          "response": sent["response"],
                          "meta": [],
                          "verbs": []}
 
-        # Perform coreference resolution on the full sentence
+        # 3.1 Perform coreference resolution on the full sentence
         corefs = get_coreference_dictionary(sent["sentence"])
 
-        # For each of the verbs in the sentence, preprocess the verb and identify its arguments.
+        # 3.2 For each of the verbs in the sentence, preprocess the verb and identify its arguments.
         auxiliary = None
         for verb_idx, verb in enumerate(sent["srl"]["verbs"]):
 
-            # Preprocess the verb using a few simple rules, e.g. ca => can, etc.
+            # 3.2.1 Preprocess the verb using a few simple rules, e.g. ca => can, etc.
             verb_string = verb["verb"].lower()
             verb_string = VERB_MAP.get(verb_string, verb_string)
 
-            # If the verb is a modal, add this information to the metadata and
+            # 3.2.2 If the verb is a modal, add this information to the metadata and
             # add the verb as an auxiliary to the next main verb.
             if not verb_idx < num_verbs_prompt and verb_string in MODAL_VERBS:
                 sentence_info["meta"].append("modal")
                 auxiliary = verb_string
 
-            # If the verb is an auxiliary, add this information to the metadata and
+            # 3.2.3 If the verb is an auxiliary, add this information to the metadata and
             # add the verb as an auxiliary to the next main verb.
             elif not verb_idx < num_verbs_prompt and verb_string in AUX_VERBS:
                 sentence_info["meta"].append("auxiliary")
                 auxiliary = verb_string
 
             else:
-                # Identify the arguments and their indices
+                # 3.2.4 If the verb is not a modal or auxiliary, identify the arguments in the sentence
                 arg0_string, arg0_indices = identify_argument(verb, 0, sent["srl"]["words"])
                 arg1_string, arg1_indices = identify_argument(verb, 1, sent["srl"]["words"])
                 arg2_string, arg2_indices = identify_argument(verb, 2, sent["srl"]["words"])
