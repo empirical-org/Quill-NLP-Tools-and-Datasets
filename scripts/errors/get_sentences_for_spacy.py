@@ -29,11 +29,20 @@ error_types = {"VB": corpus.has_infinitive,
 @click.argument('output_file')
 def create_corpus(filename, number, output_file):
 
+    def file_len(fname):
+        with open(fname) as f:
+            for i, l in enumerate(f):
+                pass
+        return i + 1
+
     number = int(number)
     error_corpus = {error: [] for error in error_types}
     nlp = spacy.load("en")
+
+    num_lines = file_len(filename)
+
     with open(filename) as i:
-        for line in i:
+        for line in tqdm(i, total=num_lines):
             line = line.strip()
             if "=" in line:
                 continue
