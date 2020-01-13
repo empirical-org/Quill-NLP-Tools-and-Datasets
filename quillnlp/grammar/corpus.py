@@ -172,5 +172,16 @@ def has_modal(doc):
 
 
 def has_aux(doc):
-    return "AUX" in get_pos(doc)
+    for token in doc:
+        if token.pos_ == "AUX" and token.lemma_ != "be":
+            return True
+    return False
+
+
+def has_do(doc):
+    for token in doc:
+        if token.pos_ == "AUX" and token.lemma == "do":
+            return True
+    return False
+
 
