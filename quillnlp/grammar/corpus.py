@@ -110,22 +110,22 @@ def replace_word(source_word, target_word, error_type, doc):
     return "".join(new_tokens), entities
 
 
-def get_adjective_for_adverb(adjective: str) -> str:
+def get_adjective_for_adverb(adverb: str) -> str:
     """
     Get the adjective corresponding to an adverb, e.g. beautifully -> beautiful
 
     Args:
-        adjective:
+        adverb:
 
     Returns:
 
     """
     possible_adj = []
-    for ss in wn.synsets(adjective):
+    for ss in wn.synsets(adverb):
         for lemmas in ss.lemmas():  # all possible lemmas
             for ps in lemmas.pertainyms():  # all possible pertainyms
                 possible_adj.append(ps.name())
-    close_matches = gcm('terribly', possible_adj)
+    close_matches = gcm(adverb, possible_adj)
     if len(close_matches) > 0:
         return close_matches[0]
     return None
@@ -160,11 +160,16 @@ def replace_adverb_by_adjective(error_type, doc):
     for token in doc:
         if token.pos_ == "ADV":
             adverb = get_adjective_for_adverb(token.text.lower())
-            new_tokens.append(adverb, token.whitespace_)
-            entities.append((token.idx, token.idx + len(adverb), error_type))
+            if adverb is not None:
+                if token.text.istitle():
+                    adverb = adverb.title()
+                new_tokens.append(adverb + token.whitespace_)
+                entities.append((token.idx, token.idx + len(adverb), error_type))
+            else:
+                new_tokens.append(token.text_with_ws)
         else:
             new_tokens.append(token.text_with_ws)
-    return "".join(new_tokens, entities)
+    return "".join(new_tokens), entities
 
 
 def replace_verb_form(source_tag, target_tag, error_type, doc):
