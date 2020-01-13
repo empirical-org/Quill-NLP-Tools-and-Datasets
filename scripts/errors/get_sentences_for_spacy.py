@@ -11,6 +11,8 @@ error_types = {"VB": corpus.has_infinitive,
                "POS": corpus.has_possessive_noun,
                "VBP": corpus.has_present_verb_non_third_person,
                "VBZ": corpus.has_third_person_singular_verb,
+               "MD": corpus.has_modal,
+               "AUX": corpus.has_aux,
                "ADV": corpus.has_adverb,
                "its": partial(corpus.contains_token, "its"),
                "it's": partial(corpus.contains_phrase, ["it", "'s"]),
@@ -41,6 +43,7 @@ def create_corpus(filename, number, output_file):
 
     num_lines = file_len(filename)
 
+    total = 0
     with open(filename) as i:
         for line in tqdm(i, total=num_lines):
             line = line.strip()
@@ -53,9 +56,14 @@ def create_corpus(filename, number, output_file):
                 if len(error_corpus[error_type]) < number:
                     if error_types[error_type](doc):
                         error_corpus[error_type].append(line)
+                        total += 1
 
-    with open(output_file, "w") as o:
-        json.dump(error_corpus, o)
+            if total >= len(error_corpus) * number:
+                break
+
+            if total % 10000 == 0:
+                with open(output_file, "w") as o:
+                    json.dump(error_corpus, o)
 
 
 if __name__ == "__main__":

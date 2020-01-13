@@ -152,6 +152,25 @@ def replace_bigram(source_bigram, target_word, error_type, doc):
     return "".join(new_tokens), entities
 
 
+def get_pos(doc):
+    """ Returns a set of all pos_ attributes in the document. """
+    return set([t.pos_ for t in doc])
+
+
+def get_tag(doc):
+    """ Returns a set of all tag_ attributes in the document. """
+    return set([t.tag_ for t in doc])
+
+
 def has_adverb(doc):
-    tokens = set([t.pos_ for t in doc])
-    return "ADV" in tokens
+    return "ADV" in get_pos(doc)
+
+
+def has_modal(doc):
+    """ Modal verbs (will, can, should, etc.) have POS VERB and TAG MD"""
+    return "MD" in get_tag(doc)
+
+
+def has_aux(doc):
+    return "AUX" in get_pos(doc)
+
