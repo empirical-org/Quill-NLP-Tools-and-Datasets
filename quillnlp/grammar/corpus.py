@@ -164,7 +164,8 @@ def replace_adverb_by_adjective(error_type, doc):
                 if token.text.istitle():
                     adverb = adverb.title()
                 new_tokens.append(adverb + token.whitespace_)
-                entities.append((token.idx, token.idx + len(adverb), error_type))
+                if adverb != token.text:
+                    entities.append((token.idx, token.idx + len(adverb), error_type))
             else:
                 new_tokens.append(token.text_with_ws)
         else:
