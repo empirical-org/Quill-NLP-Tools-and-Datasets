@@ -1,10 +1,16 @@
 import random
 from pathlib import Path
 import spacy
+import json
+import ndjson
+from functools import partial
+from quillnlp.grammar import corpus
+from tqdm import tqdm
+
 from spacy.util import minibatch, compounding
-from spacy.tokens import Span
 from spacy.gold import biluo_tags_from_offsets
 from sklearn.metrics import f1_score, classification_report
+
 
 # TODO: Woman/Women also capitalized
 
@@ -22,70 +28,68 @@ def get_data_from_file(f, num):
 
 TEST_SIZE = 2000
 DEV_SIZE = 2000
+ERROR_RATIO = 0.5
 
-num_sentences = 20000
-woman_sentences = get_data_from_file("woman_women.txt", num_sentences)
-women_sentences = get_data_from_file("women_woman.txt", num_sentences)
-its_sentences = get_data_from_file("its_it_s_shuffled_100000.txt", num_sentences)
-it_s_sentences = get_data_from_file("it_s_its_shuffled_100000.txt", num_sentences)
-then_sentences = get_data_from_file("then_shuffled_100000.txt", num_sentences)
-than_sentences = get_data_from_file("than_shuffled_100000.txt", num_sentences)
+files = ["subtitles.json", "wikipedia.json"]
 
-lines = list(set(woman_sentences + women_sentences + its_sentences + it_s_sentences +
-                 then_sentences + than_sentences))
-random.shuffle(lines)
+VERB_AGREEMENT_ERROR_TYPE = "VERB"
+WOMAN_WOMEN_ERROR_TYPE = "WOMAN"
+THEN_THAN_ERROR_TYPE = "THEN"
+CHILD_CHILDREN_ERROR_TYPE = "CHILD"
+IT_S_ITS_ERROR_TYPE = "ITS"
+PLURAL_POSSESSIVE_ERROR_TYPE = "POSSESSIVE"
+ADV_ERROR_TYPE = "ADV"
 
-replacements = {"its": "it's", "Its": "It's",
-                "It": "Its", "it": "its",
-                "then": "than", "Then": "Than",
-                "than": "then", "Than": "Then"}
+replacement_functions = {"POS": partial(corpus.replace_possessive_by_plural, PLURAL_POSSESSIVE_ERROR_TYPE),
+                         "NNS": partial(corpus.replace_plural_by_possessive, PLURAL_POSSESSIVE_ERROR_TYPE),
+                         "VBZ": partial(corpus.replace_verb_form, "VBZ", "VB", VERB_AGREEMENT_ERROR_TYPE),
+                         "VBP": partial(corpus.replace_verb_form, "VBP", "VBZ", VERB_AGREEMENT_ERROR_TYPE),
+                         "VB": partial(corpus.replace_verb_form, "VB", "VBZ", VERB_AGREEMENT_ERROR_TYPE),
+                         "AUX": partial(corpus.replace_verb_form, "VB", "VBZ", VERB_AGREEMENT_ERROR_TYPE),
+                         "MD": partial(corpus.replace_verb_form, "VB", "VBZ", VERB_AGREEMENT_ERROR_TYPE),
+                         "do": partial(corpus.replace_verb_form, "VB", "VBZ", VERB_AGREEMENT_ERROR_TYPE),
+                         "ADV": partial(corpus.replace_adverb_by_adjective, ADV_ERROR_TYPE),
+                         "woman": partial(corpus.replace_word, "woman", "women", WOMAN_WOMEN_ERROR_TYPE),
+                         "women": partial(corpus.replace_word, "women", "woman", WOMAN_WOMEN_ERROR_TYPE),
+                         "then": partial(corpus.replace_word, "then", "than", THEN_THAN_ERROR_TYPE),
+                         "than": partial(corpus.replace_word, "than", "then", THEN_THAN_ERROR_TYPE),
+                         "child": partial(corpus.replace_word, "child", "children", CHILD_CHILDREN_ERROR_TYPE),
+                         "children": partial(corpus.replace_word, "children", "child", CHILD_CHILDREN_ERROR_TYPE),
+                         "its": partial(corpus.replace_word, "its", "it's", IT_S_ITS_ERROR_TYPE),
+                         "it's": partial(corpus.replace_bigram, ["it", "'s"], "its", IT_S_ITS_ERROR_TYPE)
+                         }
 
-TRAIN_DATA = []
-for line in lines:
-    if random.random() < 0.5:
-        doc = nlp(line)
-        token_strings = set([t.text for t in doc])
-        new_tokens = []
-        entities = []
-        skip_token = False
-        for token in doc:
-            if skip_token:
-                skip_token = False
-            elif len(entities) > 0:  # we only make one correction per sentence
-                new_tokens.append(token.text_with_ws)
-            elif token.text.lower() == "woman":
-                new_tokens.append("women" + token.whitespace_)
-                entities.append((token.idx, token.idx + len(token.text), "WOMAN"))
-            elif token.text.lower() == "women":
-                new_tokens.append("woman" + token.whitespace_)
-                entities.append((token.idx, token.idx + len(token.text), "WOMAN"))
 
-            elif token.text == "then" or token.text == "Then":
-                new_tokens.append(replacements[token.text] + token.whitespace_)
-                entities.append((token.idx, token.idx + len(token.text), "THEN"))
-            elif token.text == "than" or token.text == "Than":
-                new_tokens.append(replacements[token.text] + token.whitespace_)
-                entities.append((token.idx, token.idx + len(token.text), "THEN"))
+train_data = []
+for f in files:
+    with open(f) as i:
+        sentences = json.load(i)
 
-            elif token.text == "its" or token.text == "Its":
-                new_tokens.append(replacements[token.text] + token.whitespace_)
-                entities.append((token.idx, token.idx + len("it's"), "ITS"))
-            elif token.i < len(doc)-1 and (token.text == "it" or token.text == "It") and doc[token.i+1].text == "'s":
-                new_tokens.append(replacements[token.text] + doc[token.i+1].whitespace_)
-                entities.append((token.idx, token.idx + len("its"), "ITS"))
-                skip_token = True
+    for error_type in sentences:
+        for sentence in tqdm(sentences[error_type][:50], desc=error_type):
+            if random.random() < ERROR_RATIO:
+                doc = nlp(sentence)
+                sentence_with_error, entities = replacement_functions[error_type](doc)
+                train_data.append((error_type, sentence, sentence_with_error, {"entities": entities}))
             else:
-                new_tokens.append(token.text_with_ws)
+                train_data.append((error_type, sentence, sentence, {"entities": []}))
 
-        TRAIN_DATA.append(("".join(new_tokens), {"entities": entities}))
-    else:
-        TRAIN_DATA.append((line, {"entities": []}))
 
-TEST_DATA = TRAIN_DATA[-TEST_SIZE:]
-DEV_DATA = TRAIN_DATA[-(TEST_SIZE+DEV_SIZE):-TEST_SIZE]
-TRAIN_DATA = TRAIN_DATA[:len(TRAIN_DATA)-TEST_SIZE-DEV_SIZE]
+filtered_train_data = []
+seen_sentences = set()
+for (error_type, sentence, sentence_with_error, entities) in train_data:
+    if sentence_with_error not in seen_sentences:
+        filtered_train_data.append((error_type, sentence, sentence_with_error, entities))
+        seen_sentences.add(sentence_with_error)
 
-train_set = set([x[0] for x in TRAIN_DATA])
+train_data = filtered_train_data
+
+random.shuffle(train_data)
+TEST_DATA = train_data[-TEST_SIZE:]
+DEV_DATA = train_data[-(TEST_SIZE + DEV_SIZE):-TEST_SIZE]
+TRAIN_DATA = train_data[:len(train_data) - TEST_SIZE - DEV_SIZE]
+
+train_set = set([x[0] for x in train_data])
 test_set = set([x[0] for x in TEST_DATA])
 intersection = train_set & test_set
 if len(intersection) > 0:
@@ -94,9 +98,29 @@ if len(intersection) > 0:
 for x in intersection:
     print(x, len(x))
 
-print("Train:", len(TRAIN_DATA))
+print("Train:", len(train_data))
 print("Dev:", len(DEV_DATA))
 print("Test:", len(TEST_DATA))
+
+test_sentences = []
+for error_type, original_sentence, new_sentence, entities in TEST_DATA:
+    test_sentences.append({"error_type": error_type,
+                           "original": original_sentence,
+                           "new": new_sentence,
+                           "errors": entities["entities"]})
+
+with open("test_grammar_validated.ndjson", "w") as o:
+    ndjson.dump(test_sentences, o)
+
+
+for _, _, sentence, entities in train_data:
+    doc = nlp(sentence)
+    tags = biluo_tags_from_offsets(doc, entities["entities"])
+    if "" in tags:
+        print(sentence)
+        print(entities)
+        print([t for t in doc])
+        print(tags)
 
 
 def evaluate(data, model, verbose=False):
@@ -105,7 +129,7 @@ def evaluate(data, model, verbose=False):
     correct_tags = []
     labels = set()
     with open("grammar_results_spacy.txt", "w") as o:
-        for (sentence, entities) in data:
+        for (_, _, sentence, entities) in data:
             doc = model(sentence)
 
             sentence_pred = []
@@ -152,7 +176,7 @@ def main(model=None, output_dir=None, n_iter=100):
         ner = nlp.get_pipe("ner")
 
     # add labels
-    for _, annotations in TRAIN_DATA:
+    for _, _, _, annotations in train_data:
         for ent in annotations.get("entities"):
             ner.add_label(ent[2])
 
@@ -170,12 +194,12 @@ def main(model=None, output_dir=None, n_iter=100):
     if model is None:
         nlp.begin_training()
     for itn in range(n_iter):
-        random.shuffle(TRAIN_DATA)
+        random.shuffle(train_data)
         losses = {}
         # batch up the examples using spaCy's minibatch
-        batches = minibatch(TRAIN_DATA, size=compounding(4.0, 32.0, 1.001))
+        batches = minibatch(train_data, size=compounding(4.0, 32.0, 1.001))
         for batch in batches:
-            texts, annotations = zip(*batch)
+            _, _, texts, annotations = zip(*batch)
             nlp.update(
                 texts,  # batch of texts
                 annotations,  # batch of annotations
