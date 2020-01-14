@@ -1,53 +1,60 @@
 import pyinflect
 from itertools import chain
+from typing import List, Tuple
 from nltk.corpus import wordnet as wn
 from difflib import get_close_matches as gcm
+from spacy.tokens import Doc
 
 
-def has_plural_noun(doc):
+def has_plural_noun(doc: Doc) -> bool:
+    """ Returns True if the document contains a plural noun and False otherwise. """
     for token in doc:
         if token.tag_ == "NNS" and token.text.endswith("s"):
             return True
     return False
 
 
-def has_possessive_noun(doc):
+def has_possessive_noun(doc: Doc) -> bool:
+    """ Returns True if the document contains a possessive noun and False otherwise. """
     for token in doc:
+        # Return true if we find an 's (POS) preceded by a noun.
         if token.i > 0 and token.tag_ == "POS" and doc[token.i-1].tag_.startswith("N"):
             return True
     return False
 
 
-
-def has_third_person_singular_verb(doc):
+def has_third_person_singular_verb(doc: Doc) -> bool:
+    """ Returns True if the document contains a third person present singular verb. """
     for token in doc:
         if token.tag_ == "VBZ" and token.lemma_ != "be":
             return True
     return False
 
 
-
-
-def has_present_verb_non_third_person(doc):
+def has_present_verb_non_third_person(doc: Doc) -> bool:
+    """ Returns True if the document contains a non-third-person-singular present verb. """
     for token in doc:
         if token.tag_ == "VBP" and token.lemma_ != "be":
             return True
     return False
 
 
-def has_infinitive(doc):
+def has_infinitive(doc: Doc) -> bool:
+    """ Returns True if the document contains an infinitive verb. """
     for token in doc:
         if token.tag_ == "VB" and token.lemma_ != "be":
             return True
     return False
 
 
-def contains_token(token, doc):
+def contains_token(token: str, doc: Doc) -> bool:
+    """ Returns True if the lowercased document contains the specified token. """
     tokens = set([t.text.lower() for t in doc])
     return token in tokens
 
 
-def contains_phrase(token_list, doc):
+def contains_phrase(token_list: List[str], doc: Doc) -> bool:
+    """ Returns True if the lowercased document contains the specified phrase. """
     tokens = [t.text.lower() for t in doc]
     for i in range(len(tokens)-len(token_list)+1):
         if tokens[i:i+len(token_list)] == token_list:
@@ -55,33 +62,37 @@ def contains_phrase(token_list, doc):
     return False
 
 
-def get_pos(doc):
-    """ Returns a set of all pos_ attributes in the document. """
+def get_pos(doc: Doc) -> set(str):
+    """ Returns the set of all pos_ attributes in the document. """
     return set([t.pos_ for t in doc])
 
 
-def get_tag(doc):
+def get_tag(doc: Doc) -> set(str):
     """ Returns a set of all tag_ attributes in the document. """
     return set([t.tag_ for t in doc])
 
 
-def has_adverb(doc):
+def has_adverb(doc: Doc) -> bool:
+    """ Returns True if the document contains an adverb. """
     return "ADV" in get_pos(doc)
 
 
-def has_modal(doc):
-    """ Modal verbs (will, can, should, etc.) have POS VERB and TAG MD"""
+def has_modal(doc: Doc) -> bool:
+    """ Returns True if the document contains a modal verb.
+    Modal verbs (will, can, should, etc.) have POS VERB and TAG MD"""
     return "MD" in get_tag(doc)
 
 
-def has_aux(doc):
+def has_aux(doc: Doc) -> bool:
+    """ Returns True if the document contains an auxiliary verb other than be. """
     for token in doc:
         if token.pos_ == "AUX" and token.lemma_ != "be":
             return True
     return False
 
 
-def has_do(doc):
+def has_do(doc: Doc) -> bool:
+    """ Returns True if the document contains the verb 'do' as an auxiliary. """
     for token in doc:
         if token.pos_ == "AUX" and token.lemma_ == "do":
             return True
@@ -91,7 +102,8 @@ def has_do(doc):
 # Replacement functions
 
 
-def replace_word(source_word, target_word, error_type, doc):
+def replace_word(source_word: str, target_word: str, error_type: str, doc: Doc) -> Tuple[str, List[Tuple]]:
+    """ Replace the source word by a target word in the document. """
 
     new_tokens = []
     entities = []
@@ -132,7 +144,19 @@ def get_adjective_for_adverb(adverb: str) -> str:
     return None
 
 
-def replace_bigram(source_bigram, target_word, error_type, doc):
+def replace_bigram(source_bigram: List[str], target_word: str, error_type: str, doc) -> Tuple[str, List[Tuple]]:
+    """
+    Replace a bigram by a word in a document
+
+    Args:
+        source_bigram:
+        target_word:
+        error_type:
+        doc:
+
+    Returns:
+
+    """
     new_tokens = []
     entities = []
 
@@ -156,7 +180,9 @@ def replace_bigram(source_bigram, target_word, error_type, doc):
     return "".join(new_tokens), entities
 
 
-def replace_adverb_by_adjective(error_type, doc):
+def replace_adverb_by_adjective(error_type: str, doc: Doc) -> Tuple[str, List[Tuple]]:
+    """ Replaces adverbs by adjectives in the provided document. """
+
     new_tokens = []
     entities = []
     for token in doc:
@@ -176,7 +202,20 @@ def replace_adverb_by_adjective(error_type, doc):
     return "".join(new_tokens), entities
 
 
-def replace_verb_form(source_tag, target_tag, error_type, doc):
+def replace_verb_form(source_tag: str, target_tag: str, error_type: str, doc: Doc) -> Tuple[str, List[Tuple]]:
+    """
+    Replaces all verb forms with the given source tag in the document by the corresponding
+    form with the other tag
+
+    Args:
+        source_tag: the tag of the verbs that should be replaced, e.g. VBZ
+        target_tag: the tag of the replacing form, e.g. VB
+        error_type: the label of the error type
+        doc: the document
+
+    Returns:
+
+    """
     # TODO: we need to find a better solution for verbs followed by "n't", where the
     # whitespace is not correct => He ben't do that.
     text = ""
@@ -203,7 +242,9 @@ def replace_verb_form(source_tag, target_tag, error_type, doc):
     return text, entities
 
 
-def replace_plural_by_possessive(error_type, doc):
+def replace_plural_by_possessive(error_type: str, doc: Doc) -> Tuple[str, List[Tuple]]:
+    """ Replaces plurals by possessives in document, e.g. books => book's """
+
     text = ""
     entities = []
     for token in doc:
@@ -220,7 +261,8 @@ def replace_plural_by_possessive(error_type, doc):
     return text, entities
 
 
-def replace_possessive_by_plural(error_type, doc):
+def replace_possessive_by_plural(error_type: str, doc: Doc) -> Tuple[str, List[Tuple]]:
+    """ Replaces possessives by plurals in a document, e.g. horse's -> horses """
     text = ""
     entities = []
     skip_next = False
@@ -235,6 +277,3 @@ def replace_possessive_by_plural(error_type, doc):
         elif skip_next:
             skip_next = False
     return text, entities
-
-
-
