@@ -103,7 +103,8 @@ def replace_word(source_word, target_word, error_type, doc):
                 new_tokens.append(target_word.title() + token.whitespace_)
             else:
                 new_tokens.append(target_word + token.whitespace_)
-            entities.append((token.idx, token.idx + len(target_word), error_type))
+            error_start_idx = len("".join(new_tokens))
+            entities.append((error_start_idx, error_start_idx + len(target_word), error_type))
         else:
             new_tokens.append(token.text_with_ws)
 
@@ -147,7 +148,8 @@ def replace_bigram(source_bigram, target_word, error_type, doc):
                 new_tokens.append(target_word.title() + doc[token.i + 1].whitespace_)
             else:
                 new_tokens.append(target_word + doc[token.i + 1].whitespace_)
-            entities.append((token.idx, token.idx + len(target_word), error_type))
+            error_start_idx = len("".join(new_tokens))
+            entities.append((error_start_idx, error_start_idx + len(target_word), error_type))
             skip_token = True
         else:
             new_tokens.append(token.text_with_ws)
@@ -165,7 +167,8 @@ def replace_adverb_by_adjective(error_type, doc):
                     adverb = adverb.title()
                 new_tokens.append(adverb + token.whitespace_)
                 if adverb != token.text:
-                    entities.append((token.idx, token.idx + len(adverb), error_type))
+                    error_start_idx = len("".join(new_tokens))
+                    entities.append((error_start_idx, error_start_idx + len(adverb), error_type))
             else:
                 new_tokens.append(token.text_with_ws)
         else:
