@@ -1,5 +1,5 @@
 import spacy
-import json
+import ndjson
 import click
 import random
 
@@ -96,10 +96,10 @@ def create_corpus(filename, output_file):
 
             if len(train_data) % 100000 == 0:
                 with open(output_file, "w") as o:
-                    json.dump(train_data, o)
+                    ndjson.dump(train_data, o)
 
         with open(output_file, "w") as o:
-            json.dump(train_data, o)
+            ndjson.dump(train_data, o)
 
 
 if __name__ == "__main__":
