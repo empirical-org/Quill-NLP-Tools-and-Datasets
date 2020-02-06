@@ -1,6 +1,6 @@
 # Models
 
-A list of the up-to-date Quill generated models:
+Here we save our best models for several NLP tasks.
 
-(nothing so far... please be patient while we set up our repository for public
-models)
+- The `grammar` directory contains the spaCy model for statistical
+grammar correction.

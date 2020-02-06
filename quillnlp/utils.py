@@ -22,6 +22,7 @@ def detokenize(text: str) -> str:
     """
     text = re.sub("\s+([;:,\.\?!])", "\\1", text)
     text = re.sub("\s+(n't)", "\\1", text)
+    text = re.sub("\s+('s)", "\\1", text)
     text = text.replace(" - ", "-")
     return text
 
