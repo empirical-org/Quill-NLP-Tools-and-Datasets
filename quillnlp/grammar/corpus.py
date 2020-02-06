@@ -1,10 +1,10 @@
 import pyinflect
-from itertools import chain
-from typing import List, Tuple
+from typing import List, Tuple, Set
 from nltk.corpus import wordnet as wn
 from difflib import get_close_matches as gcm
 from spacy.tokens import Doc
 
+ADVERB_ADJECTIVE_MAP = {"well": "good"}
 
 def has_plural_noun(doc: Doc) -> bool:
     """ Returns True if the document contains a plural noun and False otherwise. """
@@ -26,7 +26,7 @@ def has_possessive_noun(doc: Doc) -> bool:
 def has_third_person_singular_verb(doc: Doc) -> bool:
     """ Returns True if the document contains a third person present singular verb. """
     for token in doc:
-        if token.tag_ == "VBZ" and token.lemma_ != "be":
+        if token.tag_ == "VBZ":
             return True
     return False
 
@@ -34,7 +34,15 @@ def has_third_person_singular_verb(doc: Doc) -> bool:
 def has_present_verb_non_third_person(doc: Doc) -> bool:
     """ Returns True if the document contains a non-third-person-singular present verb. """
     for token in doc:
-        if token.tag_ == "VBP" and token.lemma_ != "be":
+        if token.tag_ == "VBP":
+            return True
+    return False
+
+
+def has_modal(doc:Doc) -> bool:
+    """ Returns True if the document contains a modal verb. """
+    for token in doc:
+        if token.tag_ == "MD":
             return True
     return False
 
@@ -42,7 +50,7 @@ def has_present_verb_non_third_person(doc: Doc) -> bool:
 def has_infinitive(doc: Doc) -> bool:
     """ Returns True if the document contains an infinitive verb. """
     for token in doc:
-        if token.tag_ == "VB" and token.lemma_ != "be":
+        if token.tag_ == "VB":
             return True
     return False
 
@@ -62,12 +70,12 @@ def contains_phrase(token_list: List[str], doc: Doc) -> bool:
     return False
 
 
-def get_pos(doc: Doc) -> set(str):
+def get_pos(doc: Doc) -> Set[str]:
     """ Returns the set of all pos_ attributes in the document. """
     return set([t.pos_ for t in doc])
 
 
-def get_tag(doc: Doc) -> set(str):
+def get_tag(doc: Doc) -> Set[str]:
     """ Returns a set of all tag_ attributes in the document. """
     return set([t.tag_ for t in doc])
 
@@ -133,6 +141,9 @@ def get_adjective_for_adverb(adverb: str) -> str:
     Returns:
 
     """
+    if adverb in ADVERB_ADJECTIVE_MAP:
+        return ADVERB_ADJECTIVE_MAP[adverb]
+
     possible_adj = []
     for ss in wn.synsets(adverb):
         for lemmas in ss.lemmas():  # all possible lemmas
@@ -141,6 +152,7 @@ def get_adjective_for_adverb(adverb: str) -> str:
     close_matches = gcm(adverb, possible_adj)
     if len(close_matches) > 0:
         return close_matches[0]
+
     return None
 
 
@@ -187,14 +199,18 @@ def replace_adverb_by_adjective(error_type: str, doc: Doc) -> Tuple[str, List[Tu
     entities = []
     for token in doc:
         if token.pos_ == "ADV":
-            adverb = get_adjective_for_adverb(token.text.lower())
-            if adverb is not None:
+            adjective = get_adjective_for_adverb(token.text.lower())
+            if adjective is not None:
+
+                # Get the right casing
                 if token.text.istitle():
-                    adverb = adverb.title()
-                new_tokens.append(adverb + token.whitespace_)
-                if adverb != token.text:
+                    adjective = adjective.title()
+                new_tokens.append(adjective + token.whitespace_)
+
+                # If the adjective differs from the adverb, add an error.
+                if adjective != token.text:
                     error_start_idx = len("".join(new_tokens))
-                    entities.append((error_start_idx, error_start_idx + len(adverb), error_type))
+                    entities.append((error_start_idx, error_start_idx + len(adjective), error_type))
             else:
                 new_tokens.append(token.text_with_ws)
         else:
