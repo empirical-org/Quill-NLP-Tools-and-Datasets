@@ -98,6 +98,9 @@ def create_corpus(filename, output_file):
                 with open(output_file, "w") as o:
                     json.dump(train_data, o)
 
+        with open(output_file, "w") as o:
+            json.dump(train_data, o)
+
 
 if __name__ == "__main__":
     create_corpus()
