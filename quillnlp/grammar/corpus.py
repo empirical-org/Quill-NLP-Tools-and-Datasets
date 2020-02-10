@@ -1,10 +1,39 @@
 import pyinflect
+import random
 from typing import List, Tuple, Set
 from nltk.corpus import wordnet as wn
 from difflib import get_close_matches as gcm
 from spacy.tokens import Doc
 
 ADVERB_ADJECTIVE_MAP = {"well": "good"}
+
+VERB_AGREEMENT_ERROR_TYPE = "VERB"
+WOMAN_WOMEN_ERROR_TYPE = "WOMAN"
+THEN_THAN_ERROR_TYPE = "THEN"
+CHILD_CHILDREN_ERROR_TYPE = "CHILD"
+IT_S_ITS_ERROR_TYPE = "ITS"
+PLURAL_POSSESSIVE_ERROR_TYPE = "POSSESSIVE"
+ADV_ERROR_TYPE = "ADV"
+
+
+# TODO: there is still one problem here: changing a subject and then changing its verb may
+# result in a correct sentence.
+# This has now been fixed by NOT replacing these words when they are in subject position.
+# Potentially this has also a good idea for NNS => NN+POS
+TOKEN_REPLACEMENT_MAP = {"then": ("than", THEN_THAN_ERROR_TYPE),
+                         "than": ("then", THEN_THAN_ERROR_TYPE),
+                         "woman": ("women", WOMAN_WOMEN_ERROR_TYPE),
+                         "women": ("woman", WOMAN_WOMEN_ERROR_TYPE),
+                         "child": ("children", CHILD_CHILDREN_ERROR_TYPE),
+                         "children": ("child", CHILD_CHILDREN_ERROR_TYPE),
+                         "its": ("it's", IT_S_ITS_ERROR_TYPE)}
+
+SUBJECT_DEPENDENCIES = set(["nsubj", "nsubjpass"])
+
+
+def is_subject(token):
+    return token.dep_ in SUBJECT_DEPENDENCIES
+
 
 def has_plural_noun(doc: Doc) -> bool:
     """ Returns True if the document contains a plural noun and False otherwise. """
@@ -292,4 +321,64 @@ def replace_possessive_by_plural(error_type: str, doc: Doc) -> Tuple[str, List[T
             text += doc[i].text_with_ws
         elif skip_next:
             skip_next = False
+    return text, entities
+
+
+def replace(doc: Doc, error_ratio: float):
+
+    text = ""
+    entities = []
+    skip_next = False
+    for token in doc:
+        if skip_next:
+            skip_next = False
+            continue
+
+        elif token.tag_ == "VBZ" and random.random() < error_ratio:
+            new_token = token._.inflect("VB")
+            error_type = VERB_AGREEMENT_ERROR_TYPE
+        elif token.tag_ == "VBP" and random.random() < error_ratio:
+            new_token = token._.inflect("VBZ")
+            error_type = VERB_AGREEMENT_ERROR_TYPE
+        elif token.tag_ == "VB" and random.random() < error_ratio:
+            new_token = token._.inflect("VBZ")
+            error_type = VERB_AGREEMENT_ERROR_TYPE
+        elif token.tag_ == "MD" and random.random() < error_ratio:
+            new_token = token._.inflect("VBZ")
+            error_type = VERB_AGREEMENT_ERROR_TYPE
+        elif token.text.lower() in TOKEN_REPLACEMENT_MAP and \
+                not is_subject(token) and \
+                random.random() < error_ratio:
+            new_token, error_type = TOKEN_REPLACEMENT_MAP[token.text.lower()]
+        elif token.pos_ == "ADV" and random.random() < error_ratio:
+            new_token = get_adjective_for_adverb(token.text.lower())
+            error_type = ADV_ERROR_TYPE
+        elif token.tag_ == "NNS" and random.random() < error_ratio:
+            new_token = token.lemma_ + "'s"
+            error_type = PLURAL_POSSESSIVE_ERROR_TYPE
+        elif token.i < len(doc)-1 and token.tag_ == "NN" and \
+                doc[token.i+1].tag_ == "POS" and random.random() < error_ratio:
+            new_token = token._.inflect("NNS")
+            error_type = PLURAL_POSSESSIVE_ERROR_TYPE
+            skip_next = True
+        elif token.i < len(doc)-1 and token.text.lower() == "it" and \
+                doc[token.i+1].text.lower() == "'s" and random.random() < error_ratio:
+            new_token = "its"
+            error_type = IT_S_ITS_ERROR_TYPE
+            skip_next = True
+        else:
+            new_token = token.text
+
+        if new_token is None or new_token == token.text:
+            text += token.text_with_ws
+        else:
+            if token.text[0].isupper():
+                new_token = new_token.title()
+            start_index = len(text)
+            if skip_next:
+                text += new_token + doc[token.i+1].whitespace_
+            else:
+                text += new_token + token.whitespace_
+            entities.append((start_index, start_index + len(new_token), error_type))
+
     return text, entities

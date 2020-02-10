@@ -73,6 +73,7 @@ def create_corpus(filename, output_file):
 
     num_lines = file_len(filename)
 
+    all_error_types = list(error_types.keys())
     with open(filename) as i:
         for line in tqdm(i, total=num_lines):
             sentence = line.strip()
@@ -81,6 +82,11 @@ def create_corpus(filename, output_file):
 
             doc = nlp(sentence)
 
+            # We loop through all error types in random order and then
+            # optionally create a synthetic error for the error type we meet first.
+            # TODO: it would be good to do this at the word level, which gives the
+            # possibility of having several error types per sentence.
+            random.shuffle(all_error_types)
             for error_type in error_types:
                 if error_types[error_type](doc):
 
