@@ -23,6 +23,7 @@ AUX_POS = "AUX"
 NOUN_POS = "NOUN"
 PLURAL_NOUN_TAG = "NNS"
 SINGULAR_NOUN_TAG = "NN"
+YES_NO_TAG = "UH"
 MODAL_VERB_TAG = "MD"
 PRESENT_SING3_VERB_TAG = "VBZ"
 PRESENT_OTHER_VERB_TAG = "VBP"
@@ -438,7 +439,9 @@ class CommasAfterYesNoCheck(RuleBasedGrammarCheck):
     def check(self, doc: Doc) -> List[Error]:
         errors = []
         for token in doc[:-1]:
-            if token.text.lower() in YES_NO and not doc[token.i+1].is_punct:
+            if token.text.lower() in YES_NO and \
+                    token.tag_ == YES_NO_TAG and \
+                    not doc[token.i+1].is_punct:
                 errors.append(Error(token.text, token.idx, self.name))
         return errors
 

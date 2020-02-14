@@ -91,6 +91,18 @@ def test_possessive_pronouns2():
     assert errors[0].type == "Possessive pronouns"
 
 
+def test_yesno():
+
+    checker = GrammarChecker("models/spacy_grammar")
+
+    sentences = [("No that's not a problem.", 1),
+                 ("That's no problem.", 0)]
+
+    for sentence, num_errors in sentences:
+        found_errors = checker.check(sentence)
+        assert len(found_errors) == num_errors
+
+
 def test_grammar():
 
     checker = GrammarChecker("models/spacy_grammar")
@@ -165,6 +177,4 @@ def test_grammar2():
             found_error_types = set([error_map.get(e[2], e[2]) for e in found_errors])
 
             o.write("\t".join([item, ",".join(found_error_types)]) + "\n")
-
-
 
