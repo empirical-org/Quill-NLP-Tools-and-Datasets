@@ -334,6 +334,12 @@ def replace(doc: Doc, error_ratio: float):
             skip_next = False
             continue
 
+        # If the token is immediately followed by another (no whitespace), skip
+        # This avoids problems like wouldn't => wouldsn't, where the indices of the error
+        # do not match a spaCy token
+        elif token.i < len(doc)-1 and len(token.whitespace_) == 0 and not doc[token.i+1].is_punct:
+            continue
+
         elif token.tag_ == "VBZ" and random.random() < error_ratio:
             new_token = token._.inflect("VB")
             error_type = VERB_AGREEMENT_ERROR_TYPE
@@ -374,6 +380,12 @@ def replace(doc: Doc, error_ratio: float):
         else:
             if token.text[0].isupper():
                 new_token = new_token.title()
+
+            # Add a space to the text if it does not end in a space.
+            # This solves problems like he's => hebe
+            if len(text) > 0 and not text[-1].isspace():
+                text += " "
+
             start_index = len(text)
             if skip_next:
                 text += new_token + doc[token.i+1].whitespace_
