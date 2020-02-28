@@ -10,7 +10,7 @@ from quillnlp.grammar.corpus import replace
 @click.command()
 @click.argument('filename')
 @click.argument('output_file')
-@click.option('error_ratio', default=1/6)
+@click.option('--error_ratio', default=1/6)
 def create_corpus(filename, output_file, error_ratio):
 
     def file_len(fname):

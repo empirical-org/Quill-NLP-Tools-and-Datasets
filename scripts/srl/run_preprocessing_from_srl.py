@@ -1,13 +1,29 @@
 import csv
 import json
+
 import click
-from collections import defaultdict
+from scipy import spatial
+from sklearn.cluster import KMeans
+from tqdm import tqdm
 
-from quillnlp.preprocessing.srl import *
 from quillnlp.preprocessing.coref import get_coreference_dictionary
+from quillnlp.preprocessing.srl import *
 
-from allennlp.models.archival import load_archive
-from allennlp.predictors.predictor import Predictor
+import torch
+
+from transformers.tokenization_bert import BertTokenizer
+from transformers.modeling_bert import BertModel
+
+
+def get_sentence_embedding(model, tokenizer, sentence):
+    input_ids = torch.tensor(tokenizer.encode(sentence)).unsqueeze(0)  # Batch size 1
+    with torch.no_grad():
+        outputs = model(input_ids)
+        last_hidden_states = outputs[0]  # The last hidden-state is the first element of the output tuple
+        sentence_embedding = last_hidden_states[0, 0, :].cpu().numpy()
+
+    return sentence_embedding
+
 
 VERB_MAP = {"s": "be",
             "is": "be",
@@ -86,11 +102,12 @@ def write_output(all_sentences, num_verbs_prompt, output_file):
     """
 
     with open(output_file, "w") as csvfile:
-        columns = ["response", "verb construction", "main verb", "extracted arg0", "intended arg0", "arg1", "arg2"]
+        columns = ["response", "cluster", "similarity", "verb construction", "main verb", "extracted arg0", "intended arg0", "arg1", "arg2"]
         csvwriter = csv.writer(csvfile, delimiter="\t")
         csvwriter.writerow(columns)
         for sentence in all_sentences:
-            output_list = [sentence["response"], " ".join(sentence["meta"])]
+            output_list = [sentence["response"], sentence["cluster"],
+                           sentence["similarity"], " ".join(sentence["meta"])]
             for verb in sentence["verbs"][num_verbs_prompt:]:
                 for item in verb:
                     output_list.append(item)
@@ -112,10 +129,33 @@ def preprocess(srl_file):
 
     sentences = []
 
+    # Initialize BERT
+    tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+    model = BertModel.from_pretrained('bert-base-uncased')
+    model.eval()
+
+    # Get BERT embeddings
+    embeddings = [get_sentence_embedding(model, tokenizer, s["response"]) for s in tqdm(srl_out)]
+
+    # Cluster embeddings
+    NUM_CLUSTERS = 10
+    clusterer = KMeans(n_clusters=NUM_CLUSTERS)
+    clusters = clusterer.fit_predict(embeddings)
+
+    # Get similarities to cluster centers
+    similarities = []
+    for item_idx, cluster in enumerate(clusters):
+        cluster_center = clusterer.cluster_centers_[cluster]
+        embedding = embeddings[item_idx]
+        similarity = 1 - spatial.distance.cosine(embedding, cluster_center)
+        similarities.append(similarity)
+
     # 3. For every sentence:
-    for sent in srl_out:
+    for (sent, cluster, similarity) in zip(srl_out, clusters, similarities):
         sentence_info = {"sentence": sent["sentence"],
                          "response": sent["response"],
+                         "cluster": cluster,
+                         "similarity": similarity,
                          "meta": [],
                          "verbs": []}
 

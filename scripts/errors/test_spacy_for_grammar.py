@@ -12,8 +12,6 @@ from spacy.gold import biluo_tags_from_offsets
 from sklearn.metrics import f1_score, classification_report
 
 
-# TODO: Woman/Women also capitalized
-
 
 nlp = spacy.load("en")
 
@@ -89,7 +87,7 @@ TEST_DATA = train_data[-TEST_SIZE:]
 DEV_DATA = train_data[-(TEST_SIZE + DEV_SIZE):-TEST_SIZE]
 TRAIN_DATA = train_data[:len(train_data) - TEST_SIZE - DEV_SIZE]
 
-train_set = set([x[0] for x in train_data])
+train_set = set([x[0] for x in TRAIN_DATA])
 test_set = set([x[0] for x in TEST_DATA])
 intersection = train_set & test_set
 if len(intersection) > 0:
