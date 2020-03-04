@@ -35,8 +35,9 @@ VERB_MAP = {"s": "be",
 
 SUBJECTS_TO_IGNORE = set(["I", "some", "some people"])
 
-MODAL_VERBS = set(["will", "shall", "may", "might", "can", "could", "must", "ought to",
+MODAL_VERBS = set(["will", "shall", "may", "might", "can", "could", "must", "ought",
                    "should", "would", "used to", "need"])
+
 AUX_VERBS = set(["do", "does"])
 
 
@@ -102,12 +103,14 @@ def write_output(all_sentences, num_verbs_prompt, output_file):
     """
 
     with open(output_file, "w") as csvfile:
-        columns = ["response", "cluster", "similarity", "verb construction", "main verb", "extracted arg0", "intended arg0", "arg1", "arg2"]
+        columns = ["response", "cluster", "similarity", "modal", "auxiliary",
+                   "main verb", "extracted arg0", "intended arg0", "arg1", "arg2"]
         csvwriter = csv.writer(csvfile, delimiter="\t")
         csvwriter.writerow(columns)
         for sentence in all_sentences:
             output_list = [sentence["response"], sentence["cluster"],
-                           sentence["similarity"], " ".join(sentence["meta"])]
+                           sentence["similarity"], sentence["modal"],
+                           sentence["auxiliary"]]
             for verb in sentence["verbs"][num_verbs_prompt:]:
                 for item in verb:
                     output_list.append(item)
@@ -156,7 +159,8 @@ def preprocess(srl_file):
                          "response": sent["response"],
                          "cluster": cluster,
                          "similarity": similarity,
-                         "meta": [],
+                         "modal": "-",
+                         "auxiliary": "-",
                          "verbs": []}
 
         # 3.1 Perform coreference resolution on the full sentence
@@ -173,13 +177,13 @@ def preprocess(srl_file):
             # 3.2.2 If the verb is a modal, add this information to the metadata and
             # add the verb as an auxiliary to the next main verb.
             if not verb_idx < num_verbs_prompt and verb_string in MODAL_VERBS:
-                sentence_info["meta"].append("modal")
+                sentence_info["modal"] = "yes"
                 auxiliary = verb_string
 
             # 3.2.3 If the verb is an auxiliary, add this information to the metadata and
             # add the verb as an auxiliary to the next main verb.
             elif not verb_idx < num_verbs_prompt and verb_string in AUX_VERBS:
-                sentence_info["meta"].append("auxiliary")
+                sentence_info["auxiliary"] = "yes"
                 auxiliary = verb_string
 
             else:
@@ -193,8 +197,12 @@ def preprocess(srl_file):
                 arg0_location = "-".join([str(x) for x in arg0_indices])
                 if arg0_location in corefs:
                     arg0_antecedent = corefs[arg0_location]
-                else:
+                elif arg0_string != "-":
                     arg0_antecedent = arg0_string
+                else:  # These are cases where the subject is "-", as in copula verbs
+                    arg0_antecedent = arg1_string
+                    arg0_string = arg1_string
+
                 print(corefs)
                 print("SA", arg0_string, arg0_antecedent)
                 print(arg0_location)
