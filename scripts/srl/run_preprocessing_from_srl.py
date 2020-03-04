@@ -197,8 +197,12 @@ def preprocess(srl_file):
                 arg0_location = "-".join([str(x) for x in arg0_indices])
                 if arg0_location in corefs:
                     arg0_antecedent = corefs[arg0_location]
-                else:
+                elif arg0_string != "-":
                     arg0_antecedent = arg0_string
+                else:  # These are cases where the subject is "-", as in copula verbs
+                    arg0_antecedent = arg1_string
+                    arg0_string = arg1_string
+
                 print(corefs)
                 print("SA", arg0_string, arg0_antecedent)
                 print(arg0_location)
