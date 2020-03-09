@@ -105,7 +105,7 @@ def test_yesno():
 
 def test_grammar():
 
-    checker = GrammarChecker("models/spacy_grammar")
+    checker = GrammarChecker("models/grammar10Mb")
 
     # Read error input
     data = []
@@ -145,7 +145,6 @@ def test_grammar():
 
             o.write("\t".join([sentence, ",".join(errors), ",".join(found_error_types)]) + "\n")
 
-
     error_types = sorted(list(results.keys()))
     for error_type in error_types:
         tp = results[error_type]["tp"]
@@ -178,3 +177,50 @@ def test_grammar2():
 
             o.write("\t".join([item, ",".join(found_error_types)]) + "\n")
 
+
+def test_grammar_pairs():
+    #checker = GrammarChecker("models/spacy_grammar")
+    checker = GrammarChecker("models/grammar10Mb")
+
+    # Read error input
+    data = []
+    with open("tests/data/grammar_valid.tsv") as i:
+        for line in i:
+            line = line.strip().split("\t")
+            if len(line) == 3:
+                data.append(line)
+
+    results = {}
+    for (error_type, correct_sentence, incorrect_sentence) in data:
+        if error_type not in results:
+            results[error_type] = {"cc": 0, "ci": 0, "ic": 0, "ii": 0}
+
+        errors = checker.check(correct_sentence)
+        errors = [e for e in errors if e.type.startswith(error_type)]
+        print(correct_sentence)
+        print(errors)
+
+        if len(errors) == 0:
+            results[error_type]["cc"] += 1
+        else:
+            results[error_type]["ci"] += 1
+
+        errors = checker.check(incorrect_sentence)
+        errors = [e for e in errors if e.type.startswith(error_type)]
+        print(incorrect_sentence)
+        print(errors)
+
+        if len(errors) == 0:
+            results[error_type]["ic"] += 1
+        else:
+            results[error_type]["ii"] += 1
+
+    for error_type in results:
+        correct = results[error_type]["cc"] + results[error_type]["ii"]
+        incorrect = results[error_type]["ic"] + results[error_type]["ci"]
+
+        precision = results[error_type]["cc"]/ (results[error_type]["cc"] + results[error_type]["ic"])
+        recall = results[error_type]["cc"] / (results[error_type]["cc"] + results[error_type]["ci"])
+        fscore = 2*precision*recall/(precision+recall)
+
+        print(error_type, precision, recall, fscore)

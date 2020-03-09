@@ -1,226 +1,94 @@
-import csv
+import requests
 
-from collections import Counter
+url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ7bVBj7fLFA6e-zpZ-kGY7HkJhcDDapmUe5vpLLyqYo4LOGWy86auJIOXQCsxFQWOjXe7X4q6F4cmM/pub?gid=688772490&single=true&output=tsv"
 
-from quillnlp.grammar.grammarcheck import GrammarChecker
-
-
-error_map = {"WOMAN": "Woman versus women",
-             "ITS": "Its versus it's",
-             "THEN": "Than versus then",
-             "VERB": "Subject-verb agreement",
-             "POSSESSIVE": "Plural versus possessive nouns",
-             "CHILD": "Child versus children",
-             "Possessive nouns": "Plural versus possessive nouns", # from the manual labelling
-             "Plural possessive nouns": "Plural versus possessive nouns",
-             "Irregular past tense verbs": "Verb tense", # from the manual labelling
-             "Those versus these": "This versus that",
-             "Adverbs": "Adverbs versus adjectives",
-             "Adjectives versus adverbs": "Adverbs versus adjectives"
-             }
+error_equivalence = {
+    "Subject-verb agreement (rule)": "Subject-verb agreement",
+    "Subject-verb agreement (stats)": "Subject-verb agreement",
+    "Those versus these": "This versus that",
+    "Plural versus possessive nouns": "Possessive nouns",
+    "Irregular past tense verbs": "Verb tense",
+}
 
 
-def test_fragment():
-    checker = GrammarChecker("models/spacy_grammar")
-
-    text = "Mix the sugar and butter. Then, the flour slowly."
-    errors = checker.check(text)
-
-    assert len(errors) == 1
-    assert errors[0].type == "Fragment"
-
-
-def test_this_vs_that():
-    checker = GrammarChecker("models/spacy_grammar")
-
-    text = "This man over there is my brother."
-    errors = checker.check(text)
-
-    assert len(errors) == 1
-    assert errors[0].type == "This versus that"
-
-
-def test_this_vs_that2():
-    checker = GrammarChecker("models/spacy_grammar")
-
-    text = "This library over there is very popular."
-    errors = checker.check(text)
-
-    assert len(errors) == 1
-    assert errors[0].type == "This versus that"
-
-
-def test_question_mark():
-
-    # This sentence should not have a question mark error
-    text = "The Sister's are still on the run from Santiago, as are we."
-    checker = GrammarChecker("models/spacy_grammar")
-
-    errors = checker.check(text)
-
-    assert len(errors) == 1
-
-
-def test_woman_vs_women():
-    checker = GrammarChecker("models/spacy_grammar")
-
-    text = "These womans were hilarious."
-    errors = checker.check(text)
-
-    assert len(errors) == 1
-    assert errors[0].type == "Woman versus women"
-
-
-def test_possessive_pronouns():
-    checker = GrammarChecker("models/spacy_grammar")
-
-    text = "I danced at Leslie's and them party."
-    errors = checker.check(text)
-
-    assert len(errors) == 1
-    assert errors[0].type == "Possessive pronouns"
-
-
-def test_possessive_pronouns2():
-    checker = GrammarChecker("models/spacy_grammar")
-
-    text = "I danced at Leslie's and their's party."
-    errors = checker.check(text)
-
-    assert len(errors) == 1
-    assert errors[0].type == "Possessive pronouns"
-
-
-def test_yesno():
-
-    checker = GrammarChecker("models/spacy_grammar")
-
-    sentences = [("No that's not a problem.", 1),
-                 ("That's no problem.", 0)]
-
-    for sentence, num_errors in sentences:
-        found_errors = checker.check(sentence)
-        assert len(found_errors) == num_errors
-
-
-def test_grammar():
-
-    checker = GrammarChecker("models/grammar10Mb")
-
-    # Read error input
-    data = []
-    with open("tests/data/grammar.tsv") as i:
-        reader = csv.reader(i, delimiter="\t")
-        for row in reader:
-            if len(row) > 1:
-                data.append(row)
+def evaluate(correct_errors, predicted_errors):
 
     results = {}
+    for correct_item, predicted_item in zip(correct_errors, predicted_errors):
+        correct_item = set([error_equivalence.get(e, e) for e in correct_item])
+        predicted_item = set([error_equivalence.get(e, e) for e in predicted_item])
 
-    error_counts = Counter()
-    with open("results.tsv", "w") as o:
-        for item in data:
-            sentence = item[0]
-            errors = set([error_map.get(e.strip(), e.strip()) for e in item[1:] if len(e.strip()) > 0])
-            error_counts.update(errors)
+        print("C", correct_item)
+        print("P", predicted_item)
 
-            found_errors = checker.check(sentence)
-            found_error_types = set([error_map.get(e[2], e[2]) for e in found_errors])
+        for predicted_error in predicted_item:
+            if predicted_error not in results:
+                results[predicted_error] = {"fp": 0, "tp": 0, "fn": 0, "support": 0}
 
-            for error_type in errors:
-                if error_type not in results:
-                    results[error_type] = {"tp": 0, "fp": 0, "fn": 0}
+            if predicted_error in correct_item:
+                results[predicted_error]["tp"] += 1
+            else:
+                results[predicted_error]["fp"] += 1
 
-                if error_type in found_error_types:
-                    results[error_type]["tp"] += 1
-                else:
-                    results[error_type]["fn"] += 1
+        for correct_error in correct_item:
+            if correct_error not in results:
+                results[correct_error] = {"fp": 0, "tp": 0, "fn": 0, "support": 0}
+            results[correct_error]["support"] += 1
+            if correct_error not in predicted_item:
+                results[correct_error]["fn"] += 1
 
-            for found_error in found_error_types:
-                if found_error not in errors:
-                    if found_error not in results:
-                        results[found_error] = {"tp": 0, "fp": 0, "fn": 0}
-
-                    results[found_error]["fp"] += 1
-
-            o.write("\t".join([sentence, ",".join(errors), ",".join(found_error_types)]) + "\n")
-
-    error_types = sorted(list(results.keys()))
-    for error_type in error_types:
-        tp = results[error_type]["tp"]
-        fp = results[error_type]["fp"]
-        fn = results[error_type]["fn"]
-        support = error_counts[error_type]
-
-        precision = tp/(tp+fp) if (tp+fp) > 0 else 0
-        recall = tp/(tp+fn) if (tp+fn) > 0 else 0
-        fscore = 2*precision*recall/(precision+recall) if precision+recall > 0 else 0
-
-        print(f"{error_type}\t{precision}\t{recall}\t{fscore}\t{support}")
+    return results
 
 
-def test_grammar2():
-
-    checker = GrammarChecker("models/spacy_grammar")
-
-    # Read error input
-    data = []
-    with open("tests/data/grammar2.tsv") as i:
-        for line in i:
-            data.append(line.strip())
-
-    with open("results2.tsv", "w") as o:
-        for item in data:
-
-            found_errors = checker.check(item)
-            found_error_types = set([error_map.get(e[2], e[2]) for e in found_errors])
-
-            o.write("\t".join([item, ",".join(found_error_types)]) + "\n")
+def precision_recall_fscore_support(results, error):
+    support = results[error]["support"]
+    tp = results[error]["tp"]
+    fp = results[error]["fp"]
+    fn = results[error]["fn"]
+    p = tp / (tp + fp) if tp + fp > 0 else 0
+    r = tp / (tp + fn) if tp + fn > 0 else 0
+    f = 2 * p * r / (p + r) if p + r > 0 else 0
+    return p, r, f, support
 
 
-def test_grammar_pairs():
-    #checker = GrammarChecker("models/spacy_grammar")
-    checker = GrammarChecker("models/grammar10Mb")
+def test_quill_vs_ginger():
+    data = requests.get(url)
+    lines = data.text.split("\n")
 
-    # Read error input
-    data = []
-    with open("tests/data/grammar_valid.tsv") as i:
-        for line in i:
-            line = line.strip().split("\t")
-            if len(line) == 3:
-                data.append(line)
 
-    results = {}
-    for (error_type, correct_sentence, incorrect_sentence) in data:
-        if error_type not in results:
-            results[error_type] = {"cc": 0, "ci": 0, "ic": 0, "ii": 0}
+    all_manual_errors = []
+    all_ginger_errors = []
+    all_quill_errors = []
+    for line in lines[1:623]:
+        line = line.strip().split("\t")
+        while len(line) < 11:
+            line.append("")
 
-        errors = checker.check(correct_sentence)
-        errors = [e for e in errors if e.type.startswith(error_type)]
-        print(correct_sentence)
-        print(errors)
+        sentence = line[0]
+        manual_errors = set([x for x in [line[1], line[2], line[3], line[4]] if x])
+        ginger_errors = set([x for x in [line[6], line[7], line[8]] if x])
+        quill_errors = set(line[10].split(","))
+        all_manual_errors.append(manual_errors)
+        all_ginger_errors.append(ginger_errors)
+        all_quill_errors.append(quill_errors)
 
-        if len(errors) == 0:
-            results[error_type]["cc"] += 1
-        else:
-            results[error_type]["ci"] += 1
+        #print(sentence)
+        #print("M", manual_errors)
+        #print("G", ginger_errors)
+        #print("Q", quill_errors)
 
-        errors = checker.check(incorrect_sentence)
-        errors = [e for e in errors if e.type.startswith(error_type)]
-        print(incorrect_sentence)
-        print(errors)
+    ginger_results = evaluate(all_manual_errors, all_ginger_errors)
+    quill_results = evaluate(all_manual_errors, all_quill_errors)
+    errors = list(ginger_results.keys())
+    errors.sort()
 
-        if len(errors) == 0:
-            results[error_type]["ic"] += 1
-        else:
-            results[error_type]["ii"] += 1
+    for error in errors:
+        support = ginger_results[error]["support"]
+        if support > 0:
+            pg, rg, fg, _ = precision_recall_fscore_support(ginger_results, error)
+            pq, rq, fq, _ = precision_recall_fscore_support(quill_results, error)
 
-    for error_type in results:
-        correct = results[error_type]["cc"] + results[error_type]["ii"]
-        incorrect = results[error_type]["ic"] + results[error_type]["ci"]
+            print("\t".join([error, str(pg), str(rg), str(fg),
+                             str(pq), str(rq), str(fq),
+                             str(support)]))
 
-        precision = results[error_type]["cc"]/ (results[error_type]["cc"] + results[error_type]["ic"])
-        recall = results[error_type]["cc"] / (results[error_type]["cc"] + results[error_type]["ci"])
-        fscore = 2*precision*recall/(precision+recall)
-
-        print(error_type, precision, recall, fscore)

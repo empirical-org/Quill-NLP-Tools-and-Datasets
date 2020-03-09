@@ -32,14 +32,12 @@ def test_get_adverbs():
 def test_full_replacement_function():
     texts = [("It's an honor to meet you.", "Its an honor to meets you."),
              ("I have three children.", "I has three child."),
-             ("You were taller than me.", "You were taller then me."),
+             ("You were taller than me.", "You was taller then me."),
              ("He doesn't answer.", "He don't answers."),
-             ("He is no Barack Obama.", "He be no Barack Obama."),
-             ("You are no Barack Obama.", "You is no Barack Obama."),
              ("He speaks well.", "He speak good."),
              ("He dances beautifully.", "He dance beautiful."),
              ("The women go home.", "The woman's goes home."),
-             ("There are three women.", "There is three woman.")
+             ("He wouldn't go.", "He wouldn't goes.")
              ]
 
     for source_text, target_text in texts:
@@ -48,3 +46,13 @@ def test_full_replacement_function():
 
         assert new_text == target_text
 
+
+def test_be_replacement_function():
+
+    text = "He is home."
+    alternatives = set(["He be home.", "He am home.", "He are home."])
+
+    doc = nlp(text)
+    new_text, errors = replace(doc, 1)
+
+    assert new_text in alternatives
