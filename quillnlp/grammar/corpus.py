@@ -15,6 +15,13 @@ IT_S_ITS_ERROR_TYPE = "ITS"
 PLURAL_POSSESSIVE_ERROR_TYPE = "POSSESSIVE"
 ADV_ERROR_TYPE = "ADV"
 
+PRESENT_BE = set(["be", "am", "are", "is"])
+PAST_BE = set(["were", "was"])
+
+# "Problem" verbs are verbs we do not change before "n't", because this
+# problems with spaCy's tokenization, which sees "cansn't" or "wouldsn't"
+# as one token rather than two.
+PROBLEM_VERBS = set(["can", "would", "will"])
 
 # TODO: there is still one problem here: changing a subject and then changing its verb may
 # result in a correct sentence.
@@ -334,12 +341,21 @@ def replace(doc: Doc, error_ratio: float):
             skip_next = False
             continue
 
-        # If the token is immediately followed by another (no whitespace), skip
+        # If the token is immediately followed by "n't" (no whitespace), skip
         # This avoids problems like wouldn't => wouldsn't, where the indices of the error
         # do not match a spaCy token
-        elif token.i < len(doc)-1 and len(token.whitespace_) == 0 and not doc[token.i+1].is_punct:
-            continue
+        elif token.i < len(doc)-1 and token.text.lower() in PROBLEM_VERBS and \
+                doc[token.i+1].text == "n't":
+            new_token = token.text
 
+        elif token.text in PRESENT_BE and random.random() < error_ratio:
+            alternative_forms = PRESENT_BE - set([token.text.lower()])
+            new_token = random.sample(alternative_forms, 1)[0]
+            error_type = VERB_AGREEMENT_ERROR_TYPE
+        elif token.text in PAST_BE and random.random() < error_ratio:
+            alternative_forms = PAST_BE - set([token.text.lower()])
+            new_token = random.sample(alternative_forms, 1)[0]
+            error_type = VERB_AGREEMENT_ERROR_TYPE
         elif token.tag_ == "VBZ" and random.random() < error_ratio:
             new_token = token._.inflect("VB")
             error_type = VERB_AGREEMENT_ERROR_TYPE
