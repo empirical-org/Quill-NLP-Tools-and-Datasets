@@ -21,7 +21,8 @@ PAST_BE = set(["were", "was"])
 # "Problem" verbs are verbs we do not change before "n't", because this
 # problems with spaCy's tokenization, which sees "cansn't" or "wouldsn't"
 # as one token rather than two.
-PROBLEM_VERBS = set(["can", "would", "will"])
+# Note: can't is tokenized as ca+n't
+PROBLEM_VERBS = set(["can", "would", "will", "ca"])
 
 # TODO: there is still one problem here: changing a subject and then changing its verb may
 # result in a correct sentence.
@@ -345,7 +346,8 @@ def replace(doc: Doc, error_ratio: float):
         # This avoids problems like wouldn't => wouldsn't, where the indices of the error
         # do not match a spaCy token
         elif token.i < len(doc)-1 and token.text.lower() in PROBLEM_VERBS and \
-                doc[token.i+1].text == "n't":
+                (doc[token.i+1].text == "n't" or doc[token.i+1].text == "not")\
+                and not token.whitespace_:
             new_token = token.text
 
         elif token.text in PRESENT_BE and random.random() < error_ratio:
