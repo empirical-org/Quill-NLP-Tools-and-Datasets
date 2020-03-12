@@ -74,26 +74,10 @@ def convert_data_to_input_items(examples: List[Dict], label2idx: Dict,
     for (ex_index, ex) in enumerate(examples):
 
         # Create a list of token ids
-        input_ids = tokenizer.encode("[CLS] " + ex["text"] + " [SEP]")
-        if len(input_ids) > max_seq_length:
-            input_ids = input_ids[:max_seq_length]
-
-        # All our tokens are in the first input segment (id 0).
-        segment_ids = [0] * len(input_ids)
-
-        # The mask has 1 for real tokens and 0 for padding tokens. Only real
-        # tokens are attended to.
-        input_mask = [1] * len(input_ids)
-
-        # Zero-pad up to the sequence length.
-        padding = [0] * (max_seq_length - len(input_ids))
-        input_ids += padding
-        input_mask += padding
-        segment_ids += padding
-
-        assert len(input_ids) == max_seq_length
-        assert len(input_mask) == max_seq_length
-        assert len(segment_ids) == max_seq_length
+        toks = tokenizer.encode(ex["text"], max_length=max_seq_length, pad_to_max_length=True)
+        input_ids = toks["input_ids"]
+        segment_ids = toks["token_type_ids"]
+        input_mask = toks["attention_mask"]
 
         if type(ex["label"]) == str:
             label_id = label2idx[ex["label"]]
