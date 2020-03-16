@@ -3,6 +3,7 @@ from pathlib import Path
 import spacy
 import json
 import ndjson
+from collections import Counter
 from functools import partial
 from quillnlp.grammar import corpus
 from tqdm import tqdm
@@ -16,27 +17,32 @@ DEV_SIZE = 5000
 
 nlp = spacy.load("en")
 
-files = ["wiki_errors.ndjson", "subtitles_errors.ndjson"]
+files = ["wiki_errors.ndjson", "subtitles.ndjson", "notw.ndjson"]
 
 train_data = []
 for f in files:
-    train_data += ndjson.load(f)
+    with open(f) as i:
+        train_data += ndjson.load(i)[:7200000]
 
 seen_sentences = set()
 filtered_train_data = []
 for sentence in train_data:
     if "synth_sentence" in sentence and sentence["synth_sentence"] not in seen_sentences:
         filtered_train_data.append((sentence["synth_sentence"], {"entities": sentence["entities"]}))
+        seen_sentences.update([sentence["synth_sentence"]])
     elif "orig_sentence" in sentence and sentence["orig_sentence"] not in seen_sentences:
-        filtered_train_data.append((sentence["orig_sentence"], [], {"entities": []}))
+        filtered_train_data.append((sentence["orig_sentence"], {"entities": []}))
+        seen_sentences.update([sentence["orig_sentence"]])
 
+train_data = filtered_train_data
 random.shuffle(train_data)
 
 TEST_DATA = train_data[-TEST_SIZE:]
 DEV_DATA = train_data[-(TEST_SIZE + DEV_SIZE):-TEST_SIZE]
 TRAIN_DATA = train_data[:len(train_data) - TEST_SIZE - DEV_SIZE]
+TRAIN_DATA = TRAIN_DATA[:20000000]
 
-train_set = set([x[0] for x in train_data])
+train_set = set([x[0] for x in TRAIN_DATA])
 test_set = set([x[0] for x in TEST_DATA])
 intersection = train_set & test_set
 if len(intersection) > 0:
@@ -45,20 +51,15 @@ if len(intersection) > 0:
 for x in intersection:
     print(x, len(x))
 
-print("Train:", len(train_data))
+print("Train:", len(TRAIN_DATA))
 print("Dev:", len(DEV_DATA))
 print("Test:", len(TEST_DATA))
 
+error_counter = Counter()
+for item in TRAIN_DATA:
+    error_counter.update([e[2] for e in item[1]["entities"]])
 
-for sentence, entities in train_data:
-    doc = nlp(sentence)
-    tags = biluo_tags_from_offsets(doc, entities["entities"])
-    if "" in tags:
-        print(sentence)
-        print(entities)
-        print([t for t in doc])
-        print(tags)
-
+print(error_counter)
 
 def evaluate(data, model, verbose=False):
 
@@ -112,6 +113,7 @@ def main(model=None, output_dir=None, n_iter=100):
     else:
         ner = nlp.get_pipe("ner")
 
+    print("Adding labels")
     # add labels
     for _, annotations in train_data:
         for ent in annotations.get("entities"):
@@ -131,18 +133,26 @@ def main(model=None, output_dir=None, n_iter=100):
     if model is None:
         nlp.begin_training()
     for itn in range(n_iter):
-        random.shuffle(train_data)
+        print(f"Epoch {itn}")
+        random.shuffle(TRAIN_DATA)
         losses = {}
         # batch up the examples using spaCy's minibatch
-        batches = minibatch(train_data, size=compounding(4.0, 32.0, 1.001))
+        batches = minibatch(TRAIN_DATA, size=compounding(4.0, 32.0, 1.001))
+        total = 0
         for batch in batches:
             texts, annotations = zip(*batch)
-            nlp.update(
-                texts,  # batch of texts
-                annotations,  # batch of annotations
-                drop=0.5,  # dropout - make it harder to memorise data
-                losses=losses,
-            )
+            total += len(texts)
+            try:
+                nlp.update(
+                    texts,  # batch of texts
+                    annotations,  # batch of annotations
+                    drop=0.5,  # dropout - make it harder to memorise data
+                    losses=losses,
+                )
+            except:
+                continue
+            percentage = int(total/len(TRAIN_DATA)*100)
+            print(f"{percentage}", end="\r")
         print("Losses", losses)
 
         dev_f = evaluate(DEV_DATA, nlp)
@@ -178,4 +188,4 @@ def main(model=None, output_dir=None, n_iter=100):
 
 
 if __name__ == "__main__":
-    main(model="en", output_dir="/tmp/grammar/")
+    main(model="en", output_dir="/tmp/grammar20M/")
