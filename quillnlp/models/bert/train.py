@@ -9,7 +9,7 @@ from torch.utils.data import DataLoader
 from quillnlp.models.bert.models import BertForMultiLabelSequenceClassification
 
 from transformers.optimization import AdamW
-from transformers.modeling_bert import BertForSequenceClassification
+from transformers.modeling_bert import BertForSequenceClassification, BertForTokenClassification
 from transformers.modeling_distilbert import DistilBertForSequenceClassification
 from transformers.modeling_utils import PreTrainedModel
 
@@ -69,8 +69,8 @@ def train(model: PreTrainedModel, train_dataloader: DataLoader, dev_dataloader: 
         for step, batch in enumerate(tqdm(train_dataloader, desc="Training iteration")):
             batch = tuple(t.to(device) for t in batch)
             input_ids, input_mask, segment_ids, label_ids = batch
-            if type(model) == BertForSequenceClassification or type(model) == BertForMultiLabelSequenceClassification:
-                outputs = model(input_ids, attention_mask=input_mask, token_type_ids=segment_ids, labels=label_ids)
+            if type(model) == BertForSequenceClassification or type(model) == BertForMultiLabelSequenceClassification or type(model) == BertForTokenClassification:
+                outputs = model(input_ids, labels=label_ids)
             elif type(model) == DistilBertForSequenceClassification:
                 outputs = model(input_ids, attention_mask=input_mask, labels=label_ids)
             loss = outputs[0]
@@ -134,7 +134,7 @@ def evaluate(model: PreTrainedModel, dataloader: DataLoader, device: str) -> (in
         input_ids, input_mask, segment_ids, label_ids = batch
 
         with torch.no_grad():
-            if type(model) == BertForSequenceClassification or type(model) == BertForMultiLabelSequenceClassification:
+            if type(model) == BertForSequenceClassification or type(model) == BertForMultiLabelSequenceClassification or type(model) == BertForTokenClassification:
                 tmp_eval_loss, logits = model(input_ids, attention_mask=input_mask,
                                               token_type_ids=segment_ids, labels=label_ids)
             elif type(model) == DistilBertForSequenceClassification:
@@ -145,6 +145,12 @@ def evaluate(model: PreTrainedModel, dataloader: DataLoader, device: str) -> (in
             outputs = softmax(logits.to('cpu'))
             label_ids = label_ids.to('cpu').numpy()
             predicted_labels += list(np.argmax(outputs, axis=1))
+
+        elif type(model) == BertForTokenClassification:
+            softmax = Softmax(dim=2)
+            outputs = softmax(logits.to('cpu'))
+            label_ids = label_ids.to('cpu').numpy()
+            predicted_labels += list(np.argmax(outputs, axis=2))
 
         elif type(model) == BertForMultiLabelSequenceClassification:
             sig = Sigmoid()
@@ -161,7 +167,10 @@ def evaluate(model: PreTrainedModel, dataloader: DataLoader, device: str) -> (in
     eval_loss = eval_loss / nb_eval_steps
 
     correct_labels = np.array(correct_labels)
-    predicted_labels = np.array(predicted_labels)
+    if type(model) == BertForTokenClassification:
+        predicted_labels = np.array([t.numpy() for t in predicted_labels])
+    else:
+        predicted_labels = np.array(predicted_labels)
 
     return eval_loss, probabilities, correct_labels, predicted_labels
 
