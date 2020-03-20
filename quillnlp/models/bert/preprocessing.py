@@ -15,19 +15,19 @@ class BertInputItem(object):
         input_ids: the ids of the input tokens
         input_mask: a list of booleans that indicates what tokens should be masked
         segment_ids: a list of segment ids for the tokens
-        label_id: a label id or a list of label ids for the input
+        label_ids: a label id or a list of label ids for the input
     """
 
     def __init__(self, text: str,
                  input_ids: List[int],
                  input_mask: List[int],
                  segment_ids: List[int],
-                 label_id: Union[int or List[int]]):
+                 label_ids: Union[int or List[int]]):
         self.text = text
         self.input_ids = input_ids
         self.input_mask = input_mask
         self.segment_ids = segment_ids
-        self.label_id = label_id
+        self.label_ids = label_ids
 
 
 def create_label_vocabulary(data: List[Dict]) -> Dict:
@@ -80,18 +80,18 @@ def convert_data_to_input_items(examples: List[Dict], label2idx: Dict,
         input_mask = toks["attention_mask"]
 
         if type(ex["label"]) == str:
-            label_id = label2idx[ex["label"]]
+            label_ids = label2idx[ex["label"]]
         elif type(ex["label"]) == list:
-            label_id = np.zeros(len(label2idx))
+            label_ids = np.zeros(len(label2idx))
             for label in ex["label"]:
-                label_id[label2idx[label]] = 1
+                label_ids[label2idx[label]] = 1
 
         input_items.append(
             BertInputItem(text=ex["text"],
                           input_ids=input_ids,
                           input_mask=input_mask,
                           segment_ids=segment_ids,
-                          label_id=label_id))
+                          label_ids=label_ids))
     return input_items
 
 
@@ -110,11 +110,10 @@ def get_data_loader(input_items: List[BertInputItem], batch_size: int, shuffle: 
     all_input_ids = torch.tensor([f.input_ids for f in input_items], dtype=torch.long)
     all_input_mask = torch.tensor([f.input_mask for f in input_items], dtype=torch.long)
     all_segment_ids = torch.tensor([f.segment_ids for f in input_items], dtype=torch.long)
-
-    if type(input_items[0].label_id) == int:
-        all_label_ids = torch.tensor([f.label_id for f in input_items], dtype=torch.long)
-    elif type(input_items[0].label_id) == np.ndarray:
-        all_label_ids = torch.tensor([f.label_id for f in input_items], dtype=torch.float)
+    if type(input_items[0].label_ids) == int:
+        all_label_ids = torch.tensor([f.label_ids for f in input_items], dtype=torch.long)
+    elif type(input_items[0].label_ids) == np.ndarray:
+        all_label_ids = torch.tensor([f.label_ids for f in input_items], dtype=torch.float)
 
     data = TensorDataset(all_input_ids, all_input_mask, all_segment_ids, all_label_ids)
 
@@ -143,3 +142,49 @@ def preprocess(data: List[Dict], model: str,
     bert_items = convert_data_to_input_items(data, label2idx, max_seq_length, tokenizer)
 
     return bert_items
+
+
+def preprocess_sequence_labelling(examples, label2idx, max_seq_length, tokenizer):
+    input_items = []
+    for (ex_index, ex) in enumerate(examples):
+
+        # Create a list of token ids
+        toks = tokenizer.encode_plus(ex["text"], max_length=max_seq_length, pad_to_max_length=True)
+        input_ids = toks["input_ids"]
+        segment_ids = toks["token_type_ids"]
+        input_mask = toks["attention_mask"]
+
+        tokens = tokenizer.convert_ids_to_tokens(input_ids)
+
+        if "entities" not in ex:
+            labels = [label2idx["O"]] * len(input_ids)
+        else:
+            labels = [label2idx["O"]]
+            cur_index = 0
+            for num, tok in enumerate(tokens[1:]):
+
+                if num > 0 and not tok.startswith("##"):
+                    cur_index += 1
+
+                found_entity = False
+                for entity in ex["entities"]:
+                    if cur_index >= entity[0] and cur_index <= entity[1]:
+                        labels.append(label2idx[entity[2]])
+                        found_entity = True
+                if not found_entity:
+                    labels.append(label2idx["O"])
+
+                if tok.startswith("##"):
+                    cur_index += len(tok) - 2
+                else:
+                    cur_index += len(tok)
+
+        assert len(labels) == len(input_ids)
+
+        input_items.append(
+            BertInputItem(text=ex["text"],
+                          input_ids=input_ids,
+                          input_mask=input_mask,
+                          segment_ids=segment_ids,
+                          label_ids=labels))
+    return input_items

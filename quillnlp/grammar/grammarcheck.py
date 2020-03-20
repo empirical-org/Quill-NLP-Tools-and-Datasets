@@ -1,12 +1,17 @@
 import re
 import spacy
 import pyinflect
+import torch
 
 from typing import List
 from collections import namedtuple
 
 from spacy.tokens.doc import Doc
 from spacy.tokens.token import Token
+from transformers import BertForTokenClassification, BertTokenizer
+
+from quillnlp.models.bert.train import evaluate
+from quillnlp.models.bert.preprocessing import preprocess_sequence_labelling, get_data_loader
 
 BASE_SPACY_MODEL = "en"
 
@@ -683,10 +688,10 @@ class RuleBasedGrammarChecker(object):
         return error_list
 
 
-class GrammarChecker:
+class SpaCyGrammarChecker:
     """
     A grammar checker that combines both rule-based and statistical
-    grammar error checking.
+    grammar error checking with spaCy.
     """
 
     def __init__(self, model_path: str):
@@ -726,3 +731,55 @@ class GrammarChecker:
                               )
 
         return errors
+
+
+class BertGrammarChecker:
+    """
+    A grammar checker that combines both rule-based and statistical
+    grammar error checking with BERT.
+    """
+
+    def __init__(self, model_path: str):
+        self.rule_based_checker = RuleBasedGrammarChecker()
+        self.max_seq_length = 100
+        self.tokenizer = BertTokenizer.from_pretrained("bert-base-cased")
+        self.spacy_model = spacy.load(BASE_SPACY_MODEL)
+
+        print("Loading BERT model from", model_path)
+        self.device = "cpu"
+        self.label2idx = {'O': 0, 'POSSESSIVE': 1, 'VERB': 2, 'ADV': 3, 'WOMAN': 4, 'ITS': 5, 'THEN': 6, 'CHILD': 7}
+        self.idx2label = {v:k for k,v in self.label2idx.items()}
+        model_state_dict = torch.load(model_path, map_location=lambda storage, loc: storage)
+        self.model = BertForTokenClassification.from_pretrained("bert-base-cased",
+                                                                state_dict=model_state_dict,
+                                                                num_labels=len(self.label2idx))
+        self.model.to(self.device)
+
+    def check(self, sentence: str) -> List[Error]:
+        """
+        Check a sentence for grammar errors.
+
+        Args:
+            sentence: the sentence that will be checked
+
+        Returns: a list of errors. Every error is a tuple of (token,
+                 token character offset, error type)
+
+        """
+
+        # Get rule-based errors
+        doc = self.spacy_model(sentence)
+        rule_errors = self.rule_based_checker(doc)
+
+        preprocessed_sentence = preprocess_sequence_labelling([{"text": sentence}],
+                                                              self.label2idx,
+                                                              self.max_seq_length,
+                                                              self.tokenizer)
+
+        sentence_dl = get_data_loader(preprocessed_sentence, 1, shuffle=False)
+        _, _, _, predicted_errors = evaluate(self.model, sentence_dl, self.device)
+
+        stat_errors = [self.idx2label[i] for i in set(predicted_errors[0])]
+        stat_errors = [Error("", 0, statistical_error_map[e]) for e in stat_errors if e in statistical_error_map]
+
+        return rule_errors + stat_errors

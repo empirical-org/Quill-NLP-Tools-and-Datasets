@@ -8,7 +8,7 @@ from torch.nn import Sigmoid, Softmax
 from torch.utils.data import DataLoader
 from quillnlp.models.bert.models import BertForMultiLabelSequenceClassification
 
-from transformers.optimization import AdamW, WarmupLinearSchedule
+from transformers.optimization import AdamW
 from transformers.modeling_bert import BertForSequenceClassification
 from transformers.modeling_distilbert import DistilBertForSequenceClassification
 from transformers.modeling_utils import PreTrainedModel

@@ -37,7 +37,10 @@ def test_full_replacement_function():
              ("He speaks well.", "He speak good."),
              ("He dances beautifully.", "He dance beautiful."),
              ("The women go home.", "The woman's goes home."),
-             ("He wouldn't go.", "He wouldn't goes.")
+             ("He wouldn't go.", "He wouldn't goes."),
+             ("He can't go.", "He can't goes."),
+             ("He cannot go.", "He cannot goes."),
+             ("He can not go.", "He cans not goes.")
              ]
 
     for source_text, target_text in texts:

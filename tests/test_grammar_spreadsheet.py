@@ -1,5 +1,7 @@
 import requests
 
+from private import BING_KEY, BING_URL
+
 url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ7bVBj7fLFA6e-zpZ-kGY7HkJhcDDapmUe5vpLLyqYo4LOGWy86auJIOXQCsxFQWOjXe7X4q6F4cmM/pub?gid=688772490&single=true&output=tsv"
 
 error_equivalence = {

@@ -1,8 +1,12 @@
 import csv
+import requests
+import time
+
+from private import BING_URL, BING_KEY
 
 from collections import Counter
 
-from quillnlp.grammar.grammarcheck import GrammarChecker
+from quillnlp.grammar.grammarcheck import SpaCyGrammarChecker, BertGrammarChecker
 
 
 error_map = {"WOMAN": "Woman versus women",
@@ -16,12 +20,43 @@ error_map = {"WOMAN": "Woman versus women",
              "Irregular past tense verbs": "Verb tense", # from the manual labelling
              "Those versus these": "This versus that",
              "Adverbs": "Adverbs versus adjectives",
-             "Adjectives versus adverbs": "Adverbs versus adjectives"
+             "Adjectives versus adverbs": "Adverbs versus adjectives",
+             "Subject-verb agreement (rule)": "Subject-verb agreement",
+             "Subject-verb agreement (stats)": "Subject-verb agreement",
              }
 
 
+def correct_sentence_with_bing(sentence):
+    data = {'text': sentence}
+
+    params = {
+        'mkt': 'en-us',
+        'mode': 'proof'
+    }
+
+    headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Ocp-Apim-Subscription-Key': BING_KEY,
+    }
+
+    response = requests.post(BING_URL, headers=headers, params=params, data=data).json()
+    print(response)
+
+    corrections = []
+    for error in response["flaggedTokens"]:
+        if len(error["suggestions"]) > 0:
+            corrections.append((error["offset"], error["token"], error["suggestions"][0]["suggestion"]))
+
+    corrections.sort(reverse=True)
+
+    for offset, token, replacement in corrections:
+        sentence = sentence[:offset] + replacement + sentence[offset+len(token):]
+
+    return sentence
+
+
 def test_fragment():
-    checker = GrammarChecker("models/spacy_grammar")
+    checker = SpaCyGrammarChecker("models/spacy_grammar")
 
     text = "Mix the sugar and butter. Then, the flour slowly."
     errors = checker.check(text)
@@ -31,7 +66,7 @@ def test_fragment():
 
 
 def test_this_vs_that():
-    checker = GrammarChecker("models/spacy_grammar")
+    checker = SpaCyGrammarChecker("models/spacy_grammar")
 
     text = "This man over there is my brother."
     errors = checker.check(text)
@@ -41,7 +76,7 @@ def test_this_vs_that():
 
 
 def test_this_vs_that2():
-    checker = GrammarChecker("models/spacy_grammar")
+    checker = SpaCyGrammarChecker("models/spacy_grammar")
 
     text = "This library over there is very popular."
     errors = checker.check(text)
@@ -54,7 +89,7 @@ def test_question_mark():
 
     # This sentence should not have a question mark error
     text = "The Sister's are still on the run from Santiago, as are we."
-    checker = GrammarChecker("models/spacy_grammar")
+    checker = SpaCyGrammarChecker("models/spacy_grammar")
 
     errors = checker.check(text)
 
@@ -62,7 +97,7 @@ def test_question_mark():
 
 
 def test_woman_vs_women():
-    checker = GrammarChecker("models/spacy_grammar")
+    checker = SpaCyGrammarChecker("models/spacy_grammar")
 
     text = "These womans were hilarious."
     errors = checker.check(text)
@@ -72,7 +107,7 @@ def test_woman_vs_women():
 
 
 def test_possessive_pronouns():
-    checker = GrammarChecker("models/spacy_grammar")
+    checker = SpaCyGrammarChecker("models/spacy_grammar")
 
     text = "I danced at Leslie's and them party."
     errors = checker.check(text)
@@ -82,7 +117,7 @@ def test_possessive_pronouns():
 
 
 def test_possessive_pronouns2():
-    checker = GrammarChecker("models/spacy_grammar")
+    checker = SpaCyGrammarChecker("models/spacy_grammar")
 
     text = "I danced at Leslie's and their's party."
     errors = checker.check(text)
@@ -93,7 +128,7 @@ def test_possessive_pronouns2():
 
 def test_yesno():
 
-    checker = GrammarChecker("models/spacy_grammar")
+    checker = SpaCyGrammarChecker("models/spacy_grammar")
 
     sentences = [("No that's not a problem.", 1),
                  ("That's no problem.", 0)]
@@ -103,9 +138,10 @@ def test_yesno():
         assert len(found_errors) == num_errors
 
 
-def test_grammar():
+def test_grammar_quill():
 
-    checker = GrammarChecker("models/grammar10Mb")
+    #checker = SpaCyGrammarChecker("models/grammar20M")
+    checker = BertGrammarChecker("/tmp/model.bin")
 
     # Read error input
     data = []
@@ -121,6 +157,7 @@ def test_grammar():
     with open("results.tsv", "w") as o:
         for item in data:
             sentence = item[0]
+            #sentence = correct_sentence_with_bing(sentence)
             errors = set([error_map.get(e.strip(), e.strip()) for e in item[1:] if len(e.strip()) > 0])
             error_counts.update(errors)
 
@@ -144,6 +181,7 @@ def test_grammar():
                     results[found_error]["fp"] += 1
 
             o.write("\t".join([sentence, ",".join(errors), ",".join(found_error_types)]) + "\n")
+            #time.sleep(2)
 
     error_types = sorted(list(results.keys()))
     for error_type in error_types:
@@ -161,7 +199,7 @@ def test_grammar():
 
 def test_grammar2():
 
-    checker = GrammarChecker("models/spacy_grammar")
+    checker = SpaCyGrammarChecker("models/spacy_grammar")
 
     # Read error input
     data = []
@@ -180,7 +218,7 @@ def test_grammar2():
 
 def test_grammar_pairs():
     #checker = GrammarChecker("models/spacy_grammar")
-    checker = GrammarChecker("models/grammar10Mb")
+    checker = SpaCyGrammarChecker("models/grammar20M")
 
     # Read error input
     data = []
