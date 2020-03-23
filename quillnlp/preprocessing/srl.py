@@ -271,6 +271,6 @@ def process_srl_results(srl_results, num_clusters=10):
             for item in verb:
                 output_list.append(item)
 
-        results.append(sentence_info)
+        results.append(output_list)
 
     return results

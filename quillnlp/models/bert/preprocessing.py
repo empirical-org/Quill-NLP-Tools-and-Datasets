@@ -112,8 +112,8 @@ def get_data_loader(input_items: List[BertInputItem], batch_size: int, shuffle: 
     all_segment_ids = torch.tensor([f.segment_ids for f in input_items], dtype=torch.long)
     if type(input_items[0].label_ids) == int:
         all_label_ids = torch.tensor([f.label_ids for f in input_items], dtype=torch.long)
-    elif type(input_items[0].label_ids) == np.ndarray:
-        all_label_ids = torch.tensor([f.label_ids for f in input_items], dtype=torch.float)
+    else:
+        all_label_ids = torch.tensor([f.label_ids for f in input_items], dtype=torch.long)
 
     data = TensorDataset(all_input_ids, all_input_mask, all_segment_ids, all_label_ids)
 
