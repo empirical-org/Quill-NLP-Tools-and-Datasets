@@ -74,7 +74,7 @@ def convert_data_to_input_items(examples: List[Dict], label2idx: Dict,
     for (ex_index, ex) in enumerate(examples):
 
         # Create a list of token ids
-        toks = tokenizer.encode(ex["text"], max_length=max_seq_length, pad_to_max_length=True)
+        toks = tokenizer.encode_plus(ex["text"], max_length=max_seq_length, pad_to_max_length=True)
         input_ids = toks["input_ids"]
         segment_ids = toks["token_type_ids"]
         input_mask = toks["attention_mask"]
@@ -113,7 +113,7 @@ def get_data_loader(input_items: List[BertInputItem], batch_size: int, shuffle: 
     if type(input_items[0].label_ids) == int:
         all_label_ids = torch.tensor([f.label_ids for f in input_items], dtype=torch.long)
     else:
-        all_label_ids = torch.tensor([f.label_ids for f in input_items], dtype=torch.long)
+        all_label_ids = torch.tensor([f.label_ids for f in input_items], dtype=torch.float)
 
     data = TensorDataset(all_input_ids, all_input_mask, all_segment_ids, all_label_ids)
 
