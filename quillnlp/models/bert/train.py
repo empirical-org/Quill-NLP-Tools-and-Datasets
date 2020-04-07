@@ -69,8 +69,9 @@ def train(model: PreTrainedModel, train_dataloader: DataLoader, dev_dataloader: 
         for step, batch in enumerate(tqdm(train_dataloader, desc="Training iteration")):
             batch = tuple(t.to(device) for t in batch)
             input_ids, input_mask, segment_ids, label_ids = batch
+
             if type(model) == BertForSequenceClassification or type(model) == BertForMultiLabelSequenceClassification or type(model) == BertForTokenClassification:
-                outputs = model(input_ids, labels=label_ids)
+                outputs = model(input_ids, attention_mask=input_mask, token_type_ids=segment_ids, labels=label_ids)
             elif type(model) == DistilBertForSequenceClassification:
                 outputs = model(input_ids, attention_mask=input_mask, labels=label_ids)
             loss = outputs[0]
