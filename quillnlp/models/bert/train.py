@@ -24,7 +24,7 @@ def train(model: PreTrainedModel, train_dataloader: DataLoader, dev_dataloader: 
     Args:
         model: the model that will be trained
         train_dataloader: a DataLoader with training data
-        dev_dataloader: a DataLoader with development data (for early stopping)
+        dev_dataloader: a DataLoader with development data (for early stoopping)
         batch_size: the batch size for training
         gradient_accumulation_steps: the number of steps that gradients will be accumulated
         device: the device where training will take place ("cpu" or "cuda")
