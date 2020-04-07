@@ -7,9 +7,9 @@
 import ndjson
 import random
 
-TRAINING_FILES = ["/home/yves/projects/Quill-NLP-Tools-and-Datasets/notw.ndjson",
-                  "/home/yves/projects/Quill-NLP-Tools-and-Datasets/subtitles.ndjson",
-                  "/home/yves/projects/Quill-NLP-Tools-and-Datasets/wiki_errors.ndjson"]
+TRAINING_FILES = ["/home/yves/projects/Quill-NLP-Tools-and-Datasets/notw.ndjson"]
+#                  "/home/yves/projects/Quill-NLP-Tools-and-Datasets/subtitles.ndjson",
+#                  "/home/yves/projects/Quill-NLP-Tools-and-Datasets/wiki_errors.ndjson"]
 MAX_SEQ_LENGTH = 100
 TRAIN_SIZE = 2000000
 TEST_SIZE = 10000
@@ -190,7 +190,7 @@ from transformers import BertModel
 model = BertForTokenClassification.from_pretrained("bert-base-cased", num_labels=len(label2idx))
 model.to("cuda")
 
-#train(model, train_dl, dev_dl, BATCH_SIZE, 32/BATCH_SIZE, device="cuda", num_train_epochs=10, patience=2)
+train(model, train_dl, dev_dl, BATCH_SIZE, 32/BATCH_SIZE, device="cuda", num_train_epochs=10, patience=2)
 
 
 # In[8]:
