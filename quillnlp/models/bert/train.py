@@ -17,6 +17,7 @@ from transformers.modeling_utils import PreTrainedModel
 def train(model: PreTrainedModel, train_dataloader: DataLoader, dev_dataloader: DataLoader,
           batch_size: int, gradient_accumulation_steps: int, device, num_train_epochs: int=20,
           warmup_proportion: float=0.1, learning_rate: float=1e-5, patience: int=5,
+          eval_frequency: int=None,
           output_dir: str="/tmp/", model_file_name:str="model.bin") -> str:
     """
     Trains a BERT Model on a set of training data, tuning it on a set of development data
@@ -47,7 +48,10 @@ def train(model: PreTrainedModel, train_dataloader: DataLoader, dev_dataloader: 
 
     output_model_file = os.path.join(output_dir, model_file_name)
 
-    num_train_steps = int(len(train_dataloader.dataset) / batch_size / gradient_accumulation_steps * num_train_epochs)
+    num_train_steps_per_epoch = int(len(train_dataloader.dataset) / batch_size / gradient_accumulation_steps)
+    eval_frequency = num_train_steps_per_epoch if eval_frequency is None else eval_frequency
+
+    num_train_steps = num_train_steps_per_epoch * num_train_epochs
     max_grad_norm = 5
 
     param_optimizer = list(model.named_parameters())
@@ -61,7 +65,7 @@ def train(model: PreTrainedModel, train_dataloader: DataLoader, dev_dataloader: 
 
     global_step = 0
     loss_history = []
-    best_epoch = 0
+    stop_training = False
     for epoch in trange(int(num_train_epochs), desc="Epoch"):
 
         model.train()
@@ -91,21 +95,25 @@ def train(model: PreTrainedModel, train_dataloader: DataLoader, dev_dataloader: 
                 optimizer.zero_grad()
                 global_step += 1
 
-        dev_loss, _, _, _ = evaluate(model, dev_dataloader, device)
+                if global_step % eval_frequency == 0:
 
-        print("Loss history:", loss_history)
-        print("Dev loss:", dev_loss)
+                    dev_loss, _, _, _ = evaluate(model, dev_dataloader, device)
+                    print(f"Epoch {epoch} step {global_step}: dev loss = {dev_loss}")
 
-        if len(loss_history) == 0 or dev_loss < min(loss_history):
-            model_to_save = model.module if hasattr(model, 'module') else model
-            torch.save(model_to_save.state_dict(), output_model_file)
-            best_epoch = epoch
+                    if len(loss_history) == 0 or dev_loss < min(loss_history):
+                        model_to_save = model.module if hasattr(model, 'module') else model
+                        torch.save(model_to_save.state_dict(), output_model_file)
+                        print(f"Lower loss => saving model to {output_model_file}.")
 
-        if epoch - best_epoch >= patience:
-            print("No improvement on development set. Finish training.")
+                    if len(loss_history) >= patience and dev_loss > max(loss_history[-patience:]):
+                        print("No improvement on development set. Finish training.")
+                        stop_training = True
+                        break
+
+                    loss_history.append(dev_loss)
+
+        if stop_training:
             break
-
-        loss_history.append(dev_loss)
 
     return output_model_file
 
