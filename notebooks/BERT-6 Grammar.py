@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
+from quillnlp.models.bert.preprocessing import NLPTask, convert_data_to_input_items, get_data_loader
 
 import ndjson
 import random
@@ -31,9 +30,6 @@ data = [{"text": item.get("synth_sentence", item.get("orig_sentence")),
          "entities": item.get("entities", [])} for item in data]
 
 
-# In[2]:
-
-
 label2idx = {"O": 0}
 
 for sentence in data:
@@ -45,124 +41,14 @@ for sentence in data:
 print(label2idx)
         
 
-
-# In[3]:
-
-
-from typing import List
-
-class BertInputItem(object):
-    """ A BertInputItem contains all the information that is needed to finetune
-    a Bert model.
-
-    Attributes:
-        input_ids: the ids of the input tokens
-        input_mask: a list of booleans that indicates what tokens should be masked
-        segment_ids: a list of segment ids for the tokens
-        label_id: a label id or a list of label ids for the input
-    """
-
-    def __init__(self, text: str,
-                 input_ids: List[int],
-                 input_mask: List[int],
-                 segment_ids: List[int],
-                 label_ids: List[int]):
-        self.text = text
-        self.input_ids = input_ids
-        self.input_mask = input_mask
-        self.segment_ids = segment_ids
-        self.label_ids = label_ids
-        
-
-def preprocess_sequence_labelling(examples, label2idx, max_seq_length, tokenizer):
-    input_items = []
-    for (ex_index, ex) in enumerate(examples):
-
-        # Create a list of token ids
-        toks = tokenizer.encode_plus(ex["text"], max_length=max_seq_length, pad_to_max_length=True)
-        input_ids = toks["input_ids"]
-        segment_ids = toks["token_type_ids"]
-        input_mask = toks["attention_mask"]
-        
-        tokens = tokenizer.convert_ids_to_tokens(input_ids)
-        
-        if "entities" not in ex:
-            labels = [label2idx["O"]] * len(input_ids)
-        else:
-            labels = [label2idx["O"]]
-            cur_index = 0
-            for num, tok in enumerate(tokens[1:]):
-
-                if num > 0 and not tok.startswith("##"):
-                    cur_index += 1
-
-                found_entity = False
-                for entity in ex["entities"]:
-                    if cur_index >= entity[0] and cur_index <= entity[1]:
-                        labels.append(label2idx[entity[2]])
-                        found_entity = True
-                if not found_entity:
-                    labels.append(label2idx["O"])
-
-
-                if tok.startswith("##"):
-                    cur_index += len(tok)-2
-                else:
-                    cur_index += len(tok)
-        
-        assert len(labels) == len(input_ids)
-        
-        input_items.append(
-            BertInputItem(text=ex["text"],
-                          input_ids=input_ids,
-                          input_mask=input_mask,
-                          segment_ids=segment_ids,
-                          label_ids=labels))
-    return input_items
-
-
-# In[4]:
-
-
 from transformers import BertForTokenClassification
 from transformers import BertTokenizer
 
 tokenizer = BertTokenizer.from_pretrained("bert-base-cased")
-input_items = preprocess_sequence_labelling(data, label2idx, MAX_SEQ_LENGTH, tokenizer)
+input_items = convert_data_to_input_items(data, label2idx, MAX_SEQ_LENGTH, tokenizer, NLPTask.SEQUENCE_LABELING)
 
 
 # In[5]:
-
-
-import torch
-import numpy as np
-from torch.utils.data import TensorDataset, DataLoader
-
-def get_data_loader(input_items: List[BertInputItem], batch_size: int, shuffle: bool=True) -> DataLoader:
-    """
-    Constructs a DataLoader for a list of BERT input items.
-
-    Args:
-        input_items: a list of BERT input items
-        batch_size: the batch size
-        shuffle: indicates whether the data should be shuffled or not.
-
-    Returns: a DataLoader for the input items
-
-    """
-    all_input_ids = torch.tensor([f.input_ids for f in input_items], dtype=torch.long)
-    all_input_mask = torch.tensor([f.input_mask for f in input_items], dtype=torch.long)
-    all_segment_ids = torch.tensor([f.segment_ids for f in input_items], dtype=torch.long)
-    all_label_ids = torch.tensor([f.label_ids for f in input_items], dtype=torch.long)
-    
-    data = TensorDataset(all_input_ids, all_input_mask, all_segment_ids, all_label_ids)
-
-    dataloader = DataLoader(data, shuffle=shuffle, batch_size=batch_size)
-
-    return dataloader
-
-
-# In[6]:
 
 
 import random
@@ -173,9 +59,9 @@ test_items = input_items[-TEST_SIZE:]
 valid_items = input_items[-2*TEST_SIZE:-TEST_SIZE]
 train_items = input_items[:-2*TEST_SIZE]
 
-test_dl = get_data_loader(test_items, BATCH_SIZE, shuffle=False)
-dev_dl = get_data_loader(valid_items, BATCH_SIZE, shuffle=False)
-train_dl = get_data_loader(train_items, BATCH_SIZE, shuffle=True)
+test_dl = get_data_loader(test_items, BATCH_SIZE, task=NLPTask.SEQUENCE_LABELING, shuffle=False)
+dev_dl = get_data_loader(valid_items, BATCH_SIZE, task=NLPTask.SEQUENCE_LABELING, shuffle=False)
+train_dl = get_data_loader(train_items, BATCH_SIZE, task=NLPTask.SEQUENCE_LABELING, shuffle=True)
 
 
 # In[7]:
@@ -190,7 +76,8 @@ from transformers import BertModel
 model = BertForTokenClassification.from_pretrained("bert-base-cased", num_labels=len(label2idx))
 model.to("cuda")
 
-train(model, train_dl, dev_dl, BATCH_SIZE, 32/BATCH_SIZE, device="cuda", num_train_epochs=10, patience=2)
+train(model, train_dl, dev_dl, BATCH_SIZE, 32/BATCH_SIZE, device="cuda",
+      num_train_epochs=10, patience=2, eval_frequency=5000)
 
 
 # In[8]:

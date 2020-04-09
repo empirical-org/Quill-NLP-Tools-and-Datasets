@@ -140,8 +140,8 @@ def test_yesno():
 
 def test_grammar_quill():
 
-    checker = SpaCyGrammarChecker("models/grammar20M")
-    #checker = BertGrammarChecker("/tmp/model.bin")
+    checker = SpaCyGrammarChecker("models/spacy_grammar20M")
+    #checker = BertGrammarChecker("bert_grammar500k.bin")
 
     # Read error input
     with open("tests/data/grammar_bing.ndjson") as i:
@@ -214,7 +214,8 @@ def test_grammar2():
 
 def test_grammar_pairs():
     #checker = GrammarChecker("models/spacy_grammar")
-    checker = SpaCyGrammarChecker("models/grammar20M")
+    #checker = SpaCyGrammarChecker("models/grammar20M")
+    checker = BertGrammarChecker("bert_grammar2M.bin")
 
     # Read error input
     data = []
@@ -223,6 +224,35 @@ def test_grammar_pairs():
             line = line.strip().split("\t")
             if len(line) == 3:
                 data.append(line)
+    results = {}
+
+    for (error_type, correct_sentence, incorrect_sentence) in data:
+        if error_type not in results:
+            results[error_type] = {"cc": 0, "ci": 0, "ic": 0, "ii": 0}
+        errors = checker.check(correct_sentence)
+        errors = [e for e in errors if e.type.startswith(error_type)]
+        print(correct_sentence)
+        print(errors)
+        if len(errors) == 0:
+            results[error_type]["cc"] += 1
+        else:
+            results[error_type]["ci"] += 1
+        errors = checker.check(incorrect_sentence)
+        errors = [e for e in errors if e.type.startswith(error_type)]
+        print(incorrect_sentence)
+        print(errors)
+        if len(errors) == 0:
+            results[error_type]["ic"] += 1
+        else:
+            results[error_type]["ii"] += 1
+
+    for error_type in results:
+        correct = results[error_type]["cc"] + results[error_type]["ii"]
+        incorrect = results[error_type]["ic"] + results[error_type]["ci"]
+        precision = results[error_type]["cc"]/ (results[error_type]["cc"] + results[error_type]["ic"])
+        recall = results[error_type]["cc"] / (results[error_type]["cc"] + results[error_type]["ci"])
+        fscore = 2*precision*recall/(precision+recall)
+        print(error_type, precision, recall, fscore)
 
 
 def evaluate_bing_corrections(data):
@@ -252,7 +282,8 @@ def test_bing():
     # Evaluate Bing corrections
     evaluate_bing_corrections(data)
 
-    checker = SpaCyGrammarChecker("models/grammar20M")
+    checker = SpaCyGrammarChecker("models/spacy_grammar20M")
+    #checker = BertGrammarChecker("bert_grammar500k.bin")
 
     # Evaluate cumulative corrections
     error_counts = Counter()

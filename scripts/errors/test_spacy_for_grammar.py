@@ -12,6 +12,8 @@ from spacy.gold import biluo_tags_from_offsets
 from sklearn.metrics import f1_score, classification_report
 
 
+# TODO: Woman/Women also capitalized
+
 
 nlp = spacy.load("en")
 
@@ -24,11 +26,11 @@ def get_data_from_file(f, num):
     return lines[:num]
 
 
-TEST_SIZE = 2000
-DEV_SIZE = 2000
+TEST_SIZE = 5000
+DEV_SIZE = 5000
 ERROR_RATIO = 0.5
 
-files = ["subtitles.json", "wikipedia.json"]
+files = ["subtitles.json", "wikipedia_100000.json"]
 
 VERB_AGREEMENT_ERROR_TYPE = "VERB"
 WOMAN_WOMEN_ERROR_TYPE = "WOMAN"
@@ -64,7 +66,7 @@ for f in files:
         sentences = json.load(i)
 
     for error_type in sentences:
-        for sentence in tqdm(sentences[error_type][:50], desc=error_type):
+        for sentence in tqdm(sentences[error_type][:50000], desc=error_type):
             if random.random() < ERROR_RATIO:
                 doc = nlp(sentence)
                 sentence_with_error, entities = replacement_functions[error_type](doc)
@@ -87,7 +89,7 @@ TEST_DATA = train_data[-TEST_SIZE:]
 DEV_DATA = train_data[-(TEST_SIZE + DEV_SIZE):-TEST_SIZE]
 TRAIN_DATA = train_data[:len(train_data) - TEST_SIZE - DEV_SIZE]
 
-train_set = set([x[0] for x in TRAIN_DATA])
+train_set = set([x[0] for x in train_data])
 test_set = set([x[0] for x in TEST_DATA])
 intersection = train_set & test_set
 if len(intersection) > 0:

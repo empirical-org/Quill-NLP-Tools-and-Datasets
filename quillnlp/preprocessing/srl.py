@@ -43,7 +43,8 @@ def perform_srl(responses, prompt=None):
     """
 
     predictor = Predictor.from_path("https://s3-us-west-2.amazonaws.com/allennlp/models/srl-model-2018.05.25.tar.gz")
-
+    #predictor = Predictor.from_path("https://s3-us-west-2.amazonaws.com/allennlp/models/openie-model.2020.03.26.tar.gz")
+    #predictor = Predictor.from_path("https://s3-us-west-2.amazonaws.com/allennlp/models/bert-base-srl-2020.02.10.tar.gz")
     if prompt:
         sentences = [{"sentence": prompt + " " + response} for response in responses]
     else:

@@ -26,6 +26,10 @@ def create_corpus(filename, output_file, error_ratio):
 
     with open(filename) as i:
         for line in tqdm(i, total=num_lines):
+
+            if random.random() > 0.1:
+                continue
+
             sentence = line.strip()
             if "=" in line:  # Ignore noisy Wikipedia lines
                 continue

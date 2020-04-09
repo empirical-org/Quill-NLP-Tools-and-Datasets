@@ -96,10 +96,10 @@ def convert_data_to_input_items(examples: List[Dict], label2idx: Dict,
                 label_ids[label2idx[label]] = 1
         elif task == NLPTask.SEQUENCE_LABELING:
             if "entities" not in ex:
-                labels = [label2idx["O"]] * len(input_ids)
+                label_ids = [label2idx["O"]] * len(input_ids)
             else:
                 tokens = tokenizer.convert_ids_to_tokens(input_ids)
-                labels = [label2idx["O"]]
+                label_ids = [label2idx["O"]]
                 cur_index = 0
                 for num, tok in enumerate(tokens[1:]):
 
@@ -109,17 +109,17 @@ def convert_data_to_input_items(examples: List[Dict], label2idx: Dict,
                     found_entity = False
                     for entity in ex["entities"]:
                         if cur_index >= entity[0] and cur_index <= entity[1]:
-                            labels.append(label2idx[entity[2]])
+                            label_ids.append(label2idx[entity[2]])
                             found_entity = True
                     if not found_entity:
-                        labels.append(label2idx["O"])
+                        label_ids.append(label2idx["O"])
 
                     if tok.startswith("##"):
                         cur_index += len(tok) - 2
                     else:
                         cur_index += len(tok)
 
-            assert len(labels) == len(input_ids)
+            assert len(label_ids) == len(input_ids)
         else:
             raise ValueError(f"Unknown NLP Task {task}")
 
@@ -132,7 +132,8 @@ def convert_data_to_input_items(examples: List[Dict], label2idx: Dict,
     return input_items
 
 
-def get_data_loader(input_items: List[BertInputItem], batch_size: int, shuffle: bool=True) -> DataLoader:
+def get_data_loader(input_items: List[BertInputItem], batch_size: int,
+                    task: NLPTask, shuffle: bool=True) -> DataLoader:
     """
     Constructs a DataLoader for a list of BERT input items.
 
@@ -147,10 +148,12 @@ def get_data_loader(input_items: List[BertInputItem], batch_size: int, shuffle: 
     all_input_ids = torch.tensor([f.input_ids for f in input_items], dtype=torch.long)
     all_input_mask = torch.tensor([f.input_mask for f in input_items], dtype=torch.long)
     all_segment_ids = torch.tensor([f.segment_ids for f in input_items], dtype=torch.long)
-    if type(input_items[0].label_ids) == int:
+    if task == NLPTask.SINGLE_LABEL_CLASSIFICATION or task == NLPTask.SEQUENCE_LABELING:
         all_label_ids = torch.tensor([f.label_ids for f in input_items], dtype=torch.long)
-    else:
+    elif task == NLPTask.MULTI_LABEL_CLASSIFICATION:
         all_label_ids = torch.tensor([f.label_ids for f in input_items], dtype=torch.float)
+    else:
+        raise ValueError("No data loader for NLPTask {task}")
 
     data = TensorDataset(all_input_ids, all_input_mask, all_segment_ids, all_label_ids)
 
