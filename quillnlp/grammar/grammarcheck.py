@@ -12,19 +12,19 @@ from transformers import BertForTokenClassification, BertTokenizer
 
 from quillnlp.models.bert.train import evaluate
 from quillnlp.models.bert.preprocessing import convert_data_to_input_items, get_data_loader
-from quillnlp.grammar.constants import *
+from constants import *
 
 BASE_SPACY_MODEL = "en"
 
-Word.set_extension("grammar_errors", default=[])
+Token.set_extension("grammar_errors", default=[])
 
-statistical_error_map = {"WOMAN": GrammarError.WOMAN_WOMEN,
-                         "ITS": GrammarError.ITS_IT_S,
-                         "THEN": GrammarError.THAN_THEN,
-                         "POSSESSIVE": GrammarError.PLURAL_POSSESSIVE,
-                         "CHILD": GrammarError.CHILD_CHILDREN,
-                         "ADV": GrammarError.ADVERB,
-                         "VERB": GrammarError.SUBJECT_VERB_AGREEMENT}
+statistical_error_map = {"WOMAN": GrammarError.WOMAN_WOMEN.value,
+                         "ITS": GrammarError.ITS_IT_S.value,
+                         "THEN": GrammarError.THAN_THEN.value,
+                         "POSSESSIVE": GrammarError.PLURAL_POSSESSIVE.value,
+                         "CHILD": GrammarError.CHILD_CHILDREN.value,
+                         "ADV": GrammarError.ADVERB.value,
+                         "VERB": GrammarError.SUBJECT_VERB_AGREEMENT.value}
 
 Error = namedtuple("Error", ["text", "index", "type"])
 
@@ -33,10 +33,10 @@ Error = namedtuple("Error", ["text", "index", "type"])
 
 
 def is_subject(token):
-    if token.dep_.startswith(Dependency.SUBJECT):
+    if token.dep_.startswith(Dependency.SUBJECT.value):
         return True
-    elif token.dep_ == Dependency.CONJUNCTION and \
-            token.head.dep_.startswith(Dependency.SUBJECT):
+    elif token.dep_ == Dependency.CONJUNCTION.value and \
+            token.head.dep_.startswith(Dependency.SUBJECT.value):
         return True
     else:
         return False
@@ -65,18 +65,18 @@ class RuleBasedPluralVsPossessiveCheck(RuleBasedGrammarCheck):
     a plural ("cousins")
     """
 
-    name = GrammarError.PLURAL_POSSESSIVE
+    name = GrammarError.PLURAL_POSSESSIVE.value
 
     def check(self, doc: Doc) -> List[Error]:
         # TODO: this does not treat cases like "it's my cousin's" correctly.
         errors = []
         for i in range(0, len(doc) - 1):
-            if doc[i].text.lower() in TokenSet.POSSESSIVE_S and \
-                    (doc[i].tag_ == Tag.POSSESSIVE or
-                     doc[i].pos_ == POS.PARTICIPLE) and \
-                    (doc[i + 1].pos_ not in [POS.NOUN, POS.COORD_CONJ]):
+            if doc[i].text.lower() in TokenSet.POSSESSIVE_S.value and \
+                    (doc[i].tag_ == Tag.POSSESSIVE.value or
+                     doc[i].pos_ == POS.PARTICIPLE.value) and \
+                    (doc[i + 1].pos_ not in [POS.NOUN.value, POS.COORD_CONJ.value]):
                 errors.append(Error(doc[i].text, doc[i].idx, self.name))
-            elif doc[i].tag_ == Tag.PLURAL_NOUN and doc[i+1].pos_ == POS.NOUN:
+            elif doc[i].tag_ == Tag.PLURAL_NOUN.value and doc[i+1].pos_ == POS.NOUN.value:
                 errors.append(Error(doc[i].text, doc[i].idx, self.name))
 
         return errors
@@ -87,28 +87,28 @@ class RuleBasedQuestionMarkCheck(RuleBasedGrammarCheck):
     Identifies questions that do not have a question mark.
     """
 
-    name = GrammarError.QUESTION_MARK
+    name = GrammarError.QUESTION_MARK.value
 
     def check(self, doc: Doc) -> List[Error]:
         # TODO: should also catch "Is he going to dance tonight." with AUX
         errors = []
-        if doc[-1].text != Word.QUESTION_MARK:
+        if doc[-1].text != Word.QUESTION_MARK.value:
             # Cases like: When will she come home?
             if doc[0].tag_ in QUESTION_WORD_TAGS:
                 errors.append(Error(doc[-1].text, doc[-1].idx, self.name))
             # Cases like: Will he come home?
-            elif doc[0].pos_ == POS.VERB and doc[0].dep_ == Dependency.AUX:
+            elif doc[0].pos_ == POS.VERB.value and doc[0].dep_ == Dependency.AUX.value:
                 errors.append(Error(doc[-1].text, doc[-1].idx, self.name))
             # Cases like: Is he dead?
-            elif doc[0].pos_ == POS.AUX and doc[0].dep_ == Dependency.ROOT:
+            elif doc[0].pos_ == POS.AUX.value and doc[0].dep_ == Dependency.ROOT.value:
                 errors.append(Error(doc[-1].text, doc[-1].idx, self.name))
             # Cases like: Is Laura playing softball tomorrow?
-            elif doc[0].pos_ == POS.AUX and doc[0].dep_ == Dependency.AUX:
+            elif doc[0].pos_ == POS.AUX.value and doc[0].dep_ == Dependency.AUX.value:
                 errors.append(Error(doc[-1].text, doc[-1].idx, self.name))
             # Other cases where the subject follows its head
             else:
                 for token in doc:
-                    if token.dep_.startswith(Dependency.SUBJECT) and \
+                    if token.dep_.startswith(Dependency.SUBJECT.value) and \
                             token.i > token.head.i:
                         errors.append(Error(doc[-1].text,
                                             doc[-1].idx,
@@ -116,7 +116,7 @@ class RuleBasedQuestionMarkCheck(RuleBasedGrammarCheck):
                         break
                     # as soon as we meet a subject before we meet a verb,
                     # stop looking
-                    elif token.dep_.startswith(Dependency.SUBJECT) and \
+                    elif token.dep_.startswith(Dependency.SUBJECT.value) and \
                             token.i < token.head.i:
                         break
 
@@ -129,17 +129,17 @@ class RuleBasedArticleCheck(RuleBasedGrammarCheck):
     "an" is followed by a consonant.
     """
 
-    name = GrammarError.ARTICLE
+    name = GrammarError.ARTICLE.value
 
     def check(self, doc: Doc) -> List[Error]:
         errors = []
         for token in doc[:-1]:
-            if token.pos_ == POS.DETERMINER and \
-                    token.text.lower() == Word.INDEF_ARTICLE_BEFORE_CONSONANT \
+            if token.pos_ == POS.DETERMINER.value and \
+                    token.text.lower() == Word.INDEF_ARTICLE_BEFORE_CONSONANT.value \
                     and self._starts_with_vowel(doc[token.i + 1].text):
                 errors.append(Error(token.text, token.idx, self.name))
-            elif token.pos_ == POS.DETERMINER and \
-                    token.text.lower() == Word.INDEF_ARTICLE_BEFORE_VOWEL \
+            elif token.pos_ == POS.DETERMINER.value and \
+                    token.text.lower() == Word.INDEF_ARTICLE_BEFORE_VOWEL.value \
                     and not self._starts_with_vowel(doc[token.i + 1].text):
                 errors.append(Error(token.text, token.idx, self.name))
         return errors
@@ -156,7 +156,7 @@ class RuleBasedThisVsThatCheck(RuleBasedGrammarCheck):
     Identifies errors like "this/these X there" or "that/those X here".
     """
 
-    name = GrammarError.THIS_THAT
+    name = GrammarError.THIS_THAT.value
 
     def check(self, doc: Doc) -> List[Error]:
         # It's not straightforward to rewrite this using spaCy's noun chunks
@@ -165,28 +165,28 @@ class RuleBasedThisVsThatCheck(RuleBasedGrammarCheck):
         errors = []
         current_noun_phrase = []
         for token in doc:
-            if token.text.lower() in TokenSet.DEMONSTRATIVES and \
-                    token.pos_ == POS.DETERMINER:
+            if token.text.lower() in TokenSet.DEMONSTRATIVES.value and \
+                    token.pos_ == POS.DETERMINER.value:
                 current_noun_phrase = [token]
             elif token.pos_ in POSSIBLE_POS_IN_NOUN_PHRASE:
                 current_noun_phrase.append(token)
-                if token.text.lower() == Word.HERE and \
-                        current_noun_phrase[0].text.lower() == Word.THAT:
+                if token.text.lower() == Word.HERE.value and \
+                        current_noun_phrase[0].text.lower() == Word.THAT.value:
                     errors.append(Error(current_noun_phrase[0].text,
                                         current_noun_phrase[0].idx,
                                         self.name))
-                elif token.text.lower() == Word.HERE and \
-                        current_noun_phrase[0].text.lower() == Word.THOSE:
+                elif token.text.lower() == Word.HERE.value and \
+                        current_noun_phrase[0].text.lower() == Word.THOSE.value:
                     errors.append(Error(current_noun_phrase[0].text,
                                         current_noun_phrase[0].idx,
                                         self.name))
-                elif token.text.lower() == Word.THERE and \
-                        current_noun_phrase[0].text.lower() == Word.THIS:
+                elif token.text.lower() == Word.THERE.value and \
+                        current_noun_phrase[0].text.lower() == Word.THIS.value:
                     errors.append(Error(current_noun_phrase[0].text,
                                         current_noun_phrase[0].idx,
                                         self.name))
-                elif token.text.lower() == Word.THERE and \
-                        current_noun_phrase[0].text.lower() == Word.THESE:
+                elif token.text.lower() == Word.THERE.value and \
+                        current_noun_phrase[0].text.lower() == Word.THESE.value:
                     errors.append(Error(current_noun_phrase[0].text,
                                         current_noun_phrase[0].idx,
                                         self.name))
@@ -202,21 +202,21 @@ class RuleBasedSpacingCheck(RuleBasedGrammarCheck):
     or that is incorrectly preceded by a space.
     """
 
-    name = GrammarError.SPACING
+    name = GrammarError.SPACING.value
 
     def check(self, doc: Doc) -> List[Error]:
         errors = []
 
         # Punctuation not followed by a space
         for token in doc[:-1]:
-            if token.text in TokenSet.PUNCTUATION_FOLLOWED_BY_SPACE and \
+            if token.text in TokenSet.PUNCTUATION_FOLLOWED_BY_SPACE.value and \
                     token.whitespace_ == "":
                 errors.append(Error(token.text, token.idx, self.name))
 
         # Punctuation incorrectly preceded by a space
         for token in doc:
             if token.i > 0 and \
-                    token.text in TokenSet.PUNCTUATION_NOT_PRECEDED_BY_SPACE and \
+                    token.text in TokenSet.PUNCTUATION_NOT_PRECEDED_BY_SPACE.value and \
                     len(doc[token.i-1].whitespace_) > 0:
                 errors.append(Error(token.text, token.idx, self.name))
             elif "." in token.text and re.search(r"\.\w", token.text):
@@ -229,11 +229,11 @@ class WomanVsWomenCheck(RuleBasedGrammarCheck):
     Identifies "womans" as the incorrect plural of "woman".
     """
 
-    name = GrammarError.WOMAN_WOMEN
+    name = GrammarError.WOMAN_WOMEN.value
 
     def check(self, doc: Doc) -> List[Error]:
         return [Error(t.text, t.idx, self.name) for t in doc
-                if t.text.lower() == Word.INCORRECT_PLURAL_WOMAN]
+                if t.text.lower() == Word.INCORRECT_PLURAL_WOMAN.value]
 
 
 class ManVsMenCheck(RuleBasedGrammarCheck):
@@ -241,11 +241,11 @@ class ManVsMenCheck(RuleBasedGrammarCheck):
     Identifies "mans" as the incorrect plural of "man".
     """
 
-    name = GrammarError.MAN_MEN
+    name = GrammarError.MAN_MEN.value
 
     def check(self, doc: Doc) -> List[Error]:
         return [Error(t.text, t.idx, self.name) for t in doc
-                if t.text.lower() == Word.INCORRECT_PLURAL_MAN]
+                if t.text.lower() == Word.INCORRECT_PLURAL_MAN.value]
 
 
 class ThanVsThenCheck(RuleBasedGrammarCheck):
@@ -253,12 +253,12 @@ class ThanVsThenCheck(RuleBasedGrammarCheck):
     Identifies instances of "then" that should be "than".
     """
 
-    name = GrammarError.THAN_THEN
+    name = GrammarError.THAN_THEN.value
 
     def check(self, doc: Doc) -> List[Error]:
         errors = []
         for token in doc[1:]:
-            if token.text.lower() == Word.THEN and \
+            if token.text.lower() == Word.THEN.value and \
                     doc[token.i - 1].tag_ in COMPARATIVE_TAGS:
                 errors.append(Error(token.text, token.idx, self.name))
         return errors
@@ -269,7 +269,7 @@ class RepeatedWordCheck(RuleBasedGrammarCheck):
     Identifies repeated words.
     """
 
-    name = GrammarError.REPEATED_WORD
+    name = GrammarError.REPEATED_WORD.value
 
     def check(self, doc: Doc) -> List[Error]:
         return [Error(t.text, t.idx, self.name) for t in doc[1:] if
@@ -283,13 +283,13 @@ class SubjectPronounCheck(RuleBasedGrammarCheck):
     pronouns such as "mine").
     """
 
-    name = GrammarError.SUBJECT_PRONOUN
+    name = GrammarError.SUBJECT_PRONOUN.value
 
     def check(self, doc: Doc) -> List[Error]:
         errors = []
-        nonsubj_pronouns = TokenSet.OBJECT_PRONOUNS | \
-            TokenSet.POSSESSIVE_DETERMINERS | \
-            TokenSet.POSSESSIVE_PRONOUNS
+        nonsubj_pronouns = TokenSet.OBJECT_PRONOUNS.value | \
+            TokenSet.POSSESSIVE_DETERMINERS.value | \
+            TokenSet.POSSESSIVE_PRONOUNS.value
         for token in doc:
             if is_subject(token) and token.text.lower() in nonsubj_pronouns:
                 errors.append(Error(token.text, token.idx, self.name))
@@ -301,12 +301,12 @@ class ObjectPronounCheck(RuleBasedGrammarCheck):
     Identifies incorrect object pronouns (e.g. subject pronouns, such as "I").
     """
 
-    name = GrammarError.OBJECT_PRONOUN
+    name = GrammarError.OBJECT_PRONOUN.value
 
     def check(self, doc: Doc) -> List[Error]:
         errors = []
         for token in doc:
-            if token.text.lower() in TokenSet.SUBJECT_PRONOUNS and \
+            if token.text.lower() in TokenSet.SUBJECT_PRONOUNS.value and \
                     not is_subject(token):
                 errors.append(Error(token.text, token.idx, self.name))
         return errors
@@ -317,13 +317,13 @@ class CommasInNumbersCheck(RuleBasedGrammarCheck):
     Identifies long numbers (more than 3 digits) that miss a comma.
     """
 
-    name = GrammarError.COMMAS_IN_NUMBERS
+    name = GrammarError.COMMAS_IN_NUMBERS.value
 
     def check(self, doc: Doc) -> List[Error]:
         errors = []
         for token in doc:
             if re.search(r"^\d{4,}$", token.text) and \
-                    not token.ent_type_ == EntityType.DATE:
+                    not token.ent_type_ == EntityType.DATE.value:
                 errors.append(Error(token.text, token.idx, self.name))
         return errors
 
@@ -334,13 +334,13 @@ class CommasAfterYesNoCheck(RuleBasedGrammarCheck):
     """
 
     # TODO: "no symptoms"
-    name = GrammarError.YES_NO_COMMA
+    name = GrammarError.YES_NO_COMMA.value
 
     def check(self, doc: Doc) -> List[Error]:
         errors = []
         for token in doc[:-1]:
-            if token.text.lower() in TokenSet.YES_NO and \
-                    token.tag_ == Tag.YES_NO and \
+            if token.text.lower() in TokenSet.YES_NO.value and \
+                    token.tag_ == Tag.YES_NO.value and \
                     not doc[token.i+1].is_punct:
                 errors.append(Error(token.text, token.idx, self.name))
         return errors
@@ -352,15 +352,15 @@ class SingularPluralNounCheck(RuleBasedGrammarCheck):
     plural noun.
     """
 
-    name = GrammarError.SINGULAR_PLURAL
+    name = GrammarError.SINGULAR_PLURAL.value
 
     def check(self, doc: Doc) -> List[Error]:
         errors = []
         for noun_chunk in doc.noun_chunks:
             for token in noun_chunk:
-                if token.text.lower() in TokenSet.INDEF_ARTICLES and \
-                        token.dep_ == Dependency.DETERMINER and \
-                        token.head.tag_ == Tag.PLURAL_NOUN:
+                if token.text.lower() in TokenSet.INDEF_ARTICLES.value and \
+                        token.dep_ == Dependency.DETERMINER.value and \
+                        token.head.tag_ == Tag.PLURAL_NOUN.value:
                     errors.append(Error(token.text, token.idx, self.name))
         return errors
 
@@ -371,17 +371,17 @@ class CapitalizationCheck(RuleBasedGrammarCheck):
     "I" is not capitalized.
     """
 
-    name = GrammarError.CAPITALIZATION
+    name = GrammarError.CAPITALIZATION.value
 
     def check(self, doc: Doc) -> List[Error]:
         errors = []
         if re.match("[a-z]", doc[0].text):
-            doc[0]._.grammar_errors.append(GrammarError.CAPITALIZATION)
+            doc[0]._.grammar_errors.append(GrammarError.CAPITALIZATION.value)
             errors.append(Error(doc[0].text, doc[0].idx, self.name))
         for token in doc[1:]:
             if token.text == "i":
                 errors.append(Error(token.text, token.idx, self.name))
-            elif token.pos_ == POS.PROPER_NOUN and token.text.islower():
+            elif token.pos_ == POS.PROPER_NOUN.value and token.text.islower():
                 errors.append(Error(token.text, token.idx, self.name))
         return errors
 
@@ -391,15 +391,15 @@ class ContractionCheck(RuleBasedGrammarCheck):
     Identifies incorrect contractions such as "Im" and "didnt".
     """
 
-    name = GrammarError.CONTRACTION
+    name = GrammarError.CONTRACTION.value
 
     def check(self, doc: Doc) -> List[Error]:
         errors = []
         for token in doc:
-            if token.text.lower() in TokenSet.INCORRECT_CONTRACTIONS:
+            if token.text.lower() in TokenSet.INCORRECT_CONTRACTIONS.value:
                 errors.append(Error(token.text, token.idx, self.name))
-            elif token.pos_ in [POS.VERB, POS.ADVERB, POS.PARTICIPLE] and \
-                    token.text.lower() in TokenSet.CONTRACTED_VERBS_WITHOUT_APOSTROPHE:
+            elif token.pos_ in [POS.VERB.value, POS.ADVERB.value, POS.PARTICIPLE.value] and \
+                    token.text.lower() in TokenSet.CONTRACTED_VERBS_WITHOUT_APOSTROPHE.value:
                 errors.append(Error(token.text, token.idx, self.name))
         return errors
 
@@ -409,13 +409,13 @@ class VerbTenseCheck(RuleBasedGrammarCheck):
     Identifies incorrect verb forms, such as "bringed" and "writed".
     """
 
-    name = GrammarError.VERB_TENSE
+    name = GrammarError.VERB_TENSE.value
 
     def check(self, doc: Doc) -> List[Error]:
         errors = []
         for token in doc:
             # If the token is a past tense verb
-            if token.pos_ == POS.VERB and not token.tag_ == Tag.MODAL_VERB:
+            if token.pos_ == POS.VERB.value and not token.tag_ == Tag.MODAL_VERB.value:
                 # If pyinflect does not return a verb form because it
                 # does not know the lemma
                 # e.g. "cutted" has unknown lemma "cutte"
@@ -434,11 +434,11 @@ class PunctuationCheck(RuleBasedGrammarCheck):
     Checks if a sentence ends in a punctuation mark.
     """
 
-    name = GrammarError.PUNCTUATION
+    name = GrammarError.PUNCTUATION.value
 
     def check(self, doc: Doc) -> List[Error]:
         errors = []
-        if doc[-1].text not in TokenSet.END_OF_SENTENCE_PUNCTUATION:
+        if doc[-1].text not in TokenSet.END_OF_SENTENCE_PUNCTUATION.value:
             errors.append(Error(doc[-1].text, doc[-1].idx, self.name))
         return errors
 
@@ -450,14 +450,14 @@ class IrregularPluralNounsCheck(RuleBasedGrammarCheck):
         - the plural of "deer" is "deer" (not "deers")
         - the plural of "city" is "cities" (not "citys")
     """
-    name = GrammarError.IRREGULAR_PLURAL_NOUN
+    name = GrammarError.IRREGULAR_PLURAL_NOUN.value
 
     def check(self, doc: Doc) -> List[Error]:
         errors = []
         for token in doc:
             # If the token is a plural verb
-            if token.tag_ == Tag.PLURAL_NOUN and \
-                    token.text.lower() not in TokenSet.IRREGULAR_PLURAL_BLACKLIST:
+            if token.tag_ == Tag.PLURAL_NOUN.value and \
+                    token.text.lower() not in TokenSet.IRREGULAR_PLURAL_BLACKLIST.value:
                 # If pyinflect does not return a plural form because
                 # it does not know the noun
                 # e.g. "wolfes" instead of "wolves"
@@ -476,20 +476,20 @@ class FragmentErrorCheck(RuleBasedGrammarCheck):
     """
     Identifies sentence fragments.
     """
-    name = GrammarError.FRAGMENT
+    name = GrammarError.FRAGMENT.value
 
     def check(self, doc: Doc) -> List[Error]:
         errors = []
         for sentence in doc.sents:
             verb_deps = set([t.dep_ for t in sentence
-                             if t.pos_ == POS.VERB or t.pos_ == POS.AUX])
+                             if t.pos_ == POS.VERB.value or t.pos_ == POS.AUX.value])
             all_deps = set([t.dep_ for t in sentence])
 
             # If the sentence has a verb ROOT, everything is OK.
-            if Dependency.ROOT in verb_deps:
+            if Dependency.ROOT.value in verb_deps:
                 continue
             # If the sentence has a subject, everything is OK.
-            elif Dependency.SUBJECT in all_deps or Dependency.PASS_SUBJECT in all_deps:
+            elif Dependency.SUBJECT.value in all_deps or Dependency.PASS_SUBJECT.value in all_deps:
                 continue
             else:
                 errors.append(Error(sentence[-1].text,
@@ -501,22 +501,22 @@ class FragmentErrorCheck(RuleBasedGrammarCheck):
 
 class PossessivePronounsErrorCheck(RuleBasedGrammarCheck):
 
-    name = GrammarError.POSSESSIVE_PRONOUN
+    name = GrammarError.POSSESSIVE_PRONOUN.value
 
     def check(self, doc: Doc) -> List[Error]:
         errors = []
         for token in doc:
-            if token.pos_ == POS.PRONOUN and \
-                    token.dep_ == Dependency.COMPOUND:
+            if token.pos_ == POS.PRONOUN.value and \
+                    token.dep_ == Dependency.COMPOUND.value:
                 errors.append(Error(token.text, token.idx, self.name))
-            elif token.tag_ == Tag.POSSESSIVE_PRONOUN and \
-                    token.dep_ == Dependency.COMPOUND:
+            elif token.tag_ == Tag.POSSESSIVE_PRONOUN.value and \
+                    token.dep_ == Dependency.COMPOUND.value:
                 errors.append(Error(token.text, token.idx, self.name))
-            elif token.text.lower() in TokenSet.INCORRECT_POSSESSIVE_PRONOUNS:
+            elif token.text.lower() in TokenSet.INCORRECT_POSSESSIVE_PRONOUNS.value:
                 errors.append(Error(token.text, token.idx, self.name))
             elif token.i < len(doc) - 1 and \
                     token.text_with_ws.lower() + doc[token.i+1].text.lower() \
-                    in TokenSet.INCORRECT_POSSESSIVE_PRONOUNS:
+                    in TokenSet.INCORRECT_POSSESSIVE_PRONOUNS.value:
                 errors.append(Error(token.text, token.idx, self.name))
 
         return errors
@@ -524,7 +524,7 @@ class PossessivePronounsErrorCheck(RuleBasedGrammarCheck):
 
 class SubjectVerbAgreementErrorCheck(RuleBasedGrammarCheck):
 
-    name = GrammarError.SUBJECT_VERB_AGREEMENT_RULE
+    name = GrammarError.SUBJECT_VERB_AGREEMENT_RULE.value
 
     def check(self, doc: Doc) -> List[Error]:
         errors = []
@@ -532,8 +532,8 @@ class SubjectVerbAgreementErrorCheck(RuleBasedGrammarCheck):
 
             # Infinitives are allowed: in "he would like to drive", "he" is
             # the subject and infinitive "drive" is the head.
-            if is_subject(token) and token.tag_ == Tag.SINGULAR_NOUN and \
-                    token.head.tag_ == Tag.PRESENT_OTHER_VERB:
+            if is_subject(token) and token.tag_ == Tag.SINGULAR_NOUN.value and \
+                    token.head.tag_ == Tag.PRESENT_OTHER_VERB.value:
                 errors.append(Error(token.head.text,
                                     token.head.idx,
                                     self.name))

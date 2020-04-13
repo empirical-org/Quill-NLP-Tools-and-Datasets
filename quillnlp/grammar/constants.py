@@ -19,11 +19,11 @@ class Tag(Enum):
     WH_DETERMINER = "WDT"
     COMPARATIVE_ADJECTIVE = "JJR"
     COMPARATIVE_ADVERB = "JJR"
-    YES_NO = "UH"
 
 
-QUESTION_WORD_TAGS = set([Tag.WH_PRONOUN, Tag.POSSESSIVE_WH_PRONOUN, Tag.WH_ADVERB, Tag.WH_DETERMINER])
-COMPARATIVE_TAGS = set([Tag.COMPARATIVE_ADJECTIVE, Tag.COMPARATIVE_ADVERB])
+QUESTION_WORD_TAGS = set([Tag.WH_PRONOUN.value, Tag.POSSESSIVE_WH_PRONOUN.value,
+                          Tag.WH_ADVERB.value, Tag.WH_DETERMINER.value])
+COMPARATIVE_TAGS = set([Tag.COMPARATIVE_ADJECTIVE.value, Tag.COMPARATIVE_ADVERB.value])
 
 
 class POS(Enum):
@@ -41,7 +41,9 @@ class POS(Enum):
     COORD_CONJ = "CCONJ"
 
 
-POSSIBLE_POS_IN_NOUN_PHRASE = set([POS.NOUN, POS.ADJECTIVE, POS.NUMBER, POS.ADPOSITION, POS.ADVERB, POS.PRONOUN])
+POSSIBLE_POS_IN_NOUN_PHRASE = set([POS.NOUN.value, POS.ADJECTIVE.value,
+                                   POS.NUMBER.value, POS.ADPOSITION.value,
+                                   POS.ADVERB.value, POS.PRONOUN.value])
 
 
 class Dependency(Enum):
@@ -81,9 +83,9 @@ class TokenSet(Enum):
     PUNCTUATION_FOLLOWED_BY_SPACE = set([".", "!", "?", ")", ";", ":", ","])
     PUNCTUATION_NOT_PRECEDED_BY_SPACE = set([".", "!", "?", ")", ";", ":", ","])
     END_OF_SENTENCE_PUNCTUATION = set([".", "!", "?"])
-    INDEF_ARTICLES = set([Word.INDEF_ARTICLE_BEFORE_VOWEL,
-                          Word.INDEF_ARTICLE_BEFORE_CONSONANT])
-    DEMONSTRATIVES = set([Word.THIS, Word.THAT, Word.THOSE, Word.THESE])
+    INDEF_ARTICLES = set([Word.INDEF_ARTICLE_BEFORE_VOWEL.value,
+                          Word.INDEF_ARTICLE_BEFORE_CONSONANT.value])
+    DEMONSTRATIVES = set([Word.THIS.value, Word.THAT.value, Word.THOSE.value, Word.THESE.value])
     # we include "i." in the subject pronouns, because spaCy often
     # mistokenizes i at the end of a sentence
     SUBJECT_PRONOUNS = set(["i", "he", "she", "we", "they", "i."])
@@ -131,6 +133,7 @@ class GrammarError(Enum):
     ADVERB = "Adverbs versus adjectives"
     SUBJECT_VERB_AGREEMENT_STATS = "Subject-verb agreement (stats)"
     SUBJECT_VERB_AGREEMENT_RULE = "Subject-verb agreement (rule)"
+    SUBJECT_VERB_AGREEMENT = "Subject-verb agreement"
     IRREGULAR_PLURAL_NOUN = "Irregular plural nouns"
     FRAGMENT = "Fragment"
     POSSESSIVE_PRONOUN = "Possessive pronouns"
