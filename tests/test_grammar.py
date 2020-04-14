@@ -140,8 +140,8 @@ def test_yesno():
 
 def test_grammar_quill():
 
-    checker = SpaCyGrammarChecker("models/spacy_grammar20M")
-    #checker = BertGrammarChecker("bert_grammar500k.bin")
+    #checker = SpaCyGrammarChecker("models/spacy_grammar20M")
+    checker = BertGrammarChecker("/tmp/grammar/model.bin", "/tmp/grammar/config.json")
 
     # Read error input
     with open("tests/data/grammar_bing.ndjson") as i:

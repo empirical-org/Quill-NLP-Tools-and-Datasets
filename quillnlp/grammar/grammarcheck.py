@@ -679,7 +679,7 @@ class BertGrammarChecker:
                                                             self.tokenizer,
                                                             NLPTask.SEQUENCE_LABELING)
 
-        sentence_dl = get_data_loader(preprocessed_sentence, 1, shuffle=False)
+        sentence_dl = get_data_loader(preprocessed_sentence, 1, NLPTask.SEQUENCE_LABELING, shuffle=False)
         _, _, _, predicted_errors = evaluate(self.model, sentence_dl, self.device)
 
         stat_errors = [self.idx2label[i] for i in set(predicted_errors[0])]

@@ -105,7 +105,7 @@ def train(model: PreTrainedModel, train_dataloader: DataLoader, dev_dataloader: 
                         torch.save(model_to_save.state_dict(), output_model_file)
                         print(f"Lower loss => saving model to {output_model_file}.")
 
-                    if len(loss_history) >= patience and dev_loss > max(loss_history[-patience:]):
+                    if len(loss_history) >= patience and min(loss_history[-patience:]) > min(loss_history):
                         print("No improvement on development set. Finish training.")
                         stop_training = True
                         break
