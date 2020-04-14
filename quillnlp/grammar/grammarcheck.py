@@ -2,6 +2,7 @@ import re
 import spacy
 import pyinflect
 import torch
+import json
 
 from typing import List
 from collections import namedtuple
@@ -12,7 +13,7 @@ from transformers import BertForTokenClassification, BertTokenizer
 
 from quillnlp.models.bert.train import evaluate
 from quillnlp.models.bert.preprocessing import convert_data_to_input_items, get_data_loader
-from constants import *
+from quillnlp.grammar.constants import *
 
 BASE_SPACY_MODEL = "en"
 
@@ -634,18 +635,24 @@ class BertGrammarChecker:
     grammar error checking with BERT.
     """
 
-    def __init__(self, model_path: str):
+    def __init__(self, model_path: str, config_path: str):
         self.rule_based_checker = RuleBasedGrammarChecker()
-        self.max_seq_length = 100
-        self.tokenizer = BertTokenizer.from_pretrained("bert-base-cased")
         self.spacy_model = spacy.load(BASE_SPACY_MODEL)
 
         print("Loading BERT model from", model_path)
         self.device = "cpu"
-        self.label2idx = {'O': 0, 'POSSESSIVE': 1, 'VERB': 2, 'ADV': 3, 'WOMAN': 4, 'ITS': 5, 'THEN': 6, 'CHILD': 7}
+
+        with open(config_path) as i:
+            config = json.load(i)
+
+        self.label2idx = config["labels"]
+        self.max_seq_length = config["max_seq_length"]
+
         self.idx2label = {v:k for k,v in self.label2idx.items()}
+
+        self.tokenizer = BertTokenizer.from_pretrained(config["base_model"])
         model_state_dict = torch.load(model_path, map_location=lambda storage, loc: storage)
-        self.model = BertForTokenClassification.from_pretrained("bert-base-cased",
+        self.model = BertForTokenClassification.from_pretrained(config["base_model"],
                                                                 state_dict=model_state_dict,
                                                                 num_labels=len(self.label2idx))
         self.model.to(self.device)
