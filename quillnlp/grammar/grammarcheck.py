@@ -12,7 +12,7 @@ from spacy.tokens.token import Token
 from transformers import BertForTokenClassification, BertTokenizer
 
 from quillnlp.models.bert.train import evaluate
-from quillnlp.models.bert.preprocessing import convert_data_to_input_items, get_data_loader
+from quillnlp.models.bert.preprocessing import convert_data_to_input_items, get_data_loader, NLPTask
 from quillnlp.grammar.constants import *
 
 BASE_SPACY_MODEL = "en"
@@ -676,7 +676,8 @@ class BertGrammarChecker:
         preprocessed_sentence = convert_data_to_input_items([{"text": sentence}],
                                                             self.label2idx,
                                                             self.max_seq_length,
-                                                            self.tokenizer)
+                                                            self.tokenizer,
+                                                            NLPTask.SEQUENCE_LABELING)
 
         sentence_dl = get_data_loader(preprocessed_sentence, 1, shuffle=False)
         _, _, _, predicted_errors = evaluate(self.model, sentence_dl, self.device)
