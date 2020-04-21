@@ -10,7 +10,10 @@ class Tag(Enum):
     YES_NO = "UH"
     MODAL_VERB = "MD"
     PRESENT_SING3_VERB = "VBZ"
+    PAST_PARTICIPLE_VERB = "VBN"
+    SIMPLE_PAST_VERB = "VBD"
     PRESENT_OTHER_VERB = "VBP"
+    PRESENT_PARTICIPLE_VERB = "VBG"
     INFINITIVE = "VB"
     POSSESSIVE_PRONOUN = "PRP$"
     WH_PRONOUN = "WP"
@@ -49,11 +52,13 @@ POSSIBLE_POS_IN_NOUN_PHRASE = set([POS.NOUN.value, POS.ADJECTIVE.value,
 class Dependency(Enum):
     SUBJECT = "nsubj"
     PASS_SUBJECT = "nsubjpass"
+    PASS_AUXILIARY = "auxpass"
     COMPOUND = "compound"
     AUX = "aux"
     ROOT = "ROOT"
     CONJUNCTION = "conj"
     DETERMINER = "det"
+    ADVERBIAL_CLAUSE = "advcl"
 
 
 class EntityType(Enum):
@@ -84,7 +89,8 @@ class TokenSet(Enum):
     PUNCTUATION_NOT_PRECEDED_BY_SPACE = set([".", "!", "?", ")", ";", ":", ","])
     END_OF_SENTENCE_PUNCTUATION = set([".", "!", "?"])
     INDEF_ARTICLES = set([Word.INDEF_ARTICLE_BEFORE_VOWEL.value,
-                          Word.INDEF_ARTICLE_BEFORE_CONSONANT.value])
+                          Word.INDEF_ARTICLE_BEFORE_CONSONANT.value,
+                          "each", "every", "any"])
     DEMONSTRATIVES = set([Word.THIS.value, Word.THAT.value, Word.THOSE.value, Word.THESE.value])
     # we include "i." in the subject pronouns, because spaCy often
     # mistokenizes i at the end of a sentence
@@ -103,6 +109,10 @@ class TokenSet(Enum):
     POSSESSIVE_S = set(["’s", "'s", "´s"])
     INCORRECT_POSSESSIVE_PRONOUNS = set(["thier's", "thiers", "them's", "yous",
                                          "hims", "our's", "their's", "your's"])
+    COLLECTIVE_NOUNS = set(["band", "board", "choir", "class", "crowd", "gang", "pack",
+                            "panel", "team", "army", "flock", "herd", "hive", "litter",
+                            "swarm", "bunch", "fleet", "pair", "range"])
+    MUTUALLY_EXCLUSIVE_BE_FORMS = set(["be", "am", "are", "is", "been"])
 
 # Error type constants
 
