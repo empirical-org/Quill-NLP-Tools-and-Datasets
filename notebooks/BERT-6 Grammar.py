@@ -5,6 +5,10 @@ from quillnlp.models.bert.preprocessing import NLPTask, convert_data_to_input_it
 
 import ndjson
 import random
+import torch
+import sys
+import os
+import json
 
 TRAINING_FILES = ["/home/yves/projects/Quill-NLP-Tools-and-Datasets/notw.ndjson"]
 #                  "/home/yves/projects/Quill-NLP-Tools-and-Datasets/subtitles.ndjson",
@@ -13,7 +17,8 @@ MAX_SEQ_LENGTH = 100
 TRAIN_SIZE = 2000000
 TEST_SIZE = 10000
 BATCH_SIZE = 32
-
+BASE_MODEL = "bert-base-cased"
+MODEL_DIRECTORY = "/tmp/grammar"
 
 data = []
 for f in TRAINING_FILES:
@@ -44,14 +49,9 @@ print(label2idx)
 from transformers import BertForTokenClassification
 from transformers import BertTokenizer
 
-tokenizer = BertTokenizer.from_pretrained("bert-base-cased")
+tokenizer = BertTokenizer.from_pretrained(BASE_MODEL)
 input_items = convert_data_to_input_items(data, label2idx, MAX_SEQ_LENGTH, tokenizer, NLPTask.SEQUENCE_LABELING)
 
-
-# In[5]:
-
-
-import random
 
 random.shuffle(input_items)
 
@@ -64,20 +64,20 @@ dev_dl = get_data_loader(valid_items, BATCH_SIZE, task=NLPTask.SEQUENCE_LABELING
 train_dl = get_data_loader(train_items, BATCH_SIZE, task=NLPTask.SEQUENCE_LABELING, shuffle=True)
 
 
-# In[7]:
-
-
-import sys
 sys.path.append('../')
 
 from quillnlp.models.bert.train import train
 from transformers import BertModel
 
-model = BertForTokenClassification.from_pretrained("bert-base-cased", num_labels=len(label2idx))
+model = BertForTokenClassification.from_pretrained(BASE_MODEL, num_labels=len(label2idx))
 model.to("cuda")
 
+config = {"labels": label2idx, "base_model": BASE_MODEL, "max_seq_length": MAX_SEQ_LENGTH}
+with open(os.path.join(MODEL_DIRECTORY, "config.json"), "w") as o:
+    json.dump(config, o)
+
 train(model, train_dl, dev_dl, BATCH_SIZE, 32/BATCH_SIZE, device="cuda",
-      num_train_epochs=10, patience=2, eval_frequency=5000)
+      num_train_epochs=10, patience=2, eval_frequency=5000, output_dir=MODEL_DIRECTORY)
 
 
 # In[8]:
@@ -135,14 +135,14 @@ for (error_type, correct_sentence, incorrect_sentence) in data:
     if error_type not in results:
         results[error_type] = {"cc": 0, "ci": 0, "ic": 0, "ii": 0}
 
-    correct_features = preprocess_sequence_labelling([{"text": correct_sentence}], 
-                                                     label2idx, MAX_SEQ_LENGTH, tokenizer)
+    correct_features = convert_data_to_input_items([{"text": correct_sentence}], 
+                                                     label2idx, MAX_SEQ_LENGTH, tokenizer, NLPTask.SEQUENCE_LABELING)
 
-    incorrect_features = preprocess_sequence_labelling([{"text": incorrect_sentence}],
-                                                       label2idx, MAX_SEQ_LENGTH, tokenizer)
+    incorrect_features = convert_data_to_input_items([{"text": incorrect_sentence}],
+                                                       label2idx, MAX_SEQ_LENGTH, tokenizer, NLPTask.SEQUENCE_LABELING)
 
-    correct_dl = get_data_loader(correct_features, 1, shuffle=False)
-    incorrect_dl = get_data_loader(incorrect_features, 1, shuffle=False)
+    correct_dl = get_data_loader(correct_features, 1, task=NLPTask.SEQUENCE_LABELING, shuffle=False)
+    incorrect_dl = get_data_loader(incorrect_features, 1, task=NLPTask.SEQUENCE_LABELING, shuffle=False)
     
     _, _, _, correct_predicted = evaluate(model, correct_dl, device)
     _, _, _, incorrect_predicted = evaluate(model, incorrect_dl, device)
@@ -171,7 +171,7 @@ for (error_type, correct_sentence, incorrect_sentence) in data:
 # In[11]:
 
 
-results
+print(results)
 
 
 # In[12]:

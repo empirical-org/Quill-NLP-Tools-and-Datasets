@@ -1,18 +1,13 @@
 import streamlit as st
 
-from quillnlp.grammar.grammarcheck import GrammarChecker
+from quillnlp.grammar.grammarcheck import SpaCyGrammarChecker
 
 
 @st.cache(allow_output_mutation=True)
 def load_checker(name):
-    checker = GrammarChecker(name)
+    checker = SpaCyGrammarChecker(name)
     return checker
 
-
-@st.cache(allow_output_mutation=True)
-def process_text(model_name, text):
-    checker = load_checker(model_name)
-    return checker.check(text)
 
 
 st.sidebar.title("Quill NLP Tools")

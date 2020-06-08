@@ -1,15 +1,16 @@
 import json
+import ndjson
 import logging
 import operator
-import os
 import random
-import time
 from pathlib import Path
 
-import ndjson
 import spacy
-from spacy.util import minibatch, compounding
 from tqdm import tqdm
+
+from spacy.util import minibatch, compounding
+from spacy.gold import biluo_tags_from_offsets
+from sklearn.metrics import f1_score, classification_report
 
 
 logging.getLogger().setLevel(logging.INFO)
@@ -164,3 +165,124 @@ def train_language(train_data, dev_data, test_data, idx2label, lang, output_dir)
     logging.info("Final accuracy: {0:.3f}".format(scores["acc"]))
 
     return {"acc": scores["acc"]}
+
+
+def evaluate_ner(data, model, test_file, verbose=False):
+
+    predicted_tags = []
+    correct_tags = []
+    labels = set()
+    output_data = []
+    for (sentence, entities) in data:
+        doc = model(sentence)
+
+        sentence_pred = []
+        for t in doc:
+            predicted_tag = t.ent_type_ if t.ent_type_ else "O"
+            sentence_pred.append(predicted_tag)
+
+        biluo_tags = biluo_tags_from_offsets(doc, entities["entities"])
+        sentence_cor = [t.split("-")[-1] for t in biluo_tags]
+
+        predicted_tags.extend(sentence_pred)
+        correct_tags.extend(sentence_cor)
+
+        labels.update([l for l in sentence_pred + sentence_cor if l != "O"])
+        output_data.append({"sentence": sentence,
+                            "prediction": sentence_pred,
+                            "correct": sentence_cor})
+
+    with open(test_file, "w") as o:
+        ndjson.dump(output_data, o)
+
+    f = f1_score(correct_tags, predicted_tags, average="micro")
+    if verbose:
+        print(classification_report(correct_tags, predicted_tags, labels=list(labels)))
+
+    return f
+
+
+def train_spacy_ner(train_data, dev_data, test_data, output_dir, test_file, n_iter=20, patience=2):
+
+    nlp = spacy.blank("en")  # create blank Language class
+
+    # create the built-in pipeline components and add them to the pipeline
+    # nlp.create_pipe works for built-ins that are registered with spaCy
+    if "ner" not in nlp.pipe_names:
+        ner = nlp.create_pipe("ner")
+        nlp.add_pipe(ner, last=True)
+    # otherwise, get it so we can add labels
+    else:
+        ner = nlp.get_pipe("ner")
+
+    print("Adding labels")
+    # add labels
+    for _, annotations in train_data:
+        for ent in annotations.get("entities"):
+            ner.add_label(ent[2])
+
+    # get names of other pipes to disable them during training
+    other_pipes = [pipe for pipe in nlp.pipe_names if pipe != "ner"]
+
+    history = []
+    no_improvement = 0
+
+    disabled = nlp.disable_pipes(*other_pipes)
+
+    # reset and initialize the weights randomly – but only if we're
+    # training a new model
+    nlp.begin_training()
+
+    for itn in range(n_iter):
+        print(f"Epoch {itn}")
+        random.shuffle(train_data)
+        losses = {}
+        # batch up the examples using spaCy's minibatch
+        batches = minibatch(train_data, size=compounding(4.0, 32.0, 1.001))
+        total = 0
+        for batch in batches:
+            texts, annotations = zip(*batch)
+            total += len(texts)
+            try:
+                nlp.update(
+                    texts,  # batch of texts
+                    annotations,  # batch of annotations
+                    drop=0.5,  # dropout - make it harder to memorise data
+                    losses=losses,
+                )
+            except:
+                continue
+            percentage = int(total/len(train_data)*100)
+            print(f"{percentage}", end="\r")
+        print("Losses", losses)
+
+        dev_f = evaluate_ner(dev_data, nlp, test_file)
+        print("Dev F:", dev_f)
+
+        if len(history) == 0 or losses.get("ner") < min(history):
+            if output_dir is not None:
+                output_dir = Path(output_dir)
+                if not output_dir.exists():
+                    output_dir.mkdir()
+                disabled.restore()
+                nlp.to_disk(output_dir)
+                print("Saved model to", output_dir)
+
+                disabled = nlp.disable_pipes(*other_pipes)
+
+            no_improvement = 0
+        else:
+            no_improvement += 1
+
+        history.append(losses.get("ner"))
+
+        if no_improvement == patience:
+            print("Stop training")
+            break
+
+    # test the saved model
+    print("Loading from", output_dir)
+    nlp = spacy.load(output_dir)
+
+    f = evaluate_ner(test_data, nlp, test_file, verbose=True)
+    print("Test F:", f)

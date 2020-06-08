@@ -15,9 +15,9 @@ error_map = {"WOMAN": "Woman versus women",
              "VERB": "Subject-verb agreement",
              "POSSESSIVE": "Plural versus possessive nouns",
              "CHILD": "Child versus children",
-             "Possessive nouns": "Plural versus possessive nouns", # from the manual labelling
+             "Possessive nouns": "Plural versus possessive nouns",  # from the manual labelling
              "Plural possessive nouns": "Plural versus possessive nouns",
-             "Irregular past tense verbs": "Verb tense", # from the manual labelling
+             "Irregular past tense verbs": "Verb tense",  # from the manual labelling
              "Those versus these": "This versus that",
              "Adverbs": "Adverbs versus adjectives",
              "Adjectives versus adverbs": "Adverbs versus adjectives",

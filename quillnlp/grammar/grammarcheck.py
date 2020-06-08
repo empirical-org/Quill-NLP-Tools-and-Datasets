@@ -11,6 +11,9 @@ from spacy.tokens.doc import Doc
 from spacy.tokens.token import Token
 from transformers import BertForTokenClassification, BertTokenizer
 
+from quillnlp.grammar.verbs import agreement
+from quillnlp.grammar.verbs.passive import is_passive
+from quillnlp.grammar.verbutils import get_past_tenses
 from quillnlp.models.bert.train import evaluate
 from quillnlp.models.bert.preprocessing import convert_data_to_input_items, get_data_loader, NLPTask
 from quillnlp.grammar.constants import *
@@ -323,8 +326,12 @@ class CommasInNumbersCheck(RuleBasedGrammarCheck):
     def check(self, doc: Doc) -> List[Error]:
         errors = []
         for token in doc:
-            if re.search(r"^\d{4,}$", token.text) and \
+            # If there are 4 digits, we have to exclude dates
+            if re.search(r"\d{4}", token.text) and \
                     not token.ent_type_ == EntityType.DATE.value:
+                errors.append(Error(token.text, token.idx, self.name))
+            # If there are >4 digits, the token cannot be a date.
+            elif re.search(r"\d{5,}", token.text):
                 errors.append(Error(token.text, token.idx, self.name))
         return errors
 
@@ -359,7 +366,7 @@ class SingularPluralNounCheck(RuleBasedGrammarCheck):
         errors = []
         for noun_chunk in doc.noun_chunks:
             for token in noun_chunk:
-                if token.text.lower() in TokenSet.INDEF_ARTICLES.value and \
+                if (token.text.lower() in ["a", "an"] or token.text.lower() in TokenSet.INDEF_PRONOUNS.value) and \
                         token.dep_ == Dependency.DETERMINER.value and \
                         token.head.tag_ == Tag.PLURAL_NOUN.value:
                     errors.append(Error(token.text, token.idx, self.name))
@@ -405,27 +412,87 @@ class ContractionCheck(RuleBasedGrammarCheck):
         return errors
 
 
-class VerbTenseCheck(RuleBasedGrammarCheck):
+class IncorrectIrregularPastTenseCheck(RuleBasedGrammarCheck):
     """
     Identifies incorrect verb forms, such as "bringed" and "writed".
     """
 
-    name = GrammarError.VERB_TENSE.value
+    name = GrammarError.INCORRECT_IRREGULAR_PAST_TENSE.value
 
     def check(self, doc: Doc) -> List[Error]:
         errors = []
         for token in doc:
             # If the token is a past tense verb
-            if token.pos_ == POS.VERB.value and not token.tag_ == Tag.MODAL_VERB.value:
+            if token.tag_ == Tag.SIMPLE_PAST_VERB.value and not token.tag_ == Tag.MODAL_VERB.value:
+                past_tenses = get_past_tenses(token)
+                if not token.text.lower() in past_tenses:
+                    errors.append(Error(token.text, token.idx, self.name))
+        return errors
+
+
+class IncorrectParticipleCheck(RuleBasedGrammarCheck):
+    """
+    Identifies incorrect verb forms, such as "bringed" and "writed".
+    """
+
+    name = GrammarError.INCORRECT_PARTICIPLE.value
+
+    def check(self, doc: Doc) -> List[Error]:
+        errors = []
+        for token in doc:
+            if is_passive(token):
+                continue
+
+            # If the token is a participle
+            if token.tag_ == Tag.PAST_PARTICIPLE_VERB.value and \
+                    not token.tag_ == Tag.MODAL_VERB.value:
+                correct_participle = token._.inflect(token.tag_)
+                correct_past_tense = token._.inflect(Tag.SIMPLE_PAST_VERB.value)
+
                 # If pyinflect does not return a verb form because it
                 # does not know the lemma
                 # e.g. "cutted" has unknown lemma "cutte"
-                if not token._.inflect(token.tag_):
+                if not correct_participle:
                     errors.append(Error(token.text, token.idx, self.name))
+
                 # If the verb form is not the same as the one returned
                 # by pyinflect
                 # e.g. "bringed" instead of "brought"
-                elif not token.text == token._.inflect(token.tag_):
+                elif not token.text == correct_participle and \
+                        not token.text == correct_past_tense:
+                    errors.append(Error(token.text, token.idx, self.name))
+        return errors
+
+
+class PassiveWithIncorrectParticipleCheck(RuleBasedGrammarCheck):
+    """
+    Identifies incorrect verb forms, such as "bringed" and "writed".
+    """
+
+    name = GrammarError.PASSIVE_WITH_INCORRECT_PARTICIPLE.value
+
+    def check(self, doc: Doc) -> List[Error]:
+        errors = []
+        for token in doc:
+            # If the token is a participle
+            if token.tag_ == Tag.PAST_PARTICIPLE_VERB.value and \
+                    not token.tag_ == Tag.MODAL_VERB.value and \
+                    is_passive(token):
+
+                correct_participle = token._.inflect(token.tag_)
+                correct_past_tense = token._.inflect(Tag.SIMPLE_PAST_VERB.value)
+
+                # If pyinflect does not return a verb form because it
+                # does not know the lemma
+                # e.g. "cutted" has unknown lemma "cutte"
+                if not correct_participle:
+                    errors.append(Error(token.text, token.idx, self.name))
+
+                # If the verb form is not the same as the one returned
+                # by pyinflect
+                # e.g. "bringed" instead of "brought"
+                elif not token.text == correct_participle and \
+                        not token.text == correct_past_tense:
                     errors.append(Error(token.text, token.idx, self.name))
         return errors
 
@@ -544,6 +611,24 @@ class SubjectVerbAgreementErrorCheck(RuleBasedGrammarCheck):
 # Collective grammar checks
 
 
+class SubjectVerbAgreementWithCollectiveNounCheck(RuleBasedGrammarCheck):
+
+    name = GrammarError.SVA_COLLECTIVE_NOUN.value
+
+    def check(self, doc: Doc) -> List[Error]:
+        errors = []
+        for token in doc:
+            # If not third person singular
+            if token.tag_ == Tag.PRESENT_OTHER_VERB.value or token.text.lower() == "were":
+                subject = agreement.get_subject(token)
+                if subject is not None and subject.text.lower() in TokenSet.COLLECTIVE_NOUNS.value:
+                    errors.append(Error(token.text,
+                                        token.idx,
+                                        self.name))
+
+        return errors
+
+
 class RuleBasedGrammarChecker(object):
     """
     A grammar checker that performs all rule-based checks defined above.
@@ -570,12 +655,15 @@ class RuleBasedGrammarChecker(object):
             SingularPluralNounCheck(),
             CapitalizationCheck(),
             ContractionCheck(),
-            VerbTenseCheck(),
+            IncorrectIrregularPastTenseCheck(),
+            IncorrectParticipleCheck(),
+            PassiveWithIncorrectParticipleCheck(),
             PunctuationCheck(),
             IrregularPluralNounsCheck(),
             FragmentErrorCheck(),
             PossessivePronounsErrorCheck(),
-            SubjectVerbAgreementErrorCheck()
+            SubjectVerbAgreementErrorCheck(),
+            SubjectVerbAgreementWithCollectiveNounCheck()
             ]
 
         error_list = list(map(lambda x: x(doc), grammar_checks))
@@ -590,12 +678,17 @@ class SpaCyGrammarChecker:
     grammar error checking with spaCy.
     """
 
-    def __init__(self, model_path: str):
-        self.model = spacy.load(model_path)
-        # Replace the NER pipe of our model by spaCy's standard NER pipe.
-        base_spacy = spacy.load(BASE_SPACY_MODEL)
-        self.model.add_pipe(base_spacy.get_pipe("ner"), 'base_ner',
-                            before="ner")
+    def __init__(self, model_paths: List[str]):
+        if len(model_paths) > 0:
+            self.model = spacy.load(model_paths[0])
+
+            # Replace the NER pipe of our model by spaCy's standard NER pipe.
+            base_spacy = spacy.load(BASE_SPACY_MODEL)
+            self.model.add_pipe(base_spacy.get_pipe("ner"), 'base_ner',
+                                before="ner")
+        if len(model_paths) > 1:
+            self.alternative_models = [spacy.load(model) for model in model_paths]
+
         self.rule_based_checker = RuleBasedGrammarChecker()
 
     def check(self, sentence: str) -> List[Error]:
@@ -613,7 +706,7 @@ class SpaCyGrammarChecker:
         doc = self.model(sentence)
 
         # Get rule-based errors
-        errors = self.rule_based_checker(doc)
+        errors = self.rule_based_checker.check(doc)
 
         # Add statistical errors
         for token in doc:
@@ -625,6 +718,16 @@ class SpaCyGrammarChecker:
                                     statistical_error_map.get(token.ent_type_,
                                                               token.ent_type_))
                               )
+
+        for model in self.alternative_models:
+            alternative_doc = model(sentence)
+            for token in alternative_doc:
+                if token.ent_type_:
+                    errors.append(Error(token.text,
+                                        token.idx,
+                                        statistical_error_map.get(token.ent_type_,
+                                                                  token.ent_type_))
+                                  )
 
         return errors
 
@@ -686,3 +789,4 @@ class BertGrammarChecker:
         stat_errors = [Error("", 0, statistical_error_map[e]) for e in stat_errors if e in statistical_error_map]
 
         return rule_errors + stat_errors
+
