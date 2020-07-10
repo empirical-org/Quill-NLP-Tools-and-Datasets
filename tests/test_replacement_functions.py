@@ -1,8 +1,5 @@
-import spacy
-
 from quillnlp.grammar.corpus import replace_adverb_by_adjective, get_adjective_for_adverb, replace
-
-nlp = spacy.load("en")
+from quillnlp.grammar.spacy import nlp
 
 
 def test_adv_by_adj_replacement():

@@ -1,12 +1,9 @@
-import csv
-import requests
 import ndjson
-
-from private import BING_URL, BING_KEY
 
 from collections import Counter
 
 from quillnlp.grammar.grammarcheck import SpaCyGrammarChecker, BertGrammarChecker
+from quillnlp.spelling.bing import correct_sentence_with_bing
 
 
 error_map = {"WOMAN": "Woman versus women",
@@ -24,35 +21,6 @@ error_map = {"WOMAN": "Woman versus women",
              "Subject-verb agreement (rule)": "Subject-verb agreement",
              "Subject-verb agreement (stats)": "Subject-verb agreement",
              }
-
-
-def correct_sentence_with_bing(sentence):
-    data = {'text': sentence}
-
-    params = {
-        'mkt': 'en-us',
-        'mode': 'proof'
-    }
-
-    headers = {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Ocp-Apim-Subscription-Key': BING_KEY,
-    }
-
-    response = requests.post(BING_URL, headers=headers, params=params, data=data).json()
-    print(response)
-
-    corrections = []
-    for error in response["flaggedTokens"]:
-        if len(error["suggestions"]) > 0:
-            corrections.append((error["offset"], error["token"], error["suggestions"][0]["suggestion"]))
-
-    corrections.sort(reverse=True)
-
-    for offset, token, replacement in corrections:
-        sentence = sentence[:offset] + replacement + sentence[offset+len(token):]
-
-    return sentence
 
 
 def test_fragment():

@@ -1,9 +1,7 @@
-import spacy
 from spacy.gold import biluo_tags_from_offsets
 
 from quillnlp.grammar import corpus
-
-nlp = spacy.load("en")
+from quillnlp.grammar.spacy import nlp
 
 
 def test_possessive_replacement1():
