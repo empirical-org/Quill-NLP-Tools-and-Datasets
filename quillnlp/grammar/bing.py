@@ -1,11 +1,9 @@
 import re
 import difflib
 
-import spacy
-
 from quillnlp.grammar.constants import GrammarError
+from quillnlp.grammar.spacy import nlp
 
-nlp = spacy.load("en")
 
 START_INSERT = "<ins>"
 END_INSERT = "</ins>"
