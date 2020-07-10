@@ -54,4 +54,4 @@ contains sentences _without_ the grammar error.
 The `training` and `validated` data are versioned and stored in the
 Google cloud bucket `quill-ml-datasets`. The easiest way to use
 this data is to pull this repository from Github and then to `dvc pull`
-the data into this `data` directory.  
+the data into this `data` directory.
