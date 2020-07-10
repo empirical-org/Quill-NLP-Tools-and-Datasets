@@ -143,7 +143,7 @@ def create_corpus(corpus_dir):
     with open("notw_us_sources.json") as i:
         id2source = json.load(i)
 
-    train_length = 100000
+    train_length = 10000000
     test_size = 1000
 
     #error_generator = perfect.PerfectProgressiveWithIncorrectBeAndWithoutHaveErrorGenerator()
@@ -152,7 +152,8 @@ def create_corpus(corpus_dir):
     #error_generator = passive.PassivePastTenseAsParticipleErrorGenerator()
     #error_generator = passive.PassiveWithoutBeErrorGenerator()
     #error_generator = agreement.IncorrectThirdPersonErrorGenerator()
-    #error_generator = agreement.SubjectVerbAgreementWithSimpleNoun()
+    error_generator = agreement.SubjectVerbAgreementErrorGenerator()
+    #error_generator = agreement.SubjectVerbAgreement()
     #error_generator = agreement.SubjectVerbAgreementWithPronounErrorGenerator()
     #error_generator = agreement.SubjectVerbAgreementWithInversionErrorGenerator()
     #error_generator = perfect.PerfectProgressiveWithoutHaveErrorGenerator()

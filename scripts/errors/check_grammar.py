@@ -12,7 +12,7 @@ from collections import defaultdict
 from tqdm import tqdm
 
 from quillnlp.utils import detokenize
-
+from private import BING_KEY, BING_URL
 
 PERFECT_TENSE_USER_API_KEY = ""
 PERFECT_TENSE_APP_KEY = ""
@@ -28,8 +28,6 @@ LANGUAGE_TOOL_LANGUAGE = "en-US"
 LANGUAGE_TOOL_URL = f"http://{LANGUAGETOOL_IP}:{LANGUAGETOOL_PORT}/v2/check?language={LANGUAGE_TOOL_LANGUAGE}&text="
 LANGUAGETOOL_ONLINE_URL = "https://languagetool.org/api/v2/check"
 
-BING_URL = "https://api.cognitive.microsoft.com/bing/v7.0/SpellCheck"
-BING_KEY = "8ffda39ba2504a18aa938ff9b44d780d"
 
 def run_perfect_tense(sentence):
 

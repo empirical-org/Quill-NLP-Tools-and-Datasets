@@ -1,125 +1,232 @@
 import spacy
 from quillnlp.grammar.grammarcheck import GrammarError, SpaCyGrammarChecker
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, precision_recall_fscore_support
 from sklearn.preprocessing import MultiLabelBinarizer
+
+from quillnlp.grammar.unsupervised import UnsupervisedGrammarChecker
 
 CORRECT_LABEL = "Correct"
 
-files = {
-    GrammarError.INCORRECT_IRREGULAR_PAST_TENSE.value: {
-        "positive": "data/validated/verb_errors/incorrect-irregular-past-tense-positive.txt",
-        "negative": "data/validated/verb_errors/incorrect-irregular-past-tense-negative.txt"
+files = [
+    {
+        "error": GrammarError.INCORRECT_IRREGULAR_PAST_TENSE.value,
+        "positive": "data/validated/grammar_errors/incorrect-irregular-past-tense-positive.txt",
+        "negative": "data/validated/grammar_errors/incorrect-irregular-past-tense-negative.txt"
     },
-    GrammarError.SVA_COLLECTIVE_NOUN.value: {
-        "positive": "data/validated/verb_errors/subject-verb-agreement-with-collective-noun-positive.txt",
-        "negative": "data/validated/verb_errors/subject-verb-agreement-with-collective-noun-negative.txt"
+#    {
+#        "error": GrammarError.SVA_COLLECTIVE_NOUN.value,
+#        "positive": "data/validated/grammar_errors/subject-verb-agreement-with-collective-noun-positive.txt",
+#        "negative": "data/validated/grammar_errors/subject-verb-agreement-with-collective-noun-negative.txt"
+#    },
+    {
+        "error": GrammarError.MAN_MEN.value,
+        "positive": "data/validated/grammar_errors/man-men-positive.txt",
+        "negative": "data/validated/grammar_errors/man-men-negative.txt"
     },
-    GrammarError.MAN_MEN.value: {
-        "positive": "data/validated/verb_errors/man-men-positive.txt",
-        "negative": "data/validated/verb_errors/man-men-negative.txt"
+    {
+        "error": GrammarError.WOMAN_WOMEN.value,
+        "positive": "data/validated/grammar_errors/woman-women-positive.txt",
+        "negative": "data/validated/grammar_errors/woman-women-negative.txt"
     },
-    GrammarError.WOMAN_WOMEN.value: {
-        "positive": "data/validated/verb_errors/woman-women-positive.txt",
-        "negative": "data/validated/verb_errors/woman-women-negative.txt"
+    {
+        "error": GrammarError.CAPITALIZATION.value,
+        "positive": "data/validated/grammar_errors/capitalization-positive.txt",
+        "negative": "data/validated/grammar_errors/capitalization-negative.txt"
     },
-    GrammarError.CAPITALIZATION.value: {
-        "positive": "data/validated/verb_errors/capitalization-positive.txt",
-        "negative": "data/validated/verb_errors/capitalization-negative.txt"
+    {
+        "error": GrammarError.REPEATED_WORD.value,
+        "positive": "data/validated/grammar_errors/repeated-word-positive.txt",
+        "negative": "data/validated/grammar_errors/repeated-word-negative.txt"
     },
-    GrammarError.REPEATED_WORD.value: {
-        "positive": "data/validated/verb_errors/repeated-word-positive.txt",
-        "negative": "data/validated/verb_errors/repeated-word-negative.txt"
+    {
+        "error": GrammarError.QUESTION_MARK.value,
+        "positive": "data/validated/grammar_errors/question-mark-positive.txt",
+        "negative": "data/validated/grammar_errors/question-mark-negative.txt"
     },
-    GrammarError.QUESTION_MARK.value: {
-        "positive": "data/validated/verb_errors/question-mark-positive.txt",
-        "negative": "data/validated/verb_errors/question-mark-negative.txt"
+    {
+        "error": GrammarError.PLURAL_POSSESSIVE.value,
+        "positive": "data/validated/grammar_errors/plural-vs-possessive-positive.txt",
+        "negative": "data/validated/grammar_errors/plural-vs-possessive-negative.txt"
     },
-    GrammarError.PLURAL_POSSESSIVE.value: {
-        "positive": "data/validated/verb_errors/plural-vs-possessive-positive.txt",
-        "negative": "data/validated/verb_errors/plural-vs-possessive-negative.txt"
+    {
+        "error": GrammarError.COMMAS_IN_NUMBERS.value,
+        "positive": "data/validated/grammar_errors/commas-in-numbers-positive.txt",
+        "negative": "data/validated/grammar_errors/commas-in-numbers-negative.txt"
     },
-    GrammarError.COMMAS_IN_NUMBERS.value: {
-        "positive": "data/validated/verb_errors/commas-in-numbers-positive.txt",
-        "negative": "data/validated/verb_errors/commas-in-numbers-negative.txt"
+    {
+        "error": GrammarError.YES_NO_COMMA.value,
+        "positive": "data/validated/grammar_errors/commas-after-yes-no-positive.txt",
+        "negative": "data/validated/grammar_errors/commas-after-yes-no-negative.txt"
     },
-    GrammarError.YES_NO_COMMA.value: {
-        "positive": "data/validated/verb_errors/commas-after-yes-no-positive.txt",
-        "negative": "data/validated/verb_errors/commas-after-yes-no-negative.txt"
+    {
+        "error": GrammarError.SINGULAR_PLURAL.value,
+        "positive": "data/validated/grammar_errors/singular-plural-noun-positive.txt",
+        "negative": "data/validated/grammar_errors/singular-plural-noun-negative.txt"
     },
-    GrammarError.SINGULAR_PLURAL.value: {
-        "positive": "data/validated/verb_errors/singular-plural-noun-positive.txt",
-        "negative": "data/validated/verb_errors/singular-plural-noun-negative.txt"
+    {
+        "error": GrammarError.INCORRECT_PARTICIPLE.value,
+        "positive": "data/validated/grammar_errors/incorrect-participle-positive.txt",
+        "negative": "data/validated/grammar_errors/incorrect-participle-negative.txt"
     },
-    GrammarError.INCORRECT_PARTICIPLE.value: {
-        "positive": "data/validated/verb_errors/incorrect-participle-positive.txt",
-        "negative": "data/validated/verb_errors/incorrect-participle-negative.txt"
+    {
+        "error": GrammarError.PASSIVE_WITH_INCORRECT_PARTICIPLE.value,
+        "positive": "data/validated/grammar_errors/passive-with-incorrect-participle-positive.txt",
+        "negative": "data/validated/grammar_errors/passive-with-incorrect-participle-negative.txt"
     },
-    GrammarError.PASSIVE_WITH_INCORRECT_PARTICIPLE.value: {
-        "positive": "data/validated/verb_errors/passive-with-incorrect-participle-positive.txt",
-        "negative": "data/validated/verb_errors/passive-with-incorrect-participle-negative.txt"
+    {
+        "error": GrammarError.THAN_THEN.value,
+        "positive": "data/validated/grammar_errors/than-then-positive.txt",
+        "negative": "data/validated/grammar_errors/than-then-negative.txt"
     },
-    GrammarError.THAN_THEN.value: {
-        "positive": "data/validated/verb_errors/than-then-positive.txt",
-        "negative": "data/validated/verb_errors/than-then-negative.txt"
+    {
+        "error": GrammarError.PERFECT_TENSE_WITHOUT_HAVE.value,
+        "positive": "data/validated/grammar_errors/perfect-without-have-positive.txt",
+        "negative": "data/validated/grammar_errors/perfect-without-have-negative.txt"
     },
-    GrammarError.PERFECT_TENSE_WITHOUT_HAVE.value: {
-        "positive": "data/validated/verb_errors/perfect-without-have-positive.txt",
-        "negative": "data/validated/verb_errors/perfect-without-have-negative.txt"
+    {
+        "error": GrammarError.VERB_SIMPLE_PAST_INSTEAD_OF_PAST_PERFECT.value,
+        "positive": "data/validated/grammar_errors/simple-past-instead-of-past-perfect-positive.txt",
+        "negative": "data/validated/grammar_errors/simple-past-instead-of-past-perfect-negative.txt"
     },
-    GrammarError.VERB_SIMPLE_PAST_INSTEAD_OF_PAST_PERFECT.value: {
-        "positive": "data/validated/verb_errors/simple-past-instead-of-past-perfect-positive.txt",
-        "negative": "data/validated/verb_errors/simple-past-instead-of-past-perfect-negative.txt"
+    {
+        "error": GrammarError.PERFECT_TENSE_WITH_SIMPLE_PAST.value,
+        "positive": "data/validated/grammar_errors/past-tense-instead-of-participle-positive.txt",
+        "negative": "data/validated/grammar_errors/past-tense-instead-of-participle-negative.txt"
     },
-    GrammarError.PERFECT_TENSE_WITH_SIMPLE_PAST.value: {
-        "positive": "data/validated/verb_errors/past-tense-instead-of-participle-positive.txt",
-        "negative": "data/validated/verb_errors/past-tense-instead-of-participle-negative.txt"
+    {
+        "error": GrammarError.PERFECT_PROGRESSIVE_WITHOUT_HAVE.value,
+        "positive": "data/validated/grammar_errors/perfect-progressive-without-have-positive.txt",
+        "negative": "data/validated/grammar_errors/perfect-progressive-without-have-negative.txt"
     },
-    GrammarError.PERFECT_PROGRESSIVE_WITHOUT_HAVE.value: {
-        "positive": "data/validated/verb_errors/perfect-progressive-without-have-positive.txt",
-        "negative": "data/validated/verb_errors/perfect-progressive-without-have-negative.txt"
+    {
+        "error": GrammarError.PERFECT_PROGRESSIVE_WITH_INCORRECT_BE_WITHOUT_HAVE.value,
+        "positive": "data/validated/grammar_errors/perfect-progressive-with-incorrect-be-and-without-have-positive.txt",
+        "negative": "data/validated/grammar_errors/perfect-progressive-with-incorrect-be-and-without-have-negative.txt"
     },
-    GrammarError.PERFECT_PROGRESSIVE_WITH_INCORRECT_BE_WITHOUT_HAVE.value: {
-        "positive": "data/validated/verb_errors/perfect-progressive-with-incorrect-be-and-without-have-positive.txt",
-        "negative": "data/validated/verb_errors/perfect-progressive-with-incorrect-be-and-without-have-negative.txt"
+    {
+        "error": GrammarError.PASSIVE_PERFECT_WITHOUT_HAVE.value,
+        "positive": "data/validated/grammar_errors/passive-perfect-without-have-positive.txt",
+        "negative": "data/validated/grammar_errors/passive-perfect-without-have-negative.txt"
     },
-    GrammarError.PASSIVE_PERFECT_WITHOUT_HAVE.value: {
-        "positive": "data/validated/verb_errors/passive-perfect-without-have-positive.txt",
-        "negative": "data/validated/verb_errors/passive-perfect-without-have-negative.txt"
+    {
+        "error": GrammarError.PASSIVE_PERFECT_WITH_INCORRECT_PARTICIPLE.value,
+        "positive": "data/validated/grammar_errors/passive-perfect-with-incorrect-participle-positive.txt",
+        "negative": "data/validated/grammar_errors/passive-perfect-with-incorrect-participle-negative.txt"
     },
-    GrammarError.PASSIVE_PERFECT_WITH_INCORRECT_PARTICIPLE.value: {
-        "positive": "data/validated/verb_errors/passive-perfect-with-incorrect-participle-positive.txt",
-        "negative": "data/validated/verb_errors/passive-perfect-with-incorrect-participle-negative.txt"
+    {
+        "error": GrammarError.PASSIVE_WITHOUT_BE.value,
+        "positive": "data/validated/grammar_errors/passive-without-be-positive.txt",
+        "negative": "data/validated/grammar_errors/passive-without-be-negative.txt"
     },
-    GrammarError.PASSIVE_WITHOUT_BE.value: {
-        "positive": "data/validated/verb_errors/passive-without-be-positive.txt",
-        "negative": "data/validated/verb_errors/passive-without-be-negative.txt"
+    {
+        "error": GrammarError.PASSIVE_WITH_INCORRECT_BE.value,
+        "positive": "data/validated/grammar_errors/passive-with-incorrect-be-positive.txt",
+        "negative": "data/validated/grammar_errors/passive-with-incorrect-be-negative.txt"
     },
-    GrammarError.PASSIVE_WITH_INCORRECT_BE.value: {
-        "positive": "data/validated/verb_errors/passive-with-incorrect-be-positive.txt",
-        "negative": "data/validated/verb_errors/passive-with-incorrect-be-negative.txt"
+    {
+        "error": GrammarError.PASSIVE_PAST_TENSE_AS_PARTICIPLE.value,
+        "positive": "data/validated/grammar_errors/passive-with-simple-past-instead-of-participle-positive.txt",
+        "negative": "data/validated/grammar_errors/passive-with-simple-past-instead-of-participle-negative.txt"
     },
-    GrammarError.PASSIVE_INCORRECT_PAST_TENSE_AS_PARTICIPLE.value: {
-        "positive": "data/validated/verb_errors/passive-with-simple-past-instead-of-participle-positive.txt",
-        "negative": "data/validated/verb_errors/passive-with-simple-past-instead-of-participle-negative.txt"
+    {
+        "error": GrammarError.SVA_SIMPLE_NOUN.value,
+        "positive": "data/validated/grammar_errors/subject-verb-agreement-with-simple-noun-positive.txt",
+        "negative": "data/validated/grammar_errors/subject-verb-agreement-with-simple-noun-negative.txt"
     },
-    GrammarError.SVA_SIMPLE_NOUN.value: {
-        "positive": "data/validated/verb_errors/subject-verb-agreement-with-simple-noun-positive.txt",
-        "negative": "data/validated/verb_errors/subject-verb-agreement-with-simple-noun-negative.txt"
+    {
+        "error": GrammarError.SVA_PRONOUN.value,
+        "positive": "data/validated/grammar_errors/subject-verb-agreement-with-pronoun-positive.txt",
+        "negative": "data/validated/grammar_errors/subject-verb-agreement-with-pronoun-negative.txt"
     },
-    GrammarError.SVA_PRONOUN.value: {
-        "positive": "data/validated/verb_errors/subject-verb-agreement-with-pronoun-positive.txt",
-        "negative": "data/validated/verb_errors/subject-verb-agreement-with-pronoun-negative.txt"
+    {
+        "error": GrammarError.CONTRACTION.value,
+        "positive": "data/validated/grammar_errors/contraction-positive.txt",
+        "negative": "data/validated/grammar_errors/contraction-negative.txt"
+    },
+    {
+        "error": GrammarError.PUNCTUATION.value,
+        "positive": "data/validated/grammar_errors/punctuation-positive.txt",
+        "negative": "data/validated/grammar_errors/punctuation-negative.txt"
+    },
+    {
+        "error": GrammarError.ARTICLE.value,
+        "positive": "data/validated/grammar_errors/article-positive.txt",
+        "negative": "data/validated/grammar_errors/article-negative.txt"
+    },
+    {
+        "error": GrammarError.IRREGULAR_PLURAL_NOUN.value,
+        "positive": "data/validated/grammar_errors/irregular-plural-nouns-positive.txt",
+        "negative": "data/validated/grammar_errors/irregular-plural-nouns-negative.txt"
+    },
+    {
+        "error": GrammarError.SVA_INVERSION.value,
+        "positive": "data/validated/grammar_errors/subject-verb-agreement-with-inversion-positive.txt",
+        "negative": "data/validated/grammar_errors/subject-verb-agreement-with-inversion-negative.txt"
+    },
+    {
+        "error": GrammarError.SVA_INDEFINITE.value,
+        "positive": "data/validated/grammar_errors/subject-verb-agreement-with-indefinite-pronoun-positive.txt",
+        "negative": "data/validated/grammar_errors/subject-verb-agreement-with-indefinite-pronoun-negative.txt"
+    },
+    {
+        "error": GrammarError.SPACING.value,
+        "positive": "data/validated/grammar_errors/spacing-positive.txt",
+        "negative": "data/validated/grammar_errors/spacing-negative.txt"
+    },
+    {
+        "error": GrammarError.SUBJECT_PRONOUN.value,
+        "positive": "data/validated/grammar_errors/subject-pronouns-positive.txt",
+        "negative": "data/validated/grammar_errors/subject-pronouns-negative.txt"
+    },
+    {
+        "error": GrammarError.OBJECT_PRONOUN.value,
+        "positive": "data/validated/grammar_errors/object-pronouns-positive.txt",
+        "negative": "data/validated/grammar_errors/object-pronouns-negative.txt"
+    },
+    {
+        "error": GrammarError.POSSESSIVE_PRONOUN.value,
+        "positive": "data/validated/grammar_errors/possessive-pronouns-positive.txt",
+        "negative": "data/validated/grammar_errors/possessive-pronouns-negative.txt"
     }
-}
+#        {
+#        "error": GrammarError.SVA_SEPARATE.value,
+#        "positive": "data/validated/grammar_errors/subject-verb-agreement-with-separate-subject-and-verb-positive.txt",
+#        "negative": "data/validated/grammar_errors/subject-verb-agreement-with-separate-subject-and-verb-negative.txt"
+#    }
+]
+"""
+files = [
+    {
+        "error": GrammarError.SVA_SIMPLE_NOUN.value,
+        "positive": "data/validated/grammar_errors/subject-verb-agreement-with-simple-noun-positive.txt",
+        "negative": "data/validated/grammar_errors/subject-verb-agreement-with-simple-noun-negative.txt"
+    },
+    {
+        "error": GrammarError.SVA_PRONOUN.value,
+        "positive": "data/validated/grammar_errors/subject-verb-agreement-with-pronoun-positive.txt",
+        "negative": "data/validated/grammar_errors/subject-verb-agreement-with-pronoun-negative.txt"
+    },
+    {
+        "error": GrammarError.SVA_INVERSION.value,
+        "positive": "data/validated/grammar_errors/subject-verb-agreement-with-inversion-positive.txt",
+        "negative": "data/validated/grammar_errors/subject-verb-agreement-with-inversion-negative.txt"
+    },
+    {
+        "error": GrammarError.SVA_INDEFINITE.value,
+        "positive": "data/validated/grammar_errors/subject-verb-agreement-with-indefinite-pronoun-positive.txt",
+        "negative": "data/validated/grammar_errors/subject-verb-agreement-with-indefinite-pronoun-negative.txt"
+    }
+]
+"""
 
-
-def evaluate(checker, error_label, verbose=False):
+def evaluate(checker, error, verbose=False):
 
     predicted_labels = []
     correct_labels = []
 
-    f_pos = files[error_label]["positive"]
-    f_neg = files[error_label]["negative"]
+    error_label = error["error"]
+    f_pos = error["positive"]
+    f_neg = error["negative"]
 
     with open(f_pos) as i:
         positive_sentences = [line.strip() for line in i]
@@ -168,14 +275,18 @@ def evaluate(checker, error_label, verbose=False):
     print("Accuracy:", (tp + tn)/(len(positive_sentences + negative_sentences)))
     return predicted_labels, correct_labels
 
-
-checker = SpaCyGrammarChecker(["models/spacy_grammar", "models/spacy_grammar_verbs2/"])
+print("Initializing GrammarChecker")
+#checker = SpaCyGrammarChecker(["models/spacy_grammar", "models/spacy_grammar_verbs2/"])
+#checker = SpaCyGrammarChecker(["models/spacy_grammar", "/tmp/grammar_vfg_all3", "/tmp/spacy_sva"])
+#checker = SpaCyGrammarChecker(["models/spacy_sva", "models/spacy_grammar",  "models/spacy_3p"])
+checker = SpaCyGrammarChecker(["models/spacy_sva_xl", "models/spacy_grammar",  "models/spacy_3p"])
+#checker = SpaCyGrammarChecker(["models/spacy_sva_xl"])
+#checker = UnsupervisedGrammarChecker()
 
 global_predicted_labels = []
 global_correct_labels = []
-for error_label in files:
-#for error_label in [GrammarError.CAPITALIZATION.value]:
-    new_predicted_labels, new_correct_labels = evaluate(checker, error_label, verbose=True)
+for error in files:
+    new_predicted_labels, new_correct_labels = evaluate(checker, error, verbose=True)
     global_predicted_labels.extend(new_predicted_labels)
     global_correct_labels.extend(new_correct_labels)
 
@@ -186,6 +297,13 @@ global_predicted_labels_binary = mlb.transform(global_predicted_labels)
 
 print(classification_report(global_correct_labels_binary,
                             global_predicted_labels_binary, target_names=mlb.classes_))
+
+p, r, f1, s = precision_recall_fscore_support(global_correct_labels_binary, global_predicted_labels_binary, beta=0.5)
+rows = zip(mlb.classes_, p, r, f1, s)
+
+for row in rows:
+    print(row)
+
 
 confusion_matrix = {}
 for label in mlb.classes_:
