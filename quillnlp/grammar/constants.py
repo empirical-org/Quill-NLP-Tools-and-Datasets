@@ -52,6 +52,7 @@ POSSIBLE_POS_IN_NOUN_PHRASE = set([POS.NOUN.value, POS.ADJECTIVE.value,
 class Dependency(Enum):
     SUBJECT = "nsubj"
     PASS_SUBJECT = "nsubjpass"
+    CLAUSAL_SUBJECT = "csubj"
     PASS_AUXILIARY = "auxpass"
     COMPOUND = "compound"
     AUX = "aux"
@@ -59,6 +60,9 @@ class Dependency(Enum):
     CONJUNCTION = "conj"
     DETERMINER = "det"
     ADVERBIAL_CLAUSE = "advcl"
+    ATTRIBUTE = "attr"
+    CCOMP = "ccomp"
+    EXPLETIVE = "expl"
 
 
 class EntityType(Enum):
@@ -87,10 +91,14 @@ class Word(Enum):
 class TokenSet(Enum):
     PUNCTUATION_FOLLOWED_BY_SPACE = set([".", "!", "?", ")", ";", ":", ","])
     PUNCTUATION_NOT_PRECEDED_BY_SPACE = set([".", "!", "?", ")", ";", ":", ","])
-    END_OF_SENTENCE_PUNCTUATION = set([".", "!", "?"])
+    END_OF_SENTENCE_PUNCTUATION = set([".", "!", "?", '"', '”'])
+    CLOSING_QUOTATION_MARKS = set(['"', '”'])
+    SINGULAR_DETERMINERS = set(["every", "none", "nothing", "each", "another", "one", "little",
+                                "much"])
     INDEF_PRONOUNS = set(["every", "none", "all", "nothing", "some", "each", "any", "another",
-                          "anybody", "anything", "somebody", "other", "enough", "everyone", "everything",
-                          "something", "one", "less", "little", "much", "nobody", "both", "few",
+                          "anybody", "anyone", "anything", "somebody", "other", "enough", "everyone",
+                          "everybody", "everything", "something", "one", "less", "little", "much",
+                          "nobody", "both", "few", "someone", "one",
                           "fewer", "many", "others", "several", "more", "such", "most", "nowhere", "everywhere"])
     DEMONSTRATIVES = set([Word.THIS.value, Word.THAT.value, Word.THOSE.value, Word.THESE.value])
     # we include "i." in the subject pronouns, because spaCy often
@@ -102,14 +110,19 @@ class TokenSet(Enum):
     POSSESSIVE_PRONOUNS = set(["mine", "yours", "hers", "his", "ours", "theirs"])
     YES_NO = set(["yes", "no"])
     INCORRECT_CONTRACTIONS = set(["im", "youre", "hes", "shes", "theyre",
-                                  "dont", "didnt", "wont"])
-    CONTRACTED_VERBS_WITHOUT_APOSTROPHE = set(["m", "re", "s", "nt"])
+                                  "dont", "didnt", "wont", "id", "youd", "hed",
+                                  "theyd", "youll", "theyll", "shell"])
+    CONTRACTED_VERBS_WITHOUT_APOSTROPHE = set(["m", "re", "s", "nt", "ll", "d", "ve"])
     # The words in the irregular plural blacklist have their own error
     # type or given an incorrect plural with pyinflect (brother=>brethren)
     IRREGULAR_PLURAL_BLACKLIST = set(["mans", "womans", "brothers"])
     POSSESSIVE_S = set(["’s", "'s", "´s"])
-    INCORRECT_POSSESSIVE_PRONOUNS = set(["thier's", "thiers", "them's", "yous",
-                                         "hims", "our's", "their's", "your's"])
+    INCORRECT_POSSESSIVE_PRONOUNS = set(["i's", "me's",
+                                         "yous", "you's", "your's",
+                                         "him's", "hims", "hes", "his's"
+                                         "her's", "shes",
+                                         "wes", "we's", "us's", "our's",
+                                         "their's", "them's", "thems", "their's", "thiers"])
     COLLECTIVE_NOUNS = set(["group", "flock", "herd", "team", "pair", "choir", "family",
                             "mob", "line", "queue", "crew", "troop", "swarm", "bunch",
                             "circle", "troupe", "committee", "assembly", "senate", "council",
@@ -146,8 +159,8 @@ class GrammarError(Enum):
     ITS_IT_S = "Its versus it's"
     PUNCTUATION = "Punctuation"
     ADVERB = "Adverbs versus adjectives"
-    SUBJECT_VERB_AGREEMENT_STATS = "Subject-verb agreement (stats)"
-    SUBJECT_VERB_AGREEMENT_RULE = "Subject-verb agreement (rule)"
+    SUBJECT_VERB_AGREEMENT_STATS = "Subject_verb agreement (stats)"
+    SUBJECT_VERB_AGREEMENT_RULE = "Subject_verb agreement (rule)"
     SUBJECT_VERB_AGREEMENT = "Subject-verb agreement"
     IRREGULAR_PLURAL_NOUN = "Irregular plural nouns"
     FRAGMENT = "Fragment"
@@ -178,3 +191,4 @@ class GrammarError(Enum):
     SVA_EITHER_OR = "Subject_verb agreement with either_or"
     SVA_COLLECTIVE_NOUN = "Subject_verb agreement with collective noun"
     SVA_INDEFINITE = "Subject_verb agreement with indefinite pronoun"
+    SVA_SEPARATE = "Subject_verb agreement with separate subject and verb"

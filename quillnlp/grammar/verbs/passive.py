@@ -5,13 +5,6 @@ from quillnlp.grammar.constants import GrammarError, Dependency, TokenSet, Tag
 from quillnlp.grammar.generation import ErrorGenerator
 
 
-def is_passive(verb):
-    for child in verb.lefts:
-        if child.dep_ == Dependency.PASS_AUXILIARY.value:
-            return True
-    return False
-
-
 # Error generators
 
 class PassiveWithIncorrectBeErrorGenerator(ErrorGenerator):

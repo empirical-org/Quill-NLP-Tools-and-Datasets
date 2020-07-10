@@ -204,7 +204,7 @@ def evaluate_ner(data, model, test_file, verbose=False):
 
 def train_spacy_ner(train_data, dev_data, test_data, output_dir, test_file, n_iter=20, patience=2):
 
-    nlp = spacy.blank("en")  # create blank Language class
+    nlp = spacy.load("en")  # create blank Language class
 
     # create the built-in pipeline components and add them to the pipeline
     # nlp.create_pipe works for built-ins that are registered with spaCy

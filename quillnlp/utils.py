@@ -2,10 +2,7 @@ import re
 
 from typing import List, Generator, Dict
 
-import spacy
-
-
-nlp = spacy.load("en")
+from quillnlp.grammar.spacy import nlp
 
 
 def detokenize(text: str) -> str:

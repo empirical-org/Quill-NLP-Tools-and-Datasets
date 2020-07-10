@@ -1,37 +1,8 @@
 import re
-import pyinflect
 
 from quillnlp.grammar.constants import GrammarError, Tag, Dependency
 from quillnlp.grammar.generation import ErrorGenerator
-from quillnlp.grammar.verbs.passive import is_passive
-
-
-def get_perfect_progressives(doc):
-    perfect_progressives = []
-    for token in doc:
-        if token.tag_ == Tag.PRESENT_PARTICIPLE_VERB.value:
-            have, been = 0, 0
-            for token2 in token.lefts:
-                if token2.lemma_ == "have":
-                    have = 1
-                elif token2.text == "been" and have:
-                    been = 1
-            if have and been:
-                perfect_progressives.append(token)
-
-    return perfect_progressives
-
-
-def in_have_been_construction(token):
-    have, been = 0, 0
-    for token2 in token.lefts:
-        if token2.lemma_ == "have":
-            have = 1
-        elif token2.text == "been" and have:
-            been = 1
-    if have and been:
-        return True
-    return False
+from quillnlp.grammar.verbutils import get_perfect_progressives, in_have_been_construction, is_passive
 
 
 class PerfectTenseWithoutHaveErrorGenerator(ErrorGenerator):
