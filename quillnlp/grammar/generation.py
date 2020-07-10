@@ -1,7 +1,7 @@
-import spacy
 from spacy.tokens.token import Token
 
-nlp = spacy.load("en")
+from quillnlp.grammar.spacy import nlp
+
 Token.set_extension("replace", default=None)
 
 

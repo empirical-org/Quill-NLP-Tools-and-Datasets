@@ -1,8 +1,8 @@
 import random
 
-import spacy
-
 from collections import defaultdict, Counter
+
+from quillnlp.grammar.spacy import nlp
 
 
 def find_ngrams(input_list, n):
@@ -134,8 +134,6 @@ def augment_data(texts, prompt="", n_iter=5):
 
     Returns: The list containing the augmented review
     """
-    model = "en_core_web_sm"
-    nlp = spacy.load(model)
 
     pos2tokens = compute_pos_stats(nlp, texts)
 
