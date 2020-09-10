@@ -1,9 +1,10 @@
 import spacy
+import time
 from quillnlp.grammar.grammarcheck import GrammarError, SpaCyGrammarChecker
 from sklearn.metrics import classification_report, precision_recall_fscore_support
 from sklearn.preprocessing import MultiLabelBinarizer
 
-from quillnlp.grammar.unsupervised import UnsupervisedGrammarChecker
+from quillnlp.grammar.unsupervised import UnsupervisedGrammarChecker2, UnsupervisedGrammarChecker
 
 CORRECT_LABEL = "Correct"
 
@@ -194,7 +195,7 @@ files = [
 #        "negative": "data/validated/grammar_errors/subject-verb-agreement-with-separate-subject-and-verb-negative.txt"
 #    }
 ]
-"""
+
 files = [
     {
         "error": GrammarError.SVA_SIMPLE_NOUN.value,
@@ -215,9 +216,53 @@ files = [
         "error": GrammarError.SVA_INDEFINITE.value,
         "positive": "data/validated/grammar_errors/subject-verb-agreement-with-indefinite-pronoun-positive.txt",
         "negative": "data/validated/grammar_errors/subject-verb-agreement-with-indefinite-pronoun-negative.txt"
+    },
+    {
+        "error": GrammarError.THAN_THEN.value,
+        "positive": "data/validated/grammar_errors/than-then-positive.txt",
+        "negative": "data/validated/grammar_errors/than-then-negative.txt"
+    },
+    {
+        "error": GrammarError.OBJECT_PRONOUN.value,
+        "positive": "data/validated/grammar_errors/object-pronouns-positive.txt",
+        "negative": "data/validated/grammar_errors/object-pronouns-negative.txt"
+    },
+    {
+        "error": GrammarError.SUBJECT_PRONOUN.value,
+        "positive": "data/validated/grammar_errors/subject-pronouns-positive.txt",
+        "negative": "data/validated/grammar_errors/subject-pronouns-negative.txt"
+    },
+    {
+        "error": GrammarError.ARTICLE.value,
+        "positive": "data/validated/grammar_errors/article-positive.txt",
+        "negative": "data/validated/grammar_errors/article-negative.txt"
+    },
+    {
+        "error": GrammarError.PASSIVE_WITH_INCORRECT_BE.value,
+        "positive": "data/validated/grammar_errors/passive-with-incorrect-be-positive.txt",
+        "negative": "data/validated/grammar_errors/passive-with-incorrect-be-negative.txt"
+    },
+    {
+        "error": GrammarError.QUESTION_MARK.value,
+        "positive": "data/validated/grammar_errors/question-mark-positive.txt",
+        "negative": "data/validated/grammar_errors/question-mark-negative.txt"
+    },
+    {
+        "error": GrammarError.PASSIVE_WITH_INCORRECT_BE.value,
+        "positive": "data/validated/grammar_errors/passive-with-incorrect-be-positive.txt",
+        "negative": "data/validated/grammar_errors/passive-with-incorrect-be-negative.txt"
     }
 ]
-"""
+
+files = [
+    {
+        "error": GrammarError.PASSIVE_PERFECT_WITH_INCORRECT_PARTICIPLE.value,
+        "positive": "data/validated/grammar_errors/passive-perfect-with-incorrect-participle-positive.txt",
+        "negative": "data/validated/grammar_errors/passive-perfect-with-incorrect-participle-negative.txt"
+    }
+]
+
+
 
 def evaluate(checker, error, verbose=False):
 
@@ -237,7 +282,11 @@ def evaluate(checker, error, verbose=False):
     tp, tn, fp, fn = 0, 0, 0, 0
     for sentence in positive_sentences:
         correct_labels.append([error_label])
+        start = time.time()
         errors = checker.check(sentence)
+        end = time.time()
+        t = end-start
+        print(f"{t} seconds")
         error_types = set([e.type for e in errors])
         if len(error_types) > 0:
             predicted_labels.append(list(error_types))

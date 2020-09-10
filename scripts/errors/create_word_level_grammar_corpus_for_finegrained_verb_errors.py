@@ -179,7 +179,6 @@ def create_corpus(corpus_dir):
     with open(output_file) as i:
         train_data = ndjson.load(i)
 
-    train_data = [(x[0], {"entities": x[1]["entities"]}) for x in train_data]
     random.shuffle(train_data)
 
     test_data = train_data[-test_size:]

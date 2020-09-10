@@ -8,7 +8,7 @@ import glob
 import zipfile
 
 from tqdm import tqdm
-from quillnlp.grammar.corpus import replace
+from quillnlp.grammar.corpus import replace, replace_its_vs_it_s, replace_plural_possessive
 
 
 def read_sources(corpus_dir):
@@ -33,10 +33,11 @@ US_SOURCES = set(["Yahoo News", "Huffington Post", "ABC News", "NPR", "Los Angel
                   "Washington Post", "New York Times", "USA TODAY", "Chicago Tribune",
                   "CNN", "New York Post", "Fox News", "CNBC", "CBS News"])
 
+
 @click.command()
 @click.argument('corpus_dir')
 @click.argument('output_file')
-@click.option('--error_ratio', default=1/4)
+@click.option('--error_ratio', default=1/2)
 def create_corpus(corpus_dir, output_file, error_ratio):
 
     files = glob.glob(os.path.join(corpus_dir, "*.zip"))
@@ -79,13 +80,15 @@ def create_corpus(corpus_dir, output_file, error_ratio):
                                     text = text.replace(" 're", "'re")
                                     text = text.replace(" 've", "'ve")
                                     text = re.sub("([\(]) ", "\\1", text)
+                                    text = text.strip()
 
                                     doc = nlp(text)
 
                                     for sentence in doc.sents:
                                         if len(sentence) > 3 and "@" not in sentence.text:
 
-                                            synthetic_sentence, errors = replace(sentence, error_ratio)
+                                            #synthetic_sentence, errors = replace_its_vs_it_s(sentence, error_ratio)
+                                            synthetic_sentence, errors = replace_plural_possessive(sentence, error_ratio)
                                             if len(errors) > 0:
                                                 train_data.append({"orig_sentence": sentence.text.strip(),
                                                                    "synth_sentence": synthetic_sentence.strip(),

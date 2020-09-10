@@ -17,7 +17,7 @@ def train_grammar_model(output_file):
                  "data/training/Perfect_without_have.ndjson",
                  "data/training/Simple_past_instead_of_past_perfect.ndjson",
                  "data/training/Its_vs_it_s.ndjson",
-                 "Plural_vs_possessive.ndjson"]
+                 "data/training/Plural_vs_possessive.ndjson"]
 
     test_size = 10000
     train_data = []
@@ -31,6 +31,11 @@ def train_grammar_model(output_file):
                         train_data.append(json.loads(line.strip()))
 
     random.shuffle(train_data)
+
+    train_data = [x for x in train_data if len(x[1]["entities"]) > 0]
+    for x in train_data:
+        if "original" in x[1]:
+            del x[1]["original"]
 
     for x in train_data[:100]:
         print(x)
