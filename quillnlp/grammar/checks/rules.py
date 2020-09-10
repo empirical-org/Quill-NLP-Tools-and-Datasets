@@ -2,29 +2,29 @@ import re
 import lemminflect
 
 from typing import List
+from collections import namedtuple
 from lemminflect import getLemma
 
 from spacy.tokens.doc import Doc
 from spacy.tokens.token import Token
 
-from .verbs import agreement
-from .verbutils import is_passive, in_have_been_construction, \
-    get_past_tenses, has_inversion, get_subject
-from .constants import *
-from .utils import Error
-from .precedence import error_precedence
+from grammar.verbutils import has_noun_subject, has_pronoun_subject, is_passive, in_have_been_construction, \
+    get_past_tenses, has_inversion, get_subject, token_has_inversion, is_perfect
+from grammar.constants import *
+from grammar.utils import Error
 
 BASE_SPACY_MODEL = "en"
 
 Token.set_extension("grammar_errors", default=[])
 
-statistical_error_map = {"WOMAN": GrammarError.WOMAN_WOMEN.value,  # is now covered by the LM
+statistical_error_map = {"WOMAN": GrammarError.WOMAN_WOMEN.value,
                          "ITS": GrammarError.POSSESSIVE_PRONOUN.value,
-                         "THEN": GrammarError.THAN_THEN.value,  # is now covered by the LM
-                         "POSSESSIVE": GrammarError.PLURAL_POSSESSIVE.value,  # is now covered by the LM
-                         "CHILD": GrammarError.CHILD_CHILDREN.value,  # is now covered by the LM
+                         "THEN": GrammarError.THAN_THEN.value,
+                         "POSSESSIVE": GrammarError.PLURAL_POSSESSIVE.value,
+                         "CHILD": GrammarError.CHILD_CHILDREN.value,
                          "ADV": GrammarError.ADVERB.value}
                          #"VERB": GrammarError.SUBJECT_VERB_AGREEMENT.value}
+                         
 
 participles = {
     "wake": ["waken"], #pyinflect has "woke"
@@ -124,9 +124,9 @@ class RuleBasedPluralVsPossessiveCheck(RuleBasedGrammarCheck):
                      doc[i].pos_ == POS.PARTICIPLE.value) and \
                     doc[i-1].pos_ == POS.NOUN.value and \
                     (doc[i + 1].pos_ not in [POS.NOUN.value, POS.COORD_CONJ.value]):
-                errors.append(Error(doc[i].text, doc[i].idx, self.name, None))
+                errors.append(Error(doc[i].text, doc[i].idx, self.name))
 #            elif doc[i].tag_ == Tag.PLURAL_NOUN.value and doc[i+1].pos_ == POS.NOUN.value:
-#                errors.append(Error(doc[i].text, doc[i].idx, self.name, None))
+#                errors.append(Error(doc[i].text, doc[i].idx, self.name))
 
         return errors
 
@@ -147,16 +147,16 @@ class RuleBasedQuestionMarkCheck(RuleBasedGrammarCheck):
             #    errors.append(Error(doc[-1].text, doc[-1].idx, self.name, None))
             tags = set([t.tag_ for t in doc])
             if len(tags.intersection(QUESTION_WORD_TAGS)) > 0 and has_inversion(doc):
-                errors.append(Error(doc[-1].text, doc[-1].idx, self.name, None))
+                errors.append(Error(doc[-1].text, doc[-1].idx, self.name))
 
             # Cases like: Will he come home?
             elif doc[0].pos_ == POS.VERB.value and doc[0].dep_ == Dependency.AUX.value:
-                errors.append(Error(doc[-1].text, doc[-1].idx, self.name, None))
+                errors.append(Error(doc[-1].text, doc[-1].idx, self.name))
             # Cases like: Is he dead?
             elif doc[0].pos_ == POS.AUX.value:
-                subject = agreement.get_subject(doc[0])
+                subject = get_subject(doc[0])
                 if subject is not None and subject.i > 0:
-                    errors.append(Error(doc[-1].text, doc[-1].idx, self.name, None))
+                    errors.append(Error(doc[-1].text, doc[-1].idx, self.name))
             # Other cases where the subject follows its head
             else:  # change
                 for token in doc:
@@ -164,22 +164,13 @@ class RuleBasedQuestionMarkCheck(RuleBasedGrammarCheck):
                             token.i > token.head.i:
                         errors.append(Error(doc[-1].text,
                                             doc[-1].idx,
-                                            self.name,
-                                            None))
+                                            self.name))
                         break
                     # as soon as we meet a subject before we meet a verb,
                     # stop looking
                     elif token.dep_.startswith(Dependency.SUBJECT.value) and \
                             token.i < token.head.i:
                         break
-            """
-            elif doc[0].pos_ == POS.AUX.value and doc[0].dep_ == Dependency.ROOT.value:
-                errors.append(Error(doc[-1].text, doc[-1].idx, self.name, None))
-            # Cases like: Is Laura playing softball tomorrow?
-            elif doc[0].pos_ == POS.AUX.value and doc[0].dep_ == Dependency.AUX.value:
-                errors.append(Error(doc[-1].text, doc[-1].idx, self.name, None))
-            """
-
 
         return errors
 
@@ -199,12 +190,12 @@ class RuleBasedArticleCheck(RuleBasedGrammarCheck):
             if token.pos_ == POS.DETERMINER.value and \
                     token.text.lower() == Word.INDEF_ARTICLE_BEFORE_CONSONANT.value \
                     and self._starts_with_vowel(doc[token.i + 1].text):
-                errors.append(Error(token.text, token.idx, self.name, None))
+                errors.append(Error(token.text, token.idx, self.name))
             # if "an" before consonant
             elif token.pos_ == POS.DETERMINER.value and \
                     token.text.lower() == Word.INDEF_ARTICLE_BEFORE_VOWEL.value \
                     and self._starts_with_consonant(doc[token.i + 1].text):
-                errors.append(Error(token.text, token.idx, self.name, None))
+                errors.append(Error(token.text, token.idx, self.name))
         return errors
 
     def _starts_with_consonant(self, token: str) -> bool:
@@ -242,26 +233,22 @@ class RuleBasedThisVsThatCheck(RuleBasedGrammarCheck):
                         current_noun_phrase[0].text.lower() == Word.THAT.value:
                     errors.append(Error(current_noun_phrase[0].text,
                                         current_noun_phrase[0].idx,
-                                        self.name,
-                                        None))
+                                        self.name))
                 elif token.text.lower() == Word.HERE.value and \
                         current_noun_phrase[0].text.lower() == Word.THOSE.value:
                     errors.append(Error(current_noun_phrase[0].text,
                                         current_noun_phrase[0].idx,
-                                        self.name,
-                                        None))
+                                        self.name))
                 elif token.text.lower() == Word.THERE.value and \
                         current_noun_phrase[0].text.lower() == Word.THIS.value:
                     errors.append(Error(current_noun_phrase[0].text,
                                         current_noun_phrase[0].idx,
-                                        self.name,
-                                        None))
+                                        self.name))
                 elif token.text.lower() == Word.THERE.value and \
                         current_noun_phrase[0].text.lower() == Word.THESE.value:
                     errors.append(Error(current_noun_phrase[0].text,
                                         current_noun_phrase[0].idx,
-                                        self.name,
-                                        None))
+                                        self.name))
             else:
                 current_noun_phrase = []
 
@@ -283,17 +270,17 @@ class RuleBasedSpacingCheck(RuleBasedGrammarCheck):
         for token in doc[:-1]:
             if token.text in TokenSet.PUNCTUATION_FOLLOWED_BY_SPACE.value and \
                     token.whitespace_ == "" and not doc[token.i+1].is_punct:
-                errors.append(Error(token.text, token.idx, self.name, None))
+                errors.append(Error(token.text, token.idx, self.name))
 
         # Punctuation incorrectly preceded by a space
         for token in doc:
             if token.i > 0 and \
                     token.text in TokenSet.PUNCTUATION_NOT_PRECEDED_BY_SPACE.value and \
                     len(doc[token.i-1].whitespace_) > 0:
-                errors.append(Error(token.text, token.idx, self.name, None))
+                errors.append(Error(token.text, token.idx, self.name))
             elif "." in token.text and re.search(r"\.\w", token.text) \
                     and not re.search(r"\.\w+\.", token.text):   # exclude D.C., T.S.
-                errors.append(Error(token.text, token.idx, self.name, None))
+                errors.append(Error(token.text, token.idx, self.name))
         return errors
 
 
@@ -305,7 +292,7 @@ class WomanVsWomenCheck(RuleBasedGrammarCheck):
     name = GrammarError.WOMAN_WOMEN.value
 
     def check(self, doc: Doc) -> List[Error]:
-        return [Error(t.text, t.idx, self.name, None) for t in doc
+        return [Error(t.text, t.idx, self.name) for t in doc
                 if t.text.lower() == Word.INCORRECT_PLURAL_WOMAN.value]
 
 
@@ -317,7 +304,7 @@ class ManVsMenCheck(RuleBasedGrammarCheck):
     name = GrammarError.MAN_MEN.value
 
     def check(self, doc: Doc) -> List[Error]:
-        return [Error(t.text, t.idx, self.name, t) for t in doc
+        return [Error(t.text, t.idx, self.name) for t in doc
                 if t.text.lower() == Word.INCORRECT_PLURAL_MAN.value]
 
 
@@ -333,7 +320,7 @@ class ThanVsThenCheck(RuleBasedGrammarCheck):
         for token in doc[1:]:
             if token.text.lower() == Word.THEN.value and \
                     doc[token.i - 1].tag_ in COMPARATIVE_TAGS:
-                errors.append(Error(token.text, token.idx, self.name, None))
+                errors.append(Error(token.text, token.idx, self.name))
         return errors
 
 
@@ -348,7 +335,7 @@ class RepeatedWordCheck(RuleBasedGrammarCheck):
         errors = []
         for t in doc[1:]:
             if t.text.lower() != "that" and t.text.lower() == doc[t.i-1].text.lower():
-                errors.append(Error(t.text, t.idx, self.name, None))
+                errors.append(Error(t.text, t.idx, self.name))
         return errors
 
 
@@ -373,7 +360,7 @@ class SubjectPronounCheck(RuleBasedGrammarCheck):
                     and token.tag_ != Tag.INFINITIVE.value:
                 subject = get_subject(token)
                 if subject is not None and subject.text.lower() in nonsubj_pronouns:
-                    errors.append(Error(subject.text, subject.idx, self.name, None))
+                    errors.append(Error(subject.text, subject.idx, self.name))
 
         return errors
 
@@ -390,7 +377,7 @@ class ObjectPronounCheck(RuleBasedGrammarCheck):
         for token in doc:
             if token.text.lower() in TokenSet.SUBJECT_PRONOUNS.value and \
                     not is_subject(token):
-                errors.append(Error(token.text, token.idx, self.name, None))
+                errors.append(Error(token.text, token.idx, self.name))
         return errors
 
 
@@ -410,11 +397,11 @@ class CommasInNumbersCheck(RuleBasedGrammarCheck):
                          1900 < int(token.text) < 2200:
                     continue
                 else:
-                    errors.append(Error(token.text, token.idx, self.name, None))
+                    errors.append(Error(token.text, token.idx, self.name))
             # Otherwise, we flag all tokens as incorrect when they have 4 digits
             # that follow each other without a comma.
             elif re.search(r"\d{4,}", token.text):
-                errors.append(Error(token.text, token.idx, self.name, None))
+                errors.append(Error(token.text, token.idx, self.name))
         return errors
 
 
@@ -431,7 +418,7 @@ class CommasAfterYesNoCheck(RuleBasedGrammarCheck):
             if token.text.lower() in TokenSet.YES_NO.value and \
                     token.tag_ == Tag.YES_NO.value and \
                     not doc[token.i+1].is_punct:
-                errors.append(Error(token.text, token.idx, self.name, None))
+                errors.append(Error(token.text, token.idx, self.name))
         return errors
 
 
@@ -450,7 +437,7 @@ class SingularPluralNounCheck(RuleBasedGrammarCheck):
                 if (token.text.lower() in ["a", "an"] or token.text.lower() in TokenSet.SINGULAR_DETERMINERS.value) and \
                         token.dep_ == Dependency.DETERMINER.value and \
                         token.head.tag_ == Tag.PLURAL_NOUN.value:
-                    errors.append(Error(token.text, token.idx, self.name, None))
+                    errors.append(Error(token.text, token.idx, self.name))
         return errors
 
 
@@ -466,10 +453,10 @@ class CapitalizationCheck(RuleBasedGrammarCheck):
         errors = []
         if re.match("[a-z]", doc[0].text):
             doc[0]._.grammar_errors.append(GrammarError.CAPITALIZATION.value)
-            errors.append(Error(doc[0].text, doc[0].idx, self.name, None))
+            errors.append(Error(doc[0].text, doc[0].idx, self.name))
         for token in doc[1:]:
             if token.text == "i":
-                errors.append(Error(token.text, token.idx, self.name, None))
+                errors.append(Error(token.text, token.idx, self.name))
 
             # Ideally, we'd like to check if the token is a proper noun, but
             # spacy is just not good enough at this. In the future, we may
@@ -491,10 +478,10 @@ class ContractionCheck(RuleBasedGrammarCheck):
         errors = []
         for token in doc:
             if token.text.lower() in TokenSet.INCORRECT_CONTRACTIONS.value:
-                errors.append(Error(token.text, token.idx, self.name, None))
+                errors.append(Error(token.text, token.idx, self.name))
             elif token.pos_ in [POS.VERB.value, POS.ADVERB.value, POS.PARTICIPLE.value] and \
                     token.text.lower() in TokenSet.CONTRACTED_VERBS_WITHOUT_APOSTROPHE.value:
-                errors.append(Error(token.text, token.idx, self.name, None))
+                errors.append(Error(token.text, token.idx, self.name))
         return errors
 
 
@@ -517,7 +504,7 @@ class IncorrectIrregularPastTenseCheck(RuleBasedGrammarCheck):
 
                 # We exclude 'been' to avoid confusion with Passive perfect without have
                 if not token.text.lower() in past_tenses and not token.text.lower() == "been":
-                    errors.append(Error(token.text, token.idx, error_type, None))
+                    errors.append(Error(token.text, token.idx, error_type))
         return errors
 
 
@@ -543,9 +530,11 @@ class IncorrectParticipleCheck(RuleBasedGrammarCheck):
                     if in_have_been_construction(token):
                         error_type = GrammarError.PASSIVE_PERFECT_WITH_INCORRECT_PARTICIPLE.value
                     elif token.text in correct_past_tenses:
-                        error_type = GrammarError.PASSIVE_INCORRECT_PAST_TENSE_AS_PARTICIPLE.value  #TODO: sth strange here: in the second case below, it cannot be in the correct_past_tenses
+                        error_type = GrammarError.PASSIVE_PAST_TENSE_AS_PARTICIPLE.value  #TODO: sth strange here: in the second case below, it cannot be in the correct_past_tenses
                     else:
                         error_type = GrammarError.PASSIVE_WITH_INCORRECT_PARTICIPLE.value
+                elif is_perfect(token):
+                    error_type = GrammarError.PERFECT_TENSE_WITH_INCORRECT_SIMPLE_PAST.value
                 else:
                     error_type = GrammarError.INCORRECT_PARTICIPLE.value
 
@@ -553,14 +542,14 @@ class IncorrectParticipleCheck(RuleBasedGrammarCheck):
                 # does not know the lemma
                 # e.g. "cutted" has unknown lemma "cutte"
                 if correct_participles == [None]:
-                    errors.append(Error(token.text, token.idx, error_type, None))
+                    errors.append(Error(token.text, token.idx, error_type))
 
                 # If the verb form is not the same as the one returned
                 # by pyinflect
                 # e.g. "bringed" instead of "brought"
                 elif token.text not in correct_participles and \
                         token.text not in correct_past_tenses:
-                    errors.append(Error(token.text, token.idx, error_type, None))
+                    errors.append(Error(token.text, token.idx, error_type))
         return errors
 
 
@@ -574,12 +563,12 @@ class PunctuationCheck(RuleBasedGrammarCheck):
     def check(self, doc: Doc) -> List[Error]:
         errors = []
         if doc[-1].text not in TokenSet.END_OF_SENTENCE_PUNCTUATION.value:
-            errors.append(Error(doc[-1].text, doc[-1].idx, self.name, None))
+            errors.append(Error(doc[-1].text, doc[-1].idx, self.name))
         # if a sentence ends in a quotation mark, the previous token also has to be
         # punctuation sign.
         elif doc[-1].text in TokenSet.CLOSING_QUOTATION_MARKS.value:
             if not (len(doc) > 1 and doc[-2].text in TokenSet.END_OF_SENTENCE_PUNCTUATION.value):
-                errors.append(Error(doc[-1].text, doc[-1].idx, self.name, None))
+                errors.append(Error(doc[-1].text, doc[-1].idx, self.name))
         return errors
 
 
@@ -600,7 +589,7 @@ class IrregularPluralNounsCheck(RuleBasedGrammarCheck):
         for token in doc:
 
             if re.search(self.INCORRECT_PLURAL_REGEX, token.text.lower()):
-                errors.append(Error(token.text, token.idx, self.name, None))
+                errors.append(Error(token.text, token.idx, self.name))
 
             # If the token is a plural verb
             elif token.tag_ == Tag.PLURAL_NOUN.value and \
@@ -616,7 +605,7 @@ class IrregularPluralNounsCheck(RuleBasedGrammarCheck):
                 correct_plurals = get_correct_plurals(token)
                 if correct_plurals and \
                         token.text.lower() not in correct_plurals:
-                    errors.append(Error(token.text, token.idx, self.name, None))
+                    errors.append(Error(token.text, token.idx, self.name))
 
         return errors
 
@@ -643,8 +632,7 @@ class FragmentErrorCheck(RuleBasedGrammarCheck):
             else:
                 errors.append(Error(sentence[-1].text,
                                     sentence[-1].idx,
-                                    self.name,
-                                    None))
+                                    self.name))
 
         return errors
 
@@ -659,17 +647,17 @@ class PossessivePronounsErrorCheck(RuleBasedGrammarCheck):
             # Possessive pronouns with compound depencency
             if token.pos_ == POS.PRONOUN.value and \
                     token.dep_ == Dependency.COMPOUND.value:
-                errors.append(Error(token.text, token.idx, self.name, None))
+                errors.append(Error(token.text, token.idx, self.name))
             elif token.tag_ == Tag.POSSESSIVE_PRONOUN.value and \
                     token.dep_ == Dependency.COMPOUND.value:
-                errors.append(Error(token.text, token.idx, self.name, None))
+                errors.append(Error(token.text, token.idx, self.name))
             # Incorrect cases like "your's"
             elif token.text.lower() in TokenSet.INCORRECT_POSSESSIVE_PRONOUNS.value:
-                errors.append(Error(token.text, token.idx, self.name, None))
+                errors.append(Error(token.text, token.idx, self.name))
             elif token.i < len(doc) - 1 and \
                     token.text_with_ws.lower() + doc[token.i+1].text.lower() \
                     in TokenSet.INCORRECT_POSSESSIVE_PRONOUNS.value:
-                errors.append(Error(token.text, token.idx, self.name, None))
+                errors.append(Error(token.text, token.idx, self.name))
 
         return errors
 
@@ -695,7 +683,7 @@ class SubjectVerbAgreementErrorCheck(RuleBasedGrammarCheck):
                 errors.append(Error(token.head.text,
                                     token.head.idx,
                                     error_type,
-                                    " ".join(subject_lefts)))
+                                    subject=" ".join(subject_lefts)))
 
         return errors
 
@@ -711,9 +699,9 @@ class SubjectVerbAgreementWithCollectiveNounCheck(RuleBasedGrammarCheck):
         for token in doc:
             # If not third person singular
             if token.tag_ == Tag.PRESENT_OTHER_VERB.value or token.text.lower() == "were":
-                subject = agreement.get_subject(token)
+                subject = get_subject(token)
                 if subject is not None and subject.text.lower() in TokenSet.COLLECTIVE_NOUNS.value:
-                    full_subject = agreement.get_subject(token, full=True)
+                    full_subject = get_subject(token, full=True)
                     if full_subject is not None:
                         full_subject_string = " ".join([t.text.lower() for t in full_subject])
                     else:
@@ -721,7 +709,7 @@ class SubjectVerbAgreementWithCollectiveNounCheck(RuleBasedGrammarCheck):
                     errors.append(Error(token.text,
                                         token.idx,
                                         self.name,
-                                        full_subject_string))
+                                        subject=full_subject_string))
 
         return errors
 
@@ -730,6 +718,10 @@ class RuleBasedGrammarChecker(object):
     """
     A grammar checker that performs all rule-based checks defined above.
     """
+
+    def __init__(self):
+        self.unclassified = False
+        self.name = "rules"
 
     def __call__(self, doc: Doc) -> List[Error]:
         return self.check(doc)
@@ -764,5 +756,8 @@ class RuleBasedGrammarChecker(object):
 
         error_list = list(map(lambda x: x(doc), grammar_checks))
         error_list = [error for errors in error_list for error in errors]
+
+        for error in error_list:
+            error.model = self.name
 
         return error_list

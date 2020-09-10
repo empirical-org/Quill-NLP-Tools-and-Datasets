@@ -412,3 +412,105 @@ def replace(doc: Doc, error_ratio: float):
             entities.append((start_index, start_index + len(new_token), error_type))
 
     return text, entities
+
+
+def replace_its_vs_it_s(doc: Doc, error_ratio: float):
+
+    text = ""
+    entities = []
+    skip_next = False
+    for token in doc:
+        if skip_next:
+            skip_next = False
+            continue
+
+        # If the token is immediately followed by "n't" (no whitespace), skip
+        # This avoids problems like wouldn't => wouldsn't, where the indices of the error
+        # do not match a spaCy token
+        elif token.i < len(doc)-1 and token.text.lower() in PROBLEM_VERBS and \
+                (doc[token.i+1].text == "n't" or doc[token.i+1].text == "not")\
+                and not token.whitespace_:
+            new_token = token.text
+
+        elif token.text.lower() == "its" and not is_subject(token) and \
+                random.random() < error_ratio:
+            new_token, error_type = TOKEN_REPLACEMENT_MAP[token.text.lower()]
+        elif token.i < len(doc)-1 and token.text.lower() == "it" and \
+                doc[token.i+1].text.lower() == "'s" and random.random() < error_ratio:
+            new_token = "its"
+            error_type = IT_S_ITS_ERROR_TYPE
+            skip_next = True
+        else:
+            new_token = token.text
+
+        if new_token is None or new_token == token.text or len(entities) > 0:
+            text += token.text_with_ws
+        else:
+            if token.text[0].isupper():
+                new_token = new_token.title()
+                if new_token == "It'S":
+                    new_token = "It's"
+
+            # Add a space to the text if it does not end in a space.
+            # This solves problems like he's => hebe
+            if len(text) > 0 and not text[-1].isspace():
+                text += " "
+
+            start_index = len(text)
+
+            if skip_next:
+                text += new_token + doc[token.i+1].whitespace_
+            else:
+                text += new_token + token.whitespace_
+            entities.append((start_index, start_index + len(new_token), error_type))
+
+    return text, entities
+
+
+def replace_plural_possessive(doc: Doc, error_ratio: float):
+
+    text = ""
+    entities = []
+    skip_next = False
+    for token in doc:
+        if skip_next:
+            skip_next = False
+            continue
+
+        # If the token is immediately followed by "n't" (no whitespace), skip
+        # This avoids problems like wouldn't => wouldsn't, where the indices of the error
+        # do not match a spaCy token
+        elif token.i < len(doc)-1 and token.text.lower() in PROBLEM_VERBS and \
+                (doc[token.i+1].text == "n't" or doc[token.i+1].text == "not")\
+                and not token.whitespace_:
+            new_token = token.text
+
+        elif token.tag_ == "NNS" and random.random() < error_ratio:
+            new_token = token.lemma_ + "'s"
+            error_type = PLURAL_POSSESSIVE_ERROR_TYPE
+        elif token.i < len(doc)-1 and token.tag_ == "NN" and \
+                doc[token.i+1].tag_ == "POS" and random.random() < error_ratio:
+            new_token = token._.inflect("NNS")
+            error_type = PLURAL_POSSESSIVE_ERROR_TYPE
+        else:
+            new_token = token.text
+
+        if new_token is None or new_token == token.text or len(entities) > 0:
+            text += token.text_with_ws
+        else:
+            if token.text[0].isupper():
+                new_token = new_token.title()
+
+            # Add a space to the text if it does not end in a space.
+            # This solves problems like he's => hebe
+            if len(text) > 0 and not text[-1].isspace():
+                text += " "
+
+            start_index = len(text)
+            if skip_next:
+                text += new_token + doc[token.i+1].whitespace_
+            else:
+                text += new_token + token.whitespace_
+            entities.append((start_index, start_index + len(new_token), error_type))
+
+    return text, entities

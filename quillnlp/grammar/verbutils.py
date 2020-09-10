@@ -1,18 +1,12 @@
-import random
-import re
 from typing import List
 
-import spacy
-import pyinflect
-from spacy.gold import biluo_tags_from_offsets
 from spacy.tokens.doc import Doc
 from spacy.tokens.span import Span
 
 from spacy.tokens.token import Token
 
-from quillnlp.grammar.constants import Dependency, Tag, POS, TokenSet, GrammarError
-
-nlp = spacy.load("en")
+from .constants import Dependency, Tag, POS, TokenSet, GrammarError
+from grammar.checks.myspacy import nlp
 
 # Auxiliary verb functions:
 
@@ -318,6 +312,15 @@ def in_have_been_construction(token: Token) -> bool:
             been = 1
     if have and been:
         return True
+    return False
+
+
+def is_perfect(token: Token) -> bool:
+    """ Determines whether the token is in a 'have' construction.
+    """
+    for token2 in token.lefts:
+        if token2.lemma_ == "have":
+            return True
     return False
 
 

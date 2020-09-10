@@ -1,6 +1,6 @@
 from spacy.tokens.token import Token
 
-from quillnlp.grammar.spacy import nlp
+from quillnlp.grammar.myspacy import nlp
 
 Token.set_extension("replace", default=None)
 

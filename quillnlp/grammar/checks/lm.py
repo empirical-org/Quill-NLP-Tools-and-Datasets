@@ -1,22 +1,18 @@
 import re
-from collections import namedtuple
-from typing import List, Set
 
-from spacy.tokens import Token, Doc
-import lemminflect
+from spacy.tokens import Doc
 
 from googleapiclient import discovery
 from oauth2client.client import GoogleCredentials
 
-from quillnlp.grammar.constants import TokenSet, GrammarError, Tag, POS
-from quillnlp.grammar.verbs import agreement
-from quillnlp.grammar.myspacy import nlp
-from quillnlp.grammar.verbutils import has_noun_subject, has_pronoun_subject, is_passive, in_have_been_construction, \
-    get_past_tenses, has_inversion, get_subject, token_has_inversion
-
-Error = namedtuple("Error", ["text", "index", "type", "subject"])
+from grammar.constants import GrammarError, POS
+from grammar.checks.myspacy import nlp
+from grammar.utils import Error
 
 PRESENT_VERB_TAGS = set(["VBZ", "VB", "VBP"])
+OTHER_VERB_TAGS = set(["VBD", "VBN"])
+ALL_VERB_TAGS = PRESENT_VERB_TAGS | OTHER_VERB_TAGS
+
 BE_FORMS = set(["be", "am", "are", "is"])
 CONTRACTED_BE_FORMS = set(["'s", "'m", "'re"])
 TARGET_TOKENS = {"then": ["than"],
@@ -46,8 +42,12 @@ TARGET_TOKENS = {"then": ["than"],
                  "theirs": ["they"],
                  "an": ["a"],
                  "a": ["an"],
-                 "man": ["men"],
+                 "woman": ["women"],
+                 "women": ["woman"],
                  "men": ["man"],
+                 "man": ["men"],
+                 "child": ["children"],
+                 "children": ["child"],
                  "been": ["is", "are", "was"],
                  ".": ["?"],
                  ";": ["?"],
@@ -83,6 +83,12 @@ TOKENS2ERRORS = {"then": GrammarError.THAN_THEN.value,
                  "a": GrammarError.ARTICLE.value,
                  "an": GrammarError.ARTICLE.value,
                  "been": GrammarError.PASSIVE_WITH_INCORRECT_BE.value,
+                 "man": GrammarError.MAN_MEN.value,
+                 "men": GrammarError.MAN_MEN.value,
+                 "woman": GrammarError.WOMAN_WOMEN.value,
+                 "women": GrammarError.WOMAN_WOMEN.value,
+                 "child": GrammarError.CHILD_CHILDREN.value,
+                 "children": GrammarError.CHILD_CHILDREN.value,
                  ".": GrammarError.QUESTION_MARK.value,
                  ":": GrammarError.QUESTION_MARK.value,
                  ";": GrammarError.QUESTION_MARK.value,
@@ -117,8 +123,6 @@ def make_request_from_doc(doc: Doc, prompt: str = ""):
         if token.idx < prompt_char_length:
             continue
 
-        alternative_forms = None
-
         if token.text.lower() in TARGET_TOKENS:
             alternative_forms = TARGET_TOKENS.get(token.text.lower())
         elif token.text.lower() in BE_FORMS:
@@ -127,9 +131,17 @@ def make_request_from_doc(doc: Doc, prompt: str = ""):
         elif token.text.lower() in CONTRACTED_BE_FORMS:
             alternative_forms = set([f for f in CONTRACTED_BE_FORMS if f != token.text.lower()])
             alternative_forms.update([synonyms[f] for f in alternative_forms if f in synonyms])
-        elif token.pos_ == POS.VERB.value:
+        elif token.tag_ in PRESENT_VERB_TAGS:
             alternative_forms = set(
-                [token._.inflect(tag) for tag in PRESENT_VERB_TAGS if not tag == token.tag_])
+                [token._.inflect(tag) for tag in PRESENT_VERB_TAGS])
+        elif token.tag_ in OTHER_VERB_TAGS:
+            alternative_forms = set(
+                [token._.inflect(tag) for tag in OTHER_VERB_TAGS])
+        else:
+            alternative_forms = set()
+
+        if token.text.lower() in alternative_forms:
+            alternative_forms.remove(token.text.lower())
 
         if alternative_forms:
             request["targets"].append({
@@ -151,38 +163,14 @@ def create_masked_sentences(sentence, tokenizer):
                "alternatives": TARGET_TOKENS[target_token.lower()]}
 
 
-
-def classify_agreement_errors(token, error_type):
-
-    if token.tag_ == Tag.PAST_PARTICIPLE_VERB.value:
-        return GrammarError.PERFECT_TENSE_WITH_SIMPLE_PAST.value, None
-
-    subject = agreement.get_subject(token, full=True)
-    subject_string = " ".join([t.text.lower() for t in subject]) if subject is not None else None
-    if error_type == GrammarError.SUBJECT_VERB_AGREEMENT.value:
-        subject_set = set([t.text.lower() for t in subject]) if subject is not None else None
-        if subject is not None and token.i < subject[0].i:
-            error_type = GrammarError.SVA_INVERSION.value
-        elif subject is not None and len(subject_set.intersection(TokenSet.INDEF_PRONOUNS.value)) > 0:
-            error_type = GrammarError.SVA_INDEFINITE.value
-        elif has_noun_subject(token):
-            subject = agreement.get_subject(token, full=False)
-            if subject.text.lower() in TokenSet.COLLECTIVE_NOUNS.value:
-                error_type = GrammarError.SVA_COLLECTIVE_NOUN.value
-            else:
-                error_type = GrammarError.SVA_SIMPLE_NOUN.value
-        elif has_pronoun_subject(token):
-            error_type = GrammarError.SVA_PRONOUN.value
-
-    return error_type, subject_string
-
-
 class GoogleAIModelChecker:
 
     def __init__(self):
-        self.project = "comprehension-247816"
-        self.model_name = "grammartest"
-        self.version_name = "v4"
+        self.project = "grammar-api"
+        self.model_name = "grammar"
+        self.version_name = "v2"
+        self.unclassified = True  # indicates that the errors have to be classified by type in postprocessing
+        self.name = "lm"
 
     def check(self, doc, prompt):
 
@@ -201,9 +189,15 @@ class GoogleAIModelChecker:
         response = api.projects().predict(body=request_data, name=parent).execute()
         prediction = response["predictions"][0]
 
-        if prediction["error"]:
+        if "start" in prediction:
+            error_type = TOKENS2ERRORS.get(prediction["original_token"].lower(),
+                                           GrammarError.SUBJECT_VERB_AGREEMENT.value)
+
             return [Error(prediction["original_token"],
                           prediction["start"],
-                          prediction["error"],
-                          None)]
+                          error_type=error_type,
+                          predicted_token=prediction["predicted_token"],
+                          predicted_sentence=prediction["correct"],
+                          model=self.name)]
+
         return None

@@ -2,7 +2,7 @@ import re
 import difflib
 
 from quillnlp.grammar.constants import GrammarError
-from quillnlp.grammar.spacy import nlp
+from quillnlp.grammar.myspacy import nlp
 
 
 START_INSERT = "<ins>"
