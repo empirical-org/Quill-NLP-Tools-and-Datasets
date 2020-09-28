@@ -1,5 +1,5 @@
-from quillnlp.grammar.corpus import replace_adverb_by_adjective, get_adjective_for_adverb, replace
-from quillnlp.grammar.spacy import nlp
+from quillnlp.grammar.corpus import replace_adverb_by_adjective, get_adjective_for_adverb, replace, replace_its_vs_it_s
+from quillnlp.grammar.myspacy import nlp
 
 
 def test_adv_by_adj_replacement():
@@ -56,3 +56,16 @@ def test_be_replacement_function():
     new_text, errors = replace(doc, 1)
 
     assert new_text in alternatives
+
+
+def test_its_replacement_function():
+
+    text = "It's a great day."
+    doc = nlp(text)
+    text, entities = replace_its_vs_it_s(doc, 1)
+
+    print(text)
+    print(entities)
+
+    assert text == "Its a great day."
+    assert entities[0][0] == 0

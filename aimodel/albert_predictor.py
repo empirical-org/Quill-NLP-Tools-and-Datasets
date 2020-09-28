@@ -2,10 +2,24 @@ import os
 from transformers import AlbertTokenizer, AutoModelWithLMHead, pipeline
 
 
-synonyms = {"am": "'m", "are": "'re", "is": "'s", "have": "'ve",
-            "will": "'ll", "would": "'d", "wo": "will", "ca": "can"}
-synonyms_reversed = {v: k for k, v in synonyms.items()}
-synonyms.update(synonyms_reversed)
+synonyms = {
+    "am": ["'m"],
+    "are": ["'re"],
+    "is": ["'s"],
+    "have": ["'ve"],
+    "will": ["'ll", "wo"],
+    "would": ["'d"],
+    "had": ["'d"],
+    "wo": ["will"],
+    "ca": ["can"],
+    "'m": ["am"],
+    "'re": ["re"],
+    "'s": ["is"],
+    "'ve": ["have"],
+    "'ll": ["will"],
+    "'d": ["would", "had"],
+    "can": ["ca"],
+}
 
 
 class BertPredictor(object):
@@ -23,16 +37,21 @@ class BertPredictor(object):
 
             token = target["token"]
             start = target["start"]
-            alternative_forms = target["alternatives"]
+            alternative_forms = set(target["alternatives"])
+            for f in target["alternatives"]:
+                if f in synonyms:
+                    alternative_forms.update(synonyms[f])
 
             masked_sentence = sentence[:start] + self.tokenizer.mask_token + sentence[start+len(token):]
             predictions = self.pipeline(masked_sentence)
 
+            print(masked_sentence)
+            for prediction in predictions:
+                print("P", prediction)
+
             for prediction in predictions:
                 predicted_token = self.pipeline.tokenizer.convert_ids_to_tokens(prediction["token"])
                 predicted_token = predicted_token.replace("▁", "")  # for Albert tokenizer
-
-                print("Prediction:", predicted_token)
 
                 # If the token itself is ranked highest in the list of predictions,
                 # then it is likely correct.
@@ -41,7 +60,7 @@ class BertPredictor(object):
 
                 # If a synonym of the token is ranked highest in the list of predictions,
                 # then it is likely correct.
-                elif token.lower() in synonyms and synonyms[token.lower()] == predicted_token:
+                elif token.lower() in synonyms and predicted_token in synonyms[token.lower()]:
                     break
 
                 # If an alternative form is ranked highest in the list of predictions,
@@ -52,7 +71,8 @@ class BertPredictor(object):
                     return {"correct": correct_sentence,
                             "original_token": token,
                             "start": start,
-                            "predicted_token": predicted_token}
+                            "predicted_token": predicted_token,
+                            "error_type": target["error_type"]}
 
         return {"correct": sentence,
                 "error": None}
@@ -73,7 +93,6 @@ class BertPredictor(object):
             be JSON serializable.
         """
         return [self.correct_instance(instance) for instance in instances]
-
 
     @classmethod
     def from_path(cls, model_dir):

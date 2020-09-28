@@ -1,6 +1,6 @@
 import random
 
-from quillnlp.grammar.constants import Tag, GrammarError, Dependency, POS, TokenSet
+from quillgrammar.grammar.constants import Tag, GrammarError, Dependency, POS, TokenSet
 from quillnlp.grammar.generation import ErrorGenerator
 from quillnlp.grammar.verbutils import get_subject, get_plural, is_indefinite, has_noun_subject, \
     is_negated_with_contraction, has_following_subject, subject_has_neither, subject_has_either

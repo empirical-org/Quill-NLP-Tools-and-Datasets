@@ -1,4 +1,4 @@
-from grammar.constants import GrammarError
+from .constants import GrammarError
 
 error_precedence = {
     GrammarError.REPEATED_WORD.value: 8,

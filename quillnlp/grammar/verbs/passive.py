@@ -1,7 +1,7 @@
 import random
 import re
 
-from quillnlp.grammar.constants import GrammarError, Dependency, TokenSet, Tag
+from quillgrammar.grammar.constants import GrammarError, Dependency, TokenSet, Tag
 from quillnlp.grammar.generation import ErrorGenerator
 
 

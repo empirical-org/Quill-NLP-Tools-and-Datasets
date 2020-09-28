@@ -2,7 +2,7 @@ import random
 
 from collections import defaultdict, Counter
 
-from quillnlp.grammar.spacy import nlp
+from quillnlp.grammar.myspacy import nlp
 
 
 def find_ngrams(input_list, n):

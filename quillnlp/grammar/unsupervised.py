@@ -9,7 +9,7 @@ from spacy.tokens.token import Token
 
 from transformers import pipeline, AutoTokenizer, AutoModelWithLMHead
 
-from quillnlp.grammar.constants import TokenSet, GrammarError, Tag
+from quillgrammar.grammar.constants import TokenSet, GrammarError, Tag
 from quillnlp.grammar.verbs import agreement
 from quillnlp.grammar.myspacy import nlp
 from quillnlp.grammar.verbutils import has_noun_subject, has_pronoun_subject, is_passive, in_have_been_construction, \

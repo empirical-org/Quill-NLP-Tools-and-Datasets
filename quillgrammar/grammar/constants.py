@@ -195,3 +195,15 @@ class GrammarError(Enum):
     SVA_COLLECTIVE_NOUN = "Subject_verb agreement with collective noun"
     SVA_INDEFINITE = "Subject_verb agreement with indefinite pronoun"
     SVA_SEPARATE = "Subject_verb agreement with separate subject and verb"
+
+
+AGREEMENT_ERRORS = set([
+    GrammarError.SVA_SIMPLE_NOUN.value,
+    GrammarError.SVA_PRONOUN.value,
+    GrammarError.SVA_INVERSION.value,
+    GrammarError.SVA_NEITHER_NOR.value,
+    GrammarError.SVA_EITHER_OR.value,
+    GrammarError.SVA_COLLECTIVE_NOUN.value,
+    GrammarError.SVA_INDEFINITE.value,
+    GrammarError.SVA_SEPARATE.value
+])

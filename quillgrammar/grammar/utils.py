@@ -1,4 +1,4 @@
-from grammar.precedence import error_precedence
+from .precedence import error_precedence
 
 
 class Error:

@@ -243,15 +243,12 @@ def train_spacy_ner(train_data, dev_data, test_data, output_dir, test_file, n_it
         for batch in batches:
             texts, annotations = zip(*batch)
             total += len(texts)
-            try:
-                nlp.update(
-                    texts,  # batch of texts
-                    annotations,  # batch of annotations
-                    drop=0.5,  # dropout - make it harder to memorise data
-                    losses=losses,
-                )
-            except:
-                continue
+            nlp.update(
+                texts,  # batch of texts
+                annotations,  # batch of annotations
+                drop=0.5,  # dropout - make it harder to memorise data
+                losses=losses,
+            )
             percentage = int(total/len(train_data)*100)
             print(f"{percentage}", end="\r")
         print("Losses", losses)

@@ -1,4 +1,4 @@
-from quillnlp.grammar.spacy import nlp
+from quillnlp.grammar.myspacy import nlp
 from quillnlp.grammar.verbutils import get_subject
 
 

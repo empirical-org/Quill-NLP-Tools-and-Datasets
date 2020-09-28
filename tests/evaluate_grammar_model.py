@@ -1,0 +1,63 @@
+import csv
+import yaml
+
+from tqdm import tqdm
+from sklearn.metrics import classification_report, precision_recall_fscore_support
+from sklearn.preprocessing import MultiLabelBinarizer
+
+from quillgrammar.grammar.pipeline import GrammarPipeline
+
+csv_file = "tests/data/grammar_errors.csv"
+config_file = "tests/config.yaml"
+
+
+def test_grammar_pipeline():
+
+    with open(config_file) as i:
+        config = yaml.load(i, Loader=yaml.FullLoader)
+
+    pipeline = GrammarPipeline(config)
+
+    predicted_labels = []
+    correct_labels = []
+
+    data = []
+    with open(csv_file) as i:
+        reader = csv.reader(i)
+        for row in reader:
+            sentence, error = row
+            data.append((sentence, "", error))
+
+    import random
+    random.seed(42)
+    random.shuffle(data)
+
+    with open("grammar_output.tsv", "w") as o:
+        csv_writer = csv.writer(o, delimiter="\t")
+
+        for (sentence, prompt, error) in tqdm(data[:1000], desc="Predicting errors"):
+
+            errors = pipeline.check(sentence, prompt)
+            predicted_error_types = [e.type for e in errors]
+
+            predicted_labels.append(predicted_error_types)
+            correct_label = [] if not error else [error]
+            correct_labels.append(correct_label)
+
+            csv_writer.writerow([sentence, ";".join(correct_label),  ";".join([str(e) for e in errors])])
+
+    mlb = MultiLabelBinarizer()
+    correct_labels_binary = mlb.fit_transform(correct_labels)
+    predicted_labels_binary = mlb.transform(predicted_labels)
+
+    print(classification_report(correct_labels_binary,
+                                predicted_labels_binary, target_names=mlb.classes_))
+
+    p, r, f1, s = precision_recall_fscore_support(correct_labels_binary, predicted_labels_binary, beta=0.5)
+    rows = zip(mlb.classes_, p, r, f1, s)
+
+    with open("evaluation_report.csv", "w") as output_file:
+        writer = csv.writer(output_file)
+        writer.writerow(["Error type", "Precision", "Recall", "F0.5-score"])
+        for row in rows:
+            writer.writerow(row)

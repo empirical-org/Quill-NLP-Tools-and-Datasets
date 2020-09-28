@@ -8,10 +8,10 @@ from lemminflect import getLemma
 from spacy.tokens.doc import Doc
 from spacy.tokens.token import Token
 
-from grammar.verbutils import has_noun_subject, has_pronoun_subject, is_passive, in_have_been_construction, \
+from ..verbutils import has_noun_subject, has_pronoun_subject, is_passive, in_have_been_construction, \
     get_past_tenses, has_inversion, get_subject, token_has_inversion, is_perfect
-from grammar.constants import *
-from grammar.utils import Error
+from ..constants import *
+from ..utils import Error
 
 BASE_SPACY_MODEL = "en"
 
@@ -331,10 +331,12 @@ class RepeatedWordCheck(RuleBasedGrammarCheck):
 
     name = GrammarError.REPEATED_WORD.value
 
+    exclude_words = set(["that", "had"])
+
     def check(self, doc: Doc) -> List[Error]:
         errors = []
         for t in doc[1:]:
-            if t.text.lower() != "that" and t.text.lower() == doc[t.i-1].text.lower():
+            if t.text.lower() not in self.exclude_words and t.text.lower() == doc[t.i-1].text.lower():
                 errors.append(Error(t.text, t.idx, self.name))
         return errors
 
@@ -490,11 +492,13 @@ class IncorrectIrregularPastTenseCheck(RuleBasedGrammarCheck):
     Identifies incorrect verb forms, such as "bringed" and "writed".
     """
 
+    name = GrammarError.INCORRECT_IRREGULAR_PAST_TENSE.value
+
     def check(self, doc: Doc) -> List[Error]:
         errors = []
         for token in doc:
             # If the token is a past tense verb
-            if token.tag_ == Tag.SIMPLE_PAST_VERB.value and not token.tag_ == Tag.MODAL_VERB.value:
+            if token.tag_ == Tag.SIMPLE_PAST_VERB.value:
                 past_tenses = get_past_tenses(token)
 
                 if is_passive(token):
@@ -719,42 +723,53 @@ class RuleBasedGrammarChecker(object):
     A grammar checker that performs all rule-based checks defined above.
     """
 
-    def __init__(self):
+    candidate_checks = {
+        RuleBasedPluralVsPossessiveCheck.name: RuleBasedPluralVsPossessiveCheck(),
+        RuleBasedThisVsThatCheck.name: RuleBasedThisVsThatCheck(),
+        RuleBasedQuestionMarkCheck.name: RuleBasedQuestionMarkCheck(),
+        RuleBasedSpacingCheck.name: RuleBasedSpacingCheck(),
+        RuleBasedArticleCheck.name: RuleBasedArticleCheck(),
+        WomanVsWomenCheck.name: WomanVsWomenCheck(),
+        ManVsMenCheck.name: ManVsMenCheck(),
+        ThanVsThenCheck.name: ThanVsThenCheck(),
+        RepeatedWordCheck.name: RepeatedWordCheck(),
+        SubjectPronounCheck.name: SubjectPronounCheck(),
+        ObjectPronounCheck.name: ObjectPronounCheck(),
+        CommasInNumbersCheck.name: CommasInNumbersCheck(),
+        CommasAfterYesNoCheck.name: CommasAfterYesNoCheck(),
+        SingularPluralNounCheck.name: SingularPluralNounCheck(),
+        CapitalizationCheck.name: CapitalizationCheck(),
+        ContractionCheck.name: ContractionCheck(),
+        IncorrectIrregularPastTenseCheck.name: IncorrectIrregularPastTenseCheck(),
+        IncorrectParticipleCheck.name: IncorrectParticipleCheck(),
+        PunctuationCheck.name: PunctuationCheck(),
+        IrregularPluralNounsCheck.name: IrregularPluralNounsCheck(),
+        FragmentErrorCheck.name: FragmentErrorCheck(),
+        PossessivePronounsErrorCheck.name: PossessivePronounsErrorCheck(),
+        SubjectVerbAgreementWithCollectiveNounCheck.name: SubjectVerbAgreementWithCollectiveNounCheck()
+    }
+
+    def __init__(self, config={}):
         self.unclassified = False
         self.name = "rules"
+
+        self.grammar_checks = set([
+            self.candidate_checks.get(check) for check in config["errors"] if check in self.candidate_checks
+        ])
+
+        print("Initialized rule-based Error Check for these errors:")
+        for check in self.candidate_checks:
+            if self.candidate_checks.get(check) in self.grammar_checks:
+                print(f"[x] {check}")
+            else:
+                print(f"[ ] {check}")
 
     def __call__(self, doc: Doc) -> List[Error]:
         return self.check(doc)
 
     def check(self, doc: Doc, prompt: str = "") -> List[Error]:
-        grammar_checks = [
-            RuleBasedPluralVsPossessiveCheck(),
-            RuleBasedThisVsThatCheck(),
-            RuleBasedQuestionMarkCheck(),
-            RuleBasedSpacingCheck(),
-            RuleBasedArticleCheck(),
-            WomanVsWomenCheck(),
-            ManVsMenCheck(),
-            ThanVsThenCheck(),
-            RepeatedWordCheck(),
-            SubjectPronounCheck(),
-            ObjectPronounCheck(),
-            CommasInNumbersCheck(),
-            CommasAfterYesNoCheck(),
-            SingularPluralNounCheck(),
-            CapitalizationCheck(),
-            ContractionCheck(),
-            IncorrectIrregularPastTenseCheck(),
-            IncorrectParticipleCheck(),
-            PunctuationCheck(),
-            IrregularPluralNounsCheck(),
-            FragmentErrorCheck(),
-            PossessivePronounsErrorCheck(),
-#            SubjectVerbAgreementErrorCheck(),
-            SubjectVerbAgreementWithCollectiveNounCheck()
-            ]
 
-        error_list = list(map(lambda x: x(doc), grammar_checks))
+        error_list = list(map(lambda x: x(doc), self.grammar_checks))
         error_list = [error for errors in error_list for error in errors]
 
         for error in error_list:

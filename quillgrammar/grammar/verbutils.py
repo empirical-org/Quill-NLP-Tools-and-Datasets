@@ -6,7 +6,7 @@ from spacy.tokens.span import Span
 from spacy.tokens.token import Token
 
 from .constants import Dependency, Tag, POS, TokenSet, GrammarError
-from grammar.checks.myspacy import nlp
+from .checks.myspacy import nlp
 
 # Auxiliary verb functions:
 
@@ -174,7 +174,8 @@ def get_past_tenses(token: Token):
     """
 
     PAST_TENSE_MAP = {"be": set(["was", "were"]),
-                      "quit": set(["quit"])}
+                      "quit": set(["quit"]),
+                      "have": set(["'d", "had"])}
 
     if token.lemma_.lower() in PAST_TENSE_MAP:
         return PAST_TENSE_MAP[token.lemma_.lower()]

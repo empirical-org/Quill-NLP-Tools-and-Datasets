@@ -3,7 +3,7 @@ import random
 
 from tqdm import tqdm
 
-from quillnlp.grammar.constants import GrammarError
+from quillgrammar.grammar.constants import GrammarError
 
 
 def select_its_vs_its(lines):

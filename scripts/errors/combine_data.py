@@ -2,7 +2,7 @@ import glob
 import csv
 import os
 
-from quillnlp.grammar.constants import GrammarError
+from quillgrammar.grammar.constants import GrammarError
 
 files = glob.glob("data/validated/grammar_errors/*.txt")
 

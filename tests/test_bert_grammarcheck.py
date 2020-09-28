@@ -1,5 +1,6 @@
 from quillnlp.grammar.grammarcheck import SpaCyGrammarChecker
 from quillnlp.grammar.unsupervised import UnsupervisedGrammarChecker
+from quillnlp.grammar.models.albert_predictor import BertPredictor
 
 
 def test_check1():
@@ -18,3 +19,20 @@ def test_check2():
     results = checker.check(sentence)
     print(results)
     assert results == []
+
+
+def test_check3():
+    sentence = "Crimea has been took."
+
+    checker = UnsupervisedGrammarChecker()
+    results = checker.check(sentence)
+    print(results)
+
+
+def test_check4():
+
+    p = BertPredictor.from_path("/samba/public/models/albert-large")
+    results = p.correct_instance({'sentence': 'Crimea has been took.', 'targets': [{'token': 'has', 'start': 7, 'alternatives': ['have']}, {'token': 'been', 'start': 11, 'alternatives': ['is', 'are', 'was']}, {'token': 'took', 'start': 16, 'alternatives': ['taken']}, {'token': '.', 'start': 20, 'alternatives': ['?']}]})
+
+    print(results)
+

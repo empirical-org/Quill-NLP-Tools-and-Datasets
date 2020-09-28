@@ -8,7 +8,7 @@ import lemminflect
 from googleapiclient import discovery
 from oauth2client.client import GoogleCredentials
 
-from quillnlp.grammar.constants import TokenSet, GrammarError, Tag, POS
+from quillgrammar.grammar.constants import TokenSet, GrammarError, Tag, POS
 from quillnlp.grammar.verbs import agreement
 from quillnlp.grammar.myspacy import nlp
 from quillnlp.grammar.verbutils import has_noun_subject, has_pronoun_subject, is_passive, in_have_been_construction, \

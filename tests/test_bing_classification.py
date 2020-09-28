@@ -1,5 +1,5 @@
 from quillnlp.grammar.bing import classify_correction
-from quillnlp.grammar.constants import GrammarError
+from quillgrammar.grammar.constants import GrammarError
 
 
 def test_none():

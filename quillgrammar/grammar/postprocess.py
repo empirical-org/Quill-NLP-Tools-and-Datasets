@@ -1,7 +1,7 @@
-from grammar.constants import Tag, GrammarError, TokenSet
-from grammar.verbutils import has_noun_subject, get_subject, is_passive, has_pronoun_subject, is_perfect
-from grammar.utils import Error
-from grammar.checks.myspacy import nlp
+from .constants import Tag, GrammarError, TokenSet
+from .verbutils import has_noun_subject, get_subject, is_passive, has_pronoun_subject, is_perfect
+from .utils import Error
+from .checks.myspacy import nlp
 
 
 def classify_error(error: Error):
@@ -9,9 +9,11 @@ def classify_error(error: Error):
     doc = nlp(error.predicted_sentence)
     token = None
     for t in doc:
+        print(t, t.idx)
         if t.idx == error.index:
             token = t
     if not token:
+        print("DID NOT FIND TOKEN")
         return error
 
     if token.tag_ == Tag.PAST_PARTICIPLE_VERB.value:
@@ -41,5 +43,7 @@ def classify_error(error: Error):
                 error.set_type(GrammarError.SVA_SIMPLE_NOUN.value)
         elif has_pronoun_subject(token):
             error.set_type(GrammarError.SVA_PRONOUN.value)
+        else:
+            return None
 
     return error
