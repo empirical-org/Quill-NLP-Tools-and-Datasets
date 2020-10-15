@@ -6,7 +6,6 @@ from spacy.tokens.span import Span
 from spacy.tokens.token import Token
 
 from .constants import Dependency, Tag, POS, TokenSet, GrammarError
-from .checks.myspacy import nlp
 
 # Auxiliary verb functions:
 
@@ -125,7 +124,8 @@ def get_subject(verb: Token, full=False):
         # cases like "There is a man in the room."
         elif token.dep_ == Dependency.EXPLETIVE.value or token.dep_ == Dependency.CLAUSAL_SUBJECT.value:
             for token2 in list(reversed(list(verb.lefts))) + list(verb.rights):
-                if token2.dep_ == Dependency.ATTRIBUTE.value:
+                if token2.dep_ == Dependency.ATTRIBUTE.value or \
+                        token2.dep_ == Dependency.DIRECT_OBJECT.value:
                     if full:
                         return list(token2.lefts) + [token2]
                     else:
@@ -193,6 +193,10 @@ def has_inversion(doc):
             subject = get_subject(token)
             if subject is not None and subject.i > token.i:
                 return True
+
+        elif token.pos_ == POS.AUX.value and token.lemma_ == "do":
+            return True
+
     return False
 
 
@@ -202,85 +206,6 @@ def token_has_inversion(token):
         if subject is not None and subject.i > token.i:
             return True
     return False
-
-# Synthetic functions
-
-class VerbShiftErrorGenerator:
-
-    name = GrammarError.VERB_SHIFT.value
-
-    def generate(self, sentence):
-
-        def have_same_tense(verb1, verb2):
-            if verb1 is None or verb2 is None:
-                return False
-            elif is_past(verb1) and is_past(verb2):
-                return True
-            elif is_present(verb1) and is_present(verb2):
-                return True
-            else:
-                return False
-
-        doc = nlp(sentence)
-        new_sentence = ""
-        for token in doc:
-            if token.dep_ == Dependency.ADVERBIAL_CLAUSE.value and \
-                    is_present(token) and \
-                    have_same_tense(token, token.head):
-
-                # The problem with past->present is that we need the person of the verb
-                #if token.tag_ == Tag.SIMPLE_PAST_VERB.value:
-                #    new_token = token._.inflect(Tag.PRESENT_SING3_VERB.value)
-                if token.tag_ == Tag.PRESENT_SING3_VERB.value:
-                    new_token = token._.inflect(Tag.SIMPLE_PAST_VERB.value)
-                elif token.tag_ == Tag.PRESENT_OTHER_VERB.value:
-                    new_token = token._.inflect(Tag.SIMPLE_PAST_VERB.value)
-                else:
-                    new_token = token.text
-
-                # Insert a space to deal with contractions, otherwise "what's" -> "whatwas"
-                if len(new_sentence) > 0 and not new_sentence[-1].isspace():
-                    new_sentence += " "
-                new_sentence += new_token + token.whitespace_
-            else:
-                new_sentence += token.text_with_ws
-
-        return new_sentence
-
-
-class FutureInSubclauseErrorGenerator():
-
-    name = GrammarError.FUTURE_IN_SUBCLAUSE
-
-    def generate(self, sentence):
-
-        doc = nlp(sentence)
-
-        new_sentence = ""
-        for token in doc:
-            if token.dep_ == Dependency.ADVERBIAL_CLAUSE.value and is_present(token) and is_future(token.head):
-                infinitive = token._.inflect(Tag.INFINITIVE.value)
-                if infinitive is not None:
-                    new_sentence += "will " + infinitive + token.whitespace_
-                else:
-                    new_sentence += token.text_with_ws
-            else:
-                new_sentence += token.text_with_ws
-
-        return new_sentence
-
-
-def replace_past_simple_with_past_perfect(sentence):
-
-    doc = nlp(sentence)
-    new_sentence = ""
-
-    for token in doc:
-        if token.dep_ == Dependency.ADVERBIAL_CLAUSE.value and is_past(token) and is_past_perfect(token.head):
-            new_sentence += "had "
-        new_sentence += token.text_with_ws
-
-    return new_sentence
 
 
 def get_perfect_progressives(doc: Doc) -> List[Token]:
@@ -327,6 +252,10 @@ def is_perfect(token: Token) -> bool:
 
 def is_passive(verb: Token) -> bool:
     """ Determines whether a verb token is passive. """
+
+    if verb.dep_ == Dependency.PASS_AUXILIARY.value:
+        return True
+
     for child in verb.lefts:
         if child.dep_ == Dependency.PASS_AUXILIARY.value:
             return True

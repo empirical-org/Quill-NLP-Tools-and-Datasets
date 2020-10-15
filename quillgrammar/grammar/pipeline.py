@@ -1,3 +1,5 @@
+import time
+
 from .checks.rules import RuleBasedGrammarChecker
 from .checks.lm import GoogleAIModelChecker, OfflineLMChecker
 from .checks.myspacy import SpaCyGrammarChecker
@@ -20,6 +22,7 @@ class GrammarPipeline:
         doc = self.nlp(sentence)
         errors = []
         for pipe in self.pipeline:
+
             pipe_errors = pipe.check(doc, prompt)
             if pipe.unclassified and pipe_errors:
                 classified_pipe_errors = []

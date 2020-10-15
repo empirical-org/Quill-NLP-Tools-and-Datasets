@@ -110,4 +110,5 @@ def combine_turk_data():
                         writer.writerow([sentence, prompt, ""])
                         done.add(sentence)
 
+
 combine_turk_data()

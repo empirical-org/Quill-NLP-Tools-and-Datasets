@@ -24,6 +24,12 @@ class Tag(Enum):
     COMPARATIVE_ADVERB = "JJR"
 
 
+PRESENT_VERB_TAGS = set([Tag.PRESENT_SING3_VERB.value,
+                         Tag.PRESENT_OTHER_VERB.value,
+                         Tag.INFINITIVE.value])
+PAST_VERB_TAGS = set([Tag.PAST_PARTICIPLE_VERB.value,
+                      Tag.PAST_PARTICIPLE_VERB.value])
+
 QUESTION_WORD_TAGS = set([Tag.WH_PRONOUN.value, Tag.POSSESSIVE_WH_PRONOUN.value,
                           Tag.WH_ADVERB.value, Tag.WH_DETERMINER.value])
 COMPARATIVE_TAGS = set([Tag.COMPARATIVE_ADJECTIVE.value, Tag.COMPARATIVE_ADVERB.value])
@@ -52,6 +58,7 @@ POSSIBLE_POS_IN_NOUN_PHRASE = set([POS.NOUN.value, POS.ADJECTIVE.value,
 class Dependency(Enum):
     SUBJECT = "nsubj"
     PASS_SUBJECT = "nsubjpass"
+    DIRECT_OBJECT = "dobj"
     CLAUSAL_SUBJECT = "csubj"
     PASS_AUXILIARY = "auxpass"
     COMPOUND = "compound"
@@ -90,7 +97,7 @@ class Word(Enum):
 
 class TokenSet(Enum):
     PUNCTUATION_FOLLOWED_BY_SPACE = set([".", "!", "?", ")", ";", ":", ","])
-    PUNCTUATION_NOT_PRECEDED_BY_SPACE = set([".", "!", "?", ")", ";", ":", ","])
+    PUNCTUATION_NOT_PRECEDED_BY_SPACE = set([".", "!", "?", ")", ";", ":", ",", "%"])
     END_OF_SENTENCE_PUNCTUATION = set([".", "!", "?", '"', '”'])
     CLOSING_QUOTATION_MARKS = set(['"', '”'])
     SINGULAR_DETERMINERS = set(["every", "none", "nothing", "each", "another", "one", "little",

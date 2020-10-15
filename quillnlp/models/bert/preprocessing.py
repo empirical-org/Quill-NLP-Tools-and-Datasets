@@ -83,7 +83,8 @@ def convert_data_to_input_items(examples: List[Dict], label2idx: Dict,
     for (ex_index, ex) in enumerate(examples):
 
         # Create a list of token ids
-        toks = tokenizer.encode_plus(ex["text"], max_length=max_seq_length, pad_to_max_length=True)
+        toks = tokenizer.encode_plus(ex["text"], max_length=max_seq_length, pad_to_max_length=True,
+                                     truncation=True)
         input_ids = toks["input_ids"]
         segment_ids = toks["token_type_ids"]
         input_mask = toks["attention_mask"]
@@ -160,7 +161,6 @@ def get_data_loader(input_items: List[BertInputItem], batch_size: int,
     dataloader = DataLoader(data, shuffle=shuffle, batch_size=batch_size)
 
     return dataloader
-
 
 
 def preprocess(data: List[Dict],

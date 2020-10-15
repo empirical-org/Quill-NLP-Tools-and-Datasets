@@ -3,7 +3,7 @@ from typing import List, Dict
 
 import torch
 import numpy as np
-from tqdm import tqdm_notebook as tqdm, trange
+from tqdm import tqdm, trange
 from torch.nn import Sigmoid, Softmax
 from torch.utils.data import DataLoader
 from quillnlp.models.bert.models import BertForMultiLabelSequenceClassification

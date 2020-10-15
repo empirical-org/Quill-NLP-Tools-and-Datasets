@@ -2,7 +2,9 @@ import os
 import spacy
 from spacy.tokens.doc import Doc
 
+from ..constants import GrammarError
 from ..utils import Error
+from ..verbutils import is_passive
 
 spacy_path = os.environ["SPACY_GRAMMAR_PATH"]
 nlp = spacy.load(spacy_path)
@@ -31,9 +33,14 @@ class SpaCyGrammarChecker:
         errors = []
         for entity in doc.ents:
             if not self.config or entity.label_ in self.error_types:
+
+                error_type = entity.label_
+                if error_type == GrammarError.PERFECT_WITHOUT_HAVE.value and is_passive(entity[0]):
+                    error_type = GrammarError.PASSIVE_PERFECT_WITHOUT_HAVE.value
+
                 error = Error(text=entity.text,
                               index=entity.start_char,
-                              error_type=entity.label_,
+                              error_type=error_type,
                               model=self.name)
 
                 errors.append(error)

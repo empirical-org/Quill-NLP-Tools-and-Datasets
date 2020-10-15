@@ -6,8 +6,8 @@ from sklearn.metrics import classification_report, precision_recall_fscore_suppo
 from sklearn.preprocessing import MultiLabelBinarizer
 
 from quillgrammar.grammar.pipeline import GrammarPipeline
+from tests.error_files import files
 
-csv_file = "tests/data/grammar_errors.csv"
 config_file = "tests/config.yaml"
 
 
@@ -22,15 +22,18 @@ def test_grammar_pipeline():
     correct_labels = []
 
     data = []
-    with open(csv_file) as i:
-        reader = csv.reader(i)
-        for row in reader:
-            sentence, error = row
-            data.append((sentence, "", error))
+    for f in files:
+        if f["error"] in config["errors"]:
+            with open(f["positive"]) as i:
+                for line in i:
+                    data.append((line.strip(), "", f["error"]))
+            with open(f["negative"]) as i:
+                for line in i:
+                    data.append((line.strip(), "", "Correct"))
 
-    import random
-    random.seed(42)
-    random.shuffle(data)
+    #import random
+    #random.seed(42)
+    #random.shuffle(data)
 
     with open("grammar_output.tsv", "w") as o:
         csv_writer = csv.writer(o, delimiter="\t")
@@ -38,13 +41,19 @@ def test_grammar_pipeline():
         for (sentence, prompt, error) in tqdm(data[:1000], desc="Predicting errors"):
 
             errors = pipeline.check(sentence, prompt)
-            predicted_error_types = [e.type for e in errors]
+            predicted_error_types = []
+            if len(errors) > 0:
+                predicted_error_types.append(errors[0].type)
+            else:
+                predicted_error_types.append("Correct")
 
             predicted_labels.append(predicted_error_types)
             correct_label = [] if not error else [error]
             correct_labels.append(correct_label)
 
-            csv_writer.writerow([sentence, ";".join(correct_label),  ";".join([str(e) for e in errors])])
+            csv_writer.writerow([sentence, "Cor:" + ";".join(correct_label),
+                                 "Pred:" + ";".join(predicted_error_types),
+                                 ";".join([str(e) for e in errors])])
 
     mlb = MultiLabelBinarizer()
     correct_labels_binary = mlb.fit_transform(correct_labels)
@@ -61,3 +70,4 @@ def test_grammar_pipeline():
         writer.writerow(["Error type", "Precision", "Recall", "F0.5-score"])
         for row in rows:
             writer.writerow(row)
+

@@ -3,7 +3,7 @@ from spacy.tokens import Doc
 from googleapiclient import discovery
 from oauth2client.client import GoogleCredentials
 
-from ..constants import GrammarError, AGREEMENT_ERRORS
+from ..constants import GrammarError, AGREEMENT_ERRORS, POS
 from ..checks.myspacy import nlp
 from ..utils import Error
 
@@ -49,11 +49,11 @@ ERRORS = {
             "their": ["they"],
             "theirs": ["they"]
         },
-    GrammarError.ARTICLE.value:
-        {
-            "an": ["a"],
-            "a": ["an"]
-        },
+#    GrammarError.ARTICLE.value:  # Commented out because Albert is not good at this.
+#        {
+#            "an": ["a"],
+#            "a": ["an"]
+#        },
     GrammarError.PASSIVE_WITH_INCORRECT_BE.value:
         {
             "been": ["is", "are", "was"]
@@ -122,12 +122,19 @@ def make_request_from_doc(doc: Doc, prompt: str = "", config={}):
                 # If the token is among the target tokens for an error,
                 # fetch the alternatives.
                 if token.text.lower() in ERRORS[error]:
+
+                    # For subject pronouns errors, we only consider cases where the pronoun has
+                    # a verb as its head, in order to exclude cases like "my mother".
+                    if error == GrammarError.SUBJECT_PRONOUN.value and not token.head.pos_ == POS.VERB.value:
+                        continue
+
                     alternative_forms = ERRORS[error].get(token.text.lower())
                     request["targets"].append({
-                        "token": token.text.lower(),
-                        "start": token.idx,
-                        "alternatives": list(alternative_forms),
-                        "error_type": error
+                            "token": token.text.lower(),
+                            "tag": token.tag_,
+                            "start": token.idx,
+                            "alternatives": list(alternative_forms),
+                            "error_type": error
                     })
 
         if catch_agreement_errors:
@@ -168,13 +175,14 @@ def make_request_from_doc(doc: Doc, prompt: str = "", config={}):
             if alternative_forms:
                 request["targets"].append({
                     "token": token.text.lower(),
+                    "tag": token.tag_,
                     "start": token.idx,
                     "alternatives": list(alternative_forms),
                     "error_type": GrammarError.SUBJECT_VERB_AGREEMENT.value
                 })
 
     import json
-    print(json.dumps(request, indent=4))
+    #  print(json.dumps(request, indent=4))
 
     return request
 

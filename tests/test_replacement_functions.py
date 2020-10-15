@@ -1,4 +1,4 @@
-from quillnlp.grammar.corpus import replace_adverb_by_adjective, get_adjective_for_adverb, replace, replace_its_vs_it_s
+from quillnlp.grammar.corpus import replace_adverb_by_adjective, get_adjective_for_adverb, replace, replace_its_vs_it_s, replace_plural_possessive
 from quillnlp.grammar.myspacy import nlp
 
 
@@ -69,3 +69,32 @@ def test_its_replacement_function():
 
     assert text == "Its a great day."
     assert entities[0][0] == 0
+
+
+def test_replace_plural_possessive_function():
+
+    texts = [
+        ("The earth's temperature increases.", "The earths temperature increases.", "earths"),
+        ("They have three cars.", "They have three car's.", "car's"),
+        ("It's an honor to meet you.", "It's an honor to meet you.", ""),
+        ("She is Russia's richest woman.", "She is Russias richest woman.", "Russias"),
+        ("John's second house", "Johns second house", "Johns"),
+        ("Cars are expensive", "Car's are expensive", "Car's"),
+        ("Ronaldo's global popularity", "Ronaldos global popularity", "Ronaldos"),
+        ("The United States just won bragging rights in the race to build the world's speediest supercomputer.",
+         "The United States just won bragging right's in the race to build the world's speediest supercomputer.",
+         "right's")
+    ]
+
+    for source_text, target_text, token in texts:
+        doc = nlp(source_text)
+        new_text, errors = replace_plural_possessive(doc, 1)
+
+        print(source_text)
+        print(new_text)
+        print(errors)
+
+        assert new_text == target_text
+
+        if errors:
+            assert new_text[errors[0][0]:errors[0][1]] == token

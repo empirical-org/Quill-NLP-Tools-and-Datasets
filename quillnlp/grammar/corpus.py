@@ -5,6 +5,8 @@ from nltk.corpus import wordnet as wn
 from difflib import get_close_matches as gcm
 from spacy.tokens import Doc
 
+from quillgrammar.grammar.constants import GrammarError
+
 ADVERB_ADJECTIVE_MAP = {"well": "good"}
 
 VERB_AGREEMENT_ERROR_TYPE = "VERB"
@@ -12,7 +14,7 @@ WOMAN_WOMEN_ERROR_TYPE = "WOMAN"
 THEN_THAN_ERROR_TYPE = "THEN"
 CHILD_CHILDREN_ERROR_TYPE = "CHILD"
 IT_S_ITS_ERROR_TYPE = "ITS"
-PLURAL_POSSESSIVE_ERROR_TYPE = "POSSESSIVE"
+PLURAL_POSSESSIVE_ERROR_TYPE = GrammarError.PLURAL_VERSUS_POSSESSIVE_NOUNS.value
 ADV_ERROR_TYPE = "ADV"
 
 PRESENT_BE = set(["be", "am", "are", "is"])
@@ -462,6 +464,7 @@ def replace_its_vs_it_s(doc: Doc, error_ratio: float):
                 text += new_token + doc[token.i+1].whitespace_
             else:
                 text += new_token + token.whitespace_
+
             entities.append((start_index, start_index + len(new_token), error_type))
 
     return text, entities
@@ -488,29 +491,39 @@ def replace_plural_possessive(doc: Doc, error_ratio: float):
         elif token.tag_ == "NNS" and random.random() < error_ratio:
             new_token = token.lemma_ + "'s"
             error_type = PLURAL_POSSESSIVE_ERROR_TYPE
-        elif token.i < len(doc)-1 and token.tag_ == "NN" and \
+        elif token.i < len(doc)-1 and token.tag_.startswith("NN") and \
                 doc[token.i+1].tag_ == "POS" and random.random() < error_ratio:
             new_token = token._.inflect("NNS")
+            if not new_token:
+                new_token = token.lemma_ + "s"  # handle cases like Ronaldo's
             error_type = PLURAL_POSSESSIVE_ERROR_TYPE
+            skip_next = True
         else:
             new_token = token.text
 
         if new_token is None or new_token == token.text or len(entities) > 0:
             text += token.text_with_ws
+            skip_next = False
         else:
             if token.text[0].isupper():
-                new_token = new_token.title()
+                new_token = new_token[0].upper() + new_token[1:]
 
             # Add a space to the text if it does not end in a space.
             # This solves problems like he's => hebe
             if len(text) > 0 and not text[-1].isspace():
                 text += " "
 
+            # The start index is the length of the text before
+            # the new token is added
             start_index = len(text)
+
+            # When replacing a possessive by a plural, we have to skip the next
+            # token in the text ('s) and just add the whitespace that follows it.
             if skip_next:
                 text += new_token + doc[token.i+1].whitespace_
             else:
                 text += new_token + token.whitespace_
+
             entities.append((start_index, start_index + len(new_token), error_type))
 
     return text, entities

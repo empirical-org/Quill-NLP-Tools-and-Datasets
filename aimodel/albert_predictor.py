@@ -1,6 +1,10 @@
 import os
+from collections import Counter
+
 from transformers import AlbertTokenizer, AutoModelWithLMHead, pipeline
 
+from quillgrammar.grammar.checks.myspacy import nlp
+from quillgrammar.grammar.constants import GrammarError, PRESENT_VERB_TAGS, PAST_VERB_TAGS
 
 synonyms = {
     "am": ["'m"],
@@ -29,6 +33,7 @@ class BertPredictor(object):
         self.model = model
         self.tokenizer = tokenizer
         self.pipeline = pipeline('fill-mask', model=model, tokenizer=tokenizer, topk=100)
+        self.nlp = nlp
 
     def correct_instance(self, instance):
 
@@ -45,17 +50,67 @@ class BertPredictor(object):
             masked_sentence = sentence[:start] + self.tokenizer.mask_token + sentence[start+len(token):]
             predictions = self.pipeline(masked_sentence)
 
-            print(masked_sentence)
-            for prediction in predictions:
-                print("P", prediction)
-
+            tag_counter = Counter()
             for prediction in predictions:
                 predicted_token = self.pipeline.tokenizer.convert_ids_to_tokens(prediction["token"])
                 predicted_token = predicted_token.replace("▁", "")  # for Albert tokenizer
 
+                correct_sentence = masked_sentence.replace(self.pipeline.tokenizer.mask_token,
+                                                           predicted_token)
+
+                correct_doc = self.nlp(correct_sentence)
+                predicted_tag = None
+                for t in correct_doc:
+                    if t.idx == start:
+                        predicted_tag = t.tag_
+                        tag_counter.update([predicted_tag])
+                        break
+
+                # A question mark error should only be flagged if the question mark is more
+                # probable than a full stop, not just if it is more probable than the observed
+                # punctuation sign.
+                if target["error_type"] == GrammarError.QUESTION_MARK.value and predicted_token == ".":
+                    break
+
+                elif predicted_tag and predicted_tag == "VBZ" and target["tag"] == "VBZ":
+                    break
+
+                elif predicted_tag and predicted_tag == "VBP" and target["tag"] == "VBP":
+                    break
+
+                elif predicted_tag and predicted_tag == "VB" and target["tag"] == "VB":
+                    break
+
+                elif predicted_tag and predicted_tag == "VBN" and target["tag"] == "VBN":
+                    break
+
+                elif predicted_tag and predicted_tag == "VBD" and target["tag"] == "VBD":
+                    break
+
+                elif sum(tag_counter.values()) >= 10:
+                    predicted_tag = tag_counter.most_common()[0][0]
+                    if predicted_tag in PRESENT_VERB_TAGS and \
+                            target["tag"] in PRESENT_VERB_TAGS and \
+                            target["tag"] != predicted_tag:
+                        return {"correct": correct_sentence,
+                                "original_token": token,
+                                "start": start,
+                                "predicted_token": predicted_token,
+                                "error_type": target["error_type"]}
+
+                    elif predicted_tag in PAST_VERB_TAGS and \
+                            target["tag"] in PAST_VERB_TAGS and \
+                            target["tag"] != predicted_tag:
+                        return {"correct": correct_sentence,
+                                "original_token": token,
+                                "start": start,
+                                "predicted_token": predicted_token,
+                                "error_type": target["error_type"]}
+
+
                 # If the token itself is ranked highest in the list of predictions,
                 # then it is likely correct.
-                if predicted_token.lower() == token.lower():
+                elif predicted_token.lower() == token.lower():
                     break
 
                 # If a synonym of the token is ranked highest in the list of predictions,
@@ -66,8 +121,7 @@ class BertPredictor(object):
                 # If an alternative form is ranked highest in the list of predictions,
                 # then the token is likely an error.
                 elif predicted_token in alternative_forms:
-                    correct_sentence = masked_sentence.replace(self.pipeline.tokenizer.mask_token,
-                                                               predicted_token)
+
                     return {"correct": correct_sentence,
                             "original_token": token,
                             "start": start,

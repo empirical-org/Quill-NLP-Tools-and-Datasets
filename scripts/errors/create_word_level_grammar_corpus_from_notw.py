@@ -90,11 +90,11 @@ def create_corpus(corpus_dir, output_file, error_ratio):
                                             #synthetic_sentence, errors = replace_its_vs_it_s(sentence, error_ratio)
                                             synthetic_sentence, errors = replace_plural_possessive(sentence, error_ratio)
                                             if len(errors) > 0:
-                                                train_data.append({"orig_sentence": sentence.text.strip(),
-                                                                   "synth_sentence": synthetic_sentence.strip(),
-                                                                   "entities": errors})
-                                            else:
-                                                train_data.append({"orig_sentence": sentence.text.strip()})
+                                                train_data.append([synthetic_sentence.strip(),
+                                                                   {"entities": errors,
+                                                                    "original": sentence.text.strip()}])
+                                            #else:
+                                            #    train_data.append([sentence.text.strip(), {"entities": []}])
 
                                             if len(train_data) % 100000 == 0:
                                                 with open(output_file, "w") as o:
