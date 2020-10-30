@@ -1,19 +1,40 @@
 errors:
-  - Spacing
-  - Articles
-  - Subject pronouns
-  - Object pronouns
-  - Commas in numbers
-  - Commas after yes & no
-  - Capitalization
-  - Contractions
-  - Punctuation
-  - Irregular plural nouns
-  - Subject_verb agreement with inversion
-  - Subject_verb agreement with either_or
-  - Subject_verb agreement with collective noun
-  - Subject_verb agreement with neither_nor
-  - Subject_verb agreement with simple noun
-  - Subject_verb agreement with personal pronoun
-  - Subject_verb agreement with separate subject and verb
-  - Subject_verb agreement with indefinite pronoun
+  Spacing: 0
+  Articles: 0
+  Subject pronouns: 0
+  Object pronouns: 0
+  Commas in numbers: 0
+  Commas after yes & no: 0
+  Capitalization: 0
+  Contractions: 0
+  Punctuation: 0
+  Irregular plural nouns: 0
+  Subject_verb agreement with inversion: 0
+  Subject_verb agreement with either_or: 0
+  Subject_verb agreement with collective noun: 0
+  Subject_verb agreement with neither_nor: 0
+  Subject verb agreement with simple noun: 1
+  Subject verb agreement with personal pronoun: 1
+  Subject_verb agreement with separate subject and verb: 0
+  Subject_verb agreement with indefinite pronoun: 0
+  Plural versus possessive nouns: 0
+  Perfect progressive without have: 0
+  Passive without be: 0
+  Perfect without have: 0
+  Passive perfect without have: 0
+  Simple past instead of past perfect: 0
+  Perfect progressive with incorrect be and without have: 0
+  Its versus it's: 0
+  This versus that: 0
+  Question marks: 0
+  Woman versus women: 0
+  Man versus men: 0
+  Incorrect irregular past tense: 0
+  Than versus then: 0
+  Repeated word: 0
+  Singular and plural nouns: 0
+  Incorrect participle: 0
+  Fragment: 0
+  Possessive pronouns: 0
+  Child versus children: 0
+  Passive with incorrect be: 0
