@@ -81,7 +81,7 @@ def test_deployment9():
 
     print(r.json())
     assert r.json()["index"] == 8
-    assert r.json()["type"] == GrammarError.PERFECT_TENSE_WITH_INCORRECT_SIMPLE_PAST.value
+    assert r.json()["type"] == GrammarError.PERFECT_TENSE_WITH_INCORRECT_PARTICIPLE.value
 
 
 def test_deployment10():

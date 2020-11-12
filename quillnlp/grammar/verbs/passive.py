@@ -69,7 +69,7 @@ class PassiveWithoutBeErrorGenerator(ErrorGenerator):
 
 class PassivePastTenseAsParticipleErrorGenerator(ErrorGenerator):
 
-    name = GrammarError.PASSIVE_PAST_TENSE_AS_PARTICIPLE.value
+    name = GrammarError.PASSIVE_WITH_SIMPLE_PAST_INSTEAD_OF_PARTICIPLE.value
 
     def generate_from_doc(self, doc):
         """ Replaces the past participle (e.g. forgotten) by its past tense (e.g. forgot) """

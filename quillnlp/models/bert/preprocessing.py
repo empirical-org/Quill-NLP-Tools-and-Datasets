@@ -133,6 +133,77 @@ def convert_data_to_input_items(examples: List[Dict], label2idx: Dict,
     return input_items
 
 
+def convert_conll_data_to_input_items(examples: List, label2idx: Dict,
+                                      max_seq_length: int, tokenizer: BertTokenizer,
+                                      task: NLPTask) -> List[BertInputItem]:
+    """
+    Converts a list of input examples to BertInputItems
+
+    Args:
+        examples: a list of examples as dicts of the form {"text": ..., "label": ...}
+        label2idx: a dict that maps label strings to label ids
+        max_seq_length: the maximum sequence length for the input items
+        tokenizer: the tokenizer that will be used to tokenize the text
+        task: the type of NLP task
+
+    Returns: a list of BertInputItems
+
+    """
+
+    input_items = []
+    for (ex_index, ex) in enumerate(examples):
+
+        # Create a list of token ids
+        toks = tokenizer.encode_plus(ex["text"], max_length=max_seq_length, pad_to_max_length=True,
+                                     truncation=True)
+        input_ids = toks["input_ids"]
+        segment_ids = toks["token_type_ids"]
+        input_mask = toks["attention_mask"]
+
+        if task == NLPTask.SINGLE_LABEL_CLASSIFICATION:
+            label_ids = label2idx[ex["label"]]
+        elif task == NLPTask.MULTI_LABEL_CLASSIFICATION:
+            label_ids = np.zeros(len(label2idx))
+            for label in ex["label"]:
+                label_ids[label2idx[label]] = 1
+        elif task == NLPTask.SEQUENCE_LABELING:
+            if "entities" not in ex:
+                label_ids = [label2idx["O"]] * len(input_ids)
+            else:
+                tokens = tokenizer.convert_ids_to_tokens(input_ids)
+                label_ids = [label2idx["O"]]
+                cur_index = 0
+                for num, tok in enumerate(tokens[1:]):
+
+                    if num > 0 and not tok.startswith("##"):
+                        cur_index += 1
+
+                    found_entity = False
+                    for entity in ex["entities"]:
+                        if cur_index >= entity[0] and cur_index <= entity[1]:
+                            label_ids.append(label2idx[entity[2]])
+                            found_entity = True
+                    if not found_entity:
+                        label_ids.append(label2idx["O"])
+
+                    if tok.startswith("##"):
+                        cur_index += len(tok) - 2
+                    else:
+                        cur_index += len(tok)
+
+            assert len(label_ids) == len(input_ids)
+        else:
+            raise ValueError(f"Unknown NLP Task {task}")
+
+        input_items.append(
+            BertInputItem(text=ex["text"],
+                          input_ids=input_ids,
+                          input_mask=input_mask,
+                          segment_ids=segment_ids,
+                          label_ids=label_ids))
+    return input_items
+
+
 def get_data_loader(input_items: List[BertInputItem], batch_size: int,
                     task: NLPTask, shuffle: bool=True) -> DataLoader:
     """

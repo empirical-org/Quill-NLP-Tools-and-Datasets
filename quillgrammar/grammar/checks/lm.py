@@ -103,7 +103,7 @@ def make_request_from_doc(doc: Doc, prompt: str = "", config={}):
 
     catch_agreement_errors = False
     for error in config["errors"]:
-        if error in AGREEMENT_ERRORS:
+        if config["errors"][error] == 1 and error in AGREEMENT_ERRORS:
             catch_agreement_errors = True
 
     for token in doc:
@@ -117,7 +117,7 @@ def make_request_from_doc(doc: Doc, prompt: str = "", config={}):
             if error == GrammarError.QUESTION_MARK.value and token != doc[-1]:
                 continue
 
-            if error in config["errors"]:
+            if error in config["errors"] and config["errors"][error] == 1:
 
                 # If the token is among the target tokens for an error,
                 # fetch the alternatives.
@@ -172,6 +172,7 @@ def make_request_from_doc(doc: Doc, prompt: str = "", config={}):
 
             # If any alternative forms remain, add this potential error
             # to the request
+
             if alternative_forms:
                 request["targets"].append({
                     "token": token.text.lower(),
@@ -182,7 +183,7 @@ def make_request_from_doc(doc: Doc, prompt: str = "", config={}):
                 })
 
     import json
-    #  print(json.dumps(request, indent=4))
+    # print(json.dumps(request, indent=4))
 
     return request
 
@@ -251,7 +252,8 @@ class OfflineLMChecker:
 
         print("Initialized LM-based Error Check for these errors:")
         for error_check in self.candidate_checks:
-            if error_check in self.config["errors"]:
+            if error_check in self.config["errors"] and \
+                    self.config["errors"][error_check] > 0:
                 print(f"[x] {error_check}")
             else:
                 print(f"[ ] {error_check}")

@@ -1,5 +1,5 @@
 from grammar.precedence import error_precedence
-
+from spacy.tokens import Doc
 
 class Error:
 
@@ -7,7 +7,8 @@ class Error:
                  predicted_token: str = None,
                  predicted_sentence: str = None,
                  subject: str = None,
-                 model: str = None):
+                 model: str = None,
+                 document: Doc = None):
 
         self.text = text
         self.index = index
@@ -17,6 +18,7 @@ class Error:
         self.subject = subject
         self.model = model
         self.score = error_precedence.get(self.type, 0)
+        self.document = document
 
     def __str__(self):
         return "Error(text: {}, type: {}, model: {}, score: {})".format(self.text, self.type, self.model, self.score)

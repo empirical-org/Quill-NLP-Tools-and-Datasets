@@ -9,7 +9,13 @@ import spacy
 from tqdm import tqdm
 
 from spacy.util import minibatch, compounding
-from spacy.gold import biluo_tags_from_offsets
+
+SPACY_VERSION = 3
+try:
+    from spacy.gold import biluo_tags_from_offsets
+    SPACY_VERSION = 2
+except:
+    from spacy.training import offsets_to_biluo_tags
 from sklearn.metrics import f1_score, classification_report
 
 
@@ -204,7 +210,7 @@ def evaluate_ner(data, model, test_file, verbose=False):
 
 def train_spacy_ner(train_data, dev_data, test_data, output_dir, test_file, n_iter=20, patience=2):
 
-    nlp = spacy.load("en")  # create blank Language class
+    nlp = spacy.load("en_core_web_sm")  # create blank Language class
 
     # create the built-in pipeline components and add them to the pipeline
     # nlp.create_pipe works for built-ins that are registered with spaCy
@@ -236,6 +242,7 @@ def train_spacy_ner(train_data, dev_data, test_data, output_dir, test_file, n_it
     for itn in range(n_iter):
         print(f"Epoch {itn}")
         random.shuffle(train_data)
+
         losses = {}
         # batch up the examples using spaCy's minibatch
         batches = minibatch(train_data, size=compounding(4.0, 32.0, 1.001))

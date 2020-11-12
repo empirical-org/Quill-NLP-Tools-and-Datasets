@@ -1,9 +1,11 @@
 import random
 
+import lemminflect
+
 from quillgrammar.grammar.constants import Tag, GrammarError, Dependency, POS, TokenSet
 from quillnlp.grammar.generation import ErrorGenerator
 from quillnlp.grammar.verbutils import get_subject, get_plural, is_indefinite, has_noun_subject, \
-    is_negated_with_contraction, has_following_subject, subject_has_neither, subject_has_either
+    is_negated_with_contraction, has_following_subject, subject_has_neither, subject_has_either, has_pronoun_subject
 
 
 class SubjectVerbAgreementWithSimpleNounErrorGenerator(ErrorGenerator):
@@ -149,7 +151,7 @@ class SubjectVerbAgreementErrorGenerator(ErrorGenerator):
 
 class IncorrectThirdPersonWithNegationErrorGenerator(ErrorGenerator):
 
-    name = GrammarError.VERB_INCORRECT_NEGATIVE_WITH_SIMPLE_NOUN.value
+    name = GrammarError.INCORRECT_NEGATIVE_VERB_WITH_A_SIMPLE_NOUN_SUBJECT.value
 
     def generate_from_doc(self, doc):
 
@@ -191,18 +193,23 @@ class SubjectVerbAgreementWithInversionErrorGenerator(ErrorGenerator):
                 # third-person singular -> other form
                 if token.tag_ == Tag.PRESENT_SING3_VERB.value:
                     if token.lemma_ == "be":
-                        new_form = random.choice(["be", "are", "am"])
+                        # most confusion will be between is and are, so are gets highest probability
+                        new_form = random.choice(["be", "am", "are", "are", "are"])
                         new_form = new_form.title() if token.text.istitle() else new_form
                     else:
                         new_form = token.lemma_
                         new_form = new_form.title() if token.text.istitle() else new_form
                     new_sentence += new_form + token.whitespace_
+                    entities.append((token.idx, token.idx + len(new_form), self.name))
 
                 # other form -> third-person form
                 elif token.tag_ == Tag.PRESENT_OTHER_VERB.value:
                     if token.lemma_ == "be":
                         other_forms = set(["be", "are", "am", "is"]) - set(token.text.lower())
-                        new_form = random.choice(list(other_forms))
+                        other_forms = list(other_forms)
+                        if "is" in other_forms:
+                            other_forms.extend(["is", "is", "is"])
+                        new_form = random.choice(other_forms)
                         new_form = new_form.title() if token.text.istitle() else new_form
                         new_sentence += new_form + token.whitespace_
                         entities.append((token.idx, token.idx + len(new_form), self.name))

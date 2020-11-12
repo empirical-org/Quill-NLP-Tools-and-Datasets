@@ -98,8 +98,8 @@ class Word(Enum):
 class TokenSet(Enum):
     PUNCTUATION_FOLLOWED_BY_SPACE = set([".", "!", "?", ")", ";", ":", ","])
     PUNCTUATION_NOT_PRECEDED_BY_SPACE = set([".", "!", "?", ")", ";", ":", ",", "%"])
-    END_OF_SENTENCE_PUNCTUATION = set([".", "!", "?", '"', '”'])
-    CLOSING_QUOTATION_MARKS = set(['"', '”'])
+    END_OF_SENTENCE_PUNCTUATION = set([".", "!", "?", '"', '”', "'"])
+    CLOSING_QUOTATION_MARKS = set(['"', '”', "'"])
     SINGULAR_DETERMINERS = set(["every", "none", "nothing", "each", "another", "one", "little",
                                 "much"])
     INDEF_PRONOUNS = set(["every", "none", "all", "nothing", "some", "each", "any", "another",
@@ -140,6 +140,8 @@ class TokenSet(Enum):
                             "flight", "gaggle", "colony", "horde"])
     MUTUALLY_EXCLUSIVE_BE_FORMS = set(["be", "am", "are", "is", "been"])
     BE_FORMS = set(["be", "am", "are", "is", "been", "was", "were"])
+    SINGULAR_COUNT_WORDS = set(["few", "couple"])
+    SINGULAR_NOUNS_THAT_LOOK_LIKE_PLURALS = set(["means", "species"])
 
 
 # Error type constants
@@ -157,6 +159,7 @@ class GrammarError(Enum):
     CHILD_CHILDREN = "Child versus children"
     THAN_THEN = "Than versus then"
     REPEATED_WORD = "Repeated word"
+    REPEATED_CONJUNCTION = "Repeated conjunction"
     SUBJECT_PRONOUN = "Subject pronouns"
     OBJECT_PRONOUN = "Object pronouns"
     POSSESSIVE_NOUN = "Possessive nouns"
@@ -164,13 +167,12 @@ class GrammarError(Enum):
     YES_NO_COMMA = "Commas after yes & no"
     SINGULAR_PLURAL = "Singular and plural nouns"
     CAPITALIZATION = "Capitalization"
+    ALLCAPS = "Allcaps"
     CONTRACTION = "Contractions"
     ITS_IT_S = "Its versus it's"
     PUNCTUATION = "Punctuation"
     ADVERB = "Adverbs versus adjectives"
-    SUBJECT_VERB_AGREEMENT_STATS = "Subject_verb agreement (stats)"
-    SUBJECT_VERB_AGREEMENT_RULE = "Subject_verb agreement (rule)"
-    SUBJECT_VERB_AGREEMENT = "Subject-verb agreement"
+    SUBJECT_VERB_AGREEMENT = "Subject verb agreement"
     IRREGULAR_PLURAL_NOUN = "Irregular plural nouns"
     FRAGMENT = "Fragment"
     POSSESSIVE_PRONOUN = "Possessive pronouns"
@@ -184,8 +186,8 @@ class GrammarError(Enum):
     PERFECT_PROGRESSIVE_WITHOUT_HAVE = "Perfect progressive without have"
     PASSIVE_PERFECT_WITHOUT_HAVE = "Passive perfect without have"
     PASSIVE_PERFECT_WITH_INCORRECT_PARTICIPLE = "Passive perfect with incorrect participle"
-    PAST_TENSE_INSTEAD_OF_PARTICIPLE = "Past tense instead of participle"
-    PERFECT_TENSE_WITH_INCORRECT_SIMPLE_PAST = "Perfect with incorrect participle"
+    PAST_TENSE_INSTEAD_OF_PARTICIPLE = "Past instead of participle"
+    PERFECT_TENSE_WITH_INCORRECT_PARTICIPLE = "Perfect with incorrect participle"
     PERFECT_WITH_INCORRECT_PARTICIPLE = "Perfect with incorrect participle"
     PERFECT_PROGRESSIVE_WITH_INCORRECT_BE_AND_WITHOUT_HAVE = "Perfect progressive with incorrect be and without have"
     SIMPLE_PAST_INSTEAD_OF_PAST_PERFECT = "Simple past instead of past perfect"
@@ -194,14 +196,14 @@ class GrammarError(Enum):
     INCORRECT_IRREGULAR_PAST_TENSE = "Incorrect irregular past tense"
     INCORRECT_PARTICIPLE = "Incorrect participle"
     INCORRECT_NEGATIVE_VERB_WITH_A_SIMPLE_NOUN_SUBJECT = "Incorrect negative verb with a simple noun subject"
-    SVA_SIMPLE_NOUN = "Subject_verb agreement with simple noun"
-    SVA_PRONOUN = "Subject_verb agreement with personal pronoun"
-    SVA_INVERSION = "Subject_verb agreement with inversion"
-    SVA_NEITHER_NOR = "Subject_verb agreement with neither_nor"
-    SVA_EITHER_OR = "Subject_verb agreement with either_or"
-    SVA_COLLECTIVE_NOUN = "Subject_verb agreement with collective noun"
-    SVA_INDEFINITE = "Subject_verb agreement with indefinite pronoun"
-    SVA_SEPARATE = "Subject_verb agreement with separate subject and verb"
+    SVA_SIMPLE_NOUN = "Subject verb agreement with simple noun"
+    SVA_PRONOUN = "Subject verb agreement with personal pronoun"
+    SVA_INVERSION = "Subject verb agreement with inversion"
+    SVA_NEITHER_NOR = "Subject verb agreement with neither nor"
+    SVA_EITHER_OR = "Subject verb agreement with either or"
+    SVA_COLLECTIVE_NOUN = "Subject verb agreement with collective noun"
+    SVA_INDEFINITE = "Subject verb agreement with indefinite pronoun"
+    SVA_SEPARATE = "Subject verb agreement with separate subject and verb"
 
 
 AGREEMENT_ERRORS = set([

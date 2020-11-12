@@ -2,7 +2,6 @@ import re
 import lemminflect
 
 from typing import List
-from collections import namedtuple
 from lemminflect import getLemma
 
 from spacy.tokens.doc import Doc
@@ -12,6 +11,7 @@ from ..verbutils import has_noun_subject, has_pronoun_subject, is_passive, in_ha
     get_past_tenses, has_inversion, get_subject, token_has_inversion, is_perfect
 from ..constants import *
 from ..utils import Error
+from quillgrammar.grammar.checks.exceptions import exceptions
 
 BASE_SPACY_MODEL = "en"
 
@@ -187,26 +187,41 @@ class RuleBasedArticleCheck(RuleBasedGrammarCheck):
     def check(self, doc: Doc, prompt="") -> List[Error]:
         errors = []
         for token in doc[:-1]:
-            # if "a" before vowel
+            next_token = doc[token.i + 1]
+
+            # Skip articles before acronyms
+            if next_token.text.isupper():
+                continue
+
+            # if "a" where we're sure it should be "an"
             if token.pos_ == POS.DETERMINER.value and \
                     token.text.lower() == Word.INDEF_ARTICLE_BEFORE_CONSONANT.value \
-                    and self._starts_with_vowel(doc[token.i + 1].text):
+                    and self._requires_an(next_token.text):
                 errors.append(Error(token.text, token.idx, self.name))
-            # if "an" before consonant
+
+            # if "an" where we're sure it should be "a"
             elif token.pos_ == POS.DETERMINER.value and \
                     token.text.lower() == Word.INDEF_ARTICLE_BEFORE_VOWEL.value \
-                    and self._starts_with_consonant(doc[token.i + 1].text):
+                    and self._requires_a(next_token.text):
                 errors.append(Error(token.text, token.idx, self.name))
         return errors
 
-    def _starts_with_consonant(self, token: str) -> bool:
+    def _requires_a(self, token: str) -> bool:
         if re.match("[bcdfgjklmnpqrstvwxz]", token, re.IGNORECASE):
+            return True
+        elif token.startswith("eu") or token.startswith("ur") or token.startswith("uni") or token.startswith("one"):
+            return True
+        elif token in exceptions["a before vowel"]:
             return True
         return False
 
-    def _starts_with_vowel(self, token: str) -> bool:
-        # We leave out "u", because of "a useful", etc.
-        if re.match("[aeio]", token, re.IGNORECASE):
+    def _requires_an(self, token: str) -> bool:
+        # Several combinations of vowels require "a" not "an"
+        if token.startswith("eu") or token.startswith("ur") or token.startswith("uni") or token.startswith("one"):
+            return False
+        elif re.match("[aeio]", token, re.IGNORECASE):
+            return True
+        elif token in exceptions["an before h"]:
             return True
         return False
 
@@ -269,7 +284,12 @@ class RuleBasedSpacingCheck(RuleBasedGrammarCheck):
 
         # Punctuation not followed by a space
         for token in doc[:-1]:
-            if token.text in TokenSet.PUNCTUATION_FOLLOWED_BY_SPACE.value and \
+
+            # Catch cases with incorrect tokenization
+            if re.search(r"\w[;?]\w", token.text):
+                errors.append(Error(token.text, token.idx, self.name))
+
+            elif token.text in TokenSet.PUNCTUATION_FOLLOWED_BY_SPACE.value and \
                     token.whitespace_ == "" and not doc[token.i+1].is_punct:
                 errors.append(Error(token.text, token.idx, self.name))
 
@@ -343,6 +363,29 @@ class RepeatedWordCheck(RuleBasedGrammarCheck):
         for t in doc[1:]:
             if t.text.lower() not in self.exclude_words and t.text.lower() == doc[t.i-1].text.lower():
                 errors.append(Error(t.text, t.idx, self.name))
+        return errors
+
+
+class RepeatedConjunctionCheck(RuleBasedGrammarCheck):
+    """
+    Identifies cases where the response repeats the conjunction in the prompt.
+    """
+
+    name = GrammarError.REPEATED_CONJUNCTION.value
+
+    def check(self, doc: Doc, prompt="") -> List[Error]:
+
+        response = doc.text.replace(prompt, "").strip()
+        prompt = prompt.strip()
+
+        errors = []
+        if prompt.endswith(" so") and response.startswith("so "):
+            errors.append(Error("so", len(prompt)+1, self.name))
+        elif prompt.endswith(" because") and response.startswith("because "):
+            errors.append(Error("because", len(prompt)+1, self.name))
+        elif prompt.endswith(" but") and response.startswith("but "):
+            errors.append(Error("but", len(prompt)+1, self.name))
+
         return errors
 
 
@@ -441,11 +484,21 @@ class SingularPluralNounCheck(RuleBasedGrammarCheck):
     def check(self, doc: Doc, prompt="") -> List[Error]:
         errors = []
         for noun_chunk in doc.noun_chunks:
-            for token in noun_chunk:
-                if (token.text.lower() in ["a", "an"] or token.text.lower() in TokenSet.SINGULAR_DETERMINERS.value) and \
-                        token.dep_ == Dependency.DETERMINER.value and \
-                        token.head.tag_ == Tag.PLURAL_NOUN.value:
-                    errors.append(Error(token.text, token.idx, self.name))
+            for token in noun_chunk[:-1]:
+
+                if token.text.lower() in ["a", "an"] or token.text.lower() in TokenSet.SINGULAR_DETERMINERS.value:
+                    if token.dep_ == Dependency.DETERMINER.value and \
+                            token.head.tag_ == Tag.PLURAL_NOUN.value and \
+                            token.head.text not in TokenSet.SINGULAR_NOUNS_THAT_LOOK_LIKE_PLURALS.value:
+
+                        # exclude few, couple
+                        found_few = False
+                        for left_token in token.head.lefts:
+                            if left_token.text in TokenSet.SINGULAR_COUNT_WORDS.value:
+                                found_few = True
+
+                        if not found_few:
+                            errors.append(Error(token.text, token.idx, self.name))
         return errors
 
 
@@ -463,6 +516,7 @@ class CapitalizationCheck(RuleBasedGrammarCheck):
         if re.match("[a-z]", doc[0].text):
             doc[0]._.grammar_errors.append(GrammarError.CAPITALIZATION.value)
             errors.append(Error(doc[0].text, doc[0].idx, self.name))
+
         for token in doc[1:]:
             if token.text == "i":
                 errors.append(Error(token.text, token.idx, self.name))
@@ -474,7 +528,21 @@ class CapitalizationCheck(RuleBasedGrammarCheck):
             #elif token.pos_ == POS.PROPER_NOUN.value and token.text.islower():
             #    errors.append(Error(token.text, token.idx, self.name, None))
 
-        doc_without_prompt = doc.text[len(prompt):]
+        return errors
+
+
+class AllcapsCheck(RuleBasedGrammarCheck):
+    """
+    Identifies cases where a sentence does not start with a capital letter, or
+    "I" is not capitalized. Also identifies uses of allcaps.
+    """
+
+    name = GrammarError.ALLCAPS.value
+
+    def check(self, doc: Doc, prompt="") -> List[Error]:
+        errors = []
+
+        doc_without_prompt = doc.text[len(prompt):].strip()
         if doc_without_prompt.isupper():
             errors.append(Error(doc_without_prompt, len(prompt), self.name))
 
@@ -556,7 +624,7 @@ class IncorrectParticipleCheck(RuleBasedGrammarCheck):
                     else:
                         error_type = GrammarError.PASSIVE_WITH_INCORRECT_PARTICIPLE.value
                 elif is_perfect(token):
-                    error_type = GrammarError.PERFECT_TENSE_WITH_INCORRECT_SIMPLE_PAST.value
+                    error_type = GrammarError.PERFECT_TENSE_WITH_INCORRECT_PARTICIPLE.value
                 else:
                     error_type = GrammarError.PERFECT_WITH_INCORRECT_PARTICIPLE.value
 
@@ -584,12 +652,12 @@ class PunctuationCheck(RuleBasedGrammarCheck):
 
     def check(self, doc: Doc, prompt="") -> List[Error]:
         errors = []
-        if doc[-1].text not in TokenSet.END_OF_SENTENCE_PUNCTUATION.value:
+        if doc.text[-1] not in TokenSet.END_OF_SENTENCE_PUNCTUATION.value:
             errors.append(Error(doc[-1].text, doc[-1].idx, self.name))
         # if a sentence ends in a quotation mark, the previous token also has to be
         # punctuation sign.
-        elif doc[-1].text in TokenSet.CLOSING_QUOTATION_MARKS.value:
-            if not (len(doc) > 1 and doc[-2].text in TokenSet.END_OF_SENTENCE_PUNCTUATION.value):
+        elif doc.text[-1] in TokenSet.CLOSING_QUOTATION_MARKS.value:
+            if not (len(doc.text) > 1 and doc.text[-2] in TokenSet.END_OF_SENTENCE_PUNCTUATION.value):
                 errors.append(Error(doc[-1].text, doc[-1].idx, self.name))
         return errors
 
@@ -686,7 +754,7 @@ class PossessivePronounsErrorCheck(RuleBasedGrammarCheck):
 
 class SubjectVerbAgreementErrorCheck(RuleBasedGrammarCheck):
 
-    name = GrammarError.SUBJECT_VERB_AGREEMENT_RULE.value
+    name = GrammarError.SUBJECT_VERB_AGREEMENT.value
 
     def check(self, doc: Doc, prompt="") -> List[Error]:
         errors = []
@@ -742,7 +810,7 @@ class RuleBasedGrammarChecker(object):
     """
 
     candidate_checks = {
-        RuleBasedPluralVsPossessiveCheck.name: RuleBasedPluralVsPossessiveCheck(),
+#        RuleBasedPluralVsPossessiveCheck.name: RuleBasedPluralVsPossessiveCheck(),
         RuleBasedThisVsThatCheck.name: RuleBasedThisVsThatCheck(),
         RuleBasedQuestionMarkCheck.name: RuleBasedQuestionMarkCheck(),
         RuleBasedSpacingCheck.name: RuleBasedSpacingCheck(),
@@ -751,12 +819,14 @@ class RuleBasedGrammarChecker(object):
         ManVsMenCheck.name: ManVsMenCheck(),
         ThanVsThenCheck.name: ThanVsThenCheck(),
         RepeatedWordCheck.name: RepeatedWordCheck(),
+        RepeatedConjunctionCheck.name: RepeatedConjunctionCheck(),
         SubjectPronounCheck.name: SubjectPronounCheck(),
         ObjectPronounCheck.name: ObjectPronounCheck(),
         CommasInNumbersCheck.name: CommasInNumbersCheck(),
         CommasAfterYesNoCheck.name: CommasAfterYesNoCheck(),
         SingularPluralNounCheck.name: SingularPluralNounCheck(),
         CapitalizationCheck.name: CapitalizationCheck(),
+        AllcapsCheck.name: AllcapsCheck(),
         ContractionCheck.name: ContractionCheck(),
         IncorrectIrregularPastTenseCheck.name: IncorrectIrregularPastTenseCheck(),
         IncorrectParticipleCheck.name: IncorrectParticipleCheck(),
@@ -772,7 +842,8 @@ class RuleBasedGrammarChecker(object):
         self.name = "rules"
 
         self.grammar_checks = set([
-            self.candidate_checks.get(check) for check in config["errors"] if check in self.candidate_checks
+            self.candidate_checks.get(check) for check in config["errors"]
+            if check in self.candidate_checks and config["errors"][check] > 0
         ])
 
         print("Initialized rule-based Error Check for these errors:")

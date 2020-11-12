@@ -1,5 +1,4 @@
-from .precedence import error_precedence
-
+from spacy.tokens import Doc
 
 class Error:
 
@@ -7,7 +6,8 @@ class Error:
                  predicted_token: str = None,
                  predicted_sentence: str = None,
                  subject: str = None,
-                 model: str = None):
+                 model: str = None,
+                 document: Doc = None):
 
         self.text = text
         self.index = index
@@ -16,17 +16,21 @@ class Error:
         self.predicted_sentence = predicted_sentence
         self.subject = subject
         self.model = model
-        self.score = error_precedence.get(self.type, 0)
+        self.score = None
+        self.document = document
 
     def __str__(self):
-        return "Error(text: {}, type: {}, model: {}, score: {})".format(self.text, self.type, self.model, self.score)
+        return "Error(text: {}, index: {}, type: {}, model: {}, score: {})".format(self.text, self.index, self.type, self.model, self.score)
 
     def __repr__(self):
-        return "Error(text: {}, type: {}, model: {}, score: {})".format(self.text, self.type, self.model, self.score)
+        return "Error(text: {}, index: {}, type: {}, model: {}, score: {})".format(self.text, self.index, self.type, self.model, self.score)
 
     def __lt__(self, other):
         return self.score < other.score
 
-    def set_type(self, new_type):
+    def set_type(self, new_type, config):
         self.type = new_type
-        self.score = error_precedence.get(self.type, 0)
+        self.score = config["errors"].get(self.type, 0)
+
+    def set_precedence(self, config):
+        self.score = config["errors"].get(self.type, 0)

@@ -12,7 +12,6 @@ from quillnlp.models.bert.train import evaluate
 from quillnlp.models.bert.preprocessing import convert_data_to_input_items, get_data_loader, NLPTask
 from quillgrammar.grammar.constants import *
 from quillgrammar.grammar.checks.rules import RuleBasedGrammarChecker, statistical_error_map
-from quillgrammar.grammar.precedence import error_precedence
 
 BASE_SPACY_MODEL = "en"
 

@@ -4,7 +4,7 @@ from quillnlp.grammar.generation import ErrorGenerator
 
 class SimplePastInsteadOfPastPerfectErrorGenerator(ErrorGenerator):
 
-    name = GrammarError.VERB_SIMPLE_PAST_INSTEAD_OF_PAST_PERFECT.value
+    name = GrammarError.SIMPLE_PAST_INSTEAD_OF_PAST_PERFECT.value
 
     def generate_from_doc(self, doc):
 
@@ -42,7 +42,7 @@ class SimplePastInsteadOfPastPerfectErrorGenerator(ErrorGenerator):
 
 class SimplePastInsteadOfPresentPerfectErrorGenerator(ErrorGenerator):
 
-    name = GrammarError.VERB_SIMPLE_PAST_INSTEAD_OF_PRESENT_PERFECT.value
+    name = GrammarError.SIMPLE_PAST_INSTEAD_OF_PRESENT_PERFECT.value
 
     def generate_from_doc(self, doc):
 

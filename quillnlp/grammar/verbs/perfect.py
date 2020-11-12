@@ -7,7 +7,7 @@ from quillnlp.grammar.verbutils import get_perfect_progressives, in_have_been_co
 
 class PerfectTenseWithoutHaveErrorGenerator(ErrorGenerator):
 
-    name = GrammarError.PERFECT_TENSE_WITHOUT_HAVE.value
+    name = GrammarError.PERFECT_WITHOUT_HAVE.value
 
     def generate_from_doc(self, doc):
 
@@ -148,7 +148,7 @@ class PassivePerfectWithoutHaveErrorGenerator(ErrorGenerator):
 
 class PerfectTenseWithSimplePastErrorGenerator(ErrorGenerator):
 
-    name = GrammarError.PERFECT_TENSE_WITH_SIMPLE_PAST.value
+    name = GrammarError.PERFECT_TENSE_WITH_INCORRECT_PARTICIPLE.value
 
     def generate_from_doc(self, doc):
         """ Replaces the past participle (e.g. forgotten) by the past tense (e.g. forgot) """
@@ -179,7 +179,7 @@ class PerfectTenseWithSimplePastErrorGenerator(ErrorGenerator):
 
 class PerfectProgressiveWithIncorrectBeAndWithoutHaveErrorGenerator(ErrorGenerator):
 
-    name = GrammarError.PERFECT_PROGRESSIVE_WITH_INCORRECT_BE_WITHOUT_HAVE.value
+    name = GrammarError.PERFECT_PROGRESSIVE_WITH_INCORRECT_BE_AND_WITHOUT_HAVE.value
 
     def generate_from_doc(self, doc):
 
