@@ -1,7 +1,6 @@
 import time
 
 from .checks.rules import RuleBasedGrammarChecker, GrammarError
-from .checks.lm import GoogleAIModelChecker, OfflineLMChecker
 from .checks.myspacy import SpaCyGrammarChecker
 from .postprocess import classify_error
 from .checks.myspacy import nlp
@@ -14,9 +13,6 @@ class GrammarPipeline:
         self.config = config
         self.rules = RuleBasedGrammarChecker(config)
         self.supervised = SpaCyGrammarChecker(config)
-#        self.unsupervised = GoogleAIModelChecker()
-        # self.unsupervised = OfflineLMChecker("/samba/public/models/albert-large/", config)
-        # self.pipeline = [self.rules, self.supervised, self.unsupervised]
         self.pipeline = [self.rules, self.supervised]
 
     def check(self, sentence: str, prompt: str = ""):
