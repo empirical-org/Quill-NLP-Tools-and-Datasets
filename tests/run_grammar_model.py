@@ -2,14 +2,32 @@ import csv
 import yaml
 
 from tqdm import tqdm
-from sklearn.metrics import classification_report, precision_recall_fscore_support
-from sklearn.preprocessing import MultiLabelBinarizer
 
+from quillgrammar.grammar.constants import GrammarError
 from quillgrammar.grammar.pipeline import GrammarPipeline
-from quillnlp.spelling.bing import correct_sentence_with_bing
 
 csv_file = "quillgrammar/combined_turk_data.csv"
-config_file = "tests/config_current.yaml"
+csv_file = "../../data/quill/grammer_response_dump_generic_2020_07_06.csv"
+config_file = "grammar_config_test.yaml"
+
+
+def read_csv_file(f):
+    data = []
+    with open(f) as i:
+        reader = csv.reader(i)
+        for row in reader:
+            sentence, prompt, *other = row
+            if sentence.startswith(prompt):
+                data.append((sentence, prompt))
+            else:
+                data.append((sentence, ""))
+    return data
+
+
+grouping = {
+    GrammarError.PASSIVE_WITH_INCORRECT_BE.value: "Passive been error",
+    GrammarError.PASSIVE_PERFECT_WITHOUT_HAVE.value: "Passive been error"
+}
 
 
 def test_grammar_pipeline():
@@ -19,21 +37,20 @@ def test_grammar_pipeline():
 
     pipeline = GrammarPipeline(config)
 
-    data = []
-    with open(csv_file) as i:
-        reader = csv.reader(i)
-        for row in reader:
-            sentence, prompt, _ = row
-            data.append((sentence, prompt))
+    data = read_csv_file(csv_file)
 
-    with open("combined_turk_output_20201013_bing.tsv", "w") as o:
+    with open("combined_turk_output_20201030.tsv", "w") as o:
         csv_writer = csv.writer(o, delimiter="\t")
 
         for (sentence, prompt) in tqdm(data, desc="Predicting errors"):
 
-            sentence = correct_sentence_with_bing(sentence)
+            #sentence = correct_sentence_with_bing(sentence)
 
-            errors = pipeline.check(sentence, prompt)
+            try:
+                errors = pipeline.check(sentence, prompt)
+            except IndexError:
+                errors = []
+
             predicted_error = None
             if len(errors) > 0:
                 predicted_error = errors[0]
@@ -41,7 +58,9 @@ def test_grammar_pipeline():
             if predicted_error is None:
                 csv_writer.writerow([sentence, "", "", ""])
             else:
-                csv_writer.writerow([sentence, predicted_error.type,
+                error_type = grouping.get(predicted_error.type, predicted_error.type)
+
+                csv_writer.writerow([sentence, error_type,
                                     predicted_error.index, predicted_error.text])
 
 

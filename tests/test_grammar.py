@@ -2,7 +2,12 @@ import ndjson
 
 from collections import Counter
 
-from quillnlp.grammar.grammarcheck import SpaCyGrammarChecker, BertGrammarChecker
+# from quillnlp.grammar.grammarcheck import SpaCyGrammarChecker, BertGrammarChecker
+import yaml
+
+from quillgrammar.grammar.checks.rules import RepeatedConjunctionCheck, RuleBasedGrammarChecker
+from quillgrammar.grammar.constants import GrammarError
+from quillgrammar.grammar.checks.myspacy import nlp
 from quillnlp.spelling.bing import correct_sentence_with_bing
 
 
@@ -104,6 +109,60 @@ def test_yesno():
     for sentence, num_errors in sentences:
         found_errors = checker.check(sentence)
         assert len(found_errors) == num_errors
+
+
+def test_repeated_conjunction_check():
+
+    sentences = [("The climate is changing because because we eat too much meat.",
+                  "The climate is changing because", "because", 32),
+                 ("The climate is changing so so we should eat less meat.",
+                  "The climate is changing so", "so", 27),
+                 ("The climate is changing, but but we can't eat less meat.",
+                  "The climate is changing, but", "but", 29),
+                 ("The climate is changing, but we can't eat less meat.",
+                  "The climate is changing, but", "", 0),
+                 ("The climate is changing, but it's always been so so",
+                  "The climate is changing, but", "", 0)
+                 ]
+
+    checker = RepeatedConjunctionCheck()
+
+    for sentence, prompt, word, index in sentences:
+        errors = checker.check(nlp(sentence), prompt)
+        print(errors)
+
+        if index > 0:
+            assert len(errors) == 1
+            assert errors[0].text == word
+            assert errors[0].index == index
+        else:
+            assert len(errors) == 0
+
+
+def test_capitalization_check():
+
+    sentences = [("Methane from cow burps harms the environment because it contributes to global warming.",
+                  "Methane from cow burps harms the environment because", "", 0, None),
+                 ("Methane from cow burps harms the environment because IT CONTRIBUTES TO GLOBAL WARMING.",
+                  "Methane from cow burps harms the environment because", "IT CONTRIBUTES TO GLOBAL WARMING.", 52,
+                  GrammarError.ALLCAPS.value)]
+
+    with open("grammar_config_test.yaml") as i:
+        config = yaml.load(i)
+
+    checker = RuleBasedGrammarChecker(config=config)
+
+    for sentence, prompt, word, index, error_type in sentences:
+        errors = checker.check(nlp(sentence), prompt)
+        print(errors)
+
+        if index > 0:
+            assert len(errors) == 1
+            assert errors[0].text == word
+            assert errors[0].index == index
+            assert errors[0].type == error_type
+        else:
+            assert len(errors) == 0
 
 
 def test_grammar_quill():

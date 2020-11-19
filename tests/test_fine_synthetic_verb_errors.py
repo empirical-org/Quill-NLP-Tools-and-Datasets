@@ -1,7 +1,5 @@
-from quillnlp.grammar import verbutils
 from quillnlp.grammar.verbs import agreement, perfect, passive, tense
-from quillnlp.grammar.verbutils import FutureInSubclauseErrorGenerator, replace_past_simple_with_past_perfect, \
-    VerbShiftErrorGenerator
+from quillnlp.grammar.verbutils import replace_past_simple_with_past_perfect
 
 
 def test_passive_without_be():
@@ -31,15 +29,6 @@ def test_replace_past_participle_by_simple_past():
     output = "I had forgot to pay the bill."
 
     sentence = perfect.PerfectTenseWithSimplePastErrorGenerator().generate_from_text(input)
-    assert output == sentence[0]
-
-
-def test_remove_be_from_perfect_progressive():
-
-    input = "I have been working here for a long time."
-    output = "I been working here for a long time."
-
-    sentence = perfect.PerfectTenseWithoutHaveErrorGenerator().generate_from_text(input)
     assert output == sentence[0]
 
 
@@ -109,30 +98,6 @@ def test_past_perfect_with_incorrect_participle():
     for input, output in input_output_pairs:
         sentence = perfect.PassivePerfectWithIncorrectParticipleErrorGenerator().generate_from_text(input)
         assert output == sentence[0]
-
-
-def test_verb_shifts():
-
-    input_output_pairs = [("When my alarm goes off, I get out of bed.",
-                           "When my alarm went off, I get out of bed.")]
-
-    for input, output in input_output_pairs:
-
-        sentence = VerbShiftErrorGenerator().generate_from_text(input)
-        assert output == sentence[0]
-
-
-def test_incorrect_future():
-
-    input_output_pairs = [("I will give you candy when you clean your room.",
-                           "I will give you candy when you will clean your room."),
-                          ("I will give him candy when he cleans his room.",
-                           "I will give him candy when he will clean his room.")]
-
-    for input, output in input_output_pairs:
-        sentence = FutureInSubclauseErrorGenerator().generate(input)
-
-        assert output == sentence
 
 
 def test_incorrect_past_perfect():

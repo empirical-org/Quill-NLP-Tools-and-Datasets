@@ -1,6 +1,6 @@
 import requests
 
-from quillnlp.grammar.grammarcheck import SpaCyGrammarChecker, BertGrammarChecker
+from quillnlp.grammar.grammarcheck import SpaCyGrammarChecker
 from private import BING_URL, BING_KEY
 
 

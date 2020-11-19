@@ -3,7 +3,7 @@ import yaml
 from quillgrammar.grammar.pipeline import GrammarPipeline
 from quillgrammar.grammar.constants import GrammarError
 
-config_file = "tests/config.yaml"
+config_file = "grammar_config_test.yaml"
 
 
 def test_grammar_pipeline1():
@@ -61,7 +61,7 @@ def test_grammar_pipeline5():
 
     errors = pipeline.check(sentence, "")
 
-    assert errors[0].type == GrammarError.QUESTION_MARK.value
+    assert errors[0].type == GrammarError.PUNCTUATION.value
 
 
 def test_grammar_pipeline6():
@@ -133,7 +133,23 @@ def test_grammar_pipeline_for_sva_no_errors():
                  ("Alison Bechdel’s memoir has been challenged in certain "
                   "communities, but memories are too pornographic for schools.",
                   "Alison Bechdel’s memoir has been challenged in certain "
-                  "communities, but ")]
+                  "communities, but "),
+                 ("Methane from cow burps harms the environment, but it doesn't "
+                  "have to be that way.",
+                  "Methane from cow burps harms the environment, but "),
+                 ("Plastic bag reduction laws are beneficial because it decreases "
+                  "the negative effects of plastic production.",
+                  "Plastic bag reduction laws are beneficial because "),
+                 ("Alison Bechdel's memoir has been challenged in certain communities, "
+                  "but memories are too pornographic for schools.", ""),
+                 ("Large amounts of meat consumption are harming the environment, but "
+                  "Impossible Foods is working on alternatives.", ""),
+                 ("Large amounts of meat consumption are harming the environment, so "
+                  "Impossible Foods has come up with a meat alternative that may meat "
+                  "eaters actually like.", ""),
+                 ("Alison Bechdel's memoir has been challenged in certain communities, but "
+                  "the National Coalition Against Censorship (NCAC) has pushed back against "
+                  "the attempts to ban her book.", "")]
 
     with open(config_file) as i:
         config = yaml.load(i, Loader=yaml.FullLoader)
@@ -155,7 +171,11 @@ def test_grammar_pipeline_for_sva_errors():
                  ("Lord Howe Island hug a turquoise lagoon rimmed with the "
                   "world’s southernmost coral reef.", ""),
                  ("Located at the exact point where Switzerland, France and "
-                  "Germany meet, Basel straddle a bend of the Rhine.", "")]
+                  "Germany meet, the city straddle a bend of the Rhine.", ""),
+                 ("Plastic bag reduction laws are beneficial because it decrease "
+                  "the negative effects of plastic production.",
+                  "Plastic bag reduction laws are beneficial because ")
+                 ]
 
     with open(config_file) as i:
         config = yaml.load(i, Loader=yaml.FullLoader)
@@ -164,6 +184,9 @@ def test_grammar_pipeline_for_sva_errors():
 
     for sentence, prompt in sentences:
         errors = pipeline.check(sentence, prompt)
+
+        print(sentence)
+        print(errors)
 
         assert len(errors) > 0
 
@@ -216,10 +239,10 @@ def test_grammar_pipeline_spacing():
                   "because there are 1.5 billion cows.",
                   "", 0),
                  ("Methane from cow burps harms the environment, but it "
-                  "produces about 14.5% of the worlds green houses gas .",
+                  "produces about 14.5% of the world's green houses gas .",
                   "", 1),
                  ("Methane from cow burps harms the environment, but it "
-                  "produces about 14.5 % of the worlds green houses gas.",
+                  "produces about 14.5 % of the world's green houses gas.",
                   "", 1)
                  ]
 
@@ -239,7 +262,7 @@ def test_grammar_pipeline_articles():
 
     sentences = [("Large amounts of meat consumption are harming the "
                   "environment, but an impossible burger generates 89% "
-                  "fewer greenhouse gases. ",
+                  "fewer greenhouse gases.",
                   "Large amounts of meat consumption are harming the "
                   "environment, but ", 0)
                  ]
@@ -282,11 +305,11 @@ def test_grammar_pipeline_capitalization():
 def test_grammar_pipeline_its():
 
     sentences = [
-#                 ("Alison Bechdel’s memoir has been challenged in certain "
-#                  "communities because some people believe that it's "
-#                  "pornographic and promotes gay and lesbian lifestyle.",
-#                  "Alison Bechdel’s memoir has been challenged in certain "
-#                  "communities because", 0),
+                 ("Alison Bechdel’s memoir has been challenged in certain "
+                  "communities because some people believe that it's "
+                  "pornographic and promotes gay and lesbian lifestyle.",
+                  "Alison Bechdel’s memoir has been challenged in certain "
+                  "communities because", 0),
                  ("Alison Bechdel’s memoir has been challenged in certain "
                   "communities because of its pornographic style.",
                   "Alison Bechdel’s memoir has been challenged in certain "
@@ -294,7 +317,7 @@ def test_grammar_pipeline_its():
                  ("Alison Bechdel’s memoir has been challenged in certain "
                   "communities because it's pornographic.",
                   "Alison Bechdel’s memoir has been challenged in certain "
-                  "communities because", 1),
+                  "communities because", 0),
                  ("Alison Bechdel’s memoir has been challenged in certain "
                   "communities because of it's pornographic style.",
                   "Alison Bechdel’s memoir has been challenged in certain "
@@ -308,5 +331,104 @@ def test_grammar_pipeline_its():
     for sentence, prompt, num_errors in sentences:
         errors = set([e.type for e in pipeline.check(sentence, prompt)])
 
+        print("Identified errors:", errors)
+        assert len(errors) == num_errors
+
+
+def test_grammar_pipeline_inversion():
+
+    sentences = [("There are only one thing you need to know about me.", "", 1)]
+    with open(config_file) as i:
+        config = yaml.load(i, Loader=yaml.FullLoader)
+
+    pipeline = GrammarPipeline(config)
+
+    for sentence, prompt, num_errors in sentences:
+        errors = set([e.type for e in pipeline.check(sentence, prompt)])
+
+        print("Identified errors:", errors)
+        assert len(errors) == num_errors
+
+
+def test_grammar_pipeline_perfect_progressive_without_have():
+
+    sentences = [("Large amounts of meat consumption are harming the environment "
+                 "because it contributes to global warming and raising the "
+                 "earth's temperature.", "", 0),
+                 ("Plastic bag reduction laws are beneficial, but it can reduce "
+                  "the chance of people developing illnesses.",
+                  "", 0),
+                 ("Large amounts of meat consumption are harming the environment, "
+                  "but ending animal agriculture is more important.", "", 0),
+                 ("Plastic bag reduction laws are beneficial, but people whose job "
+                  "it is to produce these plastic bags fear losing their jobs.", "", 0),
+                 ("He been writing fiction since he was young.", "", 1),
+                 ("We been catching up on the Sopranos together each evening.", "", 1)]
+
+    with open(config_file) as i:
+        config = yaml.load(i, Loader=yaml.FullLoader)
+
+    pipeline = GrammarPipeline(config)
+
+    for sentence, prompt, num_errors in sentences:
+        errors = set([e.type for e in pipeline.check(sentence, prompt)])
+
+        print("Identified errors:", errors)
+        assert len(errors) == num_errors
+
+
+def test_capitalization():
+
+    sentences = [("Large amounts of meat consumption are harming the environment, "
+                  "so i have linked global warming to an increase in "
+                  "extreme weather events.",
+                  "Large amounts of meat consumption are harming the environment,", 1)]
+
+    with open(config_file) as i:
+        config = yaml.load(i, Loader=yaml.FullLoader)
+
+    pipeline = GrammarPipeline(config)
+
+    for sentence, prompt, num_errors in sentences:
+        errors = set([e.type for e in pipeline.check(sentence, prompt)])
+
+        print("Identified errors:", errors)
+        assert len(errors) == num_errors
+
+
+def test_initial_verb():
+
+    sentences = [("Large amounts of meat consumption are harming the environment, "
+                  "so there is no problem in this sentence.",
+                  "Large amounts of meat consumption are harming the environment, so", 0),
+                 ("Large amounts of meat consumption are harming the environment, "
+                  "so see there is a problem.",
+                  "Large amounts of meat consumption are harming the environment, so", 1),
+                 ("Large amounts of meat consumption are harming the environment, "
+                  "so reading is great.",
+                  "Large amounts of meat consumption are harming the environment, so", 0),
+                 ("Large amounts of meat consumption are harming the environment, "
+                  "so listening will not help.",
+                  "Large amounts of meat consumption are harming the environment, so", 0),
+                 ("Large amounts of meat consumption are harming the environment, "
+                  "so stopping to eat meat would be a good idea.",
+                  "Large amounts of meat consumption are harming the environment, so", 0),
+                 ("Large amounts of meat consumption are harming the environment, "
+                  "so ground meat is a problem, too.",
+                  "Large amounts of meat consumption are harming the environment, so", 0),
+                 ("Large amounts of meat consumption are harming the environment, "
+                  "so learned behavior should do the trick.",
+                  "Large amounts of meat consumption are harming the environment, so", 0)
+                 ]
+
+    with open(config_file) as i:
+        config = yaml.load(i, Loader=yaml.FullLoader)
+
+    pipeline = GrammarPipeline(config)
+
+    for sentence, prompt, num_errors in sentences:
+        errors = set([e.type for e in pipeline.check(sentence, prompt)])
+
+        print(sentence)
         print("Identified errors:", errors)
         assert len(errors) == num_errors

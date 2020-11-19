@@ -88,136 +88,97 @@ second-person pronouns:
   - yourself
   - yourselves
 opinionated phrases:
-  - It is imperative
-  - It's imperative
-  - It would be imperative
-  - It'd be imperative
-  - It is not imperative
-  - It's not imperative
-  - It isn't imperative
-  - It would not be imperative
-  - It wouldn't be imperative
-  - It is critical
-  - It's critical
-  - It would be critical
-  - It'd be critical
-  - It is not critical
-  - It's not critical
-  - It isn't critical
-  - It would not be critical
-  - It wouldn't be critical
-  - It is important
-  - It's important
-  - It would be important
-  - It'd be important
-  - It is not important
-  - It's not important
-  - It isn't important
-  - It would not be important
-  - It wouldn't be important
-  - It is necessary
-  - It's necessary
-  - It is not necessary
-  - It isn't necessary
-  - It's not necessary
-  - It would be necessary
-  - It'd be necessary
-  - It would be necessary
-  - It wouldn't be necessary
-  - It is advisable
-  - It's advisable
-  - It would be advisable
-  - It'd be advisable
-  - It is not advisable
-  - It's not advisable
-  - It isn't advisable
-  - It would not be advisable
-  - It wouldn't be advisable
-  - It is a good idea
-  - It's a good idea
-  - It would be a good idea
-  - It'd be a good idea
-  - It is not a good idea
-  - It isn't a good idea
-  - It's not a good idea
-  - It would not be a good idea
-  - It wouldn't be a good idea
-  - It is best
-  - It's best
-  - It is not best
-  - It's not best
-  - It isn't best
-  - It would be best
-  - It'd be best
-  - It would not be best
-  - It wouldn't be best
-  - It is better
-  - It's better
-  - It's not better
-  - It is not better
-  - It isn't better
-  - It would be better
-  - It'd be better
-  - It would not be better
-  - It wouldn't be better
-  - It makes sense
-  - It would make sense
-  - It'd make sense
-  - It does not makes sense
-  - It doesn't make sense
-  - It would not make sense
-  - It wouldn't make sense
-  - it's good
-  - it is good
-  - it's not good
-  - it is not good
-  - It would be good
-  - It's be good
-  - It would not be good
-  - It wouldn't be good
-  - it's great
-  - it is great
-  - it is not great
-  - it's not great
-  - It would be great
-  - It'd be great
-  - It would not be great
-  - It wouldn't be great
-  - It would be effective
-  - It'd be effective
-  - It would not be effective
-  - It wouldn't be effective
-  - It would be helpful
-  - It'd be helpful
-  - It is helpful
-  - It's helpful
-  - It's not helpful
-  - It would not be helpful
-  - It wouldn't be helpful
-  - It is wise
-  - It's wise
-  - It would be wise
-  - It'd be wise
-  - It's not wise
-  - It would not be wise
-  - It wouldn't be wise
-  - It is essential
-  - It's essential
-  - It would be essential
-  - It'd be essential
-  - It is not essential
-  - It wouldn't be essential
-  - It's not essential
-  - It would not be essential
-  - It wouldn't be essential
-  - It is worthwhile
-  - It's worthwhile
-  - It would be worthwhile
-  - It'd be worthwhile
-  - It is not worthwhile
-  - It's not worthwhile
-  - It would not be worthwhile
-  - It wouldn't be worthwhile
+  - is imperative
+  - are imperative
+  - "'re imperative"
+  - "'s imperative"
+  - is not imperative
+  - "'s not imperative"
+  - "n't imperative"
+  - are not imperative
+  - is critical
+  - are critical
+  - "'re critical"
+  - "'s critical"
+  - is not critical
+  - "'s not critical"
+  - "n't critical"
+  - are not critical
+  - is important
+  - are important
+  - "'re important"
+  - "'s important"
+  - is not important
+  - "'s not important"
+  - "n't important"
+  - are not important
+  - is necessary
+  - are necessary
+  - "'re necessary"
+  - "'s necessary"
+  - is not necessary
+  - "'s not necessary"
+  - "n't necessary"
+  - are not necessary
+  - is advisable
+  - are advisable
+  - "'re advisable"
+  - "'s advisable"
+  - is not advisable
+  - "'s not advisable"
+  - "n't advisable"
+  - are not advisable
+  - is a good idea
+  - are a good idea
+  - "'re a good idea"
+  - "'s a good idea"
+  - is not a good idea
+  - "'s not a good idea"
+  - "n't a good idea"
+  - are not a good idea
+  - is best
+  - are best
+  - "'re best"
+  - "'s best"
+  - is not best
+  - "'s not best"
+  - "n't best"
+  - are not best
+  - makes sense
+  - make sense
+  - made sense
+  - is great
+  - are great
+  - "'re great"
+  - "'s great"
+  - is not great
+  - "'s not great"
+  - "n't great"
+  - are not great
+  - is wise
+  - are wise
+  - "'re wise"
+  - "'s wise"
+  - is not wise
+  - "'s not wise"
+  - "n't wise"
+  - are not wise
+  - is essential
+  - are essential
+  - "'re essential"
+  - "'s essential"
+  - is not essential
+  - "'s not essential"
+  - "n't essential"
+  - are not essential
+  - is worthwhile
+  - are worthwhile
+  - "'re worthwhile"
+  - "'s worthwhile"
+  - is not worthwhile
+  - "'s not worthwhile"
+  - "n't worthwhile"
+  - are not worthwhile
   - Hopefully
 perhaps:
   - perhaps

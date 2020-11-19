@@ -1,12 +1,7 @@
 from quillnlp.grammar.myspacy import nlp
 from quillnlp.grammar.verbutils import get_subject
 
-
-
 def test_subjects():
-    #sentences = [("Plastic bag reduction laws are helpful, but many people "
-    #              "in the plastic bag industry are concerned about losing their jobs.",
-    #              "many people")]
 
     sentences = [("There is fireworks going off in the night sky right now",
                   1, "fireworks"),

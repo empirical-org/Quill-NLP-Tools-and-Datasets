@@ -148,6 +148,7 @@ class TokenSet(Enum):
 
 
 class GrammarError(Enum):
+    RESPONSE_STARTS_WITH_VERB = "Response starts with verb"
     PLURAL_VERSUS_POSSESSIVE_NOUNS = "Plural versus possessive nouns"
     QUESTION_MARK = "Question marks"
     ARTICLE = "Articles"

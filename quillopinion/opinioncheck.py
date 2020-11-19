@@ -3,7 +3,7 @@ import spacy
 
 from collections import namedtuple
 
-nlp = spacy.load("en")
+nlp = spacy.load("en_core_web_sm")
 
 Opinion = namedtuple("Opinion", ["type", "start", "end", "match"])
 
@@ -38,8 +38,14 @@ class KeywordCheck:
 
     def check(self, sentence, prompt):
 
+        def lowercase(token: str) -> str:
+            if token == "US":
+                return token
+            else:
+                return token.lower()
+
         prompt_length = len(prompt)+1
-        response = sentence[len(prompt)+1:].lower()
+        response = sentence[len(prompt)+1:]
         doc = self.nlp(response)
 
         # Get all possible ngrams from the sentence, together with their
@@ -48,7 +54,7 @@ class KeywordCheck:
         for length in range(1, len(doc) + 1):
             for start in range(0, len(doc) + 1 - length):
                 ngram = doc[start:start+length]
-                ngram_strings = [token.text.lower() for token in ngram]
+                ngram_strings = [lowercase(token.text) for token in ngram]
                 ngram_start = ngram[0].idx
                 ngram_end = ngram[-1].idx + len(ngram[-1])
                 ngrams[tuple(ngram_strings)] = (ngram_start, ngram_end)
@@ -72,6 +78,7 @@ class ModalCheck:
         self.config = config
         self.modals = set(self.config["modals"])
         self.nlp = nlp
+        self.exceptions = set(["according"])
 
     def check(self, sentence, prompt):
 
@@ -80,10 +87,15 @@ class ModalCheck:
         doc = self.nlp(response)
 
         for token in doc:
-            if token.text.lower() in self.modals:
+            if token.text.lower() in self.exceptions:
+                return None
+            elif token.lemma_.lower() in self.modals:
+
+                if token.tag_ == "VBD":
+                    continue
 
                 # if "ought" and "need" are "ROOT", they express an opinion
-                if token.dep_ == "ROOT":
+                elif token.dep_ == "ROOT":
                     start_idx = prompt_length+token.idx
                     end_idx = prompt_length+token.idx+len(token)
                     return Opinion(self.name, start_idx, end_idx,

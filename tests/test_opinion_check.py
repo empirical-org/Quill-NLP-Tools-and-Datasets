@@ -101,6 +101,90 @@ def test_opinioncheck8():
     assert len(feedback) == 0
 
 
+def test_opinioncheck9():
+    sentence = "Plastic bag reduction laws are helpful, so according to this article, plastic bag usage should be limited."
+    prompt = "Plastic bag reduction laws are helpful, so"
+
+    check = OpinionCheck()
+    feedback = check.check(sentence, prompt)
+
+    assert len(feedback) == 0
+
+
+def test_opinioncheck10():
+    sentence = "Plastic bag reduction laws are helpful, but not enough of " \
+               "the general public is aware of the consumption and amount " \
+               "of plastics consumed daily per household in the US."
+    prompt = "Plastic bag reduction laws are helpful, but"
+
+    check = OpinionCheck()
+    feedback = check.check(sentence, prompt)
+
+    assert len(feedback) == 0
+
+
+def test_opinioncheck11():
+    sentence = "Plastic bag reduction laws are helpful, because by those " \
+               "laws we learn to protect environment , because plastic bag " \
+               "reduction is very harmful for environment and people's health."
+    prompt = "Plastic bag reduction laws are helpful, because"
+
+    check = OpinionCheck()
+    feedback = check.check(sentence, prompt)
+    print(feedback)
+
+    assert len(feedback) == 1
+
+
+def test_opinioncheck12():
+    sentence = "Plastic bag reduction laws are helpful, because not only " \
+               "will it be good for our environment, but equally as good " \
+               "for people health who frequently use plastic bags."
+    prompt = "Plastic bag reduction laws are helpful, because"
+
+    check = OpinionCheck()
+    feedback = check.check(sentence, prompt)
+    print(feedback)
+
+    assert len(feedback) == 1
+
+
+def test_opinioncheck13():
+    sentence = "Methane from cow burps harms the environment, so it needs to be addressed soon."
+    prompt = "Methane from cow burps harms the environment, so"
+
+    check = OpinionCheck()
+    feedback = check.check(sentence, prompt)
+    print(feedback)
+
+    assert len(feedback) == 1
+
+
+def test_opinioncheck14():
+    sentence = "Methane from cow burps harms the environment, so it's not wise to eat meat."
+    prompt = "Methane from cow burps harms the environment, so"
+
+    check = OpinionCheck()
+    feedback = check.check(sentence, prompt)
+    print(feedback)
+
+    assert len(feedback) == 1
+
+
+def test_opinioncheck15():
+    sentence = "Plastic bag reduction laws are helpful, but the " \
+               "downside is that when we reduce the creation of plastic " \
+               "bags, some people will lose their jobs."
+
+    prompt = "Plastic bag reduction laws are helpful, but"
+
+    check = OpinionCheck()
+    feedback = check.check(sentence, prompt)
+    print(feedback)
+
+    assert len(feedback) == 1
+
+
 def test_opinion_check_on_quill_data():
     input_file = "tests/data/opinion_sentences.txt"
     labeled_file = "tests/data/opinion_labeled.tsv"
@@ -125,9 +209,12 @@ def test_opinion_check_on_quill_data():
     print("Labeled opinions:", len(list(opinion_labels.keys())))
 
     opinions = 0
+    fp = 0
+    fn = 0
+    tp = 0
     with open("opinion_output.tsv", "w") as o:
         for sentence in sentences:
-            prompt = re.match(".*(because|, but|, so)", sentence)
+            prompt = re.match(".*?(because|, but|, so)", sentence)
             if prompt:
                 prompt = prompt.group(0)
             else:
@@ -142,10 +229,20 @@ def test_opinion_check_on_quill_data():
 
             if sentence in opinion_labels and not feedback:
                 print("False negative (missed opinion):\t", sentence)
-            if sentence not in opinion_labels and feedback:
+                fn += 1
+            elif sentence not in opinion_labels and feedback:
                 print("False positive (incorrectly identified as an opinion):\t", sentence)
+                fp += 1
+            elif sentence in opinion_labels and feedback:
+                tp += 1
+
+    precision = tp/(tp+fp)
+    recall = tp/(tp+fn)
+    f1_score = (2 * precision * recall) / (precision + recall) if precision + recall > 0 else 0
 
     print(f"Opinions: {opinions}/{len(sentences)} = {opinions/len(sentences)}%")
-
+    print("Precision:", precision)
+    print("Recall:", recall)
+    print("F1-score:", f1_score)
 
 

@@ -8,7 +8,7 @@ from sklearn.preprocessing import MultiLabelBinarizer
 from quillgrammar.grammar.pipeline import GrammarPipeline
 from tests.error_files import files
 
-config_file = "tests/config.yaml"
+config_file = "grammar_config_production.yaml"
 
 
 def test_grammar_pipeline():
@@ -23,22 +23,23 @@ def test_grammar_pipeline():
 
     data = []
     for f in files:
-        if f["error"] in config["errors"]:
+        error_label = f["error"].replace("_", " ")
+        if error_label in config["errors"] and config["errors"][error_label] == 1:
             with open(f["positive"]) as i:
                 for line in i:
-                    data.append((line.strip(), "", f["error"]))
+                    data.append((line.strip(), "", error_label))
             with open(f["negative"]) as i:
                 for line in i:
                     data.append((line.strip(), "", "Correct"))
 
-    #import random
-    #random.seed(42)
-    #random.shuffle(data)
+    import random
+    random.seed(42)
+    random.shuffle(data)
 
     with open("grammar_output.tsv", "w") as o:
         csv_writer = csv.writer(o, delimiter="\t")
 
-        for (sentence, prompt, error) in tqdm(data[:1000], desc="Predicting errors"):
+        for (sentence, prompt, error) in tqdm(data, desc="Predicting errors"):
 
             errors = pipeline.check(sentence, prompt)
             predicted_error_types = []
@@ -54,6 +55,7 @@ def test_grammar_pipeline():
             csv_writer.writerow([sentence, "Cor:" + ";".join(correct_label),
                                  "Pred:" + ";".join(predicted_error_types),
                                  ";".join([str(e) for e in errors])])
+
 
     mlb = MultiLabelBinarizer()
     correct_labels_binary = mlb.fit_transform(correct_labels)

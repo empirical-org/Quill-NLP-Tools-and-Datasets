@@ -389,6 +389,28 @@ class RepeatedConjunctionCheck(RuleBasedGrammarCheck):
         return errors
 
 
+class ResponseStartsWithVerbCheck(RuleBasedGrammarCheck):
+    """
+    Identifies cases where the response starts with a verb.
+    """
+
+    name = GrammarError.RESPONSE_STARTS_WITH_VERB.value
+
+    def check(self, doc: Doc, prompt="") -> List[Error]:
+        prompt_length = len(prompt.strip())
+
+        errors = []
+        for token in doc:
+            if token.idx >= prompt_length:
+                if (token.pos_ == POS.VERB.value or token.pos_ == POS.AUX.value) \
+                        and not (token.tag_ == Tag.PRESENT_PARTICIPLE_VERB.value or
+                                 token.tag_ == Tag.PAST_PARTICIPLE_VERB.value):
+                    errors.append(Error(token.text, token.idx, self.name))
+                break
+
+        return errors
+
+
 class SubjectPronounCheck(RuleBasedGrammarCheck):
     """
     Identifies incorrect subject pronouns (e.g. object pronouns,
@@ -820,8 +842,9 @@ class RuleBasedGrammarChecker(object):
         ThanVsThenCheck.name: ThanVsThenCheck(),
         RepeatedWordCheck.name: RepeatedWordCheck(),
         RepeatedConjunctionCheck.name: RepeatedConjunctionCheck(),
-        SubjectPronounCheck.name: SubjectPronounCheck(),
-        ObjectPronounCheck.name: ObjectPronounCheck(),
+        ResponseStartsWithVerbCheck.name: ResponseStartsWithVerbCheck(),
+        # SubjectPronounCheck.name: SubjectPronounCheck(),
+        # ObjectPronounCheck.name: ObjectPronounCheck(),
         CommasInNumbersCheck.name: CommasInNumbersCheck(),
         CommasAfterYesNoCheck.name: CommasAfterYesNoCheck(),
         SingularPluralNounCheck.name: SingularPluralNounCheck(),
@@ -833,7 +856,7 @@ class RuleBasedGrammarChecker(object):
         PunctuationCheck.name: PunctuationCheck(),
         IrregularPluralNounsCheck.name: IrregularPluralNounsCheck(),
         FragmentErrorCheck.name: FragmentErrorCheck(),
-        PossessivePronounsErrorCheck.name: PossessivePronounsErrorCheck(),
+        # PossessivePronounsErrorCheck.name: PossessivePronounsErrorCheck(),
         SubjectVerbAgreementWithCollectiveNounCheck.name: SubjectVerbAgreementWithCollectiveNounCheck()
     }
 

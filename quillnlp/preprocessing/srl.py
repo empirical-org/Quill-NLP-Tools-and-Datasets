@@ -1,6 +1,5 @@
 import re
 import torch
-import pandas as pd
 
 from typing import Dict, List, Tuple
 from tqdm import tqdm

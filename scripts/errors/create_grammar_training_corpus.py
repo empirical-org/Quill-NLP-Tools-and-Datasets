@@ -12,10 +12,15 @@ import zipfile
 
 from nltk import sent_tokenize
 from tqdm import tqdm
+
+from quillgrammar.grammar.constants import GrammarError
+from quillnlp.grammar.generation import TokenReplacementErrorGenerator, subject_pronoun_error_generator, \
+    object_pronoun_error_generator, possessive_pronoun_error_generator
 from quillnlp.grammar.verbs import perfect, agreement, passive, tense
 from quillnlp.models.spacy.train import train_spacy_ner
 
 PUNCTUATION = set([".", "?", "!"])
+
 
 def read_sources(corpus_dir):
     source_files = glob.glob(os.path.join(corpus_dir, "sources/*.zip"))
@@ -138,12 +143,12 @@ def get_data_from_files(files, id2source, seen_sentences, error_generator, train
 def create_corpus(corpus_dir):
 
     files = glob.glob(os.path.join(corpus_dir, "*.zip"))
-    nlp = spacy.load("en")
+    nlp = spacy.load("en_core_web_sm")
 
     with open("notw_us_sources.json") as i:
         id2source = json.load(i)
 
-    train_length = 10000000
+    train_length = 1000000
     test_size = 1000
 
     #error_generator = perfect.PerfectProgressiveWithIncorrectBeAndWithoutHaveErrorGenerator()
@@ -152,41 +157,26 @@ def create_corpus(corpus_dir):
     #error_generator = passive.PassivePastTenseAsParticipleErrorGenerator()
     #error_generator = passive.PassiveWithoutBeErrorGenerator()
     #error_generator = agreement.IncorrectThirdPersonErrorGenerator()
-    error_generator = agreement.SubjectVerbAgreementErrorGenerator()
+    #error_generator = agreement.SubjectVerbAgreementErrorGenerator()
     #error_generator = agreement.SubjectVerbAgreement()
-    #error_generator = agreement.SubjectVerbAgreementWithPronounErrorGenerator()
+    #error_generator = agreement.SubjectVerbAgreementWithSimpleNounErrorGenerator()
     #error_generator = agreement.SubjectVerbAgreementWithInversionErrorGenerator()
+    error_generator = possessive_pronoun_error_generator
     #error_generator = perfect.PerfectProgressiveWithoutHaveErrorGenerator()
     #error_generator = perfect.PassivePerfectWithIncorrectParticipleErrorGenerator()
     #error_generator = tense.SimplePastInsteadOfPastPerfectErrorGenerator()
     #error_generator = agreement.SubjectVerbAgreementWithEitherOrErrorGenerator()
     #error_generator = perfect.PassivePerfectWithoutHaveErrorGenerator()
     #error_generator = perfect.PassivePerfectWithIncorrectParticipleErrorGenerator()
+    #error_generator = TokenReplacementErrorGenerator({"child": "children", "children": "child"},
+    #                                                 GrammarError.CHILD_CHILDREN.value)
 
     seen_sentences = set()
 
+    #output_file = error_generator.name.replace(" ", "_") + ".ndjson"
     output_file = error_generator.name.replace(" ", "_") + ".ndjson"
     get_data_from_files(files, id2source, seen_sentences, error_generator, train_length,
                         nlp, output_file, from_us=True, verbose=True)
-
-    with open(output_file) as i:
-        train_data = ndjson.load(i)
-
-    if len(train_data) < train_length:
-        get_data_from_files(files, id2source, seen_sentences, error_generator, train_length,
-                            nlp, output_file, from_us=False, verbose=False)
-
-    with open(output_file) as i:
-        train_data = ndjson.load(i)
-
-    random.shuffle(train_data)
-
-    test_data = train_data[-test_size:]
-    dev_data = train_data[-test_size*2:-test_size]
-    train_data = train_data[:-test_size*2]
-
-    train_spacy_ner(train_data, dev_data, test_data, "/tmp/grammar_vfg",
-                    error_generator.name.replace(" ", "_") + "_output.json")
 
 
 if __name__ == "__main__":

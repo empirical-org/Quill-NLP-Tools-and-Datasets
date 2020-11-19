@@ -43,6 +43,11 @@ files = [
         "negative": "data/validated/grammar_errors/plural-vs-possessive-negative.txt"
     },
     {
+        "error": GrammarError.PLURAL_VERSUS_POSSESSIVE_NOUNS.value,
+        "positive": "data/validated/grammar_errors/plural-vs-possessive-positive-comprehension.txt",
+        "negative": "data/validated/grammar_errors/plural-vs-possessive-negative-comprehension.txt"
+    },
+    {
         "error": GrammarError.COMMAS_IN_NUMBERS.value,
         "positive": "data/validated/grammar_errors/commas-in-numbers-positive.txt",
         "negative": "data/validated/grammar_errors/commas-in-numbers-negative.txt"
@@ -58,7 +63,7 @@ files = [
         "negative": "data/validated/grammar_errors/singular-plural-noun-negative.txt"
     },
     {
-        "error": GrammarError.INCORRECT_PARTICIPLE.value,
+        "error": GrammarError.PERFECT_WITH_INCORRECT_PARTICIPLE.value,
         "positive": "data/validated/grammar_errors/incorrect-participle-positive.txt",
         "negative": "data/validated/grammar_errors/incorrect-participle-negative.txt"
     },
@@ -96,6 +101,10 @@ files = [
         "error": GrammarError.PERFECT_PROGRESSIVE_WITH_INCORRECT_BE_AND_WITHOUT_HAVE.value,
         "positive": "data/validated/grammar_errors/perfect-progressive-with-incorrect-be-and-without-have-positive.txt",
         "negative": "data/validated/grammar_errors/perfect-progressive-with-incorrect-be-and-without-have-negative.txt"
+    },
+    {
+        "error": GrammarError.PERFECT_PROGRESSIVE_WITH_INCORRECT_BE_AND_WITHOUT_HAVE.value,
+        "negative": "data/validated/grammar_errors/perfect-progressive-with-incorrect-be-and-without-have-negative-comprehension.txt"
     },
     {
         "error": GrammarError.PASSIVE_PERFECT_WITHOUT_HAVE.value,
@@ -186,5 +195,10 @@ files = [
         "error": GrammarError.ITS_IT_S.value,
         "positive": "data/validated/grammar_errors/its-its-positive.txt",
         "negative": "data/validated/grammar_errors/its-its-negative.txt"
+    },
+    {
+        "error": GrammarError.SVA_SIMPLE_NOUN.value,
+        "positive": "data/validated/grammar_errors/subject-verb-agreement-with-simple-noun-positive-comprehension.txt",
+        "negative": "data/validated/grammar_errors/subject-verb-agreement-with-simple-noun-negative-comprehension.txt"
     }
 ]
