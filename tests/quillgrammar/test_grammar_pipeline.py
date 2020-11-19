@@ -1,5 +1,6 @@
 import yaml
 
+from quillgrammar.grammar.checks.rules import RuleBasedGrammarChecker, RepeatedConjunctionCheck
 from quillgrammar.grammar.pipeline import GrammarPipeline
 from quillgrammar.grammar.constants import GrammarError
 
@@ -432,3 +433,60 @@ def test_initial_verb():
         print(sentence)
         print("Identified errors:", errors)
         assert len(errors) == num_errors
+
+
+def test_repeated_conjunction_check():
+
+    sentences = [("The climate is changing because because we eat too much meat.",
+                  "The climate is changing because", "because", 32),
+                 ("The climate is changing so so we should eat less meat.",
+                  "The climate is changing so", "so", 27),
+                 ("The climate is changing, but but we can't eat less meat.",
+                  "The climate is changing, but", "but", 29),
+                 ("The climate is changing, but we can't eat less meat.",
+                  "The climate is changing, but", "", 0),
+                 ("The climate is changing, but it's always been hot.",
+                  "The climate is changing, but", "", 0)
+                 ]
+
+    with open(config_file) as i:
+        config = yaml.load(i, Loader=yaml.FullLoader)
+
+    pipeline = GrammarPipeline(config)
+
+    for sentence, prompt, word, index in sentences:
+        errors = pipeline.check(sentence, prompt)
+        print(errors)
+
+        if index > 0:
+            assert len(errors) > 0
+            assert errors[0].text == word
+            assert errors[0].index == index
+        else:
+            assert len(errors) == 0
+
+
+def test_capitalization_check():
+
+    sentences = [("Methane from cow burps harms the environment because it contributes to global warming.",
+                  "Methane from cow burps harms the environment because", "", 0, None),
+                 ("Methane from cow burps harms the environment because IT CONTRIBUTES TO GLOBAL WARMING.",
+                  "Methane from cow burps harms the environment because", "IT CONTRIBUTES TO GLOBAL WARMING.", 52,
+                  GrammarError.ALLCAPS.value)]
+
+    with open("grammar_config_test.yaml") as i:
+        config = yaml.load(i)
+
+    pipeline = GrammarPipeline(config)
+
+    for sentence, prompt, word, index, error_type in sentences:
+        errors = pipeline.check(sentence, prompt)
+        print(errors)
+
+        if index > 0:
+            assert len(errors) == 1
+            assert errors[0].text == word
+            assert errors[0].index == index
+            assert errors[0].type == error_type
+        else:
+            assert len(errors) == 0

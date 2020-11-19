@@ -6,7 +6,7 @@ from sklearn.metrics import classification_report, precision_recall_fscore_suppo
 from sklearn.preprocessing import MultiLabelBinarizer
 
 from quillgrammar.grammar.pipeline import GrammarPipeline
-from tests.error_files import files
+from tests.quillgrammar.error_files import files
 
 config_file = "grammar_config_production.yaml"
 
