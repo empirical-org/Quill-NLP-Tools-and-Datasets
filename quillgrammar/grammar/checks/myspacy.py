@@ -3,7 +3,7 @@ import spacy
 from spacy.tokens.doc import Doc
 
 from ..constants import GrammarError
-from ..utils import Error
+from ..error import Error
 from ..verbutils import is_passive
 
 spacy_path = os.environ["SPACY_GRAMMAR_PATH"]

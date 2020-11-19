@@ -7,10 +7,10 @@ from lemminflect import getLemma
 from spacy.tokens.doc import Doc
 from spacy.tokens.token import Token
 
-from ..verbutils import has_noun_subject, has_pronoun_subject, is_passive, in_have_been_construction, \
-    get_past_tenses, has_inversion, get_subject, token_has_inversion, is_perfect
+from ..verbutils import is_passive, in_have_been_construction, \
+    get_past_tenses, has_inversion, get_subject, is_perfect
 from ..constants import *
-from ..utils import Error
+from ..error import Error
 from quillgrammar.grammar.checks.exceptions import exceptions
 
 BASE_SPACY_MODEL = "en"

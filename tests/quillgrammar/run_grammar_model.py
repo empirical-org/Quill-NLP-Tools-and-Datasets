@@ -6,7 +6,7 @@ from tqdm import tqdm
 from quillgrammar.grammar.constants import GrammarError
 from quillgrammar.grammar.pipeline import GrammarPipeline
 
-csv_file = "quillgrammar/combined_turk_data.csv"
+csv_file = "quillgrammar/data/combined_turk_data.csv"
 csv_file = "../../data/quill/grammer_response_dump_generic_2020_07_06.csv"
 config_file = "grammar_config_test.yaml"
 

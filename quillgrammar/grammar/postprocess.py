@@ -1,29 +1,25 @@
 from typing import Dict
 
 from .constants import Tag, GrammarError, TokenSet
-from .verbutils import has_noun_subject, get_subject, is_passive, has_pronoun_subject, is_perfect
-from .utils import Error
+from .verbutils import has_noun_subject, get_subject, is_passive, has_pronoun_subject, \
+    is_perfect, comma_between_subject_and_verb
+from .error import Error
 from .checks.myspacy import nlp
 
 
-def comma_between_subject_and_verb(subject, predicted_token, doc):
-    if subject is None:
-        return False
+def classify_error(error: Error, config: Dict) -> Error:
+    """ Subclassify or correct specific error types, such as SVA errors,
+    which need a more specific type"""
 
-    last_subject_index = subject[-1].i
-    for token in doc[last_subject_index + 1:predicted_token.i]:
-        if token.text == ",":
-            return True
-    return False
-
-
-def classify_error(error: Error, config: Dict):
-
+    # The predicted sentence is the sentence where the grammar error has
+    # been corrected. If the error does not have a predicted sentence,
+    # we just take the original sentence.
     if error.predicted_sentence is not None:
         doc = nlp(error.predicted_sentence)
     else:
         doc = error.document
 
+    # Locate the error token in the sentence.
     predicted_token = None
     for t in doc:
         if t.idx == error.index:
@@ -31,6 +27,10 @@ def classify_error(error: Error, config: Dict):
     if not predicted_token:
         return error
 
+    # If the token has the VBN tag, determine its error type
+    # TODO: this approach was necessary when we used masked language
+    #  modeling to find errors, but it may not be a good idea now that
+    #  we use a supervised model to do so.
     if predicted_token.tag_ == Tag.PAST_PARTICIPLE_VERB.value:
         if is_passive(predicted_token) and is_perfect(predicted_token):
             error.set_type(GrammarError.PASSIVE_PERFECT_WITH_INCORRECT_PARTICIPLE.value, config)
@@ -40,13 +40,13 @@ def classify_error(error: Error, config: Dict):
             error.set_type(GrammarError.PAST_TENSE_INSTEAD_OF_PARTICIPLE.value, config)
         return error
 
-    subject = get_subject(predicted_token, full=True)
-    error.subject = " ".join([t.text.lower() for t in subject]) if subject is not None else None
-
+    # Subclassify subject-verb agreement errors
     if error.type == GrammarError.SUBJECT_VERB_AGREEMENT.value:
         if predicted_token.tag_ == Tag.SIMPLE_PAST_VERB.value:
             return None
 
+        subject = get_subject(predicted_token, full=True)
+        error.subject = " ".join([t.text.lower() for t in subject]) if subject is not None else None
         subject_set = set([t.text.lower() for t in subject]) if subject is not None else None
 
         if comma_between_subject_and_verb(subject, predicted_token, doc):
