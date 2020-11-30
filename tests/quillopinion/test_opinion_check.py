@@ -8,7 +8,7 @@ def test_opinioncheck1():
     prompt = "We need to eat less meat so"
 
     check = OpinionCheck()
-    feedback = check.check(sentence, prompt)
+    feedback = check.check_from_text(sentence, prompt)
 
     assert len(feedback) == 1
     assert feedback[0].type == "Common Opinionated Phrases Keyword Check"
@@ -21,7 +21,7 @@ def test_opinioncheck2():
     prompt = "We need to end climate change so"
 
     check = OpinionCheck()
-    feedback = check.check(sentence, prompt)
+    feedback = check.check_from_text(sentence, prompt)
 
     assert len(feedback) == 1
     assert feedback[0].type == "First-person opinionated phrase keyword check"
@@ -34,7 +34,7 @@ def test_opinioncheck3():
     prompt = "We need to end climate change so"
 
     check = OpinionCheck()
-    feedback = check.check(sentence, prompt)
+    feedback = check.check_from_text(sentence, prompt)
 
     assert len(feedback) == 1
     assert feedback[0].type == "Second-Person Reference Keyword Check"
@@ -47,7 +47,7 @@ def test_opinioncheck4():
     prompt = "We need to end climate change so"
 
     check = OpinionCheck()
-    feedback = check.check(sentence, prompt)
+    feedback = check.check_from_text(sentence, prompt)
 
     assert len(feedback) == 1
     assert feedback[0].type == "Using Perhaps"
@@ -60,7 +60,7 @@ def test_opinioncheck5():
     prompt = "We need to end climate change so"
 
     check = OpinionCheck()
-    feedback = check.check(sentence, prompt)
+    feedback = check.check_from_text(sentence, prompt)
 
     assert len(feedback) == 1
     assert feedback[0].type == "Modal Check"
@@ -73,7 +73,7 @@ def test_opinioncheck6():
     prompt = "We need to end climate change because"
 
     check = OpinionCheck()
-    feedback = check.check(sentence, prompt)
+    feedback = check.check_from_text(sentence, prompt)
 
     assert len(feedback) == 0
 
@@ -83,7 +83,7 @@ def test_opinioncheck7():
     prompt = "We need to end climate change so"
 
     check = OpinionCheck()
-    feedback = check.check(sentence, prompt)
+    feedback = check.check_from_text(sentence, prompt)
 
     assert len(feedback) == 1
     assert feedback[0].type == "Modal Check"
@@ -96,7 +96,7 @@ def test_opinioncheck8():
     prompt = "We need to end climate change because"
 
     check = OpinionCheck()
-    feedback = check.check(sentence, prompt)
+    feedback = check.check_from_text(sentence, prompt)
 
     assert len(feedback) == 0
 
@@ -106,7 +106,7 @@ def test_opinioncheck9():
     prompt = "Plastic bag reduction laws are helpful, so"
 
     check = OpinionCheck()
-    feedback = check.check(sentence, prompt)
+    feedback = check.check_from_text(sentence, prompt)
 
     assert len(feedback) == 0
 
@@ -118,7 +118,7 @@ def test_opinioncheck10():
     prompt = "Plastic bag reduction laws are helpful, but"
 
     check = OpinionCheck()
-    feedback = check.check(sentence, prompt)
+    feedback = check.check_from_text(sentence, prompt)
 
     assert len(feedback) == 0
 
@@ -130,7 +130,7 @@ def test_opinioncheck11():
     prompt = "Plastic bag reduction laws are helpful, because"
 
     check = OpinionCheck()
-    feedback = check.check(sentence, prompt)
+    feedback = check.check_from_text(sentence, prompt)
     print(feedback)
 
     assert len(feedback) == 1
@@ -143,7 +143,7 @@ def test_opinioncheck12():
     prompt = "Plastic bag reduction laws are helpful, because"
 
     check = OpinionCheck()
-    feedback = check.check(sentence, prompt)
+    feedback = check.check_from_text(sentence, prompt)
     print(feedback)
 
     assert len(feedback) == 1
@@ -154,7 +154,7 @@ def test_opinioncheck13():
     prompt = "Methane from cow burps harms the environment, so"
 
     check = OpinionCheck()
-    feedback = check.check(sentence, prompt)
+    feedback = check.check_from_text(sentence, prompt)
     print(feedback)
 
     assert len(feedback) == 1
@@ -165,7 +165,7 @@ def test_opinioncheck14():
     prompt = "Methane from cow burps harms the environment, so"
 
     check = OpinionCheck()
-    feedback = check.check(sentence, prompt)
+    feedback = check.check_from_text(sentence, prompt)
     print(feedback)
 
     assert len(feedback) == 1
@@ -179,7 +179,33 @@ def test_opinioncheck15():
     prompt = "Plastic bag reduction laws are helpful, but"
 
     check = OpinionCheck()
-    feedback = check.check(sentence, prompt)
+    feedback = check.check_from_text(sentence, prompt)
+    print(feedback)
+
+    assert len(feedback) == 1
+
+
+def test_opinioncheck16():
+    sentence = "Plastic bag reduction laws are helpful, but " \
+               "lets not exaggerate."
+
+    prompt = "Plastic bag reduction laws are helpful, but"
+
+    check = OpinionCheck()
+    feedback = check.check_from_text(sentence, prompt)
+    print(feedback)
+
+    assert len(feedback) == 1
+
+
+def test_opinioncheck17():
+    sentence = "Large amounts of meat consumption are harming the environment, " \
+               "so continue to eat cows more so that way they die faster."
+
+    prompt = "Large amounts of meat consumption are harming the environment, so"
+
+    check = OpinionCheck()
+    feedback = check.check_from_text(sentence, prompt)
     print(feedback)
 
     assert len(feedback) == 1
@@ -220,7 +246,7 @@ def test_opinion_check_on_quill_data():
             else:
                 prompt = ""
 
-            feedback = check.check(sentence, prompt)
+            feedback = check.check_from_text(sentence, prompt)
             if feedback:
                 opinions += 1
                 o.write(sentence + "\t" + ",".join([str(opinion) for opinion in feedback]) + "\n")

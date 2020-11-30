@@ -3,6 +3,8 @@ import spacy
 
 from collections import namedtuple
 
+from quillgrammar.grammar.constants import Tag
+
 nlp = spacy.load("en_core_web_sm")
 
 Opinion = namedtuple("Opinion", ["type", "start", "end", "match"])
@@ -36,7 +38,7 @@ class KeywordCheck:
 
             self.checks_with_tokens.append((check, tokenized_phrases_for_check))
 
-    def check(self, sentence, prompt):
+    def check_from_text(self, sentence: str, prompt: str):
 
         def lowercase(token: str) -> str:
             if token == "US":
@@ -80,7 +82,7 @@ class ModalCheck:
         self.nlp = nlp
         self.exceptions = set(["according"])
 
-    def check(self, sentence, prompt):
+    def check_from_text(self, sentence: str, prompt: str):
 
         prompt_length = len(prompt)+1
         response = sentence[prompt_length:]
@@ -110,6 +112,37 @@ class ModalCheck:
                                    sentence[start_idx:end_idx])
 
 
+class CommandCheck:
+
+    def __init__(self, config):
+        self.name = "Command Check"
+        self.config = config
+        self.modals = set(self.config["modals"])
+        self.nlp = nlp
+        self.exceptions = set()
+
+    def check_from_text(self, sentence: str, prompt: str):
+
+        prompt_length = len(prompt)+1
+        response = sentence[prompt_length:]
+        doc = self.nlp(response)
+
+        # Only identify commands in so responses
+        if not prompt.strip().endswith(" so"):
+            return None
+
+        if (doc[0].tag_ == Tag.INFINITIVE.value or
+            doc[0].tag_ == Tag.PRESENT_OTHER_VERB.value) \
+                and doc[0].text.lower() not in self.modals:
+            start_idx = prompt_length + doc[0].idx
+            end_idx = prompt_length + doc[0].idx + len(doc[0])
+
+            return Opinion(self.name, start_idx,
+                           end_idx, doc[0].text)
+
+        return None
+
+
 class OpinionCheck:
 
     def __init__(self):
@@ -117,13 +150,14 @@ class OpinionCheck:
             config = yaml.load(i, Loader=yaml.FullLoader)
         self.checks = [
             KeywordCheck(config),
-            ModalCheck(config)
+            ModalCheck(config),
+            CommandCheck(config)
         ]
 
-    def check(self, sentence, prompt):
+    def check_from_text(self, sentence: str, prompt: str):
         all_feedback = []
         for check in self.checks:
-            feedback = check.check(sentence, prompt)
+            feedback = check.check_from_text(sentence, prompt)
             if feedback is not None:
                 all_feedback.append(feedback)
 
