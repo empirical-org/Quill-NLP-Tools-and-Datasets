@@ -23,8 +23,8 @@ def test_opinioncheck2():
     check = OpinionCheck()
     feedback = check.check_from_text(sentence, prompt)
 
-    assert len(feedback) == 1
-    assert feedback[0].type == "First-person opinionated phrase keyword check"
+    assert len(feedback) == 2
+    assert feedback[0].type == "First-Person Opinionated Phrase Keyword Check"
     assert feedback[0].start == 33
     assert feedback[0].end == 45
 
@@ -63,7 +63,7 @@ def test_opinioncheck5():
     feedback = check.check_from_text(sentence, prompt)
 
     assert len(feedback) == 1
-    assert feedback[0].type == "Modal Check"
+    assert feedback[0].type == "Using Should"
     assert feedback[0].start == 47
     assert feedback[0].end == 53
 
@@ -86,7 +86,7 @@ def test_opinioncheck7():
     feedback = check.check_from_text(sentence, prompt)
 
     assert len(feedback) == 1
-    assert feedback[0].type == "Modal Check"
+    assert feedback[0].type == "Using Ought"
     assert feedback[0].start == 47
     assert feedback[0].end == 52
 
@@ -211,6 +211,23 @@ def test_opinioncheck17():
     assert len(feedback) == 1
 
 
+def test_opinioncheck_order():
+    sentence = "Large amounts of meat consumption are harming the environment, " \
+               "so you and I should eat less meat."
+
+    prompt = "Large amounts of meat consumption are harming the environment, so"
+
+    check = OpinionCheck()
+    feedback = check.check_from_text(sentence, prompt)
+
+    print(feedback)
+
+    assert len(feedback) == 3
+    assert feedback[0].type == "Using Should"
+    assert feedback[1].type == "First-Person Reference Keyword Check"
+    assert feedback[2].type == "Second-Person Reference Keyword Check"
+
+"""
 def test_opinion_check_on_quill_data():
     input_file = "tests/data/opinion_sentences.txt"
     labeled_file = "tests/data/opinion_labeled.tsv"
@@ -270,5 +287,4 @@ def test_opinion_check_on_quill_data():
     print("Precision:", precision)
     print("Recall:", recall)
     print("F1-score:", f1_score)
-
-
+"""

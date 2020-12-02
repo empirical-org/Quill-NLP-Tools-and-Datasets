@@ -1,4 +1,4 @@
-phrases:
+First-Person Opinionated Phrase Keyword Check:
   - I think
   - I'm thinking
   - I am thinking
@@ -67,28 +67,26 @@ phrases:
   - I'd be on board
   - I would not be on board
   - I wouldn't be on board
-personal pronouns:
+First-Person Reference Keyword Check:
   - I
   - Me
   - We
   - Us
   - Let's
   - lets
-possessive pronouns:
   - My
   - Mine
   - Our
   - Ours
-reflexive pronouns:
   - Myself
   - Ourselves
-second-person pronouns:
+Second-Person Reference Keyword Check:
   - you
   - your
   - yours
   - yourself
   - yourselves
-opinionated phrases:
+Common Opinionated Phrases Keyword Check:
   - is imperative
   - are imperative
   - "'re imperative"
@@ -181,14 +179,30 @@ opinionated phrases:
   - "n't worthwhile"
   - are not worthwhile
   - Hopefully
-perhaps:
+Using Perhaps:
   - perhaps
-maybe:
+Using Maybe:
   - maybe
-please:
+Using Please:
   - please
-modals:
+Using Should:
   - should
+Using Must:
   - must
+Using Need:
   - need
+Using Ought:
   - ought
+precedence:
+  First-Person Opinionated Phrase Keyword Check: 12
+  Common Opinionated Phrases Keyword Check: 11
+  Using Should: 10
+  Using Must: 9
+  Using Need: 8
+  Using Ought: 7
+  First-Person Reference Keyword Check: 6
+  Second-Person Reference Keyword Check: 5
+  Using Please: 4
+  Using Maybe: 3
+  Using Perhaps: 2
+  Command Check: 1

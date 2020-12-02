@@ -3,11 +3,11 @@ import spacy
 
 from collections import namedtuple
 
-from quillgrammar.grammar.constants import Tag
+from quillgrammar.grammar.constants import Tag, Dependency
 
 nlp = spacy.load("en_core_web_sm")
 
-Opinion = namedtuple("Opinion", ["type", "start", "end", "match"])
+Opinion = namedtuple("Opinion", ["type", "start", "end", "match", "precedence"])
 
 
 class KeywordCheck:
@@ -16,25 +16,22 @@ class KeywordCheck:
         self.config = config
         self.nlp = nlp
         self.checks = [
-            ("First-person opinionated phrase keyword check", ["phrases"]),
-            ("First-Person Reference Keyword Check", ["personal pronouns",
-                                                      "possessive pronouns",
-                                                      "reflexive pronouns"]),
-            ("Second-Person Reference Keyword Check", ["second-person pronouns"]),
-            ("Common Opinionated Phrases Keyword Check", ["opinionated phrases"]),
-            ("Using Maybe", ["maybe"]),
-            ("Using Perhaps", ["perhaps"]),
-            ("Using Please", ["please"])
+            "First-Person Opinionated Phrase Keyword Check",
+            "First-Person Reference Keyword Check",
+            "Second-Person Reference Keyword Check",
+            "Common Opinionated Phrases Keyword Check",
+            "Using Maybe",
+            "Using Perhaps",
+            "Using Please"
         ]
 
         self.checks_with_tokens = []
-        for check, keys in self.checks:
+        for check in self.checks:
             tokenized_phrases_for_check = []
-            for key in keys:
-                phrases = self.config[key]
-                for phrase in phrases:
-                    tokens = tuple([t.text.lower() for t in self.nlp(phrase)])
-                    tokenized_phrases_for_check.append(tokens)
+            phrases = self.config[check]
+            for phrase in phrases:
+                tokens = tuple([t.text.lower() for t in self.nlp(phrase)])
+                tokenized_phrases_for_check.append(tokens)
 
             self.checks_with_tokens.append((check, tokenized_phrases_for_check))
 
@@ -62,15 +59,19 @@ class KeywordCheck:
                 ngrams[tuple(ngram_strings)] = (ngram_start, ngram_end)
 
         # Check if any of the opinionated phrases is among the ngrams
+        feedback = []
         for check_name, tokenized_phrases in self.checks_with_tokens:
             for tokenized_phrase in tokenized_phrases:
                 if tokenized_phrase in ngrams:
                     start_idx = prompt_length+ngrams[tokenized_phrase][0]
                     end_idx = prompt_length+ngrams[tokenized_phrase][1]
-                    return Opinion(check_name, start_idx, end_idx,
-                                   sentence[start_idx:end_idx])
 
-        return None
+                    precedence = self.config["precedence"][check_name]
+
+                    feedback.append(Opinion(check_name, start_idx, end_idx,
+                                    sentence[start_idx:end_idx], precedence))
+
+        return feedback
 
 
 class ModalCheck:
@@ -78,7 +79,17 @@ class ModalCheck:
     def __init__(self, config):
         self.name = "Modal Check"
         self.config = config
-        self.modals = set(self.config["modals"])
+        self.checks = [
+            "Using Should",
+            "Using Must",
+            "Using Need",
+            "Using Ought"
+        ]
+
+        self.modals = {}
+        for check in self.checks:
+            self.modals[config[check][0]] = check
+
         self.nlp = nlp
         self.exceptions = set(["according"])
 
@@ -88,6 +99,7 @@ class ModalCheck:
         response = sentence[prompt_length:]
         doc = self.nlp(response)
 
+        feedback = []
         for token in doc:
             if token.text.lower() in self.exceptions:
                 return None
@@ -100,16 +112,26 @@ class ModalCheck:
                 elif token.dep_ == "ROOT":
                     start_idx = prompt_length+token.idx
                     end_idx = prompt_length+token.idx+len(token)
-                    return Opinion(self.name, start_idx, end_idx,
-                                   sentence[start_idx:end_idx])
+
+                    check_name = self.modals.get(token.lemma_.lower())
+                    precedence = self.config["precedence"].get(check_name)
+
+                    feedback.append(Opinion(check_name, start_idx, end_idx,
+                                    sentence[start_idx:end_idx], precedence))
 
                 # if "should" and "must" are "aux" and their head is "ROOT",
                 # they express an opinion
-                elif token.dep_ == "aux" and token.head.dep_ == "ROOT":
+                elif token.dep_ == Dependency.AUX.value and token.head.dep_ == Dependency.ROOT.value:
                     start_idx = prompt_length+token.idx
                     end_idx = prompt_length+token.idx+len(token)
-                    return Opinion(self.name, start_idx, end_idx,
-                                   sentence[start_idx:end_idx])
+
+                    check_name = self.modals.get(token.lemma_.lower())
+                    precedence = self.config["precedence"].get(check_name)
+
+                    feedback.append(Opinion(check_name, start_idx, end_idx,
+                                            sentence[start_idx:end_idx], precedence))
+
+        return feedback
 
 
 class CommandCheck:
@@ -117,7 +139,7 @@ class CommandCheck:
     def __init__(self, config):
         self.name = "Command Check"
         self.config = config
-        self.modals = set(self.config["modals"])
+        self.modals = set(["should", "would", "ought", "must"])
         self.nlp = nlp
         self.exceptions = set()
 
@@ -127,9 +149,10 @@ class CommandCheck:
         response = sentence[prompt_length:]
         doc = self.nlp(response)
 
+        feedback = []
         # Only identify commands in so responses
         if not prompt.strip().endswith(" so"):
-            return None
+            return []
 
         if (doc[0].tag_ == Tag.INFINITIVE.value or
             doc[0].tag_ == Tag.PRESENT_OTHER_VERB.value) \
@@ -137,10 +160,11 @@ class CommandCheck:
             start_idx = prompt_length + doc[0].idx
             end_idx = prompt_length + doc[0].idx + len(doc[0])
 
-            return Opinion(self.name, start_idx,
-                           end_idx, doc[0].text)
+            precedence = self.config["precedence"][self.name]
+            feedback.append(Opinion(self.name, start_idx,
+                            end_idx, doc[0].text, precedence))
 
-        return None
+        return feedback
 
 
 class OpinionCheck:
@@ -148,6 +172,7 @@ class OpinionCheck:
     def __init__(self):
         with open("quillopinion/opinion.yaml") as i:
             config = yaml.load(i, Loader=yaml.FullLoader)
+
         self.checks = [
             KeywordCheck(config),
             ModalCheck(config),
@@ -159,7 +184,9 @@ class OpinionCheck:
         for check in self.checks:
             feedback = check.check_from_text(sentence, prompt)
             if feedback is not None:
-                all_feedback.append(feedback)
+                all_feedback.extend(feedback)
+
+        all_feedback.sort(key=lambda x: -x.precedence)
 
         return all_feedback
 
