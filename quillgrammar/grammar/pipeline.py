@@ -1,5 +1,3 @@
-import time
-
 from .checks.rules import RuleBasedGrammarChecker, GrammarError
 from .checks.myspacy import SpaCyGrammarChecker
 from .postprocess import classify_error
@@ -24,7 +22,8 @@ class GrammarPipeline:
             pipe_errors = pipe.check(doc, prompt)
             classified_pipe_errors = []
             for error in pipe_errors:
-                if error.type == GrammarError.SUBJECT_VERB_AGREEMENT.value:
+                if error.type == GrammarError.SUBJECT_VERB_AGREEMENT.value or \
+                        error.type == GrammarError.POSSESSIVE_PRONOUN.value:
                     classified_error = classify_error(error, self.config)
                     if classified_error is not None:
                         classified_pipe_errors.append(error)

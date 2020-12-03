@@ -8,13 +8,16 @@ certifi==2020.6.20
 chardet==3.0.4
 click==7.1.2
 configparser==5.0.1
+cupy==8.1.0
 cymem==2.0.3
 Cython==0.29.21
 docker-pycreds==0.4.0
+en-core-web-lg @ https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-3.0.0a0/en_core_web_lg-3.0.0a0.tar.gz
+en-core-web-md @ https://github.com/explosion/spacy-models/releases/download/en_core_web_md-3.0.0a0/en_core_web_md-3.0.0a0.tar.gz
 en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.0.0a0/en_core_web_sm-3.0.0a0.tar.gz
+en-core-web-trf @ https://github.com/explosion/spacy-models/releases/download/en_core_web_trf-3.0.0a0/en_core_web_trf-3.0.0a0.tar.gz
 fastrlock==0.5
 filelock==3.0.12
-Flask==1.1.2
 ftfy==5.8
 future==0.18.2
 gitdb==4.0.5
@@ -28,7 +31,6 @@ googleapis-common-protos==1.52.0
 httplib2==0.18.1
 idna==2.10
 iniconfig==1.1.1
-itsdangerous==1.1.0
 Jinja2==2.11.2
 jmespath==0.10.0
 joblib==0.17.0
@@ -94,5 +96,3 @@ wandb==0.10.7
 wasabi==0.8.0
 watchdog==0.10.3
 wcwidth==0.2.5
-Werkzeug==1.0.1
-gunicorn

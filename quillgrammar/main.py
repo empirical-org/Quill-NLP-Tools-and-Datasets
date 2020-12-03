@@ -1,9 +1,15 @@
+import yaml
 from flask import Flask, request
 from grammar.pipeline import GrammarPipeline
 
 app = Flask(__name__)
 
-pipeline = GrammarPipeline()
+config_file = "grammar_config_test.yaml"
+with open(config_file) as i:
+    config = yaml.load(i, Loader=yaml.FullLoader)
+
+pipeline = GrammarPipeline(config)
+
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -13,7 +19,7 @@ def index():
     else:
         sentence = request.form["sentence"]
         prompt = request.form["prompt"]
-        errors = pipeline.check(sentence, prompt)
+        errors = pipeline.check_from_text(sentence, prompt)
         if len(errors) > 0:
             errors.sort(reverse=True)
             error = errors[0]

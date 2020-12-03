@@ -59,7 +59,9 @@ def test_grammar_pipeline():
     random.seed(42)
     random.shuffle(data)
 
-    with open("grammar_output.tsv", "w") as o:
+    suffix = "_before"
+
+    with open(f"grammar_output{suffix}.tsv", "w") as o:
         csv_writer = csv.writer(o, delimiter="\t")
 
         for (sentence, prompt, error) in tqdm(data, desc="Predicting errors"):
@@ -93,7 +95,7 @@ def test_grammar_pipeline():
     p, r, f1, s = precision_recall_fscore_support(correct_labels_binary, predicted_labels_binary, beta=0.5)
     rows = zip(mlb.classes_, p, r, f1, s)
 
-    with open("evaluation_report.csv", "w") as output_file:
+    with open(f"evaluation_report{suffix}.csv", "w") as output_file:
         writer = csv.writer(output_file)
         writer.writerow(["Error type", "Precision", "Recall", "F0.5-score"])
         for row in rows:
@@ -102,7 +104,7 @@ def test_grammar_pipeline():
     # print(confusion_matrix(correct_labels, predicted_labels, labels=mlb.classes_))
 
     cm = confusion_matrix(correct_labels, predicted_labels, labels=mlb.classes_)
-    with open("confusion_matrix.tsv", "w") as o:
+    with open(f"confusion_matrix{suffix}.tsv", "w") as o:
         csv_writer = csv.writer(o, delimiter="\t")
         csv_writer.writerow(mlb.classes_)
         for label, row in zip(mlb.classes_, cm):

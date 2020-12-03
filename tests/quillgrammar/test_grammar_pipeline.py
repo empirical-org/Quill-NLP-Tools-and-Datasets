@@ -22,7 +22,6 @@ def test_grammar_pipeline1():
     assert len(errors) == 1
 
 
-
 def test_grammar_pipeline3():
 
     sentence = "The construction worker, who is working right outside of our building, work all night."
@@ -446,7 +445,11 @@ def test_repeated_conjunction_check():
                  ("The climate is changing, but we can't eat less meat.",
                   "The climate is changing, but", "", 0),
                  ("The climate is changing, but it's always been hot.",
-                  "The climate is changing, but", "", 0)
+                  "The climate is changing, but", "", 0),
+                 ("Alison Bechdel’s memoir has been challenged in certain "
+                  "communities, so so  that leaves the question 'Should it "
+                  "be banned?'", "Alison Bechdel’s memoir has been challenged "
+                  "in certain communities, so", "so", 71)
                  ]
 
     with open(config_file) as i:
@@ -462,6 +465,7 @@ def test_repeated_conjunction_check():
             assert len(errors) > 0
             assert errors[0].text == word
             assert errors[0].index == index
+            assert errors[0].type == GrammarError.REPEATED_CONJUNCTION.value
         else:
             assert len(errors) == 0
 
@@ -473,6 +477,205 @@ def test_capitalization_check():
                  ("Methane from cow burps harms the environment because IT CONTRIBUTES TO GLOBAL WARMING.",
                   "Methane from cow burps harms the environment because", "IT CONTRIBUTES TO GLOBAL WARMING.", 52,
                   GrammarError.ALLCAPS.value)]
+
+    with open("grammar_config_test.yaml") as i:
+        config = yaml.load(i)
+
+    pipeline = GrammarPipeline(config)
+
+    for sentence, prompt, word, index, error_type in sentences:
+        errors = pipeline.check(sentence, prompt)
+        print(errors)
+
+        if index > 0:
+            assert len(errors) == 1
+            assert errors[0].text == word
+            assert errors[0].index == index
+            assert errors[0].type == error_type
+        else:
+            assert len(errors) == 0
+
+
+def test_possessive_pronouns_plural_possessive():
+
+    sentences = [("Large amounts of meat consumption are harming the "
+                  "environment, but introducing seaweed to cows diets "
+                  "can help reduce the amount of methane that they "
+                  "produce up to 99%.", "", "cows", 90, GrammarError.PLURAL_VERSUS_POSSESSIVE_NOUNS.value)]
+
+    with open("grammar_config_test.yaml") as i:
+        config = yaml.load(i)
+
+    pipeline = GrammarPipeline(config)
+
+    for sentence, prompt, word, index, error_type in sentences:
+        errors = pipeline.check(sentence, prompt)
+        print(errors)
+
+        if index > 0:
+            assert len(errors) == 1
+            assert errors[0].text == word
+            assert errors[0].index == index
+            assert errors[0].type == error_type
+        else:
+            assert len(errors) == 0
+
+
+def test_plural_possessive():
+
+    sentences = [
+        ("Large amounts of meat consumption are harming the "
+         "environment, so we should feed the cows seaweed.",
+         "Large amounts of meat consumption are harming the "
+         "environment, so ", "", 0, None)
+    ]
+
+    with open("grammar_config_test.yaml") as i:
+        config = yaml.load(i)
+
+    pipeline = GrammarPipeline(config)
+
+    for sentence, prompt, word, index, error_type in sentences:
+        errors = pipeline.check(sentence, prompt)
+        print(errors)
+
+        if index > 0:
+            assert len(errors) == 1
+            assert errors[0].text == word
+            assert errors[0].index == index
+            assert errors[0].type == error_type
+        else:
+            assert len(errors) == 0
+
+
+def test_starts_with_verb():
+
+    sentences = [("Methane from cow burps harms the environment, so can "
+                  "the GMO chemicals used to produce the impossable burger.",
+                  "Methane from cow burps harms the environment, so", "", 0, None),
+                 ("Plastic bag reduction laws are beneficial, so can help protect "
+                  "the health of communities located closest to these plants.",
+                  "Plastic bag reduction laws are beneficial, so", "can",
+                  46, GrammarError.RESPONSE_STARTS_WITH_VERB.value)]
+
+    with open("grammar_config_test.yaml") as i:
+        config = yaml.load(i)
+
+    pipeline = GrammarPipeline(config)
+
+    for sentence, prompt, word, index, error_type in sentences:
+        errors = pipeline.check(sentence, prompt)
+        print(errors)
+
+        if index > 0:
+            assert len(errors) == 1
+            assert errors[0].text == word
+            assert errors[0].index == index
+            assert errors[0].type == error_type
+        else:
+            assert len(errors) == 0
+
+
+def test_people():
+
+    sentences = [("There are two persons.", "", "persons", 14,
+                  GrammarError.IRREGULAR_PLURAL_NOUN.value),
+#                 ("This is a persons' car.", "", "persons'", 14,
+#                  GrammarError.IRREGULAR_PLURAL_NOUN.value),
+#                 ("She was the peoples princess.", "", "peoples", 12,
+#                  GrammarError.PLURAL_VERSUS_POSSESSIVE_NOUNS.value)
+                 ]
+
+    with open("grammar_config_test.yaml") as i:
+        config = yaml.load(i)
+
+    pipeline = GrammarPipeline(config)
+
+    for sentence, prompt, word, index, error_type in sentences:
+        errors = pipeline.check(sentence, prompt)
+        print(errors)
+
+        if index > 0:
+            assert len(errors) == 1
+            assert errors[0].text == word
+            assert errors[0].index == index
+            assert errors[0].type == error_type
+        else:
+            assert len(errors) == 0
+
+
+def test_decades():
+
+    sentences = [("I was born in the 1980's.", "", "1980's", 18,
+                  GrammarError.DECADES_WITH_APOSTROPHE.value),
+                 ("I was born in the 1980s.", "", "", 0, None)
+                 ]
+
+    with open("grammar_config_test.yaml") as i:
+        config = yaml.load(i)
+
+    pipeline = GrammarPipeline(config)
+
+    for sentence, prompt, word, index, error_type in sentences:
+        errors = pipeline.check(sentence, prompt)
+        print(errors)
+
+        if index > 0:
+            assert len(errors) == 2
+            assert errors[0].text == word
+            assert errors[0].index == index
+            assert errors[0].type == error_type
+        else:
+            assert len(errors) == 0
+
+
+def test_irregular_plural_nouns():
+
+    sentences = [("Plastic bag reduction laws are beneficial, so "
+                  "that less micro-plastics are released into the "
+                  "air and water systems, which in turn protects us "
+                  "all.", "", "", 0, None),
+                 ("Large amounts of meat consumption are harming the "
+                  "environment, so the solution lies in what farmers "
+                  "feed cows- seaweed would be a better food.", "",
+                  "", 0, None),
+                 ("Methane from cow burps harms the environment, so "
+                  "we should try to find ways to prevent that like "
+                  "feeding cows seaweed which helps them release 99%"
+                  " less methane in their burps.", "",
+                  "", 0, None)]
+
+    with open("grammar_config_test.yaml") as i:
+        config = yaml.load(i)
+
+    pipeline = GrammarPipeline(config)
+
+    for sentence, prompt, word, index, error_type in sentences:
+        errors = pipeline.check(sentence, prompt)
+        print(errors)
+
+        if index > 0:
+            assert len(errors) == 1
+            assert errors[0].text == word
+            assert errors[0].index == index
+            assert errors[0].type == error_type
+        else:
+            assert len(errors) == 0
+
+
+def test_singular_plural():
+
+    sentences = [
+#                  ("Large amounts of meat consumption are harming the "
+#                  "environment because methane is a greenhouse-gas, "
+#                  "excessive amounts of which contributes to global "
+#                  "warming.", "Large amounts of meat consumption are "
+#                  "harming the environment because", "", 0, None),
+                 ("Large amounts of meat consumption are harming the "
+                  "environment, so one way or another governments need "
+                  "to recognize this threat and invest in a reasonable "
+                  "solution.", "Large amounts of meat consumption are "
+                  "harming the environment because", "", 0, None)]
 
     with open("grammar_config_test.yaml") as i:
         config = yaml.load(i)

@@ -6,13 +6,19 @@ from scipy import spatial
 from sklearn.cluster import KMeans
 from tqdm import tqdm
 
+from quillgrammar.grammar.error import Error
+from quillnlp.preprocessing.checks import SoResponseStartsWithThatCheck, SentenceEndsInQuestionMarkCheck, \
+    MultipleSentencesCheck, ProfanityCheck, perform_check
 from quillnlp.preprocessing.coref import get_coreference_dictionary
 from quillnlp.preprocessing.srl import *
+from quillgrammar.grammar.checks.rules import ResponseStartsWithVerbCheck
 
 import torch
 
 from transformers.tokenization_bert import BertTokenizer
 from transformers.modeling_bert import BertModel
+
+from quillopinion.opinioncheck import OpinionCheck
 
 
 def get_sentence_embedding(model, tokenizer, sentence):
@@ -38,7 +44,7 @@ SUBJECTS_TO_IGNORE = set(["I", "some", "some people"])
 MODAL_VERBS = set(["will", "shall", "may", "might", "can", "could", "must", "ought",
                    "should", "would", "used to", "need"])
 
-AUX_VERBS = set(["do", "does"])
+AUX_VERBS = set(["be", "do", "does"])
 
 
 def create_visualization_data(prompt, all_sentences, num_verbs_prompt, output_file):
@@ -103,19 +109,30 @@ def write_output(all_sentences, num_verbs_prompt, output_file):
     """
 
     with open(output_file, "w") as csvfile:
-        columns = ["response", "cluster", "similarity", "modal", "auxiliary",
+        columns = ["response", "opinion", "starts with verb",
+                   "so response starts with that", "ends in question mark",
+                   "profanity", "multiple sentences",
+                   "cluster", "similarity", "modal", "auxiliary",
                    "main verb", "extracted arg0", "intended arg0", "arg1", "arg2"]
         csvwriter = csv.writer(csvfile, delimiter="\t")
         csvwriter.writerow(columns)
         for sentence in all_sentences:
-            output_list = [sentence["response"], sentence["cluster"],
+            output_list = [sentence["response"], sentence["opinion"],
+                           sentence["starts with verb"],
+                           sentence["so response starts with that"],
+                           sentence["ends in question mark"],
+                           sentence["profanity"],
+                           sentence["multiple sentences"],
+                           sentence["cluster"],
                            sentence["similarity"], sentence["modal"],
                            sentence["auxiliary"]]
-            for verb in sentence["verbs"][num_verbs_prompt:]:
+            for verb in sentence["verbs"]:
                 for item in verb:
                     output_list.append(item)
 
             csvwriter.writerow(output_list)
+
+
 
 
 @click.command()
@@ -153,10 +170,27 @@ def preprocess(srl_file):
         similarity = 1 - spatial.distance.cosine(embedding, cluster_center)
         similarities.append(similarity)
 
+    # Additional check
+    opinion_check = OpinionCheck()
+    verb_check = ResponseStartsWithVerbCheck()
+    so_response_starts_with_that_check = SoResponseStartsWithThatCheck()
+    ends_in_question_mark_check = SentenceEndsInQuestionMarkCheck()
+    multiple_sentences_check = MultipleSentencesCheck()
+    profanity_check = ProfanityCheck()
+
     # 3. For every sentence:
     for (sent, cluster, similarity) in zip(srl_out, clusters, similarities):
+
         sentence_info = {"sentence": sent["sentence"],
                          "response": sent["response"],
+                         "opinion": perform_check(opinion_check, sent["sentence"], prompt, ""),
+                         "starts with verb": perform_check(verb_check, sent["sentence"], prompt, ""),
+                         "so response starts with that": perform_check(so_response_starts_with_that_check,
+                                                                       sent["sentence"], prompt, ""),
+                         "ends in question mark": perform_check(ends_in_question_mark_check,
+                                                                sent["sentence"], prompt, ""),
+                         "profanity": perform_check(profanity_check, sent["sentence"], prompt, ""),
+                         "multiple sentences": perform_check(multiple_sentences_check, sent["sentence"], prompt, ""),
                          "cluster": cluster,
                          "similarity": similarity,
                          "modal": "-",
@@ -170,53 +204,80 @@ def preprocess(srl_file):
         auxiliary = None
         for verb_idx, verb in enumerate(sent["srl"]["verbs"]):
 
+            # Skip verbs in the prompt
+            if verb_idx < num_verbs_prompt:
+                continue
+
+            # Only look at the first main verb (be is also considered a main verb)
+            elif verb_idx > num_verbs_prompt + 1:
+                continue
+
             # 3.2.1 Preprocess the verb using a few simple rules, e.g. ca => can, etc.
             verb_string = verb["verb"].lower()
             verb_string = VERB_MAP.get(verb_string, verb_string)
 
             # 3.2.2 If the verb is a modal, add this information to the metadata and
             # add the verb as an auxiliary to the next main verb.
-            if not verb_idx < num_verbs_prompt and verb_string in MODAL_VERBS:
-                sentence_info["modal"] = "yes"
-                auxiliary = verb_string
+            # if not verb_idx < num_verbs_prompt and verb_string in MODAL_VERBS:
+            #    sentence_info["modal"] = "yes"
+            #    auxiliary = verb_string
 
-            # 3.2.3 If the verb is an auxiliary, add this information to the metadata and
-            # add the verb as an auxiliary to the next main verb.
-            elif not verb_idx < num_verbs_prompt and verb_string in AUX_VERBS:
+            # Modal verbs can also be identified as ARGM-MOD
+            modal = None
+            if "ARGM-MOD" in verb["description"]:
+                auxiliary_candidates = re.findall(r"ARGM-MOD: (\w+)", verb["description"])
+                if auxiliary_candidates:
+                    sentence_info["modal"] = "yes"
+                    verb_string = f"{verb_string} ({auxiliary_candidates[0]})"
+                    modal = auxiliary_candidates[0]
+
+            # 3.2.4 If the verb is not a modal or auxiliary, identify the arguments in the sentence
+            arg0_string, arg0_indices = identify_argument(verb, 0, sent["srl"]["words"])
+            arg1_string, arg1_indices = identify_argument(verb, 1, sent["srl"]["words"])
+            arg2_string, arg2_indices = identify_argument(verb, 2, sent["srl"]["words"])
+
+            # If arg0 is in the coreference dictionary, identify its antecedent (the "implied subject").
+            # If not, take the arg0 itself as "implied subject".
+            arg0_location = "-".join([str(x) for x in arg0_indices])
+            if arg0_location in corefs:
+                arg0_antecedent = corefs[arg0_location]
+            elif arg0_string != "-":
+                arg0_antecedent = arg0_string
+            else:  # These are cases where the subject is "-", as in copula verbs
+                arg0_antecedent = arg1_string
+                arg0_string = arg1_string
+                arg1_string = "-"
+
+            # Add the verb information to the sentence information.
+            # Exclude constructions like "I think", "I guess", etc. on the basis of a
+            # list of subjects we want to ignore.
+
+            if len(sentence_info["verbs"]) > 0 and \
+                    sentence_info["verbs"][-1][0] in AUX_VERBS and \
+                    sentence_info["verbs"][-1][1] == "-":
+                verb_string = f"{verb_string} ({sentence_info['verbs'][-1][0]})"
                 sentence_info["auxiliary"] = "yes"
-                auxiliary = verb_string
+                sentence_info["verbs"][-1] = [verb_string, arg0_string, arg0_antecedent, arg1_string, arg2_string]
 
-            else:
-                # 3.2.4 If the verb is not a modal or auxiliary, identify the arguments in the sentence
-                arg0_string, arg0_indices = identify_argument(verb, 0, sent["srl"]["words"])
-                arg1_string, arg1_indices = identify_argument(verb, 1, sent["srl"]["words"])
-                arg2_string, arg2_indices = identify_argument(verb, 2, sent["srl"]["words"])
+            # If the modal of the current verb is the previous verb,
+            # remove the previous verb.
+            elif len(sentence_info["verbs"]) > 0 and \
+                    modal is not None and \
+                    sentence_info["verbs"][-1][0] == modal:
 
-                # If arg0 is in the coreference dictionary, identify its antecedent (the "implied subject").
-                # If not, take the arg0 itself as "implied subject".
-                arg0_location = "-".join([str(x) for x in arg0_indices])
-                if arg0_location in corefs:
-                    arg0_antecedent = corefs[arg0_location]
-                elif arg0_string != "-":
-                    arg0_antecedent = arg0_string
-                else:  # These are cases where the subject is "-", as in copula verbs
-                    arg0_antecedent = arg1_string
-                    arg0_string = arg1_string
+                sentence_info["modal"] = "yes"
+                sentence_info["verbs"][-1] = [verb_string, arg0_string, arg0_antecedent, arg1_string, arg2_string]
 
-                print(corefs)
-                print("SA", arg0_string, arg0_antecedent)
-                print(arg0_location)
+            elif arg0_string not in SUBJECTS_TO_IGNORE:
+                sentence_info["verbs"].append([verb_string, arg0_string, arg0_antecedent, arg1_string, arg2_string])
 
-                # Add the auxiliary to the verb string.
-                if auxiliary is not None:
-                    verb_string += f" ({auxiliary})"
-                    auxiliary = None
-
-                # Add the verb information to the sentence information.
-                # Exclude constructions like "I think", "I guess", etc. on the basis of a
-                # list of subjects we want to ignore.
-                if arg0_string not in SUBJECTS_TO_IGNORE:
-                    sentence_info["verbs"].append([verb_string, arg0_string, arg0_antecedent, arg1_string, arg2_string])
+            if "could be saved" in sent["sentence"]:
+                print(sent["sentence"])
+                print(sent["srl"])
+                print(sentence_info["verbs"])
+                print(verb)
+                print(verb_idx, num_verbs_prompt)
+                input()
 
         sentences.append(sentence_info)
 

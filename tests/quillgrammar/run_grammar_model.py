@@ -7,7 +7,7 @@ from quillgrammar.grammar.constants import GrammarError
 from quillgrammar.grammar.pipeline import GrammarPipeline
 
 csv_file = "quillgrammar/data/combined_turk_data.csv"
-csv_file = "../../data/quill/grammer_response_dump_generic_2020_07_06.csv"
+# csv_file = "../../data/quill/grammer_response_dump_generic_2020_07_06.csv"
 config_file = "grammar_config_test.yaml"
 
 
@@ -17,6 +17,23 @@ def read_csv_file(f):
         reader = csv.reader(i)
         for row in reader:
             sentence, prompt, *other = row
+
+            # Some prompts in the file are not complete. Correct those.
+            if not (prompt.strip().endswith("so") or
+                    prompt.strip().endswith("because") or
+                    prompt.strip().endswith("but")):
+
+                if sentence.startswith(prompt.strip() + " so"):
+                    prompt = prompt + " so"
+                elif sentence.startswith(prompt.strip() + " but"):
+                    prompt = prompt + " but"
+                elif sentence.startswith(prompt.strip() + ", so"):
+                    prompt = prompt + ", so"
+                elif sentence.startswith(prompt.strip() + ", but"):
+                    prompt = prompt + ", but"
+                elif sentence.startswith(prompt.strip() + " because"):
+                    prompt = prompt + " because"
+
             if sentence.startswith(prompt):
                 data.append((sentence, prompt))
             else:

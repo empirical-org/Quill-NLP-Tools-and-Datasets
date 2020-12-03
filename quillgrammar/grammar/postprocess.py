@@ -1,6 +1,6 @@
 from typing import Dict
 
-from .constants import Tag, GrammarError, TokenSet
+from .constants import Tag, GrammarError, TokenSet, POS
 from .verbutils import has_noun_subject, get_subject, is_passive, has_pronoun_subject, \
     is_perfect, comma_between_subject_and_verb
 from .error import Error
@@ -27,21 +27,14 @@ def classify_error(error: Error, config: Dict) -> Error:
     if not predicted_token:
         return error
 
-    # If the token has the VBN tag, determine its error type
-    # TODO: this approach was necessary when we used masked language
-    #  modeling to find errors, but it may not be a good idea now that
-    #  we use a supervised model to do so.
-    if predicted_token.tag_ == Tag.PAST_PARTICIPLE_VERB.value:
-        if is_passive(predicted_token) and is_perfect(predicted_token):
-            error.set_type(GrammarError.PASSIVE_PERFECT_WITH_INCORRECT_PARTICIPLE.value, config)
-        elif is_passive(predicted_token):
-            error.set_type(GrammarError.INCORRECT_PAST_TENSE_AS_PARTICIPLE_IN_PASSIVE.value, config)
-        else:
-            error.set_type(GrammarError.PAST_TENSE_INSTEAD_OF_PARTICIPLE.value, config)
-        return error
+    # Possessive pronoun errors that do not refer to a pronoun,
+    # are probably plural-possessive errors
+
+    if error.type == GrammarError.POSSESSIVE_PRONOUN.value and predicted_token.pos_ == POS.NOUN.value:
+        error.set_type(GrammarError.PLURAL_VERSUS_POSSESSIVE_NOUNS.value, config)
 
     # Subclassify subject-verb agreement errors
-    if error.type == GrammarError.SUBJECT_VERB_AGREEMENT.value:
+    elif error.type == GrammarError.SUBJECT_VERB_AGREEMENT.value:
         if predicted_token.tag_ == Tag.SIMPLE_PAST_VERB.value:
             return None
 

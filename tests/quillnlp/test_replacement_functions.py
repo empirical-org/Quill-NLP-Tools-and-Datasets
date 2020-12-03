@@ -141,24 +141,33 @@ def test_object_pronoun_replacement():
     from quillnlp.grammar.generation import object_pronoun_error_generator
 
     sentence = "Help me now"
-    generated_sentence, _ = object_pronoun_error_generator.generate_from_text(sentence)
+    generated_sentence, entities = object_pronoun_error_generator.generate_from_text(sentence)
     print(generated_sentence)
     assert generated_sentence != sentence
+    assert generated_sentence[entities[0][0]: entities[0][1]] == generated_sentence.split()[1]
 
     sentence = "I saw him"
-    generated_sentence, _ = object_pronoun_error_generator.generate_from_text(sentence)
+    generated_sentence, entities = object_pronoun_error_generator.generate_from_text(sentence)
     print(generated_sentence)
     assert generated_sentence != sentence
+    assert generated_sentence[entities[0][0]: entities[0][1]] == generated_sentence.split()[-1]
 
     sentence = "I saw her"
-    generated_sentence, _ = object_pronoun_error_generator.generate_from_text(sentence)
+    generated_sentence, entities = object_pronoun_error_generator.generate_from_text(sentence)
     print(generated_sentence)
     assert generated_sentence != sentence
+    assert generated_sentence[entities[0][0]: entities[0][1]] == generated_sentence.split()[-1]
 
     sentence = "I saw her book"
     generated_sentence, _ = object_pronoun_error_generator.generate_from_text(sentence)
     print(generated_sentence)
     assert generated_sentence == sentence
+
+    sentence = "She loves me"
+    generated_sentence, entities = object_pronoun_error_generator.generate_from_text(sentence)
+    print(generated_sentence)
+    assert generated_sentence != sentence
+    assert generated_sentence[entities[0][0]: entities[0][1]] == "I"
 
 
 def test_possessive_pronoun_replacement():

@@ -4,6 +4,7 @@ import lemminflect
 from typing import List
 from lemminflect import getLemma
 
+import spacy
 from spacy.tokens.doc import Doc
 from spacy.tokens.token import Token
 
@@ -11,10 +12,9 @@ from ..verbutils import is_passive, in_have_been_construction, \
     get_past_tenses, has_inversion, get_subject, is_perfect
 from ..constants import *
 from ..error import Error
-from quillgrammar.grammar.checks.exceptions import exceptions
+from .exceptions import exceptions
 
-BASE_SPACY_MODEL = "en"
-
+nlp = spacy.load("en_core_web_sm")
 Token.set_extension("grammar_errors", default=[])
 
 statistical_error_map = {"WOMAN": GrammarError.WOMAN_WOMEN.value,
@@ -54,21 +54,12 @@ plurals = {
     "fish": ["fish"],
     "leaf": ["leaves"],
     "spaghetti": ["spaghetti"],
-    "person": ["people"]
+    "person": ["people"],
+    "seaweed": ["seaweed"]
 }
 
 
 # Utility methods
-
-
-def is_subject(token: Token) -> bool:
-    if token.dep_.startswith(Dependency.SUBJECT.value):
-        return True
-    elif token.dep_ == Dependency.CONJUNCTION.value and \
-            token.head.dep_.startswith(Dependency.SUBJECT.value):
-        return True
-    else:
-        return False
 
 
 def get_correct_participles(token: Token) -> bool:
@@ -106,29 +97,9 @@ class RuleBasedGrammarCheck(object):
     def check(self, doc: Doc, prompt="") -> List[Error]:
         raise NotImplementedError
 
-
-class RuleBasedPluralVsPossessiveCheck(RuleBasedGrammarCheck):
-    """
-    Identifies confusion between a possessive ("cousin's") and
-    a plural ("cousins")
-    """
-
-    name = GrammarError.PLURAL_VERSUS_POSSESSIVE_NOUNS.value
-
-    def check(self, doc: Doc, prompt="") -> List[Error]:
-        # TODO: this does not treat cases like "it's my cousin's" correctly.
-        errors = []
-        for i in range(0, len(doc) - 1):
-            if doc[i].text.lower() in TokenSet.POSSESSIVE_S.value and \
-                    (doc[i].tag_ == Tag.POSSESSIVE.value or
-                     doc[i].pos_ == POS.PARTICIPLE.value) and \
-                    doc[i-1].pos_ == POS.NOUN.value and \
-                    (doc[i + 1].pos_ not in [POS.NOUN.value, POS.COORD_CONJ.value]):
-                errors.append(Error(doc[i].text, doc[i].idx, self.name))
-#            elif doc[i].tag_ == Tag.PLURAL_NOUN.value and doc[i+1].pos_ == POS.NOUN.value:
-#                errors.append(Error(doc[i].text, doc[i].idx, self.name))
-
-        return errors
+    def check_from_text(self, text: str, prompt="") -> List[Error]:
+        doc = nlp(text)
+        return self.check(doc, prompt)
 
 
 class RuleBasedQuestionMarkCheck(RuleBasedGrammarCheck):
@@ -333,22 +304,6 @@ class ManVsMenCheck(RuleBasedGrammarCheck):
                 if t.text.lower() == Word.INCORRECT_PLURAL_MAN.value]
 
 
-class ThanVsThenCheck(RuleBasedGrammarCheck):
-    """
-    Identifies instances of "then" that should be "than".
-    """
-
-    name = GrammarError.THAN_THEN.value
-
-    def check(self, doc: Doc, prompt="") -> List[Error]:
-        errors = []
-        for token in doc[1:]:
-            if token.text.lower() == Word.THEN.value and \
-                    doc[token.i - 1].tag_ in COMPARATIVE_TAGS:
-                errors.append(Error(token.text, token.idx, self.name))
-        return errors
-
-
 class RepeatedWordCheck(RuleBasedGrammarCheck):
     """
     Identifies repeated words.
@@ -391,7 +346,8 @@ class RepeatedConjunctionCheck(RuleBasedGrammarCheck):
 
 class ResponseStartsWithVerbCheck(RuleBasedGrammarCheck):
     """
-    Identifies cases where the response starts with a verb.
+    Identifies cases where the response starts with a verb. In these situations,
+    we'd like to ask the student to add a subject.
     """
 
     name = GrammarError.RESPONSE_STARTS_WITH_VERB.value
@@ -399,57 +355,31 @@ class ResponseStartsWithVerbCheck(RuleBasedGrammarCheck):
     def check(self, doc: Doc, prompt="") -> List[Error]:
         prompt_length = len(prompt.strip())
 
+        if prompt_length == 0:
+            return []
+
         errors = []
         for token in doc:
             if token.idx >= prompt_length:
-                if (token.pos_ == POS.VERB.value or token.pos_ == POS.AUX.value) \
+
+                # If the first token is a modal followed by an infinitive,
+                # raise an error. If it is a modal not followed by an infinitive,
+                # this is probably a question or dependent clause and should
+                # be ignored (because it wouldn't help to ask the student to
+                # include an infinitive.
+                if token.tag_ == Tag.MODAL_VERB.value:
+                    next_token = doc[token.i + 1] if len(doc) > token.i + 1 else None
+                    if next_token is not None and next_token.tag_ == Tag.INFINITIVE.value:
+                        errors.append(Error(token.text, token.idx, self.name))
+
+                # In all other cases where we meet a verb or auxiliary,
+                # raise an error.
+                elif (token.pos_ == POS.VERB.value or token.pos_ == POS.AUX.value) \
                         and not (token.tag_ == Tag.PRESENT_PARTICIPLE_VERB.value or
                                  token.tag_ == Tag.PAST_PARTICIPLE_VERB.value):
                     errors.append(Error(token.text, token.idx, self.name))
                 break
 
-        return errors
-
-
-class SubjectPronounCheck(RuleBasedGrammarCheck):
-    """
-    Identifies incorrect subject pronouns (e.g. object pronouns,
-    such as "me", possessive determiners such as "my" or possessive
-    pronouns such as "mine").
-    """
-
-    name = GrammarError.SUBJECT_PRONOUN.value
-
-    def check(self, doc: Doc, prompt="") -> List[Error]:
-        errors = []
-        nonsubj_pronouns = TokenSet.OBJECT_PRONOUNS.value | \
-            TokenSet.POSSESSIVE_DETERMINERS.value | \
-            TokenSet.POSSESSIVE_PRONOUNS.value
-        for token in doc:
-            #if is_subject(token) and token.text.lower() in nonsubj_pronouns:
-            #    errors.append(Error(token.text, token.idx, self.name, None))
-            if (token.pos_ == POS.VERB.value or token.pos_ == POS.AUX.value) \
-                    and token.tag_ != Tag.INFINITIVE.value:
-                subject = get_subject(token, full=True)
-                if subject and len(subject) == 1 and subject[0].text.lower() in nonsubj_pronouns:
-                    errors.append(Error(subject[0].text, subject[0].idx, self.name))
-
-        return errors
-
-
-class ObjectPronounCheck(RuleBasedGrammarCheck):
-    """
-    Identifies incorrect object pronouns (e.g. subject pronouns, such as "I").
-    """
-
-    name = GrammarError.OBJECT_PRONOUN.value
-
-    def check(self, doc: Doc, prompt="") -> List[Error]:
-        errors = []
-        for token in doc:
-            if token.text.lower() in TokenSet.SUBJECT_PRONOUNS.value and \
-                    not is_subject(token):
-                errors.append(Error(token.text, token.idx, self.name))
         return errors
 
 
@@ -506,6 +436,7 @@ class SingularPluralNounCheck(RuleBasedGrammarCheck):
     def check(self, doc: Doc, prompt="") -> List[Error]:
         errors = []
         for noun_chunk in doc.noun_chunks:
+
             for token in noun_chunk[:-1]:
 
                 if token.text.lower() in ["a", "an"] or token.text.lower() in TokenSet.SINGULAR_DETERMINERS.value:
@@ -592,6 +523,24 @@ class ContractionCheck(RuleBasedGrammarCheck):
                     token.text.lower() in TokenSet.CONTRACTED_VERBS_WITHOUT_APOSTROPHE.value and \
                     not (len(doc) > token.i+1 and doc[token.i+1].text == "-"):
                 errors.append(Error(token.text, token.idx, self.name))
+        return errors
+
+
+class DecadesWithApostrophe(RuleBasedGrammarCheck):
+    """
+    Finds instances of 1980's, which should be 1980s.
+    """
+
+    name = GrammarError.DECADES_WITH_APOSTROPHE.value
+
+    def check(self, doc: Doc, prompt="") -> List[Error]:
+        errors = []
+        for token in doc:
+            next_token = doc[token.i+1] if len(doc) > token.i+1 else None
+
+            if next_token is not None and re.match(r"\d{4}$", token.text) \
+                    and next_token.text == "'s":
+                errors.append(Error(token.text+next_token.text, token.idx, self.name))
         return errors
 
 
@@ -700,7 +649,10 @@ class IrregularPluralNounsCheck(RuleBasedGrammarCheck):
         errors = []
         for token in doc:
 
-            if re.search(self.INCORRECT_PLURAL_REGEX, token.text.lower()):
+            if token.text.endswith("-"):
+                continue
+
+            elif re.search(self.INCORRECT_PLURAL_REGEX, token.text.lower()):
                 errors.append(Error(token.text, token.idx, self.name))
 
             # If the token is a plural verb
@@ -714,7 +666,10 @@ class IrregularPluralNounsCheck(RuleBasedGrammarCheck):
                 # If the plural form is not the same as the one
                 # returned by pyinflect
                 # e.g. "deers" instead of "deer" returned by pyinflect
+
                 correct_plurals = get_correct_plurals(token)
+                # print(token, token.tag_, correct_plurals)
+
                 if correct_plurals and \
                         token.text.lower() not in correct_plurals:
                     errors.append(Error(token.text, token.idx, self.name))
@@ -749,59 +704,6 @@ class FragmentErrorCheck(RuleBasedGrammarCheck):
         return errors
 
 
-class PossessivePronounsErrorCheck(RuleBasedGrammarCheck):
-
-    name = GrammarError.POSSESSIVE_PRONOUN.value
-
-    def check(self, doc: Doc, prompt="") -> List[Error]:
-        errors = []
-        for token in doc:
-            # Possessive pronouns with compound depencency
-            if token.pos_ == POS.PRONOUN.value and \
-                    token.dep_ == Dependency.COMPOUND.value:
-                errors.append(Error(token.text, token.idx, self.name))
-            elif token.tag_ == Tag.POSSESSIVE_PRONOUN.value and \
-                    token.dep_ == Dependency.COMPOUND.value:
-                errors.append(Error(token.text, token.idx, self.name))
-            # Incorrect cases like "your's"
-            elif token.text.lower() in TokenSet.INCORRECT_POSSESSIVE_PRONOUNS.value:
-                errors.append(Error(token.text, token.idx, self.name))
-            elif token.i < len(doc) - 1 and \
-                    token.text_with_ws.lower() + doc[token.i+1].text.lower() \
-                    in TokenSet.INCORRECT_POSSESSIVE_PRONOUNS.value:
-                errors.append(Error(token.text, token.idx, self.name))
-
-        return errors
-
-
-class SubjectVerbAgreementErrorCheck(RuleBasedGrammarCheck):
-
-    name = GrammarError.SUBJECT_VERB_AGREEMENT.value
-
-    def check(self, doc: Doc, prompt="") -> List[Error]:
-        errors = []
-        for token in doc:
-
-            # Infinitives are allowed: in "he would like to drive", "he" is
-            # the subject and infinitive "drive" is the head.
-            if is_subject(token) and token.tag_ == Tag.SINGULAR_NOUN.value and \
-                    token.head.tag_ == Tag.PRESENT_OTHER_VERB.value:
-                subject_lefts = [t.text.lower() for t in token.lefts] + [token.text.lower()]
-                if len(set(subject_lefts).intersection(TokenSet.INDEF_PRONOUNS.value)) > 0:
-                    error_type = GrammarError.SVA_INDEFINITE.value
-                else:
-                    error_type = GrammarError.SUBJECT_VERB_AGREEMENT_RULE.value
-
-                errors.append(Error(token.head.text,
-                                    token.head.idx,
-                                    error_type,
-                                    subject=" ".join(subject_lefts)))
-
-        return errors
-
-# Collective grammar checks
-
-
 class SubjectVerbAgreementWithCollectiveNounCheck(RuleBasedGrammarCheck):
 
     name = GrammarError.SVA_COLLECTIVE_NOUN.value
@@ -832,31 +734,27 @@ class RuleBasedGrammarChecker(object):
     """
 
     candidate_checks = {
-#        RuleBasedPluralVsPossessiveCheck.name: RuleBasedPluralVsPossessiveCheck(),
         RuleBasedThisVsThatCheck.name: RuleBasedThisVsThatCheck(),
         RuleBasedQuestionMarkCheck.name: RuleBasedQuestionMarkCheck(),
         RuleBasedSpacingCheck.name: RuleBasedSpacingCheck(),
         RuleBasedArticleCheck.name: RuleBasedArticleCheck(),
         WomanVsWomenCheck.name: WomanVsWomenCheck(),
         ManVsMenCheck.name: ManVsMenCheck(),
-        ThanVsThenCheck.name: ThanVsThenCheck(),
         RepeatedWordCheck.name: RepeatedWordCheck(),
         RepeatedConjunctionCheck.name: RepeatedConjunctionCheck(),
         ResponseStartsWithVerbCheck.name: ResponseStartsWithVerbCheck(),
-        # SubjectPronounCheck.name: SubjectPronounCheck(),
-        # ObjectPronounCheck.name: ObjectPronounCheck(),
         CommasInNumbersCheck.name: CommasInNumbersCheck(),
         CommasAfterYesNoCheck.name: CommasAfterYesNoCheck(),
         SingularPluralNounCheck.name: SingularPluralNounCheck(),
         CapitalizationCheck.name: CapitalizationCheck(),
         AllcapsCheck.name: AllcapsCheck(),
         ContractionCheck.name: ContractionCheck(),
+        DecadesWithApostrophe.name: DecadesWithApostrophe(),
         IncorrectIrregularPastTenseCheck.name: IncorrectIrregularPastTenseCheck(),
         IncorrectParticipleCheck.name: IncorrectParticipleCheck(),
         PunctuationCheck.name: PunctuationCheck(),
         IrregularPluralNounsCheck.name: IrregularPluralNounsCheck(),
         FragmentErrorCheck.name: FragmentErrorCheck(),
-        # PossessivePronounsErrorCheck.name: PossessivePronounsErrorCheck(),
         SubjectVerbAgreementWithCollectiveNounCheck.name: SubjectVerbAgreementWithCollectiveNounCheck()
     }
 
@@ -889,3 +787,4 @@ class RuleBasedGrammarChecker(object):
             error.model = self.name
 
         return error_list
+

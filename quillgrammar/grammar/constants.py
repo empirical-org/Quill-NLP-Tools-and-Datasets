@@ -148,6 +148,7 @@ class TokenSet(Enum):
 
 
 class GrammarError(Enum):
+    DECADES_WITH_APOSTROPHE = "Decades with apostrophe"
     RESPONSE_STARTS_WITH_VERB = "Response starts with verb"
     PLURAL_VERSUS_POSSESSIVE_NOUNS = "Plural versus possessive nouns"
     QUESTION_MARK = "Question marks"

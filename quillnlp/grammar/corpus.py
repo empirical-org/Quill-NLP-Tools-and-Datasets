@@ -1,4 +1,4 @@
-import pyinflect
+import lemminflect
 import random
 from typing import List, Tuple, Set
 from nltk.corpus import wordnet as wn
