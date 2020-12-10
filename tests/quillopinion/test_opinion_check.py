@@ -227,7 +227,7 @@ def test_opinioncheck_order():
     assert feedback[1].type == "First-Person Reference Keyword Check"
     assert feedback[2].type == "Second-Person Reference Keyword Check"
 
-"""
+
 def test_opinion_check_on_quill_data():
     input_file = "tests/data/opinion_sentences.txt"
     labeled_file = "tests/data/opinion_labeled.tsv"
@@ -266,6 +266,7 @@ def test_opinion_check_on_quill_data():
             feedback = check.check_from_text(sentence, prompt)
             if feedback:
                 opinions += 1
+                feedback.sort(key=lambda x: -x.precedence)
                 o.write(sentence + "\t" + ",".join([str(opinion) for opinion in feedback]) + "\n")
             else:
                 o.write(sentence + "\t\n")
@@ -274,7 +275,8 @@ def test_opinion_check_on_quill_data():
                 print("False negative (missed opinion):\t", sentence)
                 fn += 1
             elif sentence not in opinion_labels and feedback:
-                print("False positive (incorrectly identified as an opinion):\t", sentence)
+                print("False positive (incorrectly identified as an "
+                      "opinion):\t", sentence, "\t" + feedback[0].type)
                 fp += 1
             elif sentence in opinion_labels and feedback:
                 tp += 1
@@ -287,4 +289,3 @@ def test_opinion_check_on_quill_data():
     print("Precision:", precision)
     print("Recall:", recall)
     print("F1-score:", f1_score)
-"""

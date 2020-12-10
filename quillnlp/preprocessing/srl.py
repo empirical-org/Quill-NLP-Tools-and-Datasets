@@ -1,3 +1,4 @@
+import csv
 import re
 import torch
 
@@ -10,8 +11,14 @@ from allennlp.predictors.predictor import Predictor
 from transformers.tokenization_bert import BertTokenizer
 from transformers.modeling_bert import BertModel
 
+from quillgrammar.grammar.checks.rules import ResponseStartsWithVerbCheck
+from quillnlp.grammar.myspacy import nlp
+from quillnlp.preprocessing.checks import SoResponseStartsWithThatCheck, SentenceEndsInQuestionMarkCheck, \
+    MultipleSentencesCheck, ProfanityCheck, perform_check
 from quillnlp.utils import detokenize, tokenize
 from quillnlp.preprocessing.coref import get_coreference_dictionary
+from quillopinion.opinioncheck import OpinionCheck
+
 
 VERB_MAP = {"s": "be",
             "is": "be",
@@ -26,7 +33,131 @@ SUBJECTS_TO_IGNORE = set(["I", "some", "some people"])
 MODAL_VERBS = set(["will", "shall", "may", "might", "can", "could", "must", "ought",
                    "should", "would", "used to", "need"])
 
-AUX_VERBS = set(["do", "does"])
+AUX_VERBS = set(["be", "is", "were", "was", "been", "do", "does", "have", "has", "had"])
+
+opinion_check = OpinionCheck()
+verb_check = ResponseStartsWithVerbCheck()
+so_response_starts_with_that_check = SoResponseStartsWithThatCheck()
+ends_in_question_mark_check = SentenceEndsInQuestionMarkCheck()
+multiple_sentences_check = MultipleSentencesCheck()
+profanity_check = ProfanityCheck()
+
+
+class Response:
+
+    def __init__(self, srl_output, prompt):
+
+        self.prompt = prompt
+        self.srl_output = srl_output
+
+        self.sentence = srl_output["sentence"]
+        self.response = srl_output["response"]
+
+        sentence_length = len(nlp(srl_output["response"]))
+        self.too_short = sentence_length < 4
+        self.too_long = sentence_length > 99
+
+        self.opinion = perform_check(opinion_check, srl_output["sentence"], prompt, "")
+        self.starts_with_verb = perform_check(verb_check, srl_output["sentence"], prompt, "")
+        self.so_response_starts_with_that = perform_check(so_response_starts_with_that_check,
+                                                         srl_output["sentence"], prompt, "")
+        self.ends_in_question_mark = perform_check(ends_in_question_mark_check,
+                                                  srl_output["sentence"], prompt, "")
+        self.profanity = perform_check(profanity_check, srl_output["sentence"], prompt, "")
+        self.multiple_sentences = perform_check(multiple_sentences_check, srl_output["srl"]["words"],
+                                               prompt, "")
+        self.cluster = None
+        self.similarity = None
+        self.verb_string = None
+        self.arg0_string = None
+        self.arg0_antecedent = None
+        self.arg1_string = None
+        self.arg2_string = None
+        self.modal_is_present = None
+        self.auxiliary_is_present = None
+
+    def tsv_columns(self):
+        columns = ["response", "opinion", "starts with verb",
+                   "so response starts with that", "ends in question mark",
+                   "profanity", "multiple sentences", "too short", "too long",
+                   "cluster", "similarity", "modal", "auxiliary",
+                   "main verb", "extracted arg0", "intended arg0", "arg1", "arg2"]
+        return columns
+
+    def to_tsv(self):
+        values = [self.response, self.opinion, self.starts_with_verb,
+                  self.so_response_starts_with_that, self.ends_in_question_mark,
+                  self.profanity, self.multiple_sentences, self.too_short, self.too_long,
+                  self.cluster, self.similarity, self.modal_is_present, self.auxiliary_is_present,
+                  self.verb_string, self.arg0_string, self.arg0_antecedent,
+                  self.arg1_string, self.arg2_string]
+        return values
+
+    def parse_sentence(self):
+
+        corefs = get_coreference_dictionary(self.srl_output["sentence"])
+        num_verbs_prompt = get_number_of_verbs_in_prompt(self.prompt, self.srl_output)
+        auxiliaries = []
+        modal_is_present = False
+        auxiliary_is_present = False
+        for verb_idx, verb in enumerate(self.srl_output["srl"]["verbs"]):
+
+            # Skip verbs in the prompt
+            if verb_idx < num_verbs_prompt:
+                continue
+
+            # Skip modals and auxiliaries, which distinguish themselves by not having
+            # any arguments
+            elif "[ARG" not in verb["description"]:
+                if verb["verb"] in AUX_VERBS:
+                    auxiliaries.append(verb["verb"])
+                continue
+
+            # 3.2.1 Preprocess the verb using a few simple rules, e.g. ca => can, etc.
+            verb_string = verb["verb"].lower()
+            verb_string = VERB_MAP.get(verb_string, verb_string)
+
+            # Modal verbs can be identified as ARGM-MOD
+
+            modal = find_modal(verb)
+            if modal is not None:
+                modal_is_present = True
+                verb_string = f"{verb_string} ({modal})"
+
+            if auxiliaries:
+                auxiliary_is_present = True
+                auxiliaries = [VERB_MAP.get(a, a) for a in auxiliaries]
+                verb_string = f"{verb_string} ({', '.join(auxiliaries)})"
+
+            # 3.2.4 If the verb is not a modal or auxiliary, identify the arguments in the sentence
+            arg0_string, arg0_indices = identify_argument(verb, 0, self.srl_output["srl"]["words"])
+            arg1_string, arg1_indices = identify_argument(verb, 1, self.srl_output["srl"]["words"])
+            arg2_string, arg2_indices = identify_argument(verb, 2, self.srl_output["srl"]["words"])
+
+            # If arg0 is in the coreference dictionary, identify its antecedent (the "implied subject").
+            # If not, take the arg0 itself as "implied subject".
+            arg0_location = "-".join([str(x) for x in arg0_indices])
+            if arg0_location in corefs:
+                arg0_antecedent = corefs[arg0_location]
+            elif arg0_string != "-":
+                arg0_antecedent = arg0_string
+            else:  # These are cases where the subject is "-", as in copula verbs
+                arg0_antecedent = arg1_string
+                arg0_string = arg1_string
+                arg1_string = "-"
+
+            # Add the verb information to the sentence information.
+            # Exclude constructions like "I think", "I guess", etc. on the basis of a
+            # list of subjects we want to ignore.
+
+            if arg0_string not in SUBJECTS_TO_IGNORE:
+                self.verb_string = verb_string
+                self.arg0_string = arg0_string
+                self.arg0_antecedent = arg0_antecedent
+                self.arg1_string = arg1_string
+                self.arg2_string = arg2_string
+                self.modal_is_present = modal_is_present
+                self.auxiliary_is_present = auxiliary_is_present
 
 
 def perform_srl(responses, prompt=None):
@@ -40,9 +171,6 @@ def perform_srl(responses, prompt=None):
 
     """
 
-    #predictor = Predictor.from_path("https://s3-us-west-2.amazonaws.com/allennlp/models/srl-model-2018.05.25.tar.gz")
-    #predictor = Predictor.from_path("https://s3-us-west-2.amazonaws.com/allennlp/models/openie-model.2020.03.26.tar.gz")
-    #predictor = Predictor.from_path("https://s3-us-west-2.amazonaws.com/allennlp/models/bert-base-srl-2020.02.10.tar.gz")
     predictor = Predictor.from_path(
         "https://storage.googleapis.com/allennlp-public-models/bert-base-srl-2020.11.19.tar.gz")
     if prompt:
@@ -64,37 +192,6 @@ def perform_srl(responses, prompt=None):
         full_output.append(sentence_output)
 
     return full_output
-
-
-def group_by_arg0_and_verb(sentences: List[Dict], number_of_verbs_in_prompt: int) -> Dict:
-    """
-    Groups the sentences by their main Verb and its arg0. This is needed to produce
-    the clustered data for the D3 visualization.
-
-    Args:
-        sentences: a list of sentence outputs from AllenNLP's SRL model
-        number_of_verbs_in_prompt: the number of verbs in the prompt (these verbs will
-            not be considered in the grouping process)
-
-    Returns: a dictionary of the form {arg0: {main_verb: [sentence1, sentence2, ...]}
-
-    """
-
-    groups = {"-": {"-": []}}
-    for sentence in sentences:
-        if len(sentence["verbs"]) > number_of_verbs_in_prompt:
-            # verbs are strings like "allow (should)"
-            main_verb = sentence["verbs"][number_of_verbs_in_prompt][0].split("(")[0].strip()
-            main_verb_arg0 = sentence["verbs"][number_of_verbs_in_prompt][2].lower()
-            if main_verb_arg0 not in groups:
-                groups[main_verb_arg0] = {}
-            if main_verb not in groups[main_verb_arg0]:
-                groups[main_verb_arg0][main_verb] = []
-            groups[main_verb_arg0][main_verb].append(sentence)
-        else:
-            groups["-"]["-"].append(sentence)
-
-    return groups
 
 
 def identify_argument(verb: Dict, argument_number: int, words: List[str]) -> Tuple[str, List[int]]:
@@ -129,6 +226,26 @@ def identify_argument(verb: Dict, argument_number: int, words: List[str]) -> Tup
         return "-", []
 
     return "-", []
+
+
+def find_modal(verb):
+    """
+    Finds the optional modal verb for a main verb
+
+    Args:
+        verb: the SRL output for that verb
+
+    Returns: the string of the modal verb or None
+
+    """
+    if "ARGM-MOD" in verb["description"]:
+        auxiliary_candidates = re.findall(r"ARGM-MOD: (\w+)", verb["description"])
+        if auxiliary_candidates:
+            modal = auxiliary_candidates[0]
+            modal = VERB_MAP.get(modal, modal)
+            return modal
+
+    return None
 
 
 def get_prompt_from_srl_output(srl_output: Dict) -> str:
@@ -180,16 +297,14 @@ def get_sentence_embedding(model, tokenizer, sentence):
     return sentence_embedding
 
 
+
+
 def process_srl_results(srl_results, num_clusters=10):
 
-    # Initialize the results
-    columns = ["response", "cluster", "similarity", "modal", "auxiliary",
-               "main verb", "extracted arg0", "intended arg0", "arg1", "arg2"]
-    results = [columns]
-
-    # Get the prompt from the SRL output and determine the number of verbs in the prompt.
+    # 2. Get the prompt from the SRL output and determine the number of verbs in the prompt.
     prompt = get_prompt_from_srl_output(srl_results[0])
-    num_verbs_prompt = get_number_of_verbs_in_prompt(prompt, srl_results[0])
+
+    sentences = []
 
     # Initialize BERT
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
@@ -211,75 +326,30 @@ def process_srl_results(srl_results, num_clusters=10):
         similarity = 1 - spatial.distance.cosine(embedding, cluster_center)
         similarities.append(similarity)
 
-    # For every sentence:
-    for (sent, cluster, similarity) in zip(srl_results, clusters, similarities):
-        sentence_info = {"sentence": sent["sentence"],
-                         "response": sent["response"],
-                         "cluster": cluster,
-                         "similarity": similarity,
-                         "modal": "-",
-                         "auxiliary": "-",
-                         "verbs": []}
 
-        # 1 Perform coreference resolution on the full sentence
-        corefs = get_coreference_dictionary(sent["sentence"])
+    # 3. For every sentence:
+    for (sent, cluster, similarity) in tqdm(zip(srl_results, clusters, similarities)):
 
-        # 2 For each of the verbs in the sentence, preprocess the verb and identify its arguments.
-        auxiliary = None
-        for verb_idx, verb in enumerate(sent["srl"]["verbs"]):
+        response = Response(sent, prompt)
+        response.parse_sentence()
+        response.cluster = cluster
+        response.similarity = similarity
+        sentences.append(response)
 
-            # 2.1 Preprocess the verb using a few simple rules, e.g. ca => can, etc.
-            verb_string = verb["verb"].lower()
-            verb_string = VERB_MAP.get(verb_string, verb_string)
+    return sentences
 
-            # 2.2 If the verb is a modal, add this information to the metadata and
-            # add the verb as an auxiliary to the next main verb.
-            if not verb_idx < num_verbs_prompt and verb_string in MODAL_VERBS:
-                sentence_info["modal"] = "yes"
-                auxiliary = verb_string
 
-            # 2.3 If the verb is an auxiliary, add this information to the metadata and
-            # add the verb as an auxiliary to the next main verb.
-            elif not verb_idx < num_verbs_prompt and verb_string in AUX_VERBS:
-                sentence_info["auxiliary"] = "yes"
-                auxiliary = verb_string
+def write_output(all_sentences, output_file):
+    """
+    Writes tab-separated output that can be imported in a Google Spreadsheet.
+    :param all_sentences:
+    :param output_file:
+    :return:
+    """
 
-            else:
-                # 2.4 If the verb is not a modal or auxiliary, identify the arguments in the sentence
-                arg0_string, arg0_indices = identify_argument(verb, 0, sent["srl"]["words"])
-                arg1_string, arg1_indices = identify_argument(verb, 1, sent["srl"]["words"])
-                arg2_string, arg2_indices = identify_argument(verb, 2, sent["srl"]["words"])
+    with open(output_file, "w") as csvfile:
 
-                # If arg0 is in the coreference dictionary, identify its antecedent (the "implied subject").
-                # If not, take the arg0 itself as "implied subject".
-                arg0_location = "-".join([str(x) for x in arg0_indices])
-                if arg0_location in corefs:
-                    arg0_antecedent = corefs[arg0_location]
-                elif arg0_string != "-":
-                    arg0_antecedent = arg0_string
-                else:  # These are cases where the subject is "-", as in copula verbs
-                    arg0_antecedent = arg1_string
-                    arg0_string = arg1_string
-
-                # Add the auxiliary to the verb string.
-                if auxiliary is not None:
-                    verb_string += f" ({auxiliary})"
-                    auxiliary = None
-
-                # Add the verb information to the sentence information.
-                # Exclude constructions like "I think", "I guess", etc. on the basis of a
-                # list of subjects we want to ignore.
-                if arg0_string not in SUBJECTS_TO_IGNORE:
-                    sentence_info["verbs"].append([verb_string, arg0_string, arg0_antecedent, arg1_string, arg2_string])
-
-        # Add the relevant information to the results
-        output_list = [sentence_info["response"], sentence_info["cluster"],
-                       sentence_info["similarity"], sentence_info["modal"],
-                       sentence_info["auxiliary"]]
-        for verb in sentence_info["verbs"][num_verbs_prompt:]:
-            for item in verb:
-                output_list.append(item)
-
-        results.append(output_list)
-
-    return results
+        csvwriter = csv.writer(csvfile, delimiter="\t")
+        csvwriter.writerow(all_sentences[0].tsv_columns())
+        for response in all_sentences:
+            csvwriter.writerow(response.to_tsv())

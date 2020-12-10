@@ -54,7 +54,6 @@ plurals = {
     "fish": ["fish"],
     "leaf": ["leaves"],
     "spaghetti": ["spaghetti"],
-    "person": ["people"],
     "seaweed": ["seaweed"]
 }
 
@@ -728,6 +727,39 @@ class SubjectVerbAgreementWithCollectiveNounCheck(RuleBasedGrammarCheck):
         return errors
 
 
+class NGramRuleCheck(RuleBasedGrammarCheck):
+
+    name = None
+
+    def __init__(self, ngram: List[str], name):
+        self.name = name
+        self.ngram = ngram
+
+    def check(self, doc: Doc, prompt="") -> List[Error]:
+        errors = []
+        ngram_length = len(self.ngram)
+
+        ngrams_in_sentence = {}
+        for start in range(0, len(doc) + 1 - ngram_length):
+            ngram = doc[start:start + ngram_length]
+            ngram_strings = [token.text.lower() for token in ngram]
+            ngram_start = ngram[0].idx
+            ngram_end = ngram[-1].idx + len(ngram[-1])
+            ngrams_in_sentence[tuple(ngram_strings)] = (ngram_start, ngram_end)
+
+        ngram_tuple = tuple([t.lower() for t in self.ngram])
+        if ngram_tuple in ngrams_in_sentence:
+            start_idx = len(prompt) + ngrams_in_sentence[ngram_tuple][0]
+            end_idx = len(prompt) + ngrams_in_sentence[ngram_tuple][1]
+
+            errors.append(Error(doc.text[start_idx:end_idx],
+                                start_idx,
+                                self.name,
+                                subject=None))
+
+        return errors
+
+
 class RuleBasedGrammarChecker(object):
     """
     A grammar checker that performs all rule-based checks defined above.
@@ -755,7 +787,13 @@ class RuleBasedGrammarChecker(object):
         PunctuationCheck.name: PunctuationCheck(),
         IrregularPluralNounsCheck.name: IrregularPluralNounsCheck(),
         FragmentErrorCheck.name: FragmentErrorCheck(),
-        SubjectVerbAgreementWithCollectiveNounCheck.name: SubjectVerbAgreementWithCollectiveNounCheck()
+        SubjectVerbAgreementWithCollectiveNounCheck.name: SubjectVerbAgreementWithCollectiveNounCheck(),
+        GrammarError.GASSES.value: NGramRuleCheck(["gasses"], GrammarError.GASSES.value),
+        GrammarError.PEOPLES.value: NGramRuleCheck(["peoples"], GrammarError.PEOPLES.value),
+        GrammarError.PEOPLES_APOSTROPHE.value: NGramRuleCheck(["peoples", "'"], GrammarError.PEOPLES_APOSTROPHE.value),
+        GrammarError.PERSONS.value: NGramRuleCheck(["persons"], GrammarError.PERSONS.value),
+        GrammarError.IN_REGARDS_TO.value: NGramRuleCheck(["in", "regards", "to"], GrammarError.IN_REGARDS_TO.value),
+        GrammarError.MONIES.value: NGramRuleCheck(["monies"], GrammarError.MONIES.value),
     }
 
     def __init__(self, config={}):

@@ -576,14 +576,20 @@ def test_starts_with_verb():
             assert len(errors) == 0
 
 
-def test_people():
+def test_plurals():
 
     sentences = [("There are two persons.", "", "persons", 14,
-                  GrammarError.IRREGULAR_PLURAL_NOUN.value),
-#                 ("This is a persons' car.", "", "persons'", 14,
-#                  GrammarError.IRREGULAR_PLURAL_NOUN.value),
-#                 ("She was the peoples princess.", "", "peoples", 12,
-#                  GrammarError.PLURAL_VERSUS_POSSESSIVE_NOUNS.value)
+                  GrammarError.PERSONS.value),
+                 ("There are two gasses.", "", "gasses", 14,
+                  GrammarError.GASSES.value),
+                 ("There are two peoples' cars.", "", "peoples'", 14,
+                  GrammarError.PEOPLES_APOSTROPHE.value),
+                 ("There are two peoples.", "", "peoples", 14,
+                  GrammarError.PEOPLES.value),
+                 ("There are two monies in the car.", "", "monies", 14,
+                  GrammarError.MONIES.value),
+                 ("There are two in regards to.", "", "in regards to", 14,
+                  GrammarError.IN_REGARDS_TO.value)
                  ]
 
     with open("grammar_config_test.yaml") as i:
@@ -593,10 +599,9 @@ def test_people():
 
     for sentence, prompt, word, index, error_type in sentences:
         errors = pipeline.check(sentence, prompt)
-        print(errors)
 
         if index > 0:
-            assert len(errors) == 1
+            assert len(errors) > 0
             assert errors[0].text == word
             assert errors[0].index == index
             assert errors[0].type == error_type

@@ -1,4 +1,10 @@
 errors:
+  Gases: 11
+  Peoples: 11
+  Peoples': 12  # Should have a higher precedence than peoples, because if this one matches, the other one matches as well.
+  Persons: 11
+  In regards to: 11
+  Monies: 11
   Decades with apostrophe: 11
   Allcaps: 10
   Fragment: 10

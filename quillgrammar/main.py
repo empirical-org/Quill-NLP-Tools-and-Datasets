@@ -11,7 +11,6 @@ with open(config_file) as i:
 pipeline = GrammarPipeline(config)
 
 
-
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'GET':

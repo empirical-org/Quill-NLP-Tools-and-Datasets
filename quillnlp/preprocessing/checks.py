@@ -1,5 +1,6 @@
 import json
 import re
+from typing import List
 
 from quillgrammar.grammar.error import Error
 from quillgrammar.grammar.checks.myspacy import nlp
@@ -54,12 +55,25 @@ class MultipleSentencesCheck:
         sentences = list(nlp(sentence).sents)
         if len(sentences) > 1:
             return [Error(text=sentence, index=0,
-                         error_type=self.name)]
+                          error_type=self.name)]
+        return []
+
+    def check_from_tokens(self, tokens: List[str], prompt: str):
+        all_but_last_tokens = set([t for t in tokens[:-1]])
+        if "." in all_but_last_tokens:
+            return [Error(text=".", index=0,
+                          error_type=self.name)]
         return []
 
 
 def perform_check(checker, sentence, prompt, message_if_not=""):
-    feedback = checker.check_from_text(sentence, prompt)
+
+    if type(sentence) == str:
+        feedback = checker.check_from_text(sentence, prompt)
+
+    elif type(sentence) == list:
+        feedback = checker.check_from_tokens(sentence, prompt)
+
     if len(feedback) > 0:
         return feedback[0].type
     return message_if_not

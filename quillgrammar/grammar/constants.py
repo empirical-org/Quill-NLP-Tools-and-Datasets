@@ -148,6 +148,12 @@ class TokenSet(Enum):
 
 
 class GrammarError(Enum):
+    GASSES = "Gases"
+    PEOPLES = "Peoples"
+    PEOPLES_APOSTROPHE = "Peoples'"
+    PERSONS = "Persons"
+    IN_REGARDS_TO = "In regards to"
+    MONIES = "Monies"
     DECADES_WITH_APOSTROPHE = "Decades with apostrophe"
     RESPONSE_STARTS_WITH_VERB = "Response starts with verb"
     PLURAL_VERSUS_POSSESSIVE_NOUNS = "Plural versus possessive nouns"
