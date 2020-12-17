@@ -15,7 +15,7 @@ from tqdm import tqdm
 
 from quillgrammar.grammar.constants import GrammarError
 from quillnlp.grammar.generation import TokenReplacementErrorGenerator, subject_pronoun_error_generator, \
-    object_pronoun_error_generator, possessive_pronoun_error_generator
+    object_pronoun_error_generator, possessive_pronoun_error_generator, PluralPossessiveErrorGenerator
 from quillnlp.grammar.verbs import perfect, agreement, passive, tense
 from quillnlp.models.spacy.train import train_spacy_ner
 
@@ -66,12 +66,7 @@ def clean_text(text):
 def get_data_from_files(files, id2source, seen_sentences, error_generator, train_length, nlp,
                         output_file, from_us=True, verbose=False):
 
-    # Count how much data we have already.
     total_items = 0
-    if os.path.exists(output_file):
-        with open(output_file) as i:
-            data = ndjson.load(i)
-            total_items = len(data)
 
     # Add more data
     for f in files:
@@ -161,7 +156,7 @@ def create_corpus(corpus_dir):
     #error_generator = agreement.SubjectVerbAgreement()
     #error_generator = agreement.SubjectVerbAgreementWithSimpleNounErrorGenerator()
     #error_generator = agreement.SubjectVerbAgreementWithInversionErrorGenerator()
-    error_generator = possessive_pronoun_error_generator
+    #error_generator = possessive_pronoun_error_generator
     #error_generator = perfect.PerfectProgressiveWithoutHaveErrorGenerator()
     #error_generator = perfect.PassivePerfectWithIncorrectParticipleErrorGenerator()
     #error_generator = tense.SimplePastInsteadOfPastPerfectErrorGenerator()
@@ -170,6 +165,8 @@ def create_corpus(corpus_dir):
     #error_generator = perfect.PassivePerfectWithIncorrectParticipleErrorGenerator()
     #error_generator = TokenReplacementErrorGenerator({"child": "children", "children": "child"},
     #                                                 GrammarError.CHILD_CHILDREN.value)
+
+    error_generator = PluralPossessiveErrorGenerator()
 
     seen_sentences = set()
 

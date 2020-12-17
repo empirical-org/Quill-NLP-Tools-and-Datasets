@@ -4,7 +4,6 @@ import lemminflect
 from typing import List
 from lemminflect import getLemma
 
-import spacy
 from spacy.tokens.doc import Doc
 from spacy.tokens.token import Token
 
@@ -13,18 +12,10 @@ from ..verbutils import is_passive, in_have_been_construction, \
 from ..constants import *
 from ..error import Error
 from .exceptions import exceptions
+from .myspacy import nlp
 
-nlp = spacy.load("en_core_web_sm")
 Token.set_extension("grammar_errors", default=[])
 
-statistical_error_map = {"WOMAN": GrammarError.WOMAN_WOMEN.value,
-                         "ITS": GrammarError.POSSESSIVE_PRONOUN.value,
-                         "THEN": GrammarError.THAN_THEN.value,
-                         "POSSESSIVE": GrammarError.PLURAL_VERSUS_POSSESSIVE_NOUNS.value,
-                         "CHILD": GrammarError.CHILD_CHILDREN.value,
-                         "ADV": GrammarError.ADVERB.value}
-                         #"VERB": GrammarError.SUBJECT_VERB_AGREEMENT.value}
-                         
 
 participles = {
     "wake": ["waken"], #pyinflect has "woke"
@@ -167,13 +158,13 @@ class RuleBasedArticleCheck(RuleBasedGrammarCheck):
             if token.pos_ == POS.DETERMINER.value and \
                     token.text.lower() == Word.INDEF_ARTICLE_BEFORE_CONSONANT.value \
                     and self._requires_an(next_token.text):
-                errors.append(Error(token.text, token.idx, self.name))
+                errors.append(Error(token.text_with_ws + next_token.text, token.idx, self.name))
 
             # if "an" where we're sure it should be "a"
             elif token.pos_ == POS.DETERMINER.value and \
                     token.text.lower() == Word.INDEF_ARTICLE_BEFORE_VOWEL.value \
                     and self._requires_a(next_token.text):
-                errors.append(Error(token.text, token.idx, self.name))
+                errors.append(Error(token.text_with_ws + next_token.text, token.idx, self.name))
         return errors
 
     def _requires_a(self, token: str) -> bool:
@@ -316,7 +307,8 @@ class RepeatedWordCheck(RuleBasedGrammarCheck):
         errors = []
         for t in doc[1:]:
             if t.text.lower() not in self.exclude_words and t.text.lower() == doc[t.i-1].text.lower():
-                errors.append(Error(t.text, t.idx, self.name))
+                repetition = doc[t.i-1].text_with_ws + t.text
+                errors.append(Error(repetition, doc[t.i-1].idx, self.name))
         return errors
 
 
@@ -450,7 +442,7 @@ class SingularPluralNounCheck(RuleBasedGrammarCheck):
                                 found_few = True
 
                         if not found_few:
-                            errors.append(Error(token.text, token.idx, self.name))
+                            errors.append(Error(noun_chunk.text, token.idx, self.name))
         return errors
 
 
@@ -510,7 +502,11 @@ class ContractionCheck(RuleBasedGrammarCheck):
 
     def check(self, doc: Doc, prompt="") -> List[Error]:
         errors = []
+        verb_pos = set([POS.VERB.value, POS.ADVERB.value,
+                        POS.PARTICIPLE.value, POS.AUX.value])
+
         for token in doc:
+
             # If the token is in our list of incorrect contractions,
             # it's an error
             if token.text.lower() in TokenSet.INCORRECT_CONTRACTIONS.value:
@@ -518,10 +514,15 @@ class ContractionCheck(RuleBasedGrammarCheck):
 
             # If the token is a contracted verb without an apostrophe,
             # it's an error, unless it is followed by a "-", as in "re-open".
-            elif token.pos_ in [POS.VERB.value, POS.ADVERB.value, POS.PARTICIPLE.value] and \
+            elif token.i > 0 and token.pos_ in verb_pos and \
                     token.text.lower() in TokenSet.CONTRACTED_VERBS_WITHOUT_APOSTROPHE.value and \
                     not (len(doc) > token.i+1 and doc[token.i+1].text == "-"):
-                errors.append(Error(token.text, token.idx, self.name))
+
+                previous_token = doc[token.i - 1]
+
+                error_text = token.text if previous_token is None else previous_token.text_with_ws + token.text
+                error_index = token.idx if previous_token is None else previous_token.idx
+                errors.append(Error(error_text, error_index, self.name))
         return errors
 
 
@@ -554,6 +555,7 @@ class IncorrectIrregularPastTenseCheck(RuleBasedGrammarCheck):
         errors = []
         for token in doc:
             # If the token is a past tense verb
+
             if token.tag_ == Tag.SIMPLE_PAST_VERB.value:
                 past_tenses = get_past_tenses(token)
 

@@ -16,6 +16,8 @@ class GrammarPipeline:
     def check(self, sentence: str, prompt: str = ""):
 
         doc = self.nlp(sentence)
+        print(list(doc.noun_chunks))
+
         errors = []
         for pipe in self.pipeline:
 

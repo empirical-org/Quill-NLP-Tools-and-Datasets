@@ -33,13 +33,15 @@ def classify_error(error: Error, config: Dict) -> Error:
     if error.type == GrammarError.POSSESSIVE_PRONOUN.value and predicted_token.pos_ == POS.NOUN.value:
         error.set_type(GrammarError.PLURAL_VERSUS_POSSESSIVE_NOUNS.value, config)
 
-    # Subclassify subject-verb agreement errors
+    # Subclassify subject-verb agreement errors and add the subject to the error
     elif error.type == GrammarError.SUBJECT_VERB_AGREEMENT.value:
         if predicted_token.tag_ == Tag.SIMPLE_PAST_VERB.value:
             return None
 
         subject = get_subject(predicted_token, full=True)
-        error.subject = " ".join([t.text.lower() for t in subject]) if subject is not None else None
+        error.subject = "".join([t.text_with_ws for t in subject]).strip() if subject is not None else None
+        error.subject_idx = subject[0].idx if subject is not None else None
+
         subject_set = set([t.text.lower() for t in subject]) if subject is not None else None
 
         if comma_between_subject_and_verb(subject, predicted_token, doc):

@@ -176,3 +176,74 @@ possessive_pronoun_error_generator = PronounReplacementErrorGenerator(
     {"her": "PRP$"},  # only replace "her" when it has a PRP$ tag (I see her car),
     GrammarError.POSSESSIVE_PRONOUN.value
 )
+
+
+class PluralPossessiveErrorGenerator(ErrorGenerator):
+
+    name = GrammarError.PLURAL_VERSUS_POSSESSIVE_NOUNS.value
+
+    def generate_from_doc(self, doc):
+
+        PROBLEM_VERBS = set(["can", "would", "will", "ca"])
+
+        text = ""
+        entities = []
+        skip_next = False
+        for token in doc:
+            if skip_next:
+                skip_next = False
+                continue
+
+            elif len(entities) > 0:
+                text += token.text_with_ws
+                continue
+
+            # If the token is immediately followed by "n't" (no whitespace), skip
+            # This avoids problems like wouldn't => wouldsn't, where the indices of the error
+            # do not match a spaCy token
+            elif token.i < len(doc) - 1 and token.text.lower() in PROBLEM_VERBS and \
+                    (doc[token.i + 1].text == "n't" or doc[token.i + 1].text == "not") \
+                    and not token.whitespace_:
+                new_token = token.text
+
+            elif token.tag_ == "NNS":
+                new_token = token.lemma_ + "'s"
+                error_type = self.name
+            elif token.i < len(doc) - 1 and token.tag_.startswith("NN") and \
+                    doc[token.i + 1].tag_ == "POS":
+                new_token = token._.inflect("NNS")
+                if not new_token:
+                    new_token = token.lemma_ + "s"  # handle cases like Ronaldo's
+                error_type = self.name
+                skip_next = True
+            else:
+                new_token = token.text
+
+            if new_token is None or new_token == token.text or len(entities) > 0:
+                text += token.text_with_ws
+                skip_next = False
+            else:
+                if token.text[0].isupper():
+                    new_token = new_token[0].upper() + new_token[1:]
+
+                # Add a space to the text if it does not end in a space.
+                # This solves problems like he's => hebe
+                if len(text) > 0 and not text[-1].isspace():
+                    text += " "
+
+                # The start index is the length of the text before
+                # the new token is added
+                start_index = len(text)
+
+                # When replacing a possessive by a plural, we have to skip the next
+                # token in the text ('s) and just add the whitespace that follows it.
+                if skip_next:
+                    text += new_token + doc[token.i + 1].whitespace_
+                else:
+                    text += new_token + token.whitespace_
+
+                entities.append((start_index, start_index + len(new_token), error_type))
+
+        return text, entities
+
+

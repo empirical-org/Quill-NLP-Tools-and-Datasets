@@ -164,17 +164,17 @@ def test_grammar_pipeline_for_sva_no_errors():
 
 def test_grammar_pipeline_for_sva_errors():
 
-    sentences = [("There exist another way for all of us to live.", ""),
+    sentences = [("There exist another way for all of us to live.", "", "another way", 12),
                  ("That ballad, performed by the one and only Katy Perry, "
-                  "am moving the audience to tears.", ""),
-                 ("I are coming home", ""),
-                 ("Lord Howe Island hug a turquoise lagoon rimmed with the "
-                  "world’s southernmost coral reef.", ""),
+                  "am moving the audience to tears.", "", "That ballad", 0),
+                 ("I are coming home.", "", "I", 0),
+                 ("The island hug a turquoise lagoon rimmed with the "
+                  "world’s southernmost coral reef.", "", "The island", 0),
                  ("Located at the exact point where Switzerland, France and "
-                  "Germany meet, the city straddle a bend of the Rhine.", ""),
+                  "Germany meet, the city straddle a bend of the Rhine.", "", "the city", 71),
                  ("Plastic bag reduction laws are beneficial because it decrease "
                   "the negative effects of plastic production.",
-                  "Plastic bag reduction laws are beneficial because ")
+                  "Plastic bag reduction laws are beneficial because ", "it", 50)
                  ]
 
     with open(config_file) as i:
@@ -182,13 +182,16 @@ def test_grammar_pipeline_for_sva_errors():
 
     pipeline = GrammarPipeline(config)
 
-    for sentence, prompt in sentences:
+    for sentence, prompt, subject, subject_idx in sentences:
         errors = pipeline.check(sentence, prompt)
 
         print(sentence)
         print(errors)
 
         assert len(errors) > 0
+        assert "agreement" in errors[0].type
+        assert errors[0].subject == subject
+        assert errors[0].subject_idx == subject_idx
 
 
 def test_grammar_pipeline_for_question_marks():
@@ -264,7 +267,9 @@ def test_grammar_pipeline_articles():
                   "environment, but an impossible burger generates 89% "
                   "fewer greenhouse gases.",
                   "Large amounts of meat consumption are harming the "
-                  "environment, but ", 0)
+                  "environment, but ", "", 0),
+                 ("What are the qualities of an good leader?",
+                  "", "an good", 1)
                  ]
 
     with open(config_file) as i:
@@ -272,11 +277,13 @@ def test_grammar_pipeline_articles():
 
     pipeline = GrammarPipeline(config)
 
-    for sentence, prompt, num_errors in sentences:
-        errors = set([e.type for e in pipeline.check(sentence, prompt)])
+    for sentence, prompt, text, num_errors in sentences:
+        errors = pipeline.check(sentence, prompt)
 
         print("Identified errors:", errors)
         assert len(errors) == num_errors
+        if len(errors) > 0:
+            assert errors[0].text == text
 
 
 def test_grammar_pipeline_capitalization():
@@ -524,6 +531,7 @@ def test_possessive_pronouns_plural_possessive():
 def test_plural_possessive():
 
     sentences = [
+        ("We went to my fathers house.", "", "", 0, None),
         ("Large amounts of meat consumption are harming the "
          "environment, so we should feed the cows seaweed.",
          "Large amounts of meat consumption are harming the "
@@ -680,7 +688,10 @@ def test_singular_plural():
                   "environment, so one way or another governments need "
                   "to recognize this threat and invest in a reasonable "
                   "solution.", "Large amounts of meat consumption are "
-                  "harming the environment because", "", 0, None)]
+                  "harming the environment because", "", 0, None),
+                 ("I have a good friends.", "", "a good friends",
+                  7, GrammarError.SINGULAR_PLURAL.value),
+    ]
 
     with open("grammar_config_test.yaml") as i:
         config = yaml.load(i)
@@ -692,6 +703,79 @@ def test_singular_plural():
         print(errors)
 
         if index > 0:
+            assert len(errors) == 1
+            assert errors[0].text == word
+            assert errors[0].index == index
+            assert errors[0].type == error_type
+        else:
+            assert len(errors) == 0
+
+
+def test_some_more():
+    sentences = [
+        ("I'm sorry to tell you this, but I think those shoes you "
+         "wanted been bought by somebody else yesterday.", "",
+         "", 0, None)
+    ]
+
+    with open("grammar_config_test.yaml") as i:
+        config = yaml.load(i)
+
+    pipeline = GrammarPipeline(config)
+
+    for sentence, prompt, word, index, error_type in sentences:
+        errors = pipeline.check(sentence, prompt)
+        print(errors)
+
+        if index > 0:
+            assert len(errors) == 1
+            assert errors[0].text == word
+            assert errors[0].index == index
+            assert errors[0].type == error_type
+        else:
+            assert len(errors) == 0
+
+
+def test_contractions():
+
+    sentences = [
+        ("Theyll come and go.", "", "Theyll", 0, GrammarError.CONTRACTION.value)
+    ]
+
+    with open("grammar_config_test.yaml") as i:
+        config = yaml.load(i)
+
+    pipeline = GrammarPipeline(config)
+
+    for sentence, prompt, word, index, error_type in sentences:
+        errors = pipeline.check(sentence, prompt)
+        print(errors)
+
+        if index > -1:
+            assert len(errors) == 1
+            assert errors[0].text == word
+            assert errors[0].index == index
+            assert errors[0].type == error_type
+        else:
+            assert len(errors) == 0
+
+
+def test_repeated_word():
+
+    sentences = [
+        ("I love love you.", "", "love love", 2, GrammarError.REPEATED_WORD.value)
+    ]
+
+    with open("grammar_config_test.yaml") as i:
+        config = yaml.load(i)
+
+    pipeline = GrammarPipeline(config)
+
+    for sentence, prompt, word, index, error_type in sentences:
+        errors = pipeline.check(sentence, prompt)
+        print(errors)
+
+        if index > -1:
             assert len(errors) == 1
             assert errors[0].text == word
             assert errors[0].index == index

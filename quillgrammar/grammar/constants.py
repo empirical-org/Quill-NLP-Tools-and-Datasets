@@ -118,7 +118,8 @@ class TokenSet(Enum):
     YES_NO = set(["yes", "no"])
     INCORRECT_CONTRACTIONS = set(["im", "youre", "hes", "shes", "theyre",
                                   "dont", "didnt", "wont", "id", "youd", "hed",
-                                  "theyd", "youll", "theyll", "shell"])
+                                  "theyd", "youll", "theyll", "shell", "havent",
+                                  "couldve"])
     CONTRACTED_VERBS_WITHOUT_APOSTROPHE = set(["m", "re", "s", "nt", "ll", "d", "ve"])
     # The words in the irregular plural blacklist have their own error
     # type or given an incorrect plural with pyinflect (brother=>brethren)

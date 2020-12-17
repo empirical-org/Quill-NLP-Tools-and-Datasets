@@ -7,7 +7,7 @@ from ..error import Error
 from ..verbutils import is_passive
 
 spacy_path = os.environ["SPACY_GRAMMAR_PATH"]
-nlp = spacy.load("en_core_web_sm")
+nlp = spacy.load("en_core_web_trf")
 nlp_grammar = spacy.load(spacy_path)
 
 

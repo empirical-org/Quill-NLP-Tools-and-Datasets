@@ -7,6 +7,7 @@ class Error:
                  predicted_token: str = None,
                  predicted_sentence: str = None,
                  subject: str = None,
+                 subject_idx: int = None,
                  model: str = None,
                  document: Doc = None):
 
@@ -16,6 +17,7 @@ class Error:
         self.predicted_token = predicted_token
         self.predicted_sentence = predicted_sentence
         self.subject = subject
+        self.subject_idx = subject_idx
         self.model = model
         self.score = None
         self.document = document

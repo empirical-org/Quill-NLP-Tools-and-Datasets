@@ -297,43 +297,6 @@ def replace_verb_form(source_tag: str, target_tag: str, error_type: str, doc: Do
     return text, entities
 
 
-def replace_plural_by_possessive(error_type: str, doc: Doc) -> Tuple[str, List[Tuple]]:
-    """ Replaces plurals by possessives in document, e.g. books => book's """
-
-    text = ""
-    entities = []
-    for token in doc:
-        if token.tag_ == "NNS" and token.text.endswith("s"):
-            lemma = token.lemma_
-            if token.text.istitle():
-                lemma = lemma.title()
-
-            start_index = len(text)  # we cannot use token.idx, because there may be double replacements
-            entities.append((start_index, start_index + len(lemma + "'s"), error_type))
-            text += lemma + "'s" + token.whitespace_
-        else:
-            text += token.text_with_ws
-    return text, entities
-
-
-def replace_possessive_by_plural(error_type: str, doc: Doc) -> Tuple[str, List[Tuple]]:
-    """ Replaces possessives by plurals in a document, e.g. horse's -> horses """
-    text = ""
-    entities = []
-    skip_next = False
-    for i in range(len(doc)):
-        if i < len(doc)-1 and doc[i].tag_.startswith("N") and doc[i+1].tag_ == "POS":
-            start_index = len(text)
-            entities.append((start_index, start_index + len(doc[i].text + "s"), error_type))
-            text += doc[i].text + "s" + doc[i+1].whitespace_
-            skip_next = True
-        elif not skip_next:
-            text += doc[i].text_with_ws
-        elif skip_next:
-            skip_next = False
-    return text, entities
-
-
 def replace(doc: Doc, error_ratio: float):
 
     text = ""
@@ -460,65 +423,6 @@ def replace_its_vs_it_s(doc: Doc, error_ratio: float):
 
             start_index = len(text)
 
-            if skip_next:
-                text += new_token + doc[token.i+1].whitespace_
-            else:
-                text += new_token + token.whitespace_
-
-            entities.append((start_index, start_index + len(new_token), error_type))
-
-    return text, entities
-
-
-def replace_plural_possessive(doc: Doc, error_ratio: float):
-
-    text = ""
-    entities = []
-    skip_next = False
-    for token in doc:
-        if skip_next:
-            skip_next = False
-            continue
-
-        # If the token is immediately followed by "n't" (no whitespace), skip
-        # This avoids problems like wouldn't => wouldsn't, where the indices of the error
-        # do not match a spaCy token
-        elif token.i < len(doc)-1 and token.text.lower() in PROBLEM_VERBS and \
-                (doc[token.i+1].text == "n't" or doc[token.i+1].text == "not")\
-                and not token.whitespace_:
-            new_token = token.text
-
-        elif token.tag_ == "NNS" and random.random() < error_ratio:
-            new_token = token.lemma_ + "'s"
-            error_type = PLURAL_POSSESSIVE_ERROR_TYPE
-        elif token.i < len(doc)-1 and token.tag_.startswith("NN") and \
-                doc[token.i+1].tag_ == "POS" and random.random() < error_ratio:
-            new_token = token._.inflect("NNS")
-            if not new_token:
-                new_token = token.lemma_ + "s"  # handle cases like Ronaldo's
-            error_type = PLURAL_POSSESSIVE_ERROR_TYPE
-            skip_next = True
-        else:
-            new_token = token.text
-
-        if new_token is None or new_token == token.text or len(entities) > 0:
-            text += token.text_with_ws
-            skip_next = False
-        else:
-            if token.text[0].isupper():
-                new_token = new_token[0].upper() + new_token[1:]
-
-            # Add a space to the text if it does not end in a space.
-            # This solves problems like he's => hebe
-            if len(text) > 0 and not text[-1].isspace():
-                text += " "
-
-            # The start index is the length of the text before
-            # the new token is added
-            start_index = len(text)
-
-            # When replacing a possessive by a plural, we have to skip the next
-            # token in the text ('s) and just add the whitespace that follows it.
             if skip_next:
                 text += new_token + doc[token.i+1].whitespace_
             else:

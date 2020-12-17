@@ -10,6 +10,8 @@ from sklearn.cluster import KMeans
 from allennlp.predictors.predictor import Predictor
 from transformers.tokenization_bert import BertTokenizer
 from transformers.modeling_bert import BertModel
+from sentence_transformers import SentenceTransformer
+
 
 from quillgrammar.grammar.checks.rules import ResponseStartsWithVerbCheck
 from quillnlp.grammar.myspacy import nlp
@@ -42,6 +44,11 @@ ends_in_question_mark_check = SentenceEndsInQuestionMarkCheck()
 multiple_sentences_check = MultipleSentencesCheck()
 profanity_check = ProfanityCheck()
 
+sentence_bert_model = SentenceTransformer('distilbert-base-nli-stsb-mean-tokens')
+
+MIN_SENTENCE_LENGTH = 3
+MAX_SENTENCE_LENGTH = 100
+
 
 class Response:
 
@@ -54,8 +61,8 @@ class Response:
         self.response = srl_output["response"]
 
         sentence_length = len(nlp(srl_output["response"]))
-        self.too_short = sentence_length < 4
-        self.too_long = sentence_length > 99
+        self.too_short = sentence_length < MIN_SENTENCE_LENGTH
+        self.too_long = sentence_length > MAX_SENTENCE_LENGTH
 
         self.opinion = perform_check(opinion_check, srl_output["sentence"], prompt, "")
         self.starts_with_verb = perform_check(verb_check, srl_output["sentence"], prompt, "")
@@ -94,6 +101,9 @@ class Response:
         return values
 
     def parse_sentence(self):
+
+        if "disrupt the spawning seasin" in self.srl_output["sentence"]:
+            print(self.srl_output)
 
         corefs = get_coreference_dictionary(self.srl_output["sentence"])
         num_verbs_prompt = get_number_of_verbs_in_prompt(self.prompt, self.srl_output)
@@ -146,6 +156,12 @@ class Response:
                 arg0_string = arg1_string
                 arg1_string = "-"
 
+            if "disrupt the spawning seasin" in self.srl_output["sentence"]:
+                print(verb)
+
+                print(arg0_string)
+                print(arg1_string)
+
             # Add the verb information to the sentence information.
             # Exclude constructions like "I think", "I guess", etc. on the basis of a
             # list of subjects we want to ignore.
@@ -158,6 +174,7 @@ class Response:
                 self.arg2_string = arg2_string
                 self.modal_is_present = modal_is_present
                 self.auxiliary_is_present = auxiliary_is_present
+                break
 
 
 def perform_srl(responses, prompt=None):
@@ -279,24 +296,19 @@ def get_number_of_verbs_in_prompt(prompt, srl_output: Dict) -> int:
     """
     num_verbs = 0
     prompt_tokens = tokenize(prompt)
+
     for verb in srl_output["srl"]["verbs"]:
-        verb_location = verb["tags"].index("B-V")
+        try:
+            verb_location = verb["tags"].index("B-V")
+        except ValueError:  # if B-V is not in list
+            continue
+
         if verb_location < len(prompt_tokens):
             num_verbs += 1
+        else:
+            break
 
     return num_verbs
-
-
-def get_sentence_embedding(model, tokenizer, sentence):
-    input_ids = torch.tensor(tokenizer.encode(sentence)).unsqueeze(0)  # Batch size 1
-    with torch.no_grad():
-        outputs = model(input_ids)
-        last_hidden_states = outputs[0]  # The last hidden-state is the first element of the output tuple
-        sentence_embedding = last_hidden_states[0, 0, :].cpu().numpy()
-
-    return sentence_embedding
-
-
 
 
 def process_srl_results(srl_results, num_clusters=10):
@@ -305,14 +317,7 @@ def process_srl_results(srl_results, num_clusters=10):
     prompt = get_prompt_from_srl_output(srl_results[0])
 
     sentences = []
-
-    # Initialize BERT
-    tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-    model = BertModel.from_pretrained('bert-base-uncased')
-    model.eval()
-
-    # Get BERT embeddings
-    embeddings = [get_sentence_embedding(model, tokenizer, s["response"]) for s in tqdm(srl_results)]
+    embeddings = sentence_bert_model.encode([s["response"] for s in srl_results])
 
     # Cluster embeddings
     clusterer = KMeans(n_clusters=num_clusters)
@@ -325,7 +330,6 @@ def process_srl_results(srl_results, num_clusters=10):
         embedding = embeddings[item_idx]
         similarity = 1 - spatial.distance.cosine(embedding, cluster_center)
         similarities.append(similarity)
-
 
     # 3. For every sentence:
     for (sent, cluster, similarity) in tqdm(zip(srl_results, clusters, similarities)):
