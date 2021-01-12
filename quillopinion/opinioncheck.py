@@ -2,6 +2,7 @@ import yaml
 import spacy
 
 from collections import namedtuple
+from spacy.tokens import Doc
 
 from quillgrammar.grammar.constants import Tag, Dependency, POS
 
@@ -36,16 +37,17 @@ class KeywordCheck:
             self.checks_with_tokens.append((check, tokenized_phrases_for_check))
 
     def check_from_text(self, sentence: str, prompt: str):
+        response = sentence[len(prompt):]
+        number_of_spaces = len(response) - len(response.strip())
+        doc = self.nlp(response.strip())
+        return self.check_from_doc(sentence, prompt, doc, number_of_spaces)
 
+    def check_from_doc(self, sentence: str, prompt: str, doc: Doc, number_of_spaces: int):
         def lowercase(token: str) -> str:
             if token == "US":
                 return token
             else:
                 return token.lower()
-
-        prompt_length = len(prompt)
-        response = sentence[prompt_length:]
-        doc = self.nlp(response)
 
         # Get all possible ngrams from the sentence, together with their
         # start and end index
@@ -63,8 +65,8 @@ class KeywordCheck:
         for check_name, tokenized_phrases in self.checks_with_tokens:
             for tokenized_phrase in tokenized_phrases:
                 if tokenized_phrase in ngrams:
-                    start_idx = prompt_length+ngrams[tokenized_phrase][0]
-                    end_idx = prompt_length+ngrams[tokenized_phrase][1]
+                    start_idx = len(prompt)+number_of_spaces+ngrams[tokenized_phrase][0]
+                    end_idx = len(prompt)+number_of_spaces+ngrams[tokenized_phrase][1]
 
                     # if the phrase starts with an apostrophe or n't, we also
                     # need to include the word before it
@@ -103,13 +105,17 @@ class ModalCheck:
         self.exceptions = set(["according"])
 
     def check_from_text(self, sentence: str, prompt: str):
+        response = sentence[len(prompt):]
+        number_of_spaces = len(response) - len(response.strip())
+        doc = self.nlp(response.strip())
+        return self.check_from_doc(sentence, prompt, doc, number_of_spaces)
 
-        prompt_length = len(prompt)+1
-        response = sentence[prompt_length:]
-        doc = self.nlp(response)
+    def check_from_doc(self, sentence: str, prompt: str, doc: Doc, number_of_spaces: int):
+        prompt_length = len(prompt)+number_of_spaces
 
         feedback = []
         for token in doc:
+
             if token.text.lower() in self.exceptions:
                 return None
             elif token.lemma_.lower() in self.modals:
@@ -154,24 +160,28 @@ class CommandCheck:
         self.precedence = self.config["precedence"][self.name]
 
     def check_from_text(self, sentence: str, prompt: str):
+        response = sentence[len(prompt):]
+        number_of_spaces = len(response) - len(response.strip())
+        doc = self.nlp(response.strip())
+        return self.check_from_doc(sentence, prompt, doc, number_of_spaces)
 
-        prompt_length = len(prompt)+1
-        response = sentence[prompt_length:]
-        doc = self.nlp(response)
+    def check_from_doc(self, sentence: str, prompt: str, doc: Doc, number_of_spaces: int):
 
         feedback = []
         # Only identify commands in so responses
         if not prompt.strip().endswith(" so"):
             return []
 
-        if (doc[0].tag_ == Tag.INFINITIVE.value or
-            doc[0].tag_ == Tag.PRESENT_OTHER_VERB.value) \
-                and doc[0].text.lower() not in self.modals:
-            start_idx = prompt_length + doc[0].idx
-            end_idx = prompt_length + doc[0].idx + len(doc[0])
+        initial_token = doc[0]
+        if initial_token is not None:
+            if (initial_token.tag_ == Tag.INFINITIVE.value or
+                initial_token.tag_ == Tag.PRESENT_OTHER_VERB.value) \
+                    and initial_token.text.lower() not in self.modals:
+                start_idx = len(prompt) + number_of_spaces + initial_token.idx
+                end_idx = start_idx + len(initial_token)
 
-            feedback.append(Opinion(self.name, start_idx,
-                            end_idx, doc[0].text, self.precedence))
+                feedback.append(Opinion(self.name, start_idx,
+                                end_idx, initial_token.text, self.precedence))
 
         return feedback
 
@@ -190,45 +200,50 @@ class StartsWithVerbCheck:
         self.precedence = self.config["precedence"][self.name]
 
     def check_from_text(self, sentence: str, prompt: str):
-        prompt_length = len(prompt.strip())
+        response = sentence[len(prompt):]
+        number_of_spaces = len(response) - len(response.strip())
+        doc = self.nlp(response.strip())
+        return self.check_from_doc(sentence, prompt, doc, number_of_spaces)
+
+    def check_from_doc(self, sentence: str, prompt: str, doc: Doc, number_of_spaces: int):
 
         feedback = []
+
+        prompt_length = len(prompt.strip())
         if prompt_length == 0:
             return feedback
 
-        doc = self.nlp(sentence)
         for token in doc:
-            if token.idx >= prompt_length:
 
-                # spaCy gives incorrect instances of 'its' and 'it' the VBZ tag.
-                # These should not count as verbs.
-                if token.text.lower() == "its" or token.text.lower() == "it":
-                    break
+            # spaCy gives incorrect instances of 'its' and 'it' the VBZ tag.
+            # These should not count as verbs.
+            if token.text.lower() == "its" or token.text.lower() == "it":
+                break
 
-                # If the first token is a modal followed by an infinitive,
-                # the sentence is an opinion. If it is a modal not followed by an infinitive,
-                # this is probably a question or dependent clause and should
-                # be ignored (because it wouldn't help to ask the student to
-                # include an infinitive.
-                if token.tag_ == Tag.MODAL_VERB.value:
-                    next_token = doc[token.i + 1] if len(doc) > token.i + 1 else None
-                    if next_token is not None and next_token.tag_ == Tag.INFINITIVE.value:
-                        start_idx = token.idx
-                        end_idx = start_idx + len(token)
-
-                        feedback.append(Opinion(self.name, start_idx,
-                                                end_idx, token.text, self.precedence))
-
-                # In all other cases where we the first token is a verb or an auxiliary,
-                # the sentence is an opinion.
-                elif (token.pos_ == POS.VERB.value or token.pos_ == POS.AUX.value) \
-                        and not (token.tag_ == Tag.PRESENT_PARTICIPLE_VERB.value or
-                                 token.tag_ == Tag.PAST_PARTICIPLE_VERB.value):
-                    start_idx = token.idx
+            # If the first token is a modal followed by an infinitive,
+            # the sentence is an opinion. If it is a modal not followed by an infinitive,
+            # this is probably a question or dependent clause and should
+            # be ignored (because it wouldn't help to ask the student to
+            # include an infinitive.
+            if token.tag_ == Tag.MODAL_VERB.value:
+                next_token = doc[token.i + 1] if len(doc) > token.i + 1 else None
+                if next_token is not None and next_token.tag_ == Tag.INFINITIVE.value:
+                    start_idx = len(prompt) + number_of_spaces + token.idx
                     end_idx = start_idx + len(token)
+
                     feedback.append(Opinion(self.name, start_idx,
                                             end_idx, token.text, self.precedence))
-                break
+
+            # In all other cases where we the first token is a verb or an auxiliary,
+            # the sentence is an opinion.
+            elif (token.pos_ == POS.VERB.value or token.pos_ == POS.AUX.value) \
+                    and not (token.tag_ == Tag.PRESENT_PARTICIPLE_VERB.value or
+                             token.tag_ == Tag.PAST_PARTICIPLE_VERB.value):
+                start_idx = len(prompt) + number_of_spaces + token.idx
+                end_idx = start_idx + len(token)
+                feedback.append(Opinion(self.name, start_idx,
+                                        end_idx, token.text, self.precedence))
+            break
 
         return feedback
 
@@ -245,11 +260,17 @@ class OpinionCheck:
             ModalCheck(config),
             CommandCheck(config)
         ]
+        self.nlp = nlp
 
     def check_from_text(self, sentence: str, prompt: str):
+
+        response = sentence[len(prompt):]
+        number_of_spaces = len(response) - len(response.strip())
+        doc = self.nlp(response.strip())
+
         all_feedback = []
         for check in self.checks:
-            feedback = check.check_from_text(sentence, prompt)
+            feedback = check.check_from_doc(sentence, prompt, doc, number_of_spaces)
             if feedback is not None:
                 all_feedback.extend(feedback)
 
