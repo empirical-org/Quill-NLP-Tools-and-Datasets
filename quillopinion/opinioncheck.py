@@ -43,8 +43,8 @@ class KeywordCheck:
             else:
                 return token.lower()
 
-        prompt_length = len(prompt)+1
-        response = sentence[len(prompt)+1:]
+        prompt_length = len(prompt)
+        response = sentence[prompt_length:]
         doc = self.nlp(response)
 
         # Get all possible ngrams from the sentence, together with their
@@ -65,6 +65,15 @@ class KeywordCheck:
                 if tokenized_phrase in ngrams:
                     start_idx = prompt_length+ngrams[tokenized_phrase][0]
                     end_idx = prompt_length+ngrams[tokenized_phrase][1]
+
+                    # if the phrase starts with an apostrophe or n't, we also
+                    # need to include the word before it
+                    phrase = sentence[start_idx:end_idx]
+                    if phrase.startswith("'") or phrase.startswith("n't"):
+                        for token in doc:
+                            if token.idx + len(token) == start_idx:
+                                start_idx = token.idx
+                                break
 
                     precedence = self.config["precedence"][check_name]
 
