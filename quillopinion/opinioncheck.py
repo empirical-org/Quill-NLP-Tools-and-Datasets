@@ -3,7 +3,7 @@ import spacy
 
 from collections import namedtuple
 
-from quillgrammar.grammar.constants import Tag, Dependency
+from quillgrammar.grammar.constants import Tag, Dependency, POS
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -123,8 +123,8 @@ class ModalCheck:
                     end_idx = prompt_length+token.idx+len(token)
 
                     check_name = self.modals.get(token.lemma_.lower())
-                    precedence = self.config["precedence"].get(check_name)
 
+                    precedence = self.config["precedence"][check_name]
                     feedback.append(Opinion(check_name, start_idx, end_idx,
                                     sentence[start_idx:end_idx], precedence))
 
@@ -135,8 +135,8 @@ class ModalCheck:
                     end_idx = prompt_length+token.idx+len(token)
 
                     check_name = self.modals.get(token.lemma_.lower())
-                    precedence = self.config["precedence"].get(check_name)
 
+                    precedence = self.config["precedence"][check_name]
                     feedback.append(Opinion(check_name, start_idx, end_idx,
                                             sentence[start_idx:end_idx], precedence))
 
@@ -151,6 +151,7 @@ class CommandCheck:
         self.modals = set(["should", "would", "ought", "must"])
         self.nlp = nlp
         self.exceptions = set()
+        self.precedence = self.config["precedence"][self.name]
 
     def check_from_text(self, sentence: str, prompt: str):
 
@@ -169,9 +170,65 @@ class CommandCheck:
             start_idx = prompt_length + doc[0].idx
             end_idx = prompt_length + doc[0].idx + len(doc[0])
 
-            precedence = self.config["precedence"][self.name]
             feedback.append(Opinion(self.name, start_idx,
-                            end_idx, doc[0].text, precedence))
+                            end_idx, doc[0].text, self.precedence))
+
+        return feedback
+
+
+class StartsWithVerbCheck:
+    """
+    Identifies cases where the response starts with a verb. In these situations,
+    we'd like to ask the student to add a subject.
+    """
+
+    def __init__(self, config):
+        self.name = "Starts with Verb Check"
+        self.config = config
+        self.nlp = nlp
+        self.exceptions = set()
+        self.precedence = self.config["precedence"][self.name]
+
+    def check_from_text(self, sentence: str, prompt: str):
+        prompt_length = len(prompt.strip())
+
+        feedback = []
+        if prompt_length == 0:
+            return feedback
+
+        doc = self.nlp(sentence)
+        for token in doc:
+            if token.idx >= prompt_length:
+
+                # spaCy gives incorrect instances of 'its' and 'it' the VBZ tag.
+                # These should not count as verbs.
+                if token.text.lower() == "its" or token.text.lower() == "it":
+                    break
+
+                # If the first token is a modal followed by an infinitive,
+                # the sentence is an opinion. If it is a modal not followed by an infinitive,
+                # this is probably a question or dependent clause and should
+                # be ignored (because it wouldn't help to ask the student to
+                # include an infinitive.
+                if token.tag_ == Tag.MODAL_VERB.value:
+                    next_token = doc[token.i + 1] if len(doc) > token.i + 1 else None
+                    if next_token is not None and next_token.tag_ == Tag.INFINITIVE.value:
+                        start_idx = token.idx
+                        end_idx = start_idx + len(token)
+
+                        feedback.append(Opinion(self.name, start_idx,
+                                                end_idx, token.text, self.precedence))
+
+                # In all other cases where we the first token is a verb or an auxiliary,
+                # the sentence is an opinion.
+                elif (token.pos_ == POS.VERB.value or token.pos_ == POS.AUX.value) \
+                        and not (token.tag_ == Tag.PRESENT_PARTICIPLE_VERB.value or
+                                 token.tag_ == Tag.PAST_PARTICIPLE_VERB.value):
+                    start_idx = token.idx
+                    end_idx = start_idx + len(token)
+                    feedback.append(Opinion(self.name, start_idx,
+                                            end_idx, token.text, self.precedence))
+                break
 
         return feedback
 
@@ -183,6 +240,7 @@ class OpinionCheck:
             config = yaml.load(i, Loader=yaml.FullLoader)
 
         self.checks = [
+            StartsWithVerbCheck(config),
             KeywordCheck(config),
             ModalCheck(config),
             CommandCheck(config)

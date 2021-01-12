@@ -194,6 +194,7 @@ Using Need:
 Using Ought:
   - ought
 precedence:
+  Starts with Verb Check: 13
   First-Person Opinionated Phrase Keyword Check: 12
   Common Opinionated Phrases Keyword Check: 11
   Using Should: 10

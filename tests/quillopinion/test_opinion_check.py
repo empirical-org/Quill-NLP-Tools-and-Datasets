@@ -11,7 +11,7 @@ def validate():
         checker = OpinionCheck()
         feedback = checker.check_from_text(sentence, prompt)
 
-        assert len(feedback) == is_opinion
+        assert (len(feedback) >= 1) == is_opinion
     return check
 
 
@@ -205,6 +205,42 @@ def test_opinioncheck19():
     assert feedback[0].match == "isn't a good idea"
     assert feedback[0].start == 3
 
+
+def test_initial_verb():
+
+    sentences = [("Large amounts of meat consumption are harming the environment, "
+                  "so there is no problem in this sentence.",
+                  "Large amounts of meat consumption are harming the environment, so", "", 0, None),
+                 ("Large amounts of meat consumption are harming the environment, "
+                  "so see there is a problem.",
+                  "Large amounts of meat consumption are harming the environment, so", "see", 66,
+                  "Starts with Verb Check"),
+                 ("Large amounts of meat consumption are harming the environment, "
+                  "so listening will not help.",
+                  "Large amounts of meat consumption are harming the environment, so", "", 0, None),
+                 ("Large amounts of meat consumption are harming the environment, "
+                  "so stopping to eat meat would be a good idea.",
+                  "Large amounts of meat consumption are harming the environment, so", "", 0, None),
+                 ("Large amounts of meat consumption are harming the environment, "
+                  "so ground meat is a problem, too.",
+                  "Large amounts of meat consumption are harming the environment, so", "", 0, None),
+                 ("Large amounts of meat consumption are harming the environment, "
+                  "so learned behavior will do the trick.",
+                  "Large amounts of meat consumption are harming the environment, so", "", 0, None)
+                 ]
+
+    check = OpinionCheck()
+    for sentence, prompt, word, index, opinion_type in sentences:
+        feedback = check.check_from_text(sentence, prompt)
+        print(feedback)
+
+        if opinion_type is not None:
+            assert len(feedback) > 0
+            assert feedback[0].match == word
+            assert feedback[0].start == index
+            assert feedback[0].type == opinion_type
+        else:
+            assert len(feedback) == 0
 
 
 def test_opinioncheck_order():
