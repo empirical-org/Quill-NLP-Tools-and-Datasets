@@ -6,7 +6,7 @@ from quillgrammar.grammar.pipeline import GrammarPipeline
 
 from spell.serving import BasePredictor
 
-os.environ["SPACY_GRAMMAR_PATH"] = "output_grammarmix_20210113/model-best"
+os.environ["SPACY_GRAMMAR_PATH"] = "/model/output_grammarmix_20210113/model-best"
 
 class GrammarPredictor(BasePredictor):
 
