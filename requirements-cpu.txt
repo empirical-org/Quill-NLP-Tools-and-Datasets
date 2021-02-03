@@ -93,7 +93,7 @@ thinc==8.0.0
 threadpoolctl==2.1.0
 tokenizers==0.9.3
 toml==0.10.2
-https://download.pytorch.org/whl/cpu/torch-1.7.1%2Bcpu-cp37-cp37-linux_x86_64.whl
+https://download.pytorch.org/whl/cpu/torch-1.7.1%2Bcpu-cp37-cp37m-linux_x86_64.whl
 torchcontrib==0.0.2
 tqdm==4.55.1
 transformers==3.5.1
