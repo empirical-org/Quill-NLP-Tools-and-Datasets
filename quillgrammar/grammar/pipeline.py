@@ -6,11 +6,11 @@ from .checks.myspacy import nlp
 
 class GrammarPipeline:
 
-    def __init__(self, config={}):
+    def __init__(self, spacy_model_path, config={}):
         self.nlp = nlp
         self.config = config
         self.rules = RuleBasedGrammarChecker(config)
-        self.supervised = SpaCyGrammarChecker(config)
+        self.supervised = SpaCyGrammarChecker(spacy_model_path, config)
         self.pipeline = [self.rules, self.supervised]
 
     def check(self, sentence: str, prompt: str = ""):

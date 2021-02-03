@@ -6,9 +6,7 @@ from ..constants import GrammarError
 from ..error import Error
 from ..verbutils import is_passive
 
-spacy_path = os.environ["SPACY_GRAMMAR_PATH"]
 nlp = spacy.load("en_core_web_trf")
-nlp_grammar = spacy.load(spacy_path)
 
 
 def replace(label):
@@ -23,11 +21,17 @@ def replace(label):
 
 class SpaCyGrammarChecker:
 
-    # SpaCy's grammar labels are the NER labels that are not in allcaps
-    candidate_checks = set([label for label in nlp_grammar.get_pipe("ner").labels if label != label.upper()])
-    candidate_checks = set([replace(label) for label in nlp_grammar.get_pipe("ner").labels])
+    def __init__(self, spacy_path, config={}):
 
-    def __init__(self, config={}):
+        self.nlp_grammar = spacy.load(spacy_path)
+
+        # SpaCy's grammar labels are the NER labels that are not in allcaps
+        self.candidate_checks = set([label for label in self.nlp_grammar.get_pipe("ner").labels if label != label.upper()])
+        self.candidate_checks = set([replace(label) for label in self.nlp_grammar.get_pipe("ner").labels])
+        self.candidate_checks.add(GrammarError.THEIR_THEIR_OPTIMAL.value)
+        self.candidate_checks.add(GrammarError.THEIR_THEYRE_OPTIMAL.value)
+        self.candidate_checks.add(GrammarError.THEIR_THERE_OPTIMAL.value)
+
         self.unclassified = False
         self.name = "spaCy"
         self.config = config
@@ -49,7 +53,7 @@ class SpaCyGrammarChecker:
 
     def check(self, doc: Doc, prompt=""):
 
-        grammardoc = nlp_grammar(doc.text)
+        grammardoc = self.nlp_grammar(doc.text)
         errors = []
         for entity in grammardoc.ents:
             if not self.config or replace(entity.label_) in self.error_types:
