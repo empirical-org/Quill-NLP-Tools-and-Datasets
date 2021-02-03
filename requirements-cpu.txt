@@ -14,6 +14,7 @@ Cython==0.29.21
 dataclasses==0.6
 docker-pycreds==0.4.0
 en-core-web-trf @ https://github.com/explosion/spacy-models/releases/download/en_core_web_trf-3.0.0/en_core_web_trf-3.0.0.tar.gz
+en-core-web-lg @ https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-3.0.0/en_core_web_lg-3.0.0.tar.gz
 fastrlock==0.5
 filelock==3.0.12
 Flask==1.1.2

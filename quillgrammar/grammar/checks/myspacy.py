@@ -6,7 +6,7 @@ from ..constants import GrammarError
 from ..error import Error
 from ..verbutils import is_passive
 
-nlp = spacy.load("en_core_web_trf")
+nlp = spacy.load("en_core_web_lg")
 
 
 def replace(label):
