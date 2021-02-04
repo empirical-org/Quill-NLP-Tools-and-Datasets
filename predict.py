@@ -1,7 +1,7 @@
 import os
 import yaml
 
-#from quillgrammar.grammar.pipeline import GrammarPipeline
+from quillgrammar.grammar.pipeline import GrammarPipeline
 
 from spell.serving import BasePredictor
 
