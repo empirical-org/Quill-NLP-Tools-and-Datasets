@@ -1,12 +1,11 @@
 import os
 import spacy
+import en_core_web_lg
 from spacy.tokens.doc import Doc
 
 from ..constants import GrammarError
 from ..error import Error
 from ..verbutils import is_passive
-
-nlp = spacy.load("en_core_web_lg")
 
 
 def replace(label):
@@ -23,7 +22,7 @@ class SpaCyGrammarChecker:
 
     def __init__(self, spacy_path, config={}):
 
-        self.nlp_grammar = spacy.load(spacy_path)
+        self.nlp_grammar = en_core_web_lg.load()
 
         # SpaCy's grammar labels are the NER labels that are not in allcaps
         self.candidate_checks = set([label for label in self.nlp_grammar.get_pipe("ner").labels if label != label.upper()])
