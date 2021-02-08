@@ -8,17 +8,6 @@ from spell.serving import BasePredictor
 class GrammarPredictor(BasePredictor):
 
     def __init__(self):
-        self.model = None
-
-    def predict(self, payload):
-
-        return {"result": 1}
-
-
-"""
-class GrammarPredictor(BasePredictor):
-
-    def __init__(self):
         config_file = "quillgrammar/grammar_config_test.yaml"
         with open(config_file) as i:
             config = yaml.load(i, Loader=yaml.FullLoader)
@@ -43,4 +32,3 @@ class GrammarPredictor(BasePredictor):
                 "type": None,
                 "index": None,
                 "model": None}
-"""
