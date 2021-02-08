@@ -5,6 +5,8 @@ from quillgrammar.grammar.pipeline import GrammarPipeline
 
 from spell.serving import BasePredictor
 
+MODEL_PATH = "model/model-best"
+
 class GrammarPredictor(BasePredictor):
 
     def __init__(self):
@@ -12,7 +14,7 @@ class GrammarPredictor(BasePredictor):
         with open(config_file) as i:
             config = yaml.load(i, Loader=yaml.FullLoader)
 
-        self.model = GrammarPipeline(config)
+        self.model = GrammarPipeline(MODEL_PATH, config)
 
     def predict(self, payload):
 
