@@ -35,7 +35,6 @@ def test_opinion_check_on_quill_data():
             prompt = re.match(".*?(because|, but|, so)", sentence)
             prompt = prompt.group(0) if prompt else ""
 
-
             feedback = check.check_from_text(sentence, prompt)
             if feedback:
                 opinions += 1

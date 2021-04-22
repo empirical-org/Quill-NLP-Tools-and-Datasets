@@ -5,18 +5,16 @@ from tqdm import tqdm
 
 from quillnlp.spelling.bing import correct_sentence_with_bing
 
-input_file = "data/raw/Comprehension Responses - Full Set June 2020 - Sheet1.csv"
-#input_file = "data/raw/grammar_response_dump_connect_2020_06_29.csv"
-output_file = "data/raw/comprehension_sentences_bing.csv"
+input_file = "quillgrammar/data/new_turk_data.txt"
+output_file = "new_turk_data_bing.csv"
 
+with open(input_file) as i:
+    sentences = [line.strip() for line in i]
 
-t = 0
-with open(input_file) as csvfile, open("comprehension_sentences_bing.tsv", "a") as csv_out:
-    reader = csv.reader(csvfile)
+with open(output_file, "w") as csv_out:
     writer = csv.writer(csv_out, delimiter="\t")
-    for row in tqdm(reader):
-        if t > 7153:
-            sentence = row[0]
-            correct_sentence = correct_sentence_with_bing(sentence)
-            writer.writerow([correct_sentence])
-        t += 1
+    for row in tqdm(sentences):
+
+        sentence = row.strip()
+        correct_sentence, response, output = correct_sentence_with_bing(sentence)
+        writer.writerow([correct_sentence, str(response), output])

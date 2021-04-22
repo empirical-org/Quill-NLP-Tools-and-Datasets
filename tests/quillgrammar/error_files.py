@@ -187,9 +187,19 @@ files = [
         "negative": "data/validated/grammar_errors/object-pronouns-negative.txt"
     },
     {
-        "error": GrammarError.POSSESSIVE_PRONOUN.value,
-        "positive": "data/validated/grammar_errors/possessive-pronouns-positive.txt",
-        "negative": "data/validated/grammar_errors/possessive-pronouns-negative.txt"
+        "error": GrammarError.THEIR_THEYRE_OPTIMAL.value,
+        "positive": "data/validated/grammar_errors/theyre_positive.txt",
+        "negative": "data/validated/grammar_errors/theyre_negative.txt"
+    },
+    {
+        "error": GrammarError.THEIR_THERE_OPTIMAL.value,
+        "positive": "data/validated/grammar_errors/there_positive.txt",
+        "negative": "data/validated/grammar_errors/there_negative.txt"
+    },
+    {
+        "error": GrammarError.THEIR_THEIR_OPTIMAL.value,
+        "positive": "data/validated/grammar_errors/their_positive.txt",
+        "negative": "data/validated/grammar_errors/their_negative.txt"
     },
     {
         "error": GrammarError.ITS_IT_S.value,

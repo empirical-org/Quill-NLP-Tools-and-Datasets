@@ -15,7 +15,8 @@ from tqdm import tqdm
 
 from quillgrammar.grammar.constants import GrammarError
 from quillnlp.grammar.generation import TokenReplacementErrorGenerator, subject_pronoun_error_generator, \
-    object_pronoun_error_generator, possessive_pronoun_error_generator, PluralPossessiveErrorGenerator
+    object_pronoun_error_generator, possessive_pronoun_error_generator, PluralPossessiveErrorGenerator, \
+    their_error_generator, PronounReplacementErrorGenerator
 from quillnlp.grammar.verbs import perfect, agreement, passive, tense
 from quillnlp.models.spacy.train import train_spacy_ner
 
@@ -155,6 +156,8 @@ def create_corpus(corpus_dir):
     #error_generator = agreement.SubjectVerbAgreementErrorGenerator()
     #error_generator = agreement.SubjectVerbAgreement()
     #error_generator = agreement.SubjectVerbAgreementWithSimpleNounErrorGenerator()
+    #error_generator = agreement.SubjectVerbAgreementWithPronounErrorGenerator()
+    error_generator = agreement.SubjectVerbAgreementWithIndefinitePronounErrorGenerator()
     #error_generator = agreement.SubjectVerbAgreementWithInversionErrorGenerator()
     #error_generator = possessive_pronoun_error_generator
     #error_generator = perfect.PerfectProgressiveWithoutHaveErrorGenerator()
@@ -163,10 +166,19 @@ def create_corpus(corpus_dir):
     #error_generator = agreement.SubjectVerbAgreementWithEitherOrErrorGenerator()
     #error_generator = perfect.PassivePerfectWithoutHaveErrorGenerator()
     #error_generator = perfect.PassivePerfectWithIncorrectParticipleErrorGenerator()
-    #error_generator = TokenReplacementErrorGenerator({"child": "children", "children": "child"},
-    #                                                 GrammarError.CHILD_CHILDREN.value)
+    #error_generator = TokenReplacementErrorGenerator({"through": ["threw", "thru"],
+    #                                                  "threw": ["through", "thru"],
+    #                                                  "thru": ["threw", "through"]},
+    #                                                 GrammarError.THROUGH_THREW_THRU.value)
+    #error_generator = PronounReplacementErrorGenerator({"apart": ["a part"]},
+    #    {"a part": ["apart"]},
+    #    lambda x: True,
+    #    {},
+    #    GrammarError.APART_A_PART.value
+    #)
 
-    error_generator = PluralPossessiveErrorGenerator()
+    #error_generator = PluralPossessiveErrorGenerator()
+    #error_generator = subject_pronoun_error_generator
 
     seen_sentences = set()
 

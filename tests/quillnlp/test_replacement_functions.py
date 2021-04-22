@@ -1,4 +1,4 @@
-from quillnlp.grammar.corpus import replace_adverb_by_adjective, get_adjective_for_adverb, replace, replace_its_vs_it_s, replace_plural_possessive
+from quillnlp.grammar.corpus import replace_adverb_by_adjective, get_adjective_for_adverb, replace, replace_its_vs_it_s
 from quillnlp.grammar.myspacy import nlp
 
 
@@ -187,3 +187,34 @@ def test_possessive_pronoun_replacement():
     generated_sentence, _ = possessive_pronoun_error_generator.generate_from_text(sentence)
     print(generated_sentence)
     assert generated_sentence != sentence
+
+
+def test_their_replacement():
+    from quillnlp.grammar.generation import their_error_generator
+
+    sentence = "There he is!"
+    generated_sentence, _ = their_error_generator.generate_from_text(sentence)
+    assert generated_sentence == "Their he is!" or generated_sentence == "They're he is!"
+
+    sentence = "It's their car."
+    generated_sentence, _ = their_error_generator.generate_from_text(sentence)
+    assert generated_sentence == "It's there car." or generated_sentence == "It's they're car."
+
+    sentence = "They're cool."
+    generated_sentence, _ = their_error_generator.generate_from_text(sentence)
+    assert generated_sentence == "Their cool." or generated_sentence == "There cool."
+
+
+def test_perfect_without_have_replacement():
+
+    from quillnlp.grammar.verbs.perfect import PerfectTenseWithoutHaveErrorGenerator
+
+    generator = PerfectTenseWithoutHaveErrorGenerator()
+
+    sentence1 = "I have seen him."
+    sentence1a, _ = generator.generate_from_text(sentence1)
+    assert sentence1a == "I seen him."
+
+    sentence2 = "I will have seen him."
+    sentence2a, _ = generator.generate_from_text(sentence2)
+    assert sentence2a == "I will seen him."

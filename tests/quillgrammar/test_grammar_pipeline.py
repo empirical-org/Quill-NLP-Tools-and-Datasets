@@ -5,7 +5,7 @@ from quillgrammar.grammar.pipeline import GrammarPipeline
 from quillgrammar.grammar.constants import GrammarError
 
 config_file = "grammar_config_test.yaml"
-
+model_path = "/home/yves/projects/grammar-api/quillgrammar/models/current/"
 
 def test_grammar_pipeline1():
 
@@ -14,7 +14,7 @@ def test_grammar_pipeline1():
     with open(config_file) as i:
         config = yaml.load(i, Loader=yaml.FullLoader)
 
-    pipeline = GrammarPipeline(config)
+    pipeline = GrammarPipeline(model_path, config)
 
     errors = pipeline.check(sentence, "")
 
@@ -777,6 +777,41 @@ def test_repeated_word():
 
         if index > -1:
             assert len(errors) == 1
+            assert errors[0].text == word
+            assert errors[0].index == index
+            assert errors[0].type == error_type
+        else:
+            assert len(errors) == 0
+
+
+def test_their():
+
+    sentences = [
+        ("The team practiced they're sprints.", "",
+         "they're", 19, GrammarError.THEIR_THEIR_OPTIMAL.value),
+        ("The team practiced there sprints.", "",
+         "there", 19, GrammarError.THEIR_THEIR_OPTIMAL.value),
+        ("Their a great couple.", "",
+         "Their", 0, GrammarError.THEIR_THEYRE_OPTIMAL.value),
+        ("There a great couple.", "",
+         "There", 0, GrammarError.THEIR_THEYRE_OPTIMAL.value),
+        ("Their must be a solution.", "",
+         "Their", 0, GrammarError.THEIR_THERE_OPTIMAL.value),
+        ("They're must be a solution.", "",
+         "They're", 0, GrammarError.THEIR_THERE_OPTIMAL.value),
+    ]
+
+    with open("grammar_config_test.yaml") as i:
+        config = yaml.load(i)
+
+    pipeline = GrammarPipeline(config)
+
+    for sentence, prompt, word, index, error_type in sentences:
+        errors = pipeline.check(sentence, prompt)
+        print(errors)
+
+        if index > -1:
+            assert len(errors) > 0
             assert errors[0].text == word
             assert errors[0].index == index
             assert errors[0].type == error_type

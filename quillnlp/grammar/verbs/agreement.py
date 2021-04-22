@@ -5,7 +5,8 @@ import lemminflect
 from quillgrammar.grammar.constants import Tag, GrammarError, Dependency, POS, TokenSet
 from quillnlp.grammar.generation import ErrorGenerator
 from quillnlp.grammar.verbutils import get_subject, get_plural, is_indefinite, has_noun_subject, \
-    is_negated_with_contraction, has_following_subject, subject_has_neither, subject_has_either, has_pronoun_subject
+    is_negated_with_contraction, has_following_subject, subject_has_neither, subject_has_either, has_pronoun_subject, \
+    has_indefinite_subject
 
 
 class SubjectVerbAgreementWithSimpleNounErrorGenerator(ErrorGenerator):
@@ -31,6 +32,14 @@ class SubjectVerbAgreementWithSimpleNounErrorGenerator(ErrorGenerator):
                     else:
                         new_form = token.lemma_
                         new_form = new_form.title() if token.text.istitle() else new_form
+
+                    new_sentence += new_form + token.whitespace_
+                    entities.append((token.idx, token.idx+len(new_form), self.name))
+
+                # 'be' also has different forms in the past tense
+                elif token.tag_ == Tag.SIMPLE_PAST_VERB.value and token.lemma_ == "be":
+                    new_form = "were" if token.text.lower() == "was" else "was"
+                    new_form = new_form.title() if token.text.istitle() else new_form
 
                     new_sentence += new_form + token.whitespace_
                     entities.append((token.idx, token.idx+len(new_form), self.name))
@@ -78,6 +87,69 @@ class SubjectVerbAgreementWithPronounErrorGenerator(ErrorGenerator):
                         new_form = random.choice(["be", "are", "am"])
                     else:
                         new_form = token.lemma_
+                    new_sentence += new_form + token.whitespace_
+                    entities.append((token.idx, token.idx+len(new_form), self.name))
+
+                # 'be' also has different forms in the past tense
+                elif token.tag_ == Tag.SIMPLE_PAST_VERB.value and token.lemma_ == "be":
+                    new_form = "were" if token.text.lower() == "was" else "was"
+                    new_form = new_form.title() if token.text.istitle() else new_form
+
+                    new_sentence += new_form + token.whitespace_
+                    entities.append((token.idx, token.idx+len(new_form), self.name))
+
+                # other form -> third-person form
+                elif token.tag_ == Tag.PRESENT_OTHER_VERB.value:
+                    if token.lemma_ == "be":
+                        other_forms = set(["be", "are", "am", "is"]) - set(token.text.lower())
+                        new_form = random.choice(list(other_forms))
+                        new_form = new_form.title() if token.text.istitle() else new_form
+                        new_sentence += new_form + token.whitespace_
+                        entities.append((token.idx, token.idx + len(new_form), self.name))
+                    else:
+                        new_form = token._.inflect(Tag.PRESENT_SING3_VERB.value)
+                        if new_form is not None:
+                            new_sentence += new_form + token.whitespace_
+                            entities.append((token.idx, token.idx + len(new_form), self.name))
+                        else:
+                            new_sentence += token.text_with_ws
+                else:
+                    new_sentence += token.text_with_ws
+            else:
+                new_sentence += token.text_with_ws
+
+        return new_sentence, entities
+
+
+class SubjectVerbAgreementWithIndefinitePronounErrorGenerator(ErrorGenerator):
+
+    name = GrammarError.SVA_INDEFINITE.value
+
+    def generate_from_doc(self, doc):
+
+        new_sentence = ""
+        entities = []
+        for token in doc:
+            if len(entities) > 0:
+                new_sentence += token.text_with_ws
+            elif token.text.startswith("'"):
+                new_sentence += token.text_with_ws
+            elif has_indefinite_subject(token):
+
+                # third-person singular -> other form
+                if token.tag_ == Tag.PRESENT_SING3_VERB.value:
+                    if token.lemma_ == "be":
+                        new_form = random.choice(["be", "are", "am"])
+                    else:
+                        new_form = token.lemma_
+                    new_sentence += new_form + token.whitespace_
+                    entities.append((token.idx, token.idx+len(new_form), self.name))
+
+                # 'be' also has different forms in the past tense
+                elif token.tag_ == Tag.SIMPLE_PAST_VERB.value and token.lemma_ == "be":
+                    new_form = "were" if token.text.lower() == "was" else "was"
+                    new_form = new_form.title() if token.text.istitle() else new_form
+
                     new_sentence += new_form + token.whitespace_
                     entities.append((token.idx, token.idx+len(new_form), self.name))
 
@@ -294,30 +366,6 @@ class SubjectVerbAgreementWithCollectiveNoun(ErrorGenerator):
             if token.tag_ == Tag.PRESENT_SING3_VERB.value:
                 subject = get_subject(token)
                 if subject is not None and subject.text.lower() in TokenSet.COLLECTIVE_NOUNS.value:
-                    plural = get_plural(token)
-                    new_sentence += plural + token.whitespace_
-                    entities.append((token.idx, token.idx + len(plural), self.name))
-                else:
-                    new_sentence += token.text_with_ws
-            else:
-                new_sentence += token.text_with_ws
-
-        return new_sentence, entities
-
-
-class SubjectVerbAgreementWithIndefinitePronoun(ErrorGenerator):
-
-    name = GrammarError.SVA_INDEFINITE.value
-
-    def generate_from_doc(self, doc):
-
-        new_sentence = ""
-        entities = []
-
-        for token in doc:
-            if token.tag_ == Tag.PRESENT_SING3_VERB.value:
-                subject = get_subject(token)
-                if subject is not None and is_indefinite(subject):
                     plural = get_plural(token)
                     new_sentence += plural + token.whitespace_
                     entities.append((token.idx, token.idx + len(plural), self.name))

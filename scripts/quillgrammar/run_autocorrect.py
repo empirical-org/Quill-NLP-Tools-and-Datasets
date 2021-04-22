@@ -2,10 +2,9 @@ import time
 
 from tqdm import tqdm
 
-from neuspell import BertsclstmChecker, SclstmChecker
-checker = SclstmChecker()
-checker = checker.add_("elmo", at="input")
-checker.from_pretrained("/home/yves/software/neuspell/data/checkpoints/elmoscrnn-probwordnoise")
+from autocorrect import Speller
+
+checker = Speller("en")
 
 input_file = "/home/yves/projects/Quill-NLP-Tools-and-Datasets/quillgrammar/data/new_turk_data.csv"
 
@@ -18,10 +17,13 @@ total = 0
 start = time.time()
 for line in tqdm(lines):
     input_sentence = line.strip()
-    output_sentence = checker.correct(input_sentence)
+    output_sentence = checker(input_sentence).strip()
 
     if input_sentence != output_sentence:
+        print(input_sentence)
+        print(output_sentence)
         corrected += 1
+        input()
     total += 1
     
 

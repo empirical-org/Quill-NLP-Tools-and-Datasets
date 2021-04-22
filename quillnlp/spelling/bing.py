@@ -3,7 +3,7 @@ import requests
 from private import BING_URL, BING_KEY
 
 
-def correct_sentence_with_bing(sentence: str) -> str:
+def correct_sentence_with_bing(sentence: str):
     data = {'text': sentence}
 
     params = {
@@ -17,16 +17,19 @@ def correct_sentence_with_bing(sentence: str) -> str:
     }
 
     response = requests.post(BING_URL, headers=headers, params=params, data=data).json()
-    print(response)
 
     corrections = []
     for error in response["flaggedTokens"]:
         if len(error["suggestions"]) > 0:
-            corrections.append((error["offset"], error["token"], error["suggestions"][0]["suggestion"]))
+            corrections.append((error["offset"], error["token"],
+                                error["suggestions"][0]["suggestion"],
+                                error["type"]))
+
+    output = "; ".join([f"{error[3]} ({error[1]})" for error in corrections])
 
     corrections.sort(reverse=True)
 
-    for offset, token, replacement in corrections:
+    for offset, token, replacement, _ in corrections:
         sentence = sentence[:offset] + replacement + sentence[offset+len(token):]
 
-    return sentence
+    return sentence, response, output

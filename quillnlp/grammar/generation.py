@@ -23,7 +23,7 @@ class TokenReplacementErrorGenerator(ErrorGenerator):
         self.replacement_map = replacement_map
         self.name = error_name
 
-    def generate_from_doc(self, doc):
+    def generate_from_doc(self, doc, add_word_to_label=False):
 
         new_sentence = ""
         entities = []
@@ -31,7 +31,7 @@ class TokenReplacementErrorGenerator(ErrorGenerator):
             if len(entities) > 0:
                 new_sentence += token.text_with_ws
             elif token.text.lower() in self.replacement_map:
-                replacement_token = self.replacement_map[token.text.lower()]
+                replacement_token = random.choice(self.replacement_map[token.text.lower()])
 
                 # If the token is allcaps, the replacement token should be allcaps
                 if token.text.upper() == token.text:
@@ -59,7 +59,7 @@ subject_pronoun_unigram_replacements = {
 
 subject_pronoun_bigram_replacements = {
     "you're": ["your", "your's", "yours"],
-    "they're": ["their", "their's", "theirs"]
+    "they're": ["their's", "theirs"]
 }
 
 object_pronoun_unigram_replacements = {
@@ -75,12 +75,21 @@ possessive_pronoun_unigram_replacements = {
     "his": ["he's",	"him's", "he", "his's"],
     "her":	["she's", "her's", "hers", "she", "shes"],
     "our":	["we's", "us's", "ours", "we", "wes", "our's"],
-    "their": ["they's", "them's", "theirs", "they", "theys", "their's", "they're"],
+    "their": ["they's", "them's", "theirs", "they", "theys", "their's"],
     "mine":	["I's", "me's", "mine", "I", "my's", "my"],
     "yours": ["you's", "yours", "you", "yous", "your's", "you're", "your"],
     "hers":	["she's", "her's", "hers", "she", "shes", "her"],
     "ours":	["we's", "us's", "ours", "we", "wes", "our's", "our"],
     "theirs": ["they's", "them's", "theirs", "they", "theys", "their's", "they're", "their"]
+}
+
+their_unigram_replacements = {
+    "their": ["they're", "there"],
+    "there": ["they're", "their"],
+}
+
+their_bigram_replacements = {
+    "they're": ["there", "their"]
 }
 
 
@@ -95,7 +104,7 @@ class PronounReplacementErrorGenerator(ErrorGenerator):
         self.bigram_replacement_map = bigram_replacement_map
         self.name = error_name
 
-    def generate_from_doc(self, doc):
+    def generate_from_doc(self, doc, add_word_to_label=False):
 
         new_sentence = ""
         entities = []
@@ -123,7 +132,12 @@ class PronounReplacementErrorGenerator(ErrorGenerator):
                 elif token.text[0].upper() == token.text[0]:
                     replacement_token = replacement_token[0].upper() + replacement_token[1:]
                 new_sentence += replacement_token + doc[i + 1].whitespace_
-                entities.append((token.idx, token.idx + len(replacement_token), self.name))
+
+                if add_word_to_label:
+                    error_name = self.name + f"- {token.text[0].upper() + token.text[1:].lower()} optimal"
+                else:
+                    error_name = self.name
+                entities.append((token.idx, token.idx + len(replacement_token), error_name))
                 skip_token = True
 
             elif token.text.lower() in self.unigram_replacement_map and \
@@ -146,7 +160,13 @@ class PronounReplacementErrorGenerator(ErrorGenerator):
                     replacement_token = replacement_token.lower()
 
                 new_sentence += replacement_token + token.whitespace_
-                entities.append((token.idx, token.idx+len(replacement_token), self.name))
+
+                if add_word_to_label:
+                    error_name = self.name + f" - {token.text[0].upper() + token.text[1:].lower()} optimal"
+                else:
+                    error_name = self.name
+
+                entities.append((token.idx, token.idx+len(replacement_token), error_name))
             else:
                 new_sentence += token.text_with_ws
 
@@ -175,6 +195,14 @@ possessive_pronoun_error_generator = PronounReplacementErrorGenerator(
     lambda x: True,
     {"her": "PRP$"},  # only replace "her" when it has a PRP$ tag (I see her car),
     GrammarError.POSSESSIVE_PRONOUN.value
+)
+
+their_error_generator = PronounReplacementErrorGenerator(
+    their_unigram_replacements,
+    their_bigram_replacements,
+    lambda x: True,
+    {},
+    GrammarError.THEIR.value
 )
 
 

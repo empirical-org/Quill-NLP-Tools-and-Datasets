@@ -24,6 +24,7 @@ class Tag(Enum):
     COMPARATIVE_ADVERB = "JJR"
 
 
+
 PRESENT_VERB_TAGS = set([Tag.PRESENT_SING3_VERB.value,
                          Tag.PRESENT_OTHER_VERB.value,
                          Tag.INFINITIVE.value])
@@ -149,6 +150,27 @@ class TokenSet(Enum):
 
 
 class GrammarError(Enum):
+    THEIR = "Their vs. there vs. they're"
+    THEIR_THEIR_OPTIMAL = "Their vs. there vs. they're - Their optimal"
+    THEIR_THERE_OPTIMAL = "Their vs. there vs. they're - There optimal"
+    THEIR_THEYRE_OPTIMAL = "Their vs. there vs. they're- They optimal"
+    TO_TWO_TOO = "To vs too vs two"
+    YOURE_YOUR = "You're vs your"
+    WHOS_WHOSE = "Who's vs whose"
+
+    ACCEPT_EXCEPT = "Accept vs except"
+    AFFECT_EFFECT = "Affect vs effect"
+    PASSED_PAST = "Passed vs past"
+    LEAD_LED = "Lead vs led"
+    LOOSE_LOSE = "Loose vs lose"
+    FURTHER_FARTHER = "Further vs farther"
+    ADVISE_ADVICE = "Advise vs advice"
+    ELICIT_ILLICIT = "Elicit vs illicit"
+    COUNCIL_COUNSEL = "Council vs counsel"
+    CITE_SIGHT_SITE = "Cite vs sight vs site"
+    THROUGH_THREW_THRU = "Through vs threw vs thru"
+    APART_A_PART = "Apart vs a part"
+
     GASSES = "Gases"
     PEOPLES = "Peoples"
     PEOPLES_APOSTROPHE = "Peoples'"

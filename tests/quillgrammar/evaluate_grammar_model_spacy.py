@@ -67,6 +67,10 @@ def test_grammar_pipeline():
         for (sentence, prompt, error) in tqdm(data, desc="Predicting errors"):
 
             errors = pipeline.check(sentence, prompt)
+
+            print(sentence)
+            print(errors)
+
             predicted_error_types = []
             if len(errors) > 0:
                 error_type = grouping.get(errors[0].type, errors[0].type)

@@ -1,5 +1,6 @@
 import yaml
 from flask import Flask, request
+
 from grammar.pipeline import GrammarPipeline
 
 app = Flask(__name__)
@@ -18,7 +19,7 @@ def index():
     else:
         sentence = request.form["sentence"]
         prompt = request.form["prompt"]
-        errors = pipeline.check_from_text(sentence, prompt)
+        errors = pipeline.check(sentence, prompt)
         if len(errors) > 0:
             errors.sort(reverse=True)
             error = errors[0]

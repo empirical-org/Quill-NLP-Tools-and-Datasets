@@ -97,7 +97,7 @@ def select_train_data(train_data, max_per_error):
             error_end = errors[0][1]
             error_token = sentence[error_start:error_end]
             token_counter.update([error_token])
-            if token_counter[error_token] <= 2000:
+            if token_counter[error_token] <= 5000:
                 error_items.append(item)
         else:
             correct_items.append(item)
@@ -148,19 +148,41 @@ def create_conll_corpus(output_file):
                  ("data/training/Perfect_without_have.ndjson", 200000),
                  ("data/training/Simple_past_instead_of_past_perfect.ndjson", 200000),
                  ("data/training/Its_vs_it_s.ndjson", 50000),
-                 ("Plural_versus_possessive_nouns.ndjson", 400000),
+                 ("data/training/Plural_versus_possessive_nouns.ndjson", 200000),
                  ("data/training/Subject_verb_agreement_with_inversion.ndjson", 500000),
-                 ("data/training/Subject_verb_agreement_with_personal_pronoun.ndjson", 500000),
-                 ("data/training/Subject_verb_agreement_with_simple_noun.ndjson", 500000),
+                 ("data/training/Subject_verb_agreement_with_personal_pronoun2.ndjson", 500000),
+                 ("data/training/Subject_verb_agreement_with_simple_noun2.ndjson", 500000),
+                 ("data/training/Subject_verb_agreement_with_indefinite_pronoun.ndjson", 500000),
                  ("data/training/Than_versus_then.ndjson", 50000),
                  ("data/training/Past_instead_of_participle.ndjson", 200000),
                  ("data/training/Passive_with_simple_past_instead_of_participle.ndjson", 200000),
                  ("data/training/Passive_perfect_with_incorrect_participle.ndjson", 200000),
                  ("data/training/VBN_VBD.ndjson", 100000),
-                 ("data/training/Possessive_pronouns.ndjson", 100000),
-                 ("data/training/Subject_pronouns.ndjson", 100000),
-                 ("data/training/Object_pronouns.ndjson", 100000)
+#                 ("data/training/Possessive_pronouns.ndjson", 100000),
+                 ("Subject_pronouns.ndjson", 100000),
+                 ("data/training/Object_pronouns.ndjson", 200000),
+                 ("data/training/Their_vs._there_vs._they're.ndjson", 100000),
+                 ]
+
+    """
+    file_list = [
+        ("data/training/Accept_vs_except.ndjson", 100000),
+        ("data/training/Affect_vs_effect.ndjson", 100000),
+        ("data/training/Passed_vs_past.ndjson", 100000),
+        ("data/training/Lead_vs_led.ndjson", 100000),
+        ("data/training/You're_vs_your.ndjson", 100000),
+        ("data/training/Who's_vs_whose.ndjson", 100000),
+        ("data/training/To_vs_too_vs_two.ndjson", 100000),
+        ("data/training/Loose_vs_lose.ndjson", 100000),
+        ("data/training/Further_vs_farther.ndjson", 100000),
+        ("data/training/Advise_vs_advice.ndjson", 100000),
+        ("data/training/Elicit_vs_illicit.ndjson", 100000),
+        ("data/training/Council_vs_counsel.ndjson", 100000),
+        ("data/training/Cite_vs_sight_vs_site.ndjson", 100000),
+        ("data/training/Through_vs_threw_vs_thru.ndjson", 100000),
+        ("data/training/Apart_vs_a_part.ndjson", 100000),
     ]
+    """
 
     all_train_data = []
     all_test_data = []
@@ -177,8 +199,15 @@ def create_conll_corpus(output_file):
                     for line in i2:
                         if len(line.strip()) > 0:
                             train_data.append(json.loads(line.strip()))
-                        if len(train_data) > max_number:
-                            break
+
+            print("Filtering")
+            filtered_train_data = []
+            for line in train_data:
+                if len(line[0]) > 20 and len(line[0]) < 200 and not "Caption" in line[0]:
+                    filtered_train_data.append(line)
+            print(f"{len(train_data)} => {len(filtered_train_data)}")
+
+            train_data = filtered_train_data
 
             random.shuffle(train_data)
             if "Subject_verb_agreement" in f:
@@ -194,20 +223,20 @@ def create_conll_corpus(output_file):
             all_train_data.extend(train_data[2*test_size:])
 
     test_data = make_conll_data(all_test_data)
-    write_conll_file(test_data, f"{output_file}_test_20201215.conll")
+    write_conll_file(test_data, f"{output_file}_test_20210420.conll")
 
     dev_data = make_conll_data(all_dev_data)
-    write_conll_file(dev_data, f"{output_file}_dev_20201215.conll")
+    write_conll_file(dev_data, f"{output_file}_dev_20210420.conll")
 
     random.shuffle(all_train_data)
 
     chunk_size = 1000000
     for i in range(0, len(all_train_data), 1000000):
         train_data = make_conll_data(all_train_data[i:i+chunk_size])
-        write_conll_file(train_data, f"{output_file}_train{int(i/chunk_size)}_20201215.conll")
+        write_conll_file(train_data, f"{output_file}_train{int(i/chunk_size)}_20210420.conll")
 
 
 if __name__ == "__main__":
-    #create_conll_corpus()
-    filter_conll_file(file_in="grammarmix_train2_20201215.conll",
-                      file_out="grammarmix_train2_20201215.conll2")
+    create_conll_corpus()
+    #filter_conll_file(file_in="grammarmix_train_2020.conll",
+    #                  file_out="grammarmix_train_20201215.conll2")

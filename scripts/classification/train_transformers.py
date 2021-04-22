@@ -7,7 +7,7 @@ from transformers import AutoTokenizer, BertForSequenceClassification, Trainer, 
 
 input_file = "scripts/data/surge_barriers_because.tsv"
 TEST_SIZE = 0.1
-MODEL = "bert-base-cased"
+MODEL = "albert-large-v2"
 EPOCHS = 10
 EVAL_STEPS = 50
 TRAIN_BATCH_SIZE = 16
@@ -96,7 +96,9 @@ training_args = TrainingArguments(
     logging_dir='./logs',            # directory for storing logs
     evaluation_strategy="steps",
     eval_steps=EVAL_STEPS,
-    save_steps=EVAL_STEPS
+    save_steps=EVAL_STEPS,
+    save_total_limit=10,
+    load_best_model_at_end= True,
 )
 
 trainer = Trainer(
@@ -111,4 +113,5 @@ trainer.train()
 
 print("\n\n### Evaluation on test data ###")
 trainer.evaluate(test_dataset)
+
 

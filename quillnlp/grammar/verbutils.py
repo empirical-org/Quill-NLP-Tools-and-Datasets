@@ -39,6 +39,12 @@ def has_pronoun_subject(token: Token):
     return False
 
 
+def has_indefinite_subject(token: Token):
+    subject = get_subject(token, full=False)
+
+    return subject is not None and is_indefinite(subject)
+
+
 def subject_has_neither(verb: Token):
     subject = get_subject(verb)
 

@@ -11,6 +11,7 @@ def validate():
         checker = OpinionCheck()
         feedback = checker.check_from_text(sentence, prompt)
 
+        print(feedback)
         assert (len(feedback) >= 1) == is_opinion
     return check
 
@@ -258,3 +259,10 @@ def test_opinioncheck_order():
     assert feedback[0].type == "Using Should"
     assert feedback[1].type == "First-Person Reference Keyword Check"
     assert feedback[2].type == "Second-Person Reference Keyword Check"
+
+
+def test_opinioncheck_so(validate):
+    sentence = "Methane from cow burps harms the environment, so worry about eating chickens"
+    prompt = "Methane from cow burps harms the environment, so"
+
+    validate(sentence, prompt, True)
