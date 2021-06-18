@@ -1,12 +1,23 @@
+import re
 import random
 
 from spacy.tokens.token import Token
 
-from quillgrammar.grammar.constants import GrammarError, Dependency
+from quillgrammar.grammar.constants import GrammarError, Dependency, Tag
 from quillnlp.grammar.myspacy import nlp
 
 Token.set_extension("replace", default=None)
 
+def give_same_shape(reference_token, new_token):
+
+    if reference_token.islower():
+        return new_token.lower()
+    elif reference_token.istitle():
+        return new_token.title()
+    elif reference_token.isupper():
+        return new_token.upper()
+    else:
+        return new_token
 
 class ErrorGenerator:
 
@@ -204,6 +215,111 @@ their_error_generator = PronounReplacementErrorGenerator(
     {},
     GrammarError.THEIR.value
 )
+
+
+class IncorrectIrregularPastErrorGenerator(ErrorGenerator):
+
+    name = GrammarError.INCORRECT_IRREGULAR_PAST_TENSE.value
+
+    def generate_from_doc(self, doc):
+
+        exclude_tokens = set(["was", "did", "were"])
+
+        text = ""
+        entities = []
+
+        for token in doc:
+
+            if token.tag_ == Tag.SIMPLE_PAST_VERB.value and not token.text.endswith("ed") and \
+                    token.text not in exclude_tokens:
+                if token.lemma_.endswith("e"):
+                    incorrect_past = token.lemma_ + "d"
+                else:
+                    incorrect_past = token.lemma_ + "ed"
+
+                start_index = len(text)
+                text += incorrect_past + token.whitespace_
+                entities.append((start_index, start_index + len(incorrect_past), self.name))
+
+            else:
+                text += token.text_with_ws
+
+        return text, entities
+
+
+class IncorrectParticipleErrorGenerator(ErrorGenerator):
+
+    name = GrammarError.INCORRECT_PARTICIPLE.value
+
+    def generate_from_doc(self, doc):
+
+        exclude_tokens= []
+
+        text = ""
+        entities = []
+
+        for token in doc:
+
+            if token.tag_ == Tag.PAST_PARTICIPLE_VERB.value and not token.text.endswith("ed") and \
+                    token.text not in exclude_tokens:
+                if token.lemma_.endswith("e"):
+                    incorrect_past = token.lemma_ + "d"
+                else:
+                    incorrect_past = token.lemma_ + "ed"
+
+                start_index = len(text)
+                text += incorrect_past + token.whitespace_
+                entities.append((start_index, start_index + len(incorrect_past), self.name))
+
+            else:
+                text += token.text_with_ws
+
+        return text, entities
+
+
+class IrregularPluralNounErrorGenerator(ErrorGenerator):
+
+    name = GrammarError.IRREGULAR_PLURAL_NOUN.value
+    exclude_tokens = set(["men", "women", "people"])
+
+    def get_regular_plural(self, word):
+
+        word = word.lower()
+
+        if re.search('(s|ss|sh|ch|x|z|es)$', word):
+            return word + "es"
+        else:
+            return word + "s"
+
+    def generate_from_doc(self, doc, p=0.5):
+
+        exclude_tokens= []
+
+        text = ""
+        entities = []
+        relevant = False
+
+        for token in doc:
+
+            if token.tag_ == Tag.PLURAL_NOUN.value and not token.text in self.exclude_tokens:
+                regular_plural = self.get_regular_plural(token.lemma_)
+
+                if not token.text.lower() == self.get_regular_plural(token.lemma_):
+
+                    relevant = True
+                    if random.random() < p:
+                        start_index = len(text)
+                        text += give_same_shape(token.text, regular_plural) + token.whitespace_
+                        entities.append((start_index, start_index + len(regular_plural), self.name))
+                    else:
+                        text += token.text_with_ws
+                else:
+                    text += token.text_with_ws
+
+            else:
+                text += token.text_with_ws
+
+        return text, entities, relevant
 
 
 class PluralPossessiveErrorGenerator(ErrorGenerator):

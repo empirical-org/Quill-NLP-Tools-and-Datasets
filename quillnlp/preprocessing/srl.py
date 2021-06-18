@@ -8,18 +8,17 @@ from tqdm import tqdm
 from scipy import spatial
 from sklearn.cluster import KMeans
 from allennlp.predictors.predictor import Predictor
-from transformers.tokenization_bert import BertTokenizer
-from transformers.modeling_bert import BertModel
+from transformers import BertTokenizer
+from transformers import BertModel
 from sentence_transformers import SentenceTransformer
 
 
 from quillgrammar.grammar.checks.rules import ResponseStartsWithVerbCheck
 from quillnlp.grammar.myspacy import nlp
 from quillnlp.preprocessing.checks import SoResponseStartsWithThatCheck, SentenceEndsInQuestionMarkCheck, \
-    MultipleSentencesCheck, ProfanityCheck, perform_check
+    MultipleSentencesCheck, perform_check
 from quillnlp.utils import detokenize, tokenize
 from quillnlp.preprocessing.coref import get_coreference_dictionary
-from quillopinion.opinioncheck import OpinionCheck
 
 
 VERB_MAP = {"s": "be",
@@ -37,12 +36,10 @@ MODAL_VERBS = set(["will", "shall", "may", "might", "can", "could", "must", "oug
 
 AUX_VERBS = set(["be", "is", "were", "was", "been", "do", "does", "have", "has", "had"])
 
-opinion_check = OpinionCheck()
 verb_check = ResponseStartsWithVerbCheck()
 so_response_starts_with_that_check = SoResponseStartsWithThatCheck()
 ends_in_question_mark_check = SentenceEndsInQuestionMarkCheck()
 multiple_sentences_check = MultipleSentencesCheck()
-profanity_check = ProfanityCheck()
 
 sentence_bert_model = SentenceTransformer('distilbert-base-nli-stsb-mean-tokens')
 
@@ -64,13 +61,11 @@ class Response:
         self.too_short = sentence_length < MIN_SENTENCE_LENGTH
         self.too_long = sentence_length > MAX_SENTENCE_LENGTH
 
-        self.opinion = perform_check(opinion_check, srl_output["sentence"], prompt, "")
         self.starts_with_verb = perform_check(verb_check, srl_output["sentence"], prompt, "")
         self.so_response_starts_with_that = perform_check(so_response_starts_with_that_check,
                                                          srl_output["sentence"], prompt, "")
         self.ends_in_question_mark = perform_check(ends_in_question_mark_check,
                                                   srl_output["sentence"], prompt, "")
-        self.profanity = perform_check(profanity_check, srl_output["sentence"], prompt, "")
         self.multiple_sentences = perform_check(multiple_sentences_check, srl_output["srl"]["words"],
                                                prompt, "")
         self.cluster = None
@@ -84,17 +79,17 @@ class Response:
         self.auxiliary_is_present = None
 
     def tsv_columns(self):
-        columns = ["response", "opinion", "starts with verb",
+        columns = ["response", "starts with verb",
                    "so response starts with that", "ends in question mark",
-                   "profanity", "multiple sentences", "too short", "too long",
+                   "multiple sentences", "too short", "too long",
                    "cluster", "similarity", "modal", "auxiliary",
                    "main verb", "extracted arg0", "intended arg0", "arg1", "arg2"]
         return columns
 
     def to_tsv(self):
-        values = [self.response, self.opinion, self.starts_with_verb,
+        values = [self.response, self.starts_with_verb,
                   self.so_response_starts_with_that, self.ends_in_question_mark,
-                  self.profanity, self.multiple_sentences, self.too_short, self.too_long,
+                  self.multiple_sentences, self.too_short, self.too_long,
                   self.cluster, self.similarity, self.modal_is_present, self.auxiliary_is_present,
                   self.verb_string, self.arg0_string, self.arg0_antecedent,
                   self.arg1_string, self.arg2_string]

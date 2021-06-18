@@ -16,8 +16,10 @@ from tqdm import tqdm
 from quillgrammar.grammar.constants import GrammarError
 from quillnlp.grammar.generation import TokenReplacementErrorGenerator, subject_pronoun_error_generator, \
     object_pronoun_error_generator, possessive_pronoun_error_generator, PluralPossessiveErrorGenerator, \
-    their_error_generator, PronounReplacementErrorGenerator
+    their_error_generator, PronounReplacementErrorGenerator, IncorrectIrregularPastErrorGenerator, \
+    IncorrectParticipleErrorGenerator, IrregularPluralNounErrorGenerator
 from quillnlp.grammar.verbs import perfect, agreement, passive, tense
+from quillnlp.grammar.verbs.passive import PassiveWithoutBeErrorGenerator, PassiveWithIncorrectBeErrorGenerator
 from quillnlp.models.spacy.train import train_spacy_ner
 
 PUNCTUATION = set([".", "?", "!"])
@@ -104,15 +106,14 @@ def get_data_from_files(files, id2source, seen_sentences, error_generator, train
                 # Process texts
                 train_data = []
                 for sentence in docs:
-                    synthetic_sentence, entities = error_generator.generate_from_doc(sentence)
+                    synthetic_sentence, entities, relevant = error_generator.generate_from_doc(sentence)
 
-                    if synthetic_sentence != sentence.text:
-                        if random.random() < 0.5:
-                            if verbose:
-                                print(sentence)
-                                print(synthetic_sentence)
-                                print(entities)
-                                #print("")
+                    if relevant:
+                        if verbose:
+                            print(sentence)
+                            print(synthetic_sentence)
+                            print(entities)
+                        if synthetic_sentence != sentence.text:
                             train_data.append((synthetic_sentence, {"entities": entities,
                                                                     "original": sentence.text}))
                         else:
@@ -157,8 +158,10 @@ def create_corpus(corpus_dir):
     #error_generator = agreement.SubjectVerbAgreement()
     #error_generator = agreement.SubjectVerbAgreementWithSimpleNounErrorGenerator()
     #error_generator = agreement.SubjectVerbAgreementWithPronounErrorGenerator()
+    #error_generator = agreement.SubjectVerbAgreementWithIndefinitePronounErrorGenerator()
+    error_generator = IrregularPluralNounErrorGenerator()
+    error_generator = PassiveWithIncorrectBeErrorGenerator()
     error_generator = agreement.SubjectVerbAgreementWithIndefinitePronounErrorGenerator()
-    #error_generator = agreement.SubjectVerbAgreementWithInversionErrorGenerator()
     #error_generator = possessive_pronoun_error_generator
     #error_generator = perfect.PerfectProgressiveWithoutHaveErrorGenerator()
     #error_generator = perfect.PassivePerfectWithIncorrectParticipleErrorGenerator()

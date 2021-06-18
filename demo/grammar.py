@@ -1,13 +1,20 @@
 import streamlit as st
+import yaml
 
-from quillnlp.grammar.grammarcheck import SpaCyGrammarChecker
+from quillgrammar.grammar.pipeline import GrammarPipeline
+
+config_file = "../grammar_config_test.yaml"
 
 
 @st.cache(allow_output_mutation=True)
 def load_checker(name):
-    checker = SpaCyGrammarChecker(name)
-    return checker
 
+    with open(config_file) as i:
+        config = yaml.load(i, Loader=yaml.FullLoader)
+
+    pipeline = GrammarPipeline(config)
+
+    return pipeline
 
 
 st.sidebar.title("Quill NLP Tools")

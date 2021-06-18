@@ -7,14 +7,17 @@ errors:
   Monies: 11
   Decades with apostrophe: 11
   Allcaps: 10
-  Fragment: 10
+  Fragment: 0
   Response starts with verb: 10
   Capitalization: 9
   Repeated conjunction: 9
   Repeated word: 8
-  Possessive pronouns: 7
+  Possessive pronouns: 0
   Subject pronouns: 6
   Object pronouns: 6
+  Their vs. there vs. they're - Their optimal: 7
+  Their vs. there vs. they're - There optimal: 7
+  Their vs. there vs. they're- They optimal: 7
   Incorrect past tense as participle in passive: 5
   Passive with simple past instead of participle: 5
   Passive perfect with incorrect participle: 5

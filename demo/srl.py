@@ -19,12 +19,15 @@ prompt = st.text_input("Prompt:", value="")
 
 uploaded_file = st.file_uploader("Choose a file", type=['txt'])
 if uploaded_file is not None:
-    responses = [line.strip() for line in uploaded_file]
+    responses = [line.strip().decode("utf-8") for line in uploaded_file]
 
     srl_results = perform_srl(responses, prompt)
     final_results = process_srl_results(srl_results)
-    result_string = "\n".join(["\t".join([str(x) for x in item]) for item in final_results])
 
+    headers = "\t".join(final_results[0].tsv_columns())
+    result_string = "\n".join(["\t".join([str(x) for x in item.to_tsv()]) for item in final_results])
+
+    result_string = "\n".join([headers, result_string])
 
     b64 = base64.b64encode(result_string.encode()).decode()  # some strings <-> bytes conversions necessary here
     href = f'<a href="data:file/csv;base64,{b64}">Download tab-separated file</a> (right-click and save as &lt;some_name&gt;.tsv)'

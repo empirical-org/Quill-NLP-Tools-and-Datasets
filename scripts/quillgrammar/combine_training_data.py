@@ -46,7 +46,11 @@ def make_conll_data(data_items):
         tokens = [t.text for t in doc]
         # pos = [t.tag_ for t in doc]
 
-        tags = offsets_to_biluo_tags(doc, entities)
+        try:
+            tags = offsets_to_biluo_tags(doc, entities)
+        except:
+            continue
+
         pos = ["X" for _ in tokens]
 
         write_to_output = True
@@ -140,54 +144,60 @@ def filter_conll_file(file_in, file_out, max_sentences=2800000):
 @click.argument('output_file')
 def create_conll_corpus(output_file):
 
-    file_list = [("data/training/Passive_without_be.ndjson", 200000),
-                 ("data/training/Passive_with_incorrect_be.ndjson", 200000),
-                 ("data/training/Passive_perfect_without_have.ndjson", 200000),
-                 ("data/training/Perfect_progressive_with_incorrect_be_and_without_have.ndjson", 200000),
-                 ("data/training/Perfect_progressive_without_have.ndjson", 200000),
-                 ("data/training/Perfect_without_have.ndjson", 200000),
-                 ("data/training/Simple_past_instead_of_past_perfect.ndjson", 200000),
-                 ("data/training/Its_vs_it_s.ndjson", 50000),
-                 ("data/training/Plural_versus_possessive_nouns.ndjson", 200000),
-                 ("data/training/Subject_verb_agreement_with_inversion.ndjson", 500000),
-                 ("data/training/Subject_verb_agreement_with_personal_pronoun2.ndjson", 500000),
-                 ("data/training/Subject_verb_agreement_with_simple_noun2.ndjson", 500000),
-                 ("data/training/Subject_verb_agreement_with_indefinite_pronoun.ndjson", 500000),
-                 ("data/training/Than_versus_then.ndjson", 50000),
-                 ("data/training/Past_instead_of_participle.ndjson", 200000),
-                 ("data/training/Passive_with_simple_past_instead_of_participle.ndjson", 200000),
-                 ("data/training/Passive_perfect_with_incorrect_participle.ndjson", 200000),
-                 ("data/training/VBN_VBD.ndjson", 100000),
+    file_list = [("data/training/Passive_without_be.ndjson", 500000, 5000),
+                 ("data/training/Passive_with_incorrect_be.ndjson", 200000, 1000),
+                 ("data/training/Passive_perfect_without_have.ndjson", 200000, 1000),
+                 ("data/training/Perfect_progressive_with_incorrect_be_and_without_have.ndjson", 200000, 1000),
+                 ("data/training/Perfect_progressive_without_have.ndjson", 200000, 1000),
+                 ("data/training/Perfect_without_have.ndjson", 500000, 5000),
+                 ("data/training/Simple_past_instead_of_past_perfect.ndjson", 200000, 1000),
+                 ("data/training/Its_vs_it_s.ndjson", 50000, 1000),
+                 ("data/training/Plural_versus_possessive_nouns.ndjson", 200000, 1000),
+                 ("data/training/Subject_verb_agreement_with_inversion.ndjson", 500000, 5000),
+                 ("data/training/Subject_verb_agreement_with_personal_pronoun2.ndjson", 500000, 5000),
+                 ("data/training/Subject_verb_agreement_with_simple_noun2.ndjson", 500000, 5000),
+                 ("data/training/Subject_verb_agreement_with_indefinite_pronoun.ndjson", 500000, 5000),
+                 ("data/training/Past_instead_of_participle.ndjson", 200000, 1000),
+                 ("data/training/Passive_with_simple_past_instead_of_participle.ndjson", 200000, 1000),
+                 ("data/training/Passive_perfect_with_incorrect_participle.ndjson", 500000, 5000),
+                 ("data/training/VBN_VBD.ndjson", 100000, 1000),
 #                 ("data/training/Possessive_pronouns.ndjson", 100000),
-                 ("Subject_pronouns.ndjson", 100000),
-                 ("data/training/Object_pronouns.ndjson", 200000),
-                 ("data/training/Their_vs._there_vs._they're.ndjson", 100000),
-                 ]
-
-    """
-    file_list = [
-        ("data/training/Accept_vs_except.ndjson", 100000),
-        ("data/training/Affect_vs_effect.ndjson", 100000),
-        ("data/training/Passed_vs_past.ndjson", 100000),
-        ("data/training/Lead_vs_led.ndjson", 100000),
-        ("data/training/You're_vs_your.ndjson", 100000),
-        ("data/training/Who's_vs_whose.ndjson", 100000),
-        ("data/training/To_vs_too_vs_two.ndjson", 100000),
-        ("data/training/Loose_vs_lose.ndjson", 100000),
-        ("data/training/Further_vs_farther.ndjson", 100000),
-        ("data/training/Advise_vs_advice.ndjson", 100000),
-        ("data/training/Elicit_vs_illicit.ndjson", 100000),
-        ("data/training/Council_vs_counsel.ndjson", 100000),
-        ("data/training/Cite_vs_sight_vs_site.ndjson", 100000),
-        ("data/training/Through_vs_threw_vs_thru.ndjson", 100000),
-        ("data/training/Apart_vs_a_part.ndjson", 100000),
+                 ("Subject_pronouns.ndjson", 100000, 1000),
+                 ("data/training/Object_pronouns.ndjson", 200000, 1000),
+                 ("data/training/Their_vs._there_vs._they're.ndjson", 100000, 1000),
+                 ("Incorrect_irregular_past_tense.ndjson", 500000, 5000),
+                 ("Incorrect_participle.ndjson", 500000, 5000),
+                 ("Irregular_plural_nouns.ndjson", 500000, 5000),
+                 ("data/training/Than_versus_then.ndjson", 50000, 500),
+                 ("data/training/Accept_vs_except.ndjson", 50000, 500),
+                 ("data/training/Affect_vs_effect.ndjson", 50000, 500),
+                 ("data/training/Passed_vs_past.ndjson", 50000, 500),
+                 ("data/training/Lead_vs_led.ndjson", 50000, 500),
+                 ("data/training/You're_vs_your.ndjson", 50000, 500),
+                 ("data/training/Who's_vs_whose.ndjson", 50000, 500),
+                 ("data/training/To_vs_too_vs_two.ndjson", 50000, 500),
+                 ("data/training/Loose_vs_lose.ndjson", 50000, 500),
+                 ("data/training/Further_vs_farther.ndjson", 50000, 500),
+                 ("data/training/Advise_vs_advice.ndjson", 50000, 500),
+                 ("data/training/Elicit_vs_illicit.ndjson", 50000, 500),
+                 ("data/training/Council_vs_counsel.ndjson", 50000, 500),
+                 ("data/training/Cite_vs_sight_vs_site.ndjson", 50000, 500),
+                 ("data/training/Through_vs_threw_vs_thru.ndjson", 50000, 500),
+                 ("data/training/Apart_vs_a_part.ndjson", 50000, 500),
     ]
-    """
+
+    file_list = [
+        ("data/training/Subject_verb_agreement_with_indefinite_pronoun.ndjson", 500000, 5000),
+    ]
+
+    for x in file_list:
+        if not len(x) == 3:
+            print(x)
 
     all_train_data = []
     all_test_data = []
     all_dev_data = []
-    for f, max_number in file_list:
+    for f, train_size, test_size in file_list:
         print("Reading:", f)
         with open(f) as i:
             train_data = []
@@ -213,27 +223,25 @@ def create_conll_corpus(output_file):
             if "Subject_verb_agreement" in f:
                 train_data = select_train_data(train_data, 500000)
             else:
-                train_data = train_data[:max_number]
+                train_data = train_data[:train_size]
             print(f"-> {len(train_data)} sentences")
 
-            test_size = int(len(train_data)/20)
-            test_size = 1000 if test_size < 1000 else 1000
             all_test_data.extend(train_data[:test_size])
             all_dev_data.extend(train_data[test_size:2*test_size])
             all_train_data.extend(train_data[2*test_size:])
 
     test_data = make_conll_data(all_test_data)
-    write_conll_file(test_data, f"{output_file}_test_20210420.conll")
+    write_conll_file(test_data, f"{output_file}_test_20210526.conll")
 
     dev_data = make_conll_data(all_dev_data)
-    write_conll_file(dev_data, f"{output_file}_dev_20210420.conll")
+    write_conll_file(dev_data, f"{output_file}_dev_20210526.conll")
 
     random.shuffle(all_train_data)
 
     chunk_size = 1000000
     for i in range(0, len(all_train_data), 1000000):
         train_data = make_conll_data(all_train_data[i:i+chunk_size])
-        write_conll_file(train_data, f"{output_file}_train{int(i/chunk_size)}_20210420.conll")
+        write_conll_file(train_data, f"{output_file}_train{int(i/chunk_size)}_20210526.conll")
 
 
 if __name__ == "__main__":

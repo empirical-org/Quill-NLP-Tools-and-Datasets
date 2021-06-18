@@ -1,6 +1,8 @@
 from quillnlp.grammar.corpus import replace_adverb_by_adjective, get_adjective_for_adverb, replace, replace_its_vs_it_s
 from quillnlp.grammar.myspacy import nlp
+from quillgrammar.grammar.constants import GrammarError
 
+import spacy
 
 def test_adv_by_adj_replacement():
     sentence_pairs = [("She sings beautifully.", "She sings beautiful."),
@@ -218,3 +220,180 @@ def test_perfect_without_have_replacement():
     sentence2 = "I will have seen him."
     sentence2a, _ = generator.generate_from_text(sentence2)
     assert sentence2a == "I will seen him."
+
+
+def test_incorrect_past_generation():
+
+    from quillnlp.grammar.generation import IncorrectIrregularPastErrorGenerator
+
+    generator = IncorrectIrregularPastErrorGenerator()
+
+    sentence1 = "He came home."
+    sentence1a, entities1 = generator.generate_from_text(sentence1)
+    print(sentence1a, entities1)
+    assert sentence1a == "He comed home."
+    assert entities1 == [(3, 8, GrammarError.INCORRECT_IRREGULAR_PAST_TENSE.value)]
+
+    sentence2 = "He fell down."
+    sentence2a, entities2 = generator.generate_from_text(sentence2)
+    print(sentence2a, entities2)
+    assert sentence2a == "He falled down."
+    assert entities2 == [(3, 9, GrammarError.INCORRECT_IRREGULAR_PAST_TENSE.value)]
+
+    sentence3 = "He came home and fell down."
+    sentence3a, entities3 = generator.generate_from_text(sentence3)
+    print(sentence3a, entities3)
+    assert sentence3a == "He comed home and falled down."
+    assert entities3 == [(3, 8, GrammarError.INCORRECT_IRREGULAR_PAST_TENSE.value),
+                         (18, 24, GrammarError.INCORRECT_IRREGULAR_PAST_TENSE.value)]
+
+
+def test_incorrect_participle_generation():
+
+    from quillnlp.grammar.generation import IncorrectParticipleErrorGenerator
+
+    generator = IncorrectParticipleErrorGenerator()
+
+    sentence1 = "He has come home."
+    sentence1a, entities1 = generator.generate_from_text(sentence1)
+    print(sentence1a, entities1)
+    assert sentence1a == "He has comed home."
+    assert entities1 == [(7, 12, GrammarError.INCORRECT_PARTICIPLE.value)]
+
+    sentence2 = "He was brought down."
+    sentence2a, entities2 = generator.generate_from_text(sentence2)
+    print(sentence2a, entities2)
+    assert sentence2a == "He was bringed down."
+    assert entities2 == [(7, 14, GrammarError.INCORRECT_PARTICIPLE.value)]
+
+
+def test_passive_without_be_generation():
+
+    from quillnlp.grammar.verbs.passive import PassiveWithoutBeErrorGenerator
+
+    generator = PassiveWithoutBeErrorGenerator()
+    nlp = spacy.load('en_core_web_sm')
+
+    sentence1 = "This book is still to be read."
+    doc1 = nlp(sentence1)
+    sentence1a, entities1, relevant1 = generator.generate_from_doc(doc1, p=1)
+    print(sentence1a, entities1)
+    assert sentence1a == "This book is still to read."
+    assert entities1 == [(22, 26, GrammarError.PASSIVE_WITHOUT_BE.value)]
+
+    sentence2 = "I have a to-be-read pile."
+    doc2 = nlp(sentence2)
+    sentence2a, entities2, relevant2 = generator.generate_from_doc(doc2, p=1)
+    print(sentence2a, entities2)
+    assert sentence2a == sentence2
+    assert relevant2 is True
+    assert entities2 == []
+
+
+def test_passive_with_incorrect_be_generation():
+
+    from quillnlp.grammar.verbs.passive import PassiveWithIncorrectBeErrorGenerator
+
+    generator = PassiveWithIncorrectBeErrorGenerator()
+    nlp = spacy.load('en_core_web_sm')
+
+    sentence1 = "There is a minor commotion at the Ipoh Barat PKR branch when a member " \
+                "of PKR who came at 8am voiced his dissatisfaction over not being allowed " \
+                "to cast his vote."
+    doc1 = nlp(sentence1)
+    sentence1a, entities1, relevant1 = generator.generate_from_doc(doc1, p=1)
+    print(sentence1a, entities1)
+    assert sentence1a == sentence1
+    assert entities1 == []
+
+    sentence2 = "He is left behind."
+    doc2 = nlp(sentence2)
+    sentence2a, entities2, relevant2 = generator.generate_from_doc(doc2, p=1)
+    print(sentence2a, entities2)
+    assert sentence2a != sentence2
+    assert relevant2 is True
+    assert entities2[0][2] == GrammarError.PASSIVE_WITH_INCORRECT_BE.value
+
+    sentence3 = "He was left behind."
+    doc3 = nlp(sentence3)
+    sentence3a, entities3, relevant3 = generator.generate_from_doc(doc3, p=1)
+    print(sentence3a, entities3)
+    assert sentence3a != "He were left behind"
+    assert relevant3 is True
+    assert entities3 == [(3, 7, GrammarError.PASSIVE_WITH_INCORRECT_BE.value)]
+
+
+def test_sva_inversion_generation():
+
+    from quillnlp.grammar.verbs.agreement import SubjectVerbAgreementWithInversionErrorGenerator
+
+    generator = SubjectVerbAgreementWithInversionErrorGenerator()
+    nlp = spacy.load('en_core_web_sm')
+
+    sentence1 = "There aren't any problems."
+    doc1 = nlp(sentence1)
+    sentence1a, entities1, relevant1 = generator.generate_from_doc(doc1, p=1)
+    print(sentence1a, entities1)
+    assert sentence1a == "There isn't any problems."
+    assert entities1 == [(6, 8, GrammarError.SVA_INVERSION.value)]
+
+    sentence2 = "There weren't any problems."
+    doc2 = nlp(sentence2)
+    sentence2a, entities2, relevant2 = generator.generate_from_doc(doc2, p=1)
+    print(sentence2a, entities2)
+    assert sentence2a == "There wasn't any problems."
+    assert relevant2 is True
+    assert entities2 == [(6, 9, GrammarError.SVA_INVERSION.value)]
+
+    sentence3 = "There comes a time that there aren't any problems."
+    doc3 = nlp(sentence3)
+    sentence3a, entities3, relevant3 = generator.generate_from_doc(doc3, p=1)
+    print(sentence3a, entities3)
+    assert sentence3a == "There come a time that there isn't any problems."
+    assert entities3 == [(6, 10, GrammarError.SVA_INVERSION.value),
+                         (29, 31, GrammarError.SVA_INVERSION.value)]
+    assert relevant3 == True
+
+
+def test_sva_pronoun_generation():
+
+    from quillnlp.grammar.verbs.agreement import SubjectVerbAgreementWithPronounErrorGenerator
+
+    generator = SubjectVerbAgreementWithPronounErrorGenerator()
+    nlp = spacy.load('en_core_web_sm')
+
+    sentence1 = "They are coming home."
+    doc1 = nlp(sentence1)
+    sentence1a, entities1, relevant1 = generator.generate_from_doc(doc1, p=1)
+    print(sentence1a, entities1)
+    assert sentence1a == 'They be coming home.' or \
+           sentence1a == 'They am coming home.' or \
+           sentence1a == 'They is coming home.'
+    assert entities1 == [(5, 7, GrammarError.SVA_PRONOUN.value)]
+
+    sentence2 = "Theyre coming home."
+    doc2 = nlp(sentence2)
+    sentence2a, entities2, relevant2 = generator.generate_from_doc(doc2, p=1)
+    print(sentence2a, entities2)
+    assert sentence2a == sentence2
+    assert relevant2 is True
+    assert entities2 == []
+
+
+def test_sva_noun_generation():
+
+    from quillnlp.grammar.verbs.agreement import SubjectVerbAgreementWithSimpleNounErrorGenerator
+
+    generator = SubjectVerbAgreementWithSimpleNounErrorGenerator()
+    nlp = spacy.load('en_core_web_sm')
+
+    sentence1 = "These weapons were manufactured between 1879 and 1885, which suggests that the animal from which the fragment was recovered was among the oldest bowheads whose age has been established."
+    sentence2 = "These weapons was manufactured between 1879 and 1885, which suggests that the animal from which the fragment were recovered were among the oldest bowheads whose age have been established."
+    doc1 = nlp(sentence1)
+    sentence1a, entities1, relevant1 = generator.generate_from_doc(doc1, p=1)
+    print(sentence1a, entities1)
+    assert sentence1a == sentence2
+    assert entities1 == [(14, 17, GrammarError.SVA_SIMPLE_NOUN.value),
+                         (109, 113, GrammarError.SVA_SIMPLE_NOUN.value),
+                         (124, 128, GrammarError.SVA_SIMPLE_NOUN.value),
+                         (165, 169, GrammarError.SVA_SIMPLE_NOUN.value)]

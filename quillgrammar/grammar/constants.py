@@ -141,6 +141,7 @@ class TokenSet(Enum):
                             "audience", "parliament", "congregation", "chamber"," range",
                             "flight", "gaggle", "colony", "horde"])
     MUTUALLY_EXCLUSIVE_BE_FORMS = set(["be", "am", "are", "is", "been"])
+    MUTUALLY_EXCLUSIVE_BE_FORMS_PAST = set(["was", "were"])
     BE_FORMS = set(["be", "am", "are", "is", "been", "was", "were"])
     SINGULAR_COUNT_WORDS = set(["few", "couple"])
     SINGULAR_NOUNS_THAT_LOOK_LIKE_PLURALS = set(["means", "species"])

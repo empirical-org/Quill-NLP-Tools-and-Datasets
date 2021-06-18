@@ -12,10 +12,11 @@ class PassiveWithIncorrectBeErrorGenerator(ErrorGenerator):
 
     name = GrammarError.PASSIVE_WITH_INCORRECT_BE.value
 
-    def generate_from_doc(self, doc):
+    def generate_from_doc(self, doc, p=0.5):
 
         new_sentence = ""
         entities = []
+        relevant = False
         for token in doc:
             # TODO: right now we leave out contractions because they
             # lead to replacement problems
@@ -24,32 +25,44 @@ class PassiveWithIncorrectBeErrorGenerator(ErrorGenerator):
             elif token.text.startswith("'"):
                 new_sentence += token.text_with_ws
             elif token.dep_ == Dependency.PASS_AUXILIARY.value and \
-                    token.text.lower() in TokenSet.MUTUALLY_EXCLUSIVE_BE_FORMS.value:
-                other_forms_of_be = list(TokenSet.MUTUALLY_EXCLUSIVE_BE_FORMS.value - set([token.text.lower()]))
-                new_be_form = random.choice(other_forms_of_be)
-                next_token = doc[token.i+1]
-                if next_token.text == "n't":
-                    new_sentence += new_be_form + " "
+                    (token.text.lower() in TokenSet.MUTUALLY_EXCLUSIVE_BE_FORMS.value
+                    or token.text.lower() in TokenSet.MUTUALLY_EXCLUSIVE_BE_FORMS_PAST.value):
+                relevant = True
+                if random.random() < p:
+                    if token.text.lower() in TokenSet.MUTUALLY_EXCLUSIVE_BE_FORMS.value:
+                        other_forms_of_be = list(TokenSet.MUTUALLY_EXCLUSIVE_BE_FORMS.value - set([token.text.lower()]))
+                    else:
+                        other_forms_of_be = list(TokenSet.MUTUALLY_EXCLUSIVE_BE_FORMS_PAST.value - set([token.text.lower()]))
+                    new_be_form = random.choice(other_forms_of_be)
+                    next_token = doc[token.i+1]
+                    if next_token.text == "n't":
+                        new_sentence += new_be_form + " "
+                    else:
+                        new_sentence += new_be_form + token.whitespace_
+                    entities.append((token.idx, token.idx + len(new_be_form), self.name))
+
                 else:
-                    new_sentence += new_be_form + token.whitespace_
-                entities.append((token.idx, token.idx + len(new_be_form), self.name))
+                    new_sentence += token.text_with_ws
+
             else:
                 new_sentence += token.text_with_ws
 
         new_sentence = re.sub(" n't", " not", new_sentence)
 
-        return new_sentence, entities
+        return new_sentence, entities, relevant
 
 
 class PassiveWithoutBeErrorGenerator(ErrorGenerator):
 
     name = GrammarError.PASSIVE_WITHOUT_BE.value
 
-    def generate_from_doc(self, doc):
+    def generate_from_doc(self, doc, p=0.5):
         """ Removes the passive auxiliary 'be' from a sentence. """
 
         new_sentence = ""
         entities = []
+        relevant = False
+
         for token in doc:
             if len(entities) > 0:
                 new_sentence += token.text_with_ws
@@ -57,15 +70,20 @@ class PassiveWithoutBeErrorGenerator(ErrorGenerator):
             # lead to replacement problems
             elif token.text.startswith("'"):
                 new_sentence += token.text_with_ws
-            elif not (token.dep_ == Dependency.PASS_AUXILIARY.value and token.lemma_ == "be"):
-                new_sentence += token.text_with_ws
-            else:
-                next_token = doc[token.i+1]
-                entities.append([next_token.idx - len(token.text_with_ws),
-                                 next_token.idx + len(next_token) - len(token.text_with_ws),
-                                 self.name])
+            elif (token.dep_ == Dependency.PASS_AUXILIARY.value and token.lemma_ == "be"):
+                relevant = True
+                next_token = doc[token.i + 1]
 
-        return new_sentence, entities
+                # Exclude cases like to-be-read, where the next token is '-'
+                if next_token.text != "-" and random.random() < p:
+                    start_index = len(new_sentence)
+                    entities.append((start_index, start_index + len(next_token), self.name))
+                else:
+                    new_sentence += token.text_with_ws
+            else:
+                new_sentence += token.text_with_ws
+
+        return new_sentence, entities, relevant
 
 
 class PassivePastTenseAsParticipleErrorGenerator(ErrorGenerator):
