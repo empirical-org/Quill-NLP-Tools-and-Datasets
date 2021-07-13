@@ -116,7 +116,7 @@ def read_notw_data(notw_sentence_file):
         notw_sentences = [line.strip() for line in i]
 
     print('Creating fragments from NOTW data')
-    for sentence in tqdm(notw_sentences[:200000]):
+    for sentence in tqdm(notw_sentences[:2000]):
         instance, label = create_instance(sentence, '')
 
         if instance not in instance_set:
