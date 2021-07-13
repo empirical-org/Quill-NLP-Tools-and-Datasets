@@ -1,6 +1,7 @@
 import os
 import csv
 import random
+import click
 from tqdm import tqdm
 from collections import Counter
 
@@ -88,12 +89,12 @@ def read_csv_input(f):
     return data
 
 
-def read_grammar_model_output(f):
+def read_grammar_model_output(grammar_file):
     data = []
 
     instance_set = set()
     print('Creating fragments from Quill data')
-    with open(f) as i:
+    with open(grammar_file) as i:
         reader = csv.reader(i, delimiter='\t')
         for line in tqdm(reader):
             sentence, prompt, error, _, _ = line
@@ -103,8 +104,15 @@ def read_grammar_model_output(f):
                     data.append((instance, label))
                     instance_set.add(instance)
 
+    return data
+
+
+def read_notw_data(notw_sentence_file):
+
+    data = []
+    instance_set = set()
     print('Fetching NOTW data')
-    with open('data/raw/notw_sentences.txt') as i:
+    with open(notw_sentence_file) as i:
         notw_sentences = [line.strip() for line in i]
 
     print('Creating fragments from NOTW data')
@@ -120,9 +128,6 @@ def read_grammar_model_output(f):
     print(labels)
 
     return data
-
-
-data = read_grammar_model_output(f)
 
 
 def write_output(data, output_path):
@@ -145,8 +150,18 @@ def write_output(data, output_path):
     db.to_disk(output_path)
 
 
-random.shuffle(data)
-test_size = int(len(data)/10)
-write_output(data[:test_size], os.path.join(output_path, 'test.spacy'))
-write_output(data[test_size:test_size*2], os.path.join(output_path, 'dev.spacy'))
-write_output(data[test_size*2:], os.path.join(output_path, 'train.spacy'))
+@click.command()
+@click.argument('grammar_file')
+@click.argument('notw_file')
+def run(grammar_file, notw_file):
+    data = read_grammar_model_output(grammar_file)
+    data.extend(read_notw_data(notw_file))
+    random.shuffle(data)
+    test_size = int(len(data)/10)
+    write_output(data[:test_size], os.path.join(output_path, 'test.spacy'))
+    write_output(data[test_size:test_size*2], os.path.join(output_path, 'dev.spacy'))
+    write_output(data[test_size*2:], os.path.join(output_path, 'train.spacy'))
+
+
+if __name__ == '__main__':
+    run()
