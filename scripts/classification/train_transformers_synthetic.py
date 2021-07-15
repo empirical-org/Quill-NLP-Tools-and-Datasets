@@ -13,20 +13,23 @@ EPOCHS = 20
 TRAIN_BATCH_SIZE = 16
 EVAL_STEPS = 5
 
+
 def read_input(filename):
 
     data = []
     with open(filename) as i:
-        reader = csv.reader(i, delimiter = ",")
+        reader = csv.reader(i, delimiter=",")
         next(reader)
 
         for line in reader:
-            if len(line) == 5:
+            if len(line) == 6:
                 sentence, label, _, _, language, dataset = line
                 data.append((sentence, label, language, dataset))
             elif len(line) == 3:
                 dataset, sentence, label = line
                 data.append((sentence, label, "original", dataset))
+            else:
+                print("Could not read line:", line)
 
     return data
 

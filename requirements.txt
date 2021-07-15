@@ -67,7 +67,7 @@ py-rouge==1.1
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pydantic==1.6.1
-pyparsing==3.0.0a2
+pyparsing==2.4.7
 pytest==6.1.1
 python-dateutil==2.8.1
 pytokenizations==0.6.0
@@ -89,12 +89,12 @@ six==1.15.0
 smart-open==2.2.1
 smmap==3.0.4
 spacy-lookups-data==0.3.2
-spacy-nightly==3.0.0rc1
-spacy-transformers==1.0.0a23
+spacy==3.0.0
+spacy-transformers==1.0.0
 srsly==2.3.2
 subprocess32==3.5.4
 tensorboardX==2.1
-thinc==8.0.0rc0
+thinc==8.0.0
 threadpoolctl==2.1.0
 tokenizers==0.9.3
 toml==0.10.1
@@ -103,7 +103,7 @@ torchcontrib==0.0.2
 tqdm==4.50.2
 transformers==3.5.1
 typer==0.3.2
-typing-extensions==3.7.4.3
+typing-extensions
 uritemplate==3.0.1
 urllib3==1.25.10
 wandb==0.10.7
