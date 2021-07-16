@@ -10,7 +10,7 @@ from spacy.tokens import DocBin
 
 from quillnlp.grammar.fragments import FragmentWithoutVerbGenerator, FragmentWithoutSubjectGenerator, \
     MissingObjectFragmentGenerator, prepositionalPhraseFragmentGenerator, adverbialClauseFragmentGenerator, \
-    relativeClauseFragmentGenerator
+    relativeClauseFragmentGenerator, infinitiveFragmentGenerator, nounPhraseFragmentGenerator
 from quillnlp.grammar.myspacy import nlp
 from quillnlp.corpora.notw import read_sentences
 
@@ -25,6 +25,8 @@ MISSING_OBJECT_FRAGMENT = 'fragment_no_object'
 PP_FRAGMENT = 'fragment_prepositional_phrase'
 ADV_CL_FRAGMENT = 'fragment_adverbial_clause'
 REL_CL_FRAGMENT = 'fragment_relative_clause'
+INF_FRAGMENT = 'fragment_infinitive_phrase'
+NP_FRAGMENT = 'fragment_noun_phrase'
 
 
 def create_instance(sentence, prompt):
@@ -34,6 +36,9 @@ def create_instance(sentence, prompt):
     generator_pp = prepositionalPhraseFragmentGenerator
     generator_advcl = adverbialClauseFragmentGenerator
     generator_relcl = relativeClauseFragmentGenerator
+    generator_inf = infinitiveFragmentGenerator
+    generator_np = nounPhraseFragmentGenerator
+
 
     candidate_fragments = []
     doc = nlp(sentence)
@@ -42,7 +47,10 @@ def create_instance(sentence, prompt):
                              (MISSING_VERB_FRAGMENT, generator_no_verb),
                              (PP_FRAGMENT, generator_pp),
                              (ADV_CL_FRAGMENT, generator_advcl),
-                             (REL_CL_FRAGMENT, generator_relcl)]:
+                             (REL_CL_FRAGMENT, generator_relcl),
+                             (INF_FRAGMENT, generator_inf),
+                             (NP_FRAGMENT, generator_np)]:
+        
         fragment, _, relevant = generator.generate_from_doc(doc, prompt)
         if relevant:
             candidate_fragments.append((label, fragment))

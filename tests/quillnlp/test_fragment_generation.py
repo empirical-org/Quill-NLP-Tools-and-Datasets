@@ -1,6 +1,6 @@
 from quillnlp.grammar.fragments import FragmentWithoutVerbGenerator, FragmentWithoutSubjectGenerator, \
     MissingObjectFragmentGenerator, prepositionalPhraseFragmentGenerator, adverbialClauseFragmentGenerator, \
-    relativeClauseFragmentGenerator
+    relativeClauseFragmentGenerator, infinitiveFragmentGenerator, nounPhraseFragmentGenerator
 
 from quillnlp.grammar.myspacy import nlp
 
@@ -124,6 +124,36 @@ def test_fragment_without_subject_generation_with_prompt():
     for sentence, prompt, fragment in sentences:
         doc = nlp(sentence)
         generated_sentence, entities, relevant = generator.generate_from_doc(doc, prompt=prompt)
+
+        print(sentence, '=>', generated_sentence)
+        assert generated_sentence == fragment
+
+
+def test_fragment_infinitive_phrase():
+
+    sentences = [('I love to dance.', 'To dance.'),
+                 ('He told me to bring the food.', 'To bring the food.')]
+
+    generator = infinitiveFragmentGenerator
+    for sentence, fragment in sentences:
+
+        doc = nlp(sentence)
+        generated_sentence, entities, relevant = generator.generate_from_doc(doc)
+
+        print(sentence, '=>', generated_sentence)
+        assert generated_sentence == fragment
+
+
+def test_fragment_noun_phrase():
+
+    sentences = [('May I use the bathroom?', 'The bathroom.'),
+                 ('He bought the car he loved the most.', 'The car he loved the most.')]
+
+    generator = nounPhraseFragmentGenerator
+    for sentence, fragment in sentences:
+
+        doc = nlp(sentence)
+        generated_sentence, entities, relevant = generator.generate_from_doc(doc)
 
         print(sentence, '=>', generated_sentence)
         assert generated_sentence == fragment

@@ -88,8 +88,13 @@ class FragmentWithoutSubjectGenerator(ErrorGenerator):
 
 class KeeperFragmentFragmentGenerator(ErrorGenerator):
 
-    def __init__(self, dependency_to_keep):
+    def __init__(self, dependency_to_keep, tag=None):
         self.dependency_to_keep = dependency_to_keep
+        self.tag = tag
+
+    def is_target_token(self, token):
+        return token.dep_ == self.dependency_to_keep and \
+               (self.tag is None or self.tag == token.tag_)
 
     def generate_from_doc(self, doc, prompt=None):
 
@@ -99,7 +104,7 @@ class KeeperFragmentFragmentGenerator(ErrorGenerator):
         # Identify a preposition outside of the prompt
         target_token = None
         for token in doc:
-            if (prompt is None or token.idx >= len(prompt)) and token.dep_ == self.dependency_to_keep:
+            if (prompt is None or token.idx >= len(prompt)) and self.is_target_token(token):
                 target_token = token
                 break
 
@@ -128,6 +133,8 @@ class KeeperFragmentFragmentGenerator(ErrorGenerator):
 prepositionalPhraseFragmentGenerator = KeeperFragmentFragmentGenerator('prep')
 adverbialClauseFragmentGenerator = KeeperFragmentFragmentGenerator('advcl')
 relativeClauseFragmentGenerator = KeeperFragmentFragmentGenerator('relcl')
+infinitiveFragmentGenerator = KeeperFragmentFragmentGenerator('xcomp', 'VB')
+nounPhraseFragmentGenerator = KeeperFragmentFragmentGenerator('dobj')
 
 
 class MissingObjectFragmentGenerator(ErrorGenerator):
