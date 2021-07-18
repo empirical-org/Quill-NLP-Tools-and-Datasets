@@ -32,46 +32,46 @@ def evaluate(model_path, test_file, threshold_for_correct):
     gold_labels_fine = []
 
     correct = 0
-    for (fragment, no_fragment, gold_label_fine) in data:
-        fragment_doc = nlp(fragment)
-        no_fragment_doc = nlp(no_fragment)
+    with open('fragment_results.txt', 'w') as o:
+        for (fragment, no_fragment, gold_label_fine) in data:
+            fragment_doc = nlp(fragment)
+            no_fragment_doc = nlp(no_fragment)
 
-        gold_labels.append(FRAGMENT_LABEL)
-        gold_labels_fine.append(gold_label_fine)
+            gold_labels.append(FRAGMENT_LABEL)
+            gold_labels_fine.append(gold_label_fine)
 
-        # First the fragment
-        print(fragment)
-        print(fragment_doc.cats)
-        if fragment_doc.cats[NO_FRAGMENT_LABEL] < threshold_for_correct:
-            predicted_labels.append(FRAGMENT_LABEL)
-            del fragment_doc.cats[NO_FRAGMENT_LABEL]
-            best_label = max(fragment_doc.cats, key=fragment_doc.cats.get)
-            predicted_labels_fine.append(best_label)
-            correct += 1
-            print('Correct')
-        else:
-            predicted_labels.append(NO_FRAGMENT_LABEL)
-            predicted_labels_fine.append(NO_FRAGMENT_LABEL)
-            print('Incorrect*******')
+            # First the fragment
+            o.write(fragment + '\n')
+            o.write(str(fragment_doc.cats) + '\n')
+            if fragment_doc.cats[NO_FRAGMENT_LABEL] < threshold_for_correct:
+                predicted_labels.append(FRAGMENT_LABEL)
+                del fragment_doc.cats[NO_FRAGMENT_LABEL]
+                best_label = max(fragment_doc.cats, key=fragment_doc.cats.get)
+                predicted_labels_fine.append(best_label)
+                correct += 1
+                o.write(fragment + '\t' + gold_label_fine + '\t' + best_label + '\n')
+            else:
+                predicted_labels.append(NO_FRAGMENT_LABEL)
+                predicted_labels_fine.append(NO_FRAGMENT_LABEL)
+                o.write(fragment + '\t' + gold_label_fine + '\t' + NO_FRAGMENT_LABEL + '\n')
 
-        # Then the correct sentence
-        gold_labels.append(NO_FRAGMENT_LABEL)
-        gold_labels_fine.append(NO_FRAGMENT_LABEL)
+            # Then the correct sentence
+            gold_labels.append(NO_FRAGMENT_LABEL)
+            gold_labels_fine.append(NO_FRAGMENT_LABEL)
 
-        print(no_fragment)
-        print(no_fragment_doc.cats)
-        if no_fragment_doc.cats[NO_FRAGMENT_LABEL] > threshold_for_correct:
-            predicted_labels.append(NO_FRAGMENT_LABEL)
-            predicted_labels_fine.append(NO_FRAGMENT_LABEL)
-            correct += 1
-            print('Correct')
-        else:
-            predicted_labels.append(FRAGMENT_LABEL)
-            del no_fragment_doc.cats[NO_FRAGMENT_LABEL]
-            best_label = max(no_fragment_doc.cats, key=no_fragment_doc.cats.get)
-            predicted_labels_fine.append(best_label)
-
-            print('Incorrect*******')
+            o.write(no_fragment + '\n')
+            o.write(str(no_fragment_doc.cats) + '\n')
+            if no_fragment_doc.cats[NO_FRAGMENT_LABEL] > threshold_for_correct:
+                predicted_labels.append(NO_FRAGMENT_LABEL)
+                predicted_labels_fine.append(NO_FRAGMENT_LABEL)
+                correct += 1
+                o.write(no_fragment + '\t' + gold_label_fine + '\t' + NO_FRAGMENT_LABEL + '\n')
+            else:
+                predicted_labels.append(FRAGMENT_LABEL)
+                del no_fragment_doc.cats[NO_FRAGMENT_LABEL]
+                best_label = max(no_fragment_doc.cats, key=no_fragment_doc.cats.get)
+                predicted_labels_fine.append(best_label)
+                o.write(no_fragment + '\t' + gold_label_fine + '\t' + best_label + '\n')
 
     total = len(data)*2
 
