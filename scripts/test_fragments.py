@@ -65,13 +65,13 @@ def evaluate(model_path, test_file, threshold_for_correct):
                 predicted_labels.append(NO_FRAGMENT_LABEL)
                 predicted_labels_fine.append(NO_FRAGMENT_LABEL)
                 correct += 1
-                o.write(no_fragment + '\t' + gold_label_fine + '\t' + NO_FRAGMENT_LABEL + '\n')
+                o.write(no_fragment + '\t' + NO_FRAGMENT_LABEL + '\t' + NO_FRAGMENT_LABEL + '\n')
             else:
                 predicted_labels.append(FRAGMENT_LABEL)
                 del no_fragment_doc.cats[NO_FRAGMENT_LABEL]
                 best_label = max(no_fragment_doc.cats, key=no_fragment_doc.cats.get)
                 predicted_labels_fine.append(best_label)
-                o.write(no_fragment + '\t' + gold_label_fine + '\t' + best_label + '\n')
+                o.write(no_fragment + '\t' + NO_FRAGMENT_LABEL + '\t' + best_label + '\n')
 
     total = len(data)*2
 

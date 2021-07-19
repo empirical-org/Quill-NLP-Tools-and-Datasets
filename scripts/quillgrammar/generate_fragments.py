@@ -28,6 +28,8 @@ REL_CL_FRAGMENT = 'fragment_relative_clause'
 INF_FRAGMENT = 'fragment_infinitive_phrase'
 NP_FRAGMENT = 'fragment_noun_phrase'
 
+MAX_FRAGMENT_COUNT = 25000
+
 
 def create_instance(sentence, prompt):
     generator_no_subj = FragmentWithoutSubjectGenerator()
@@ -39,7 +41,7 @@ def create_instance(sentence, prompt):
     generator_inf = infinitiveFragmentGenerator
     generator_np = nounPhraseFragmentGenerator
 
-
+    label_counter = {}
     candidate_fragments = []
     doc = nlp(sentence)
     for label, generator in [(MISSING_SUBJECT_FRAGMENT, generator_no_subj),
@@ -51,13 +53,16 @@ def create_instance(sentence, prompt):
                              (INF_FRAGMENT, generator_inf),
                              (NP_FRAGMENT, generator_np)]:
 
-        fragment, _, relevant = generator.generate_from_doc(doc, prompt)
-        if relevant:
-            candidate_fragments.append((label, fragment))
+        if label_counter[label] > MAX_FRAGMENT_COUNT:
+            continue
+        else:
+            fragment, _, relevant = generator.generate_from_doc(doc, prompt)
+            if relevant:
+                candidate_fragments.append((label, fragment))
 
     random_number = random.random()
 
-    if random_number < 0.5:
+    if random_number < 0.66:
         label, sentence = random.choice(candidate_fragments)
     else:
         label = NO_FRAGMENT
@@ -124,7 +129,7 @@ def read_notw_data(notw_sentence_file):
         notw_sentences = [line.strip() for line in i]
 
     print('Creating fragments from NOTW data')
-    for sentence in tqdm(notw_sentences[:200000]):
+    for sentence in tqdm(notw_sentences[:500000]):
         instance, label = create_instance(sentence, '')
 
         if instance not in instance_set:

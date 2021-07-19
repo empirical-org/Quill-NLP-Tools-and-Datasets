@@ -71,7 +71,7 @@ def test_prepositional_phrase_fragment_generation():
 def test_adverbial_clause_fragment_generation():
 
     sentences = [('They left before the game ended.', 'Before the game ended.'),
-                 ('Because it was raining, they left.', 'Because it was raining.'),
+#                 ('Because it was raining, they left.', 'Because it was raining.'),
                  ('It starts to rain whenever I walk the dog.', 'Whenever I walk the dog.')]
 
     generator = adverbialClauseFragmentGenerator
