@@ -41,7 +41,7 @@ def create_instance(sentence, prompt):
     generator_inf = infinitiveFragmentGenerator
     generator_np = nounPhraseFragmentGenerator
 
-    label_counter = {}
+    label_counter = Counter()
     candidate_fragments = []
     doc = nlp(sentence)
     for label, generator in [(MISSING_SUBJECT_FRAGMENT, generator_no_subj),
@@ -53,12 +53,13 @@ def create_instance(sentence, prompt):
                              (INF_FRAGMENT, generator_inf),
                              (NP_FRAGMENT, generator_np)]:
 
-        if label_counter[label] > MAX_FRAGMENT_COUNT:
+        if label in label_counter and label_counter[label] > MAX_FRAGMENT_COUNT:
             continue
         else:
             fragment, _, relevant = generator.generate_from_doc(doc, prompt)
             if relevant:
                 candidate_fragments.append((label, fragment))
+                label_counter.update([label])
 
     random_number = random.random()
 
