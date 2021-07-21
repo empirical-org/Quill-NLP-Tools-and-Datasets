@@ -128,7 +128,7 @@ def read_notw_data(notw_sentence_file):
 
     print('Creating fragments from NOTW data')
     for sentence in tqdm(notw_sentences):
-        if min(label_counter) > MAX_FRAGMENT_COUNT:
+        if min(label_counter.values()) > MAX_FRAGMENT_COUNT:
             break
 
         instance, label, label_counter = create_instance(sentence, '', label_counter)
