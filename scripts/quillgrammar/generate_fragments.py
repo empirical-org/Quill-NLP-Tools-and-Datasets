@@ -172,6 +172,12 @@ def run(grammar_file, notw_file):
     data.extend(read_notw_data(notw_file))
     random.shuffle(data)
     test_size = int(len(data)/10)
+
+    with open('fragments_synthetic.tsv', 'w') as o:
+        writer = csv.writer(o, delimiter='\t')
+        for sentence, label in data[:10000]:
+            writer.writerow(sentence, label)
+
     write_output(data[:test_size], os.path.join(output_path, 'test.spacy'))
     write_output(data[test_size:test_size*2], os.path.join(output_path, 'dev.spacy'))
     write_output(data[test_size*2:], os.path.join(output_path, 'train.spacy'))
