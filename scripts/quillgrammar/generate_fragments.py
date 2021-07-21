@@ -139,7 +139,7 @@ def read_notw_data(notw_sentence_file):
             label_counter.update([label])
             instance_set.add(instance)
 
-    notw_sentences.shuffle()
+    random.shuffle(notw_sentences)
     for sentence in notw_sentences[:80000]:
         data.append((sentence, NO_FRAGMENT))
 
