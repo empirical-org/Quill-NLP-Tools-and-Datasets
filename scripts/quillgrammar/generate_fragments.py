@@ -28,7 +28,7 @@ REL_CL_FRAGMENT = 'fragment_relative_clause'
 INF_FRAGMENT = 'fragment_infinitive_phrase'
 NP_FRAGMENT = 'fragment_noun_phrase'
 
-MAX_FRAGMENT_COUNT = 500
+MAX_FRAGMENT_COUNT = 10000
 
 
 def create_instance(sentence, prompt, label_counter):
@@ -59,13 +59,8 @@ def create_instance(sentence, prompt, label_counter):
             if relevant:
                 candidate_fragments.append((label, fragment))
 
-    random_number = random.random()
-
-    if random_number < 0.66 and len(candidate_fragments) > 0:
-        label, sentence = random.choice(candidate_fragments)
-        label_counter.update([label])
-    else:
-        label = NO_FRAGMENT
+    label, sentence = random.choice(candidate_fragments)
+    label_counter.update([label])
 
     return sentence, label, label_counter
 
@@ -132,12 +127,19 @@ def read_notw_data(notw_sentence_file):
                              PP_FRAGMENT, ADV_CL_FRAGMENT, REL_CL_FRAGMENT, INF_FRAGMENT, NP_FRAGMENT])
 
     print('Creating fragments from NOTW data')
-    for sentence in tqdm(notw_sentences[:10000]):
+    for sentence in tqdm(notw_sentences):
+        if min(label_counter) > MAX_FRAGMENT_COUNT:
+            break
+
         instance, label, label_counter = create_instance(sentence, '', label_counter)
 
         if instance not in instance_set:
             data.append((instance, label))
             instance_set.add(instance)
+
+    notw_sentences.shuffle()
+    for sentence in notw_sentences[:80000]:
+        data.append((sentence, NO_FRAGMENT))
 
     print('Instances:', len(data))
     labels = Counter([d[1] for d in data])
