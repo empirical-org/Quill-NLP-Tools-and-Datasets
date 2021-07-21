@@ -28,10 +28,10 @@ REL_CL_FRAGMENT = 'fragment_relative_clause'
 INF_FRAGMENT = 'fragment_infinitive_phrase'
 NP_FRAGMENT = 'fragment_noun_phrase'
 
-MAX_FRAGMENT_COUNT = 25000
+MAX_FRAGMENT_COUNT = 500
 
 
-def create_instance(sentence, prompt):
+def create_instance(sentence, prompt, label_counter):
     generator_no_subj = FragmentWithoutSubjectGenerator()
     generator_no_verb = FragmentWithoutVerbGenerator()
     generator_no_obj = MissingObjectFragmentGenerator()
@@ -41,7 +41,6 @@ def create_instance(sentence, prompt):
     generator_inf = infinitiveFragmentGenerator
     generator_np = nounPhraseFragmentGenerator
 
-    label_counter = Counter()
     candidate_fragments = []
     doc = nlp(sentence)
     for label, generator in [(MISSING_SUBJECT_FRAGMENT, generator_no_subj),
@@ -59,16 +58,16 @@ def create_instance(sentence, prompt):
             fragment, _, relevant = generator.generate_from_doc(doc, prompt)
             if relevant:
                 candidate_fragments.append((label, fragment))
-                label_counter.update([label])
 
     random_number = random.random()
 
     if random_number < 0.66:
         label, sentence = random.choice(candidate_fragments)
+        label_counter.update([label])
     else:
         label = NO_FRAGMENT
 
-    return sentence, label
+    return sentence, label, label_counter
 
 
 def read_csv_input(f):
@@ -129,9 +128,12 @@ def read_notw_data(notw_sentence_file):
     with open(notw_sentence_file) as i:
         notw_sentences = [line.strip() for line in i]
 
+    label_counter = Counter([MISSING_SUBJECT_FRAGMENT, MISSING_OBJECT_FRAGMENT, MISSING_VERB_FRAGMENT,
+                             PP_FRAGMENT, ADV_CL_FRAGMENT, REL_CL_FRAGMENT, INF_FRAGMENT, NP_FRAGMENT])
+
     print('Creating fragments from NOTW data')
-    for sentence in tqdm(notw_sentences[:100000]):
-        instance, label = create_instance(sentence, '')
+    for sentence in tqdm(notw_sentences[:10000]):
+        instance, label, label_counter = create_instance(sentence, '', label_counter)
 
         if instance not in instance_set:
             data.append((instance, label))
@@ -168,7 +170,8 @@ def write_output(data, output_path):
 @click.argument('grammar_file')
 @click.argument('notw_file')
 def run(grammar_file, notw_file):
-    data = read_grammar_model_output(grammar_file)
+    #data = read_grammar_model_output(grammar_file)
+    data = []
     data.extend(read_notw_data(notw_file))
     random.shuffle(data)
     test_size = int(len(data)/10)
@@ -176,7 +179,7 @@ def run(grammar_file, notw_file):
     with open('fragments_synthetic.tsv', 'w') as o:
         writer = csv.writer(o, delimiter='\t')
         for sentence, label in data[:10000]:
-            writer.writerow(sentence, label)
+            writer.writerow([sentence, label])
 
     write_output(data[:test_size], os.path.join(output_path, 'test.spacy'))
     write_output(data[test_size:test_size*2], os.path.join(output_path, 'dev.spacy'))

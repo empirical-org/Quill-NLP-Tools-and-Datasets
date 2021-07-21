@@ -9,6 +9,25 @@ test_file = 'scripts/data/fragments.tsv'
 FRAGMENT_LABEL = 'fragment'
 NO_FRAGMENT_LABEL = 'no_fragment'
 
+MISSING_SUBJECT_FRAGMENT = 'fragment_no_subject'
+MISSING_VERB_FRAGMENT = 'fragment_no_verb'
+MISSING_OBJECT_FRAGMENT = 'fragment_no_object'
+PP_FRAGMENT = 'fragment_prepositional_phrase'
+ADV_CL_FRAGMENT = 'fragment_adverbial_clause'
+REL_CL_FRAGMENT = 'fragment_relative_clause'
+INF_FRAGMENT = 'fragment_infinitive_phrase'
+NP_FRAGMENT = 'fragment_noun_phrase'
+
+known_fragments = set([
+    MISSING_SUBJECT_FRAGMENT,
+    MISSING_OBJECT_FRAGMENT,
+    PP_FRAGMENT,
+    ADV_CL_FRAGMENT,
+    REL_CL_FRAGMENT,
+    INF_FRAGMENT,
+    NP_FRAGMENT
+])
+
 
 @click.command()
 @click.argument('model_path')
@@ -34,6 +53,10 @@ def evaluate(model_path, test_file, threshold_for_correct):
     correct = 0
     with open('fragment_results.txt', 'w') as o:
         for (fragment, no_fragment, gold_label_fine) in data:
+
+            if gold_label_fine not in known_fragments:
+                continue
+
             fragment_doc = nlp(fragment)
             no_fragment_doc = nlp(no_fragment)
 
