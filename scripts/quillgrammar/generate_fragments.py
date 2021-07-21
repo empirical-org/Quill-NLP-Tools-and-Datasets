@@ -59,10 +59,11 @@ def create_instance(sentence, prompt, label_counter):
             if relevant:
                 candidate_fragments.append((label, fragment))
 
-    label, sentence = random.choice(candidate_fragments)
-    label_counter.update([label])
+    if len(candidate_fragments) > 0:
+        label, sentence = random.choice(candidate_fragments)
 
-    return sentence, label, label_counter
+        return sentence, label, label_counter
+    return None, None, label_counter
 
 
 def read_csv_input(f):
@@ -133,8 +134,9 @@ def read_notw_data(notw_sentence_file):
 
         instance, label, label_counter = create_instance(sentence, '', label_counter)
 
-        if instance not in instance_set:
+        if instance is not None and instance not in instance_set:
             data.append((instance, label))
+            label_counter.update([label])
             instance_set.add(instance)
 
     notw_sentences.shuffle()
