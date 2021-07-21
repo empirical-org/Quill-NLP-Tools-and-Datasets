@@ -61,7 +61,7 @@ def create_instance(sentence, prompt, label_counter):
 
     random_number = random.random()
 
-    if random_number < 0.66:
+    if random_number < 0.66 and len(candidate_fragments) > 0:
         label, sentence = random.choice(candidate_fragments)
         label_counter.update([label])
     else:
