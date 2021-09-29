@@ -52,7 +52,7 @@ more-itertools==7.0.0
 murmurhash==1.0.2
 ndjson==0.1.0
 neuralcoref==4.0
-nltk==3.4.3
+nltk==3.6.3
 numpy==1.16.4
 numpydoc==0.9.1
 overrides==1.9
