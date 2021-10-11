@@ -1,14 +1,15 @@
 from quillnlp.grammar.fragments import FragmentWithoutVerbGenerator, FragmentWithoutSubjectGenerator, \
-    MissingObjectFragmentGenerator, prepositionalPhraseFragmentGenerator, adverbialClauseFragmentGenerator, \
-    relativeClauseFragmentGenerator, infinitiveFragmentGenerator, nounPhraseFragmentGenerator
+    MissingObjectFragmentGenerator, prepositionalPhraseFragmentGenerator, DependentClauseFragmentGenerator, \
+    RelativeClauseFragmentGenerator, infinitiveFragmentGenerator, NounPhraseFragmentGenerator, VerbPhraseFragmentGenerator, \
+    FragmentWithoutAuxiliaryGenerator, DependentClauseFragmentGenerator
 
 from quillnlp.grammar.myspacy import nlp
 
 
 def test_fragment_without_verb_generation():
 
-    sentences = [('This is great.', 'This great.'),
-                 ('This has been great.', 'This great.'),
+    sentences = [('I saw the man.', 'I the man.'),
+                 ('This has been great.', 'This has great.'),
                  ('He lives.', 'He.')]
 
     generator = FragmentWithoutVerbGenerator()
@@ -18,7 +19,35 @@ def test_fragment_without_verb_generation():
         generated_sentence, entities, relevant = generator.generate_from_doc(doc)
 
         print(sentence, '=>', generated_sentence)
-        assert generated_sentence == fragment
+        assert generated_sentence.lower()[:-1] == fragment.lower()[:-1]
+
+
+def test_fragment_without_auxiliary_generation():
+
+    sentences = [('This is great.', 'This great.'),
+                 ('The boy is sitting on the chair.', 'The boy sitting on the chair.'),
+                 ('Global warming is caused by greenhouse gases.', 'Global warming caused by greenhouse gases.')]
+
+    generator = FragmentWithoutAuxiliaryGenerator()
+    for sentence, fragment in sentences:
+
+        doc = nlp(sentence)
+        generated_sentence, entities, relevant = generator.generate_from_doc(doc)
+
+        print(sentence, '=>', generated_sentence)
+        assert generated_sentence.lower()[:-1] == fragment.lower()[:-1]
+
+
+def test_fragment_without_auxiliary_not_relevant():
+
+    sentences = ['I felt awkward and clumsy']
+
+    generator = FragmentWithoutAuxiliaryGenerator()
+    for sentence in sentences:
+
+        doc = nlp(sentence)
+        generated_sentence, entities, relevant = generator.generate_from_doc(doc)
+        assert relevant is False
 
 
 def test_fragment_without_subject_generation():
@@ -33,7 +62,7 @@ def test_fragment_without_subject_generation():
         generated_sentence, entities, relevant = generator.generate_from_doc(doc)
 
         print(sentence, '=>', generated_sentence)
-        assert generated_sentence == fragment
+        assert generated_sentence.lower()[:-1] == fragment.lower()[:-1]
 
 
 def test_missing_object_fragment_generation():
@@ -50,7 +79,7 @@ def test_missing_object_fragment_generation():
         generated_sentence, entities, relevant = generator.generate_from_doc(doc)
 
         print(sentence, '=>', generated_sentence)
-        assert generated_sentence == fragment
+        assert generated_sentence.lower()[:-1] == fragment.lower()[:-1]
 
 
 def test_prepositional_phrase_fragment_generation():
@@ -65,23 +94,24 @@ def test_prepositional_phrase_fragment_generation():
         generated_sentence, entities, relevant = generator.generate_from_doc(doc)
 
         print(sentence, '=>', generated_sentence)
-        assert generated_sentence == fragment
+        assert generated_sentence.lower()[:-1] == fragment.lower()[:-1]
 
 
 def test_adverbial_clause_fragment_generation():
 
     sentences = [('They left before the game ended.', 'Before the game ended.'),
-#                 ('Because it was raining, they left.', 'Because it was raining.'),
-                 ('It starts to rain whenever I walk the dog.', 'Whenever I walk the dog.')]
+                 ('Because it rained, they left.', 'Because it rained.'),
+                 ("They're doing anything to distract themselves from the fact that they feel empty inside and unworthy.",
+                  "They're doing anything to distract themselves from the fact that they feel empty inside and unworthy.")]
 
-    generator = adverbialClauseFragmentGenerator
+    generator = DependentClauseFragmentGenerator()
     for sentence, fragment in sentences:
 
         doc = nlp(sentence)
         generated_sentence, entities, relevant = generator.generate_from_doc(doc)
 
         print(sentence, '=>', generated_sentence)
-        assert generated_sentence == fragment
+        assert generated_sentence.lower()[:-1] == fragment.lower()[:-1]
 
 
 def test_relative_clause_fragment_generation():
@@ -89,14 +119,14 @@ def test_relative_clause_fragment_generation():
     sentences = [('It is the cat that I saw sitting there.', 'That I saw sitting there.'),
                  ('He runs ultras, which I find to be a bit much.', 'Which I find to be a bit much.')]
 
-    generator = relativeClauseFragmentGenerator
+    generator = RelativeClauseFragmentGenerator()
     for sentence, fragment in sentences:
 
         doc = nlp(sentence)
         generated_sentence, entities, relevant = generator.generate_from_doc(doc)
 
         print(sentence, '=>', generated_sentence)
-        assert generated_sentence == fragment
+        assert generated_sentence.lower()[:-1] == fragment.lower()[:-1]
 
 
 def test_fragment_without_verb_generation_with_prompt():
@@ -111,7 +141,7 @@ def test_fragment_without_verb_generation_with_prompt():
         generated_sentence, entities, relevant = generator.generate_from_doc(doc, prompt=prompt)
 
         print(sentence, '=>', generated_sentence)
-        assert generated_sentence == fragment
+        assert generated_sentence.lower()[:-1] == fragment.lower()[:-1]
 
 
 def test_fragment_without_subject_generation_with_prompt():
@@ -126,7 +156,7 @@ def test_fragment_without_subject_generation_with_prompt():
         generated_sentence, entities, relevant = generator.generate_from_doc(doc, prompt=prompt)
 
         print(sentence, '=>', generated_sentence)
-        assert generated_sentence == fragment
+        assert generated_sentence.lower()[:-1] == fragment.lower()[:-1]
 
 
 def test_fragment_infinitive_phrase():
@@ -141,19 +171,37 @@ def test_fragment_infinitive_phrase():
         generated_sentence, entities, relevant = generator.generate_from_doc(doc)
 
         print(sentence, '=>', generated_sentence)
-        assert generated_sentence == fragment
+        assert generated_sentence.lower()[:-1] == fragment.lower()[:-1]
 
 
 def test_fragment_noun_phrase():
 
     sentences = [('May I use the bathroom?', 'The bathroom.'),
-                 ('He bought the car he loved the most.', 'The car he loved the most.')]
+                 ('He bought the car he loved the most.', 'He bought the car he loved the most.')]
 
-    generator = nounPhraseFragmentGenerator
+    generator = NounPhraseFragmentGenerator()
     for sentence, fragment in sentences:
 
         doc = nlp(sentence)
         generated_sentence, entities, relevant = generator.generate_from_doc(doc)
 
         print(sentence, '=>', generated_sentence)
-        assert generated_sentence == fragment
+        assert generated_sentence.lower()[:-1] == fragment.lower()[:-1]
+
+
+def test_fragment_verb_phrase():
+
+    sentences = [('We are growing trees.', 'Growing trees.'),
+                 ('We have been robbed.', 'Been robbed.'),
+                 ('We will keep growing trees.', 'Growing trees.'),
+                 ('I have cleaned the car.', 'Cleaned the car.'),
+                 ('We were robbed of all our dreams.', 'Robbed of all our dreams.')]
+
+    generator = VerbPhraseFragmentGenerator()
+    for sentence, fragment in sentences:
+
+        doc = nlp(sentence)
+        generated_sentence, entities, relevant = generator.generate_from_doc(doc)
+
+        print(sentence, '=>', generated_sentence)
+        assert generated_sentence.lower()[:-1] == fragment.lower()[:-1]

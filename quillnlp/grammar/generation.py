@@ -1,62 +1,11 @@
 import re
 import random
+import lemminflect
 
 from spacy.tokens.token import Token
 
 from quillgrammar.grammar.constants import GrammarError, Dependency, Tag
 from quillnlp.grammar.myspacy import nlp
-
-Token.set_extension("replace", default=None)
-
-def give_same_shape(reference_token, new_token):
-
-    if reference_token.islower():
-        return new_token.lower()
-    elif reference_token.istitle():
-        return new_token.title()
-    elif reference_token.isupper():
-        return new_token.upper()
-    else:
-        return new_token
-
-class ErrorGenerator:
-
-    def generate_from_doc(self, doc):
-        pass
-
-    def generate_from_text(self, text: str):
-        return self.generate_from_doc(nlp(text))
-
-
-class TokenReplacementErrorGenerator(ErrorGenerator):
-
-    def __init__(self, replacement_map, error_name):
-        self.replacement_map = replacement_map
-        self.name = error_name
-
-    def generate_from_doc(self, doc, add_word_to_label=False):
-
-        new_sentence = ""
-        entities = []
-        for token in doc:
-            if len(entities) > 0:
-                new_sentence += token.text_with_ws
-            elif token.text.lower() in self.replacement_map:
-                replacement_token = random.choice(self.replacement_map[token.text.lower()])
-
-                # If the token is allcaps, the replacement token should be allcaps
-                if token.text.upper() == token.text:
-                    replacement_token = replacement_token.upper()
-
-                # If the token is capitalized, the replacement token should be capitalized
-                elif token.text[0].upper() == token.text[0]:
-                    replacement_token = replacement_token[0].upper() + replacement_token[1:]
-                new_sentence += replacement_token + token.whitespace_
-                entities.append((token.idx, token.idx+len(replacement_token), self.name))
-            else:
-                new_sentence += token.text_with_ws
-
-        return new_sentence, entities
 
 
 subject_pronoun_unigram_replacements = {
@@ -104,6 +53,66 @@ their_bigram_replacements = {
 }
 
 
+
+Token.set_extension("replace", default=None)
+
+def give_same_shape(reference_token, new_token):
+
+    if reference_token.islower():
+        return new_token.lower()
+    elif reference_token.istitle():
+        return new_token.title()
+    elif reference_token.isupper():
+        return new_token.upper()
+    else:
+        return new_token
+
+class ErrorGenerator:
+
+    def generate_from_doc(self, doc):
+        pass
+
+    def generate_from_text(self, text: str):
+        return self.generate_from_doc(nlp(text))
+
+    def replace(self, doc, target_tokens, replacement_token):
+        # If the token is uppercase, the replacement token should be uppercase as well
+        replacement_token = replacement_token.upper() if target_tokens[0].text.isupper() and len(target_tokens[0]) > 1 else replacement_token
+
+        # If the token is capitalized, the replacement token should be capitalized
+        replacement_token = replacement_token[0].upper() + replacement_token[1:] if target_tokens[0].text.istitle() else replacement_token
+        
+        # If the token is "I" and it is not at the beginning of the sentence,
+        # the replacement token should be lowercased, unless it also starts with I
+        if len(target_tokens) == 1 and target_tokens[0].i > 0 and target_tokens[0].text == "I" and not replacement_token.startswith("I"):
+            replacement_token = replacement_token.lower()
+
+        sentence = doc[:target_tokens[0].i].text_with_ws + replacement_token + target_tokens[-1].whitespace_ + doc[target_tokens[-1].i+1:].text
+        entities = [(target_tokens[0].idx, target_tokens[0].idx+len(replacement_token), self.name)]
+
+        return sentence, entities
+
+
+class TokenReplacementErrorGenerator(ErrorGenerator):
+
+    def __init__(self, replacement_map, error_name):
+        self.replacement_map = replacement_map
+        self.name = error_name
+
+    def generate_from_doc(self, doc, add_word_to_label=False):
+
+        # Pick the token that will be replaced
+        candidates = [t for t in doc if t.text.lower() in self.replacement_map]
+        if not candidates:
+            return doc.text, [], False 
+
+        target = random.choice(candidates)
+        replacement = random.choice(self.replacement_map[target.text.lower()])
+        
+        new_sentence, entities = self.replace(doc, [target], replacement)
+        return new_sentence, entities, True
+
+
 class PronounReplacementErrorGenerator(ErrorGenerator):
 
     def __init__(self, unigram_replacement_map,
@@ -117,71 +126,34 @@ class PronounReplacementErrorGenerator(ErrorGenerator):
 
     def generate_from_doc(self, doc, add_word_to_label=False):
 
-        new_sentence = ""
-        entities = []
-        skip_token = False
+        candidates = []
         for i, token in enumerate(doc):
-            if skip_token:
-                skip_token = False
-                continue
-
-            elif len(entities) > 0:
-                new_sentence += token.text_with_ws
-
-            # Bigram replacement comes first
-            elif len(doc) > i + 1 and token.text_with_ws.lower() + doc[
-                    i + 1].text.lower() in self.bigram_replacement_map:
-
-                combined_token = token.text_with_ws.lower() + doc[i + 1].text.lower()
-                replacement_token = random.choice(self.bigram_replacement_map[combined_token])
-
-                # If the token is allcaps, the replacement token should be allcaps
-                if token.text.upper() == token.text:
-                    replacement_token = replacement_token.upper()
-
-                # If the token is capitalized, the replacement token should be capitalized
-                elif token.text[0].upper() == token.text[0]:
-                    replacement_token = replacement_token[0].upper() + replacement_token[1:]
-                new_sentence += replacement_token + doc[i + 1].whitespace_
-
-                if add_word_to_label:
-                    error_name = self.name + f"- {token.text[0].upper() + token.text[1:].lower()} optimal"
-                else:
-                    error_name = self.name
-                entities.append((token.idx, token.idx + len(replacement_token), error_name))
-                skip_token = True
+            if len(doc) > i + 1 and token.text_with_ws.lower() + doc[
+                i + 1].text.lower() in self.bigram_replacement_map:
+                candidates.append([token, doc[i+1]])
 
             elif token.text.lower() in self.unigram_replacement_map and \
                     (token.text.lower() not in self.pos or
                      token.tag_ == self.pos[token.text.lower()]) and \
                     self.dependency_test(token.dep_):
-                replacement_token = random.choice(self.unigram_replacement_map[token.text.lower()])
+                candidates.append([token])
 
-                # If the token is allcaps, the replacement token should be allcaps
-                if len(token) > 1 and token.text.upper() == token.text:
-                    replacement_token = replacement_token.upper()
+        if not candidates:
+            return doc.text, [], False 
 
-                # If the token is capitalized, the replacement token should be capitalized
-                elif token.text[0].upper() == token.text[0]:
-                    replacement_token = replacement_token[0].upper() + replacement_token[1:]
+        target = random.choice(candidates)
+        if len(target) == 2:
+            combined_token = target[0].text_with_ws.lower() + target[1].text.lower()
+            replacement_token = random.choice(self.bigram_replacement_map[combined_token])
+        elif len(target) == 1:
+            replacement_token = random.choice(self.unigram_replacement_map[target[0].text.lower()])
 
-                # If the token is "I" and it is not at the beginning of the sentence,
-                # the replacement token should be lowercased, unless it also starts with I
-                if i > 0 and token.text.startswith("I") and not replacement_token.startswith("I"):
-                    replacement_token = replacement_token.lower()
+        new_sentence, entities = self.replace(doc, target, replacement_token)
 
-                new_sentence += replacement_token + token.whitespace_
+        if add_word_to_label:
+            entities[0][2] = self.name + f"- {token.text[0].upper() + token.text[1:].lower()} optimal"
 
-                if add_word_to_label:
-                    error_name = self.name + f" - {token.text[0].upper() + token.text[1:].lower()} optimal"
-                else:
-                    error_name = self.name
-
-                entities.append((token.idx, token.idx+len(replacement_token), error_name))
-            else:
-                new_sentence += token.text_with_ws
-
-        return new_sentence, entities
+        return new_sentence, entities, True
 
 
 subject_pronoun_error_generator = PronounReplacementErrorGenerator(
@@ -225,26 +197,16 @@ class IncorrectIrregularPastErrorGenerator(ErrorGenerator):
 
         exclude_tokens = set(["was", "did", "were"])
 
-        text = ""
-        entities = []
+        candidates = [t for t in doc if t.tag_ == Tag.SIMPLE_PAST_VERB.value and not t.text.endswith("ed") 
+                        and t.text not in exclude_tokens]
+        if not candidates:
+            return doc.text, [], False 
 
-        for token in doc:
-
-            if token.tag_ == Tag.SIMPLE_PAST_VERB.value and not token.text.endswith("ed") and \
-                    token.text not in exclude_tokens:
-                if token.lemma_.endswith("e"):
-                    incorrect_past = token.lemma_ + "d"
-                else:
-                    incorrect_past = token.lemma_ + "ed"
-
-                start_index = len(text)
-                text += incorrect_past + token.whitespace_
-                entities.append((start_index, start_index + len(incorrect_past), self.name))
-
-            else:
-                text += token.text_with_ws
-
-        return text, entities
+        target = random.choice(candidates)
+        replacement = target.lemma_ + "d" if target.lemma_.endswith("e") else target.lemma_ + "ed"
+        
+        new_sentence, entities = self.replace(doc, [target], replacement)
+        return new_sentence, entities, True
 
 
 class IncorrectParticipleErrorGenerator(ErrorGenerator):
@@ -253,28 +215,15 @@ class IncorrectParticipleErrorGenerator(ErrorGenerator):
 
     def generate_from_doc(self, doc):
 
-        exclude_tokens= []
-
-        text = ""
-        entities = []
-
-        for token in doc:
-
-            if token.tag_ == Tag.PAST_PARTICIPLE_VERB.value and not token.text.endswith("ed") and \
-                    token.text not in exclude_tokens:
-                if token.lemma_.endswith("e"):
-                    incorrect_past = token.lemma_ + "d"
-                else:
-                    incorrect_past = token.lemma_ + "ed"
-
-                start_index = len(text)
-                text += incorrect_past + token.whitespace_
-                entities.append((start_index, start_index + len(incorrect_past), self.name))
-
-            else:
-                text += token.text_with_ws
-
-        return text, entities
+        candidates = [t for t in doc if t.tag_ == Tag.PAST_PARTICIPLE_VERB.value and not t.text.endswith("ed")]
+        if not candidates:
+            return doc.text, [], False 
+        
+        target = random.choice(candidates)
+        replacement = target.lemma_ + 'd' if target.lemma_.endswith('e') else target.lemma_ + 'ed'
+        
+        new_sentence, entities = self.replace(doc, [target], replacement)
+        return new_sentence, entities, True
 
 
 class IrregularPluralNounErrorGenerator(ErrorGenerator):
@@ -293,33 +242,15 @@ class IrregularPluralNounErrorGenerator(ErrorGenerator):
 
     def generate_from_doc(self, doc, p=0.5):
 
-        exclude_tokens= []
+        candidates = [t for t in doc if t.tag_ == Tag.PLURAL_NOUN.value if not t.text.lower() in self.exclude_tokens]
+        if not candidates:
+            return doc.text, [], False 
 
-        text = ""
-        entities = []
-        relevant = False
+        target = random.choice(candidates)
+        replacement = self.get_regular_plural(target.lemma_)
 
-        for token in doc:
-
-            if token.tag_ == Tag.PLURAL_NOUN.value and not token.text in self.exclude_tokens:
-                regular_plural = self.get_regular_plural(token.lemma_)
-
-                if not token.text.lower() == self.get_regular_plural(token.lemma_):
-
-                    relevant = True
-                    if random.random() < p:
-                        start_index = len(text)
-                        text += give_same_shape(token.text, regular_plural) + token.whitespace_
-                        entities.append((start_index, start_index + len(regular_plural), self.name))
-                    else:
-                        text += token.text_with_ws
-                else:
-                    text += token.text_with_ws
-
-            else:
-                text += token.text_with_ws
-
-        return text, entities, relevant
+        new_sentence, entities = self.replace(doc, [target], replacement)
+        return new_sentence, entities, True
 
 
 class PluralPossessiveErrorGenerator(ErrorGenerator):
@@ -328,66 +259,86 @@ class PluralPossessiveErrorGenerator(ErrorGenerator):
 
     def generate_from_doc(self, doc):
 
-        PROBLEM_VERBS = set(["can", "would", "will", "ca"])
-
-        text = ""
-        entities = []
-        skip_next = False
-        for token in doc:
-            if skip_next:
-                skip_next = False
-                continue
-
-            elif len(entities) > 0:
-                text += token.text_with_ws
-                continue
-
-            # If the token is immediately followed by "n't" (no whitespace), skip
-            # This avoids problems like wouldn't => wouldsn't, where the indices of the error
-            # do not match a spaCy token
-            elif token.i < len(doc) - 1 and token.text.lower() in PROBLEM_VERBS and \
-                    (doc[token.i + 1].text == "n't" or doc[token.i + 1].text == "not") \
-                    and not token.whitespace_:
-                new_token = token.text
-
-            elif token.tag_ == "NNS":
-                new_token = token.lemma_ + "'s"
-                error_type = self.name
+        plurals, possessives = [], []
+        for token in doc: 
+            if token.tag_ == 'NNS':
+                plurals.append([token])
             elif token.i < len(doc) - 1 and token.tag_.startswith("NN") and \
                     doc[token.i + 1].tag_ == "POS":
-                new_token = token._.inflect("NNS")
-                if not new_token:
-                    new_token = token.lemma_ + "s"  # handle cases like Ronaldo's
-                error_type = self.name
-                skip_next = True
-            else:
-                new_token = token.text
+                possessives.append([token, doc[token.i+1]])
 
-            if new_token is None or new_token == token.text or len(entities) > 0:
-                text += token.text_with_ws
-                skip_next = False
-            else:
-                if token.text[0].isupper():
-                    new_token = new_token[0].upper() + new_token[1:]
+        candidates = plurals + possessives
+        if not candidates:
+            return doc.text, [], False 
 
-                # Add a space to the text if it does not end in a space.
-                # This solves problems like he's => hebe
-                if len(text) > 0 and not text[-1].isspace():
-                    text += " "
+        target = random.choice(candidates)
 
-                # The start index is the length of the text before
-                # the new token is added
-                start_index = len(text)
+        replacement = target[0].lemma_ + "'s" if len(target) == 1 else target[0]._.inflect('NNS')
+        if not replacement:
+            replacement = target[0].lemma + 's'  # cases like Ronaldo's, which are not known to pyinflect
 
-                # When replacing a possessive by a plural, we have to skip the next
-                # token in the text ('s) and just add the whitespace that follows it.
-                if skip_next:
-                    text += new_token + doc[token.i + 1].whitespace_
-                else:
-                    text += new_token + token.whitespace_
+        new_sentence, entities = self.replace(doc, target, replacement)
+        return new_sentence, entities, True
 
-                entities.append((start_index, start_index + len(new_token), error_type))
 
-        return text, entities
+        # text = ""
+        # entities = []
+        # skip_next = False
+        # for token in doc:
+        #     if skip_next:
+        #         skip_next = False
+        #         continue
+
+        #     elif len(entities) > 0:
+        #         text += token.text_with_ws
+        #         continue
+
+        #     # If the token is immediately followed by "n't" (no whitespace), skip
+        #     # This avoids problems like wouldn't => wouldsn't, where the indices of the error
+        #     # do not match a spaCy token
+        #     elif token.i < len(doc) - 1 and token.text.lower() in PROBLEM_VERBS and \
+        #             (doc[token.i + 1].text == "n't" or doc[token.i + 1].text == "not") \
+        #             and not token.whitespace_:
+        #         new_token = token.text
+
+        #     elif token.tag_ == "NNS":
+        #         new_token = token.lemma_ + "'s"
+        #         error_type = self.name
+        #     elif token.i < len(doc) - 1 and token.tag_.startswith("NN") and \
+        #             doc[token.i + 1].tag_ == "POS":
+        #         new_token = token._.inflect("NNS")
+        #         if not new_token:
+        #             new_token = token.lemma_ + "s"  # handle cases like Ronaldo's
+        #         error_type = self.name
+        #         skip_next = True
+        #     else:
+        #         new_token = token.text
+
+        #     if new_token is None or new_token == token.text or len(entities) > 0:
+        #         text += token.text_with_ws
+        #         skip_next = False
+        #     else:
+        #         if token.text[0].isupper():
+        #             new_token = new_token[0].upper() + new_token[1:]
+
+        #         # Add a space to the text if it does not end in a space.
+        #         # This solves problems like he's => hebe
+        #         if len(text) > 0 and not text[-1].isspace():
+        #             text += " "
+
+        #         # The start index is the length of the text before
+        #         # the new token is added
+        #         start_index = len(text)
+
+        #         # When replacing a possessive by a plural, we have to skip the next
+        #         # token in the text ('s) and just add the whitespace that follows it.
+        #         if skip_next:
+        #             text += new_token + doc[token.i + 1].whitespace_
+        #         else:
+        #             text += new_token + token.whitespace_
+
+        #         entities.append((start_index, start_index + len(new_token), error_type))
+
+        # return text, entities
 
 

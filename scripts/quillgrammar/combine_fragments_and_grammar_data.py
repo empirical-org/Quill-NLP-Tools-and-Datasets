@@ -1,12 +1,14 @@
 import os
 import csv
 import random
+import ndjson
 import click
 from tqdm import tqdm
 from collections import Counter
+from grammar_files import read_grammar_data
 
 import spacy
-from spacy.tokens import DocBin
+from spacy.tokens import DocBin, Span
 
 from quillnlp.grammar.fragments import FragmentWithoutVerbGenerator, FragmentWithoutSubjectGenerator, \
     MissingObjectFragmentGenerator, prepositionalPhraseFragmentGenerator, \
@@ -50,20 +52,39 @@ INF_FRAGMENT = 'fragment_infinitive_phrase'
 NP_FRAGMENT = 'fragment_noun_phrase'
 VP_FRAGMENT = 'fragment_verb_phrase'
 
-MAX_FRAGMENT_COUNT = 5000
-NO_FRAGMENT_COUNT = 50000
+MAX_FRAGMENT_COUNT = 10000
+NO_FRAGMENT_COUNT = 100000
+
+
+def identify_prompt(sentence):
+    split_so = sentence.split(', so ')
+    if len(split_so) > 1:
+        return split_so[0] + ', so'
+
+    split_but = sentence.split(', but ')
+    if len(split_but) > 1:
+        return split_but[0] + ', but'
+
+    split_because = sentence.split(' because ')
+    if len(split_because) > 1:
+        return split_because[0] + ' because'
+
+    print('Could not identify prompt:')
+    print(sentence)
+    return ''
+
 
 def add_random_noise(sentence):
 
     random_number = random.random()
     
     # deletion
-    if random_number < 0.05:
+    if random_number < 0.05 and len(sentence) > 2:
         random_idx = random.randint(1, len(sentence))
         sentence = sentence[:random_idx-1] + sentence[random_idx:]
 
     # swap
-    elif random_number < 0.1:
+    elif random_number < 0.1 and len(sentence) > 3:
         random_idx = random.randint(2, len(sentence))
         sentence = sentence[:random_idx-2] + sentence[random_idx-1] + \
             sentence[random_idx-2] + sentence[random_idx:]
@@ -115,80 +136,48 @@ def create_instance(sentence, prompt, label_counter):
     return None, None, label_counter
 
 
-def read_csv_input(f):
+def create_synthetic_data(grammar_file, notw_sentence_file):
 
     data = []
     instance_set = set()
 
-    print('Creating fragments from Quill data')
-    with open(f) as i:
-        reader = csv.reader(i, delimiter=',')
-        for line in tqdm(reader):
-            sentence, prompt, _, _, _ = line
+    raw_sentences = []
 
-            instance, label = create_instance(sentence, prompt)
-
-            if instance not in instance_set:
-                data.append((instance, label))
-                instance_set.add(instance)
-
-    print('Fetching NOTW data')
-    with open('data/raw/notw_sentences.txt') as i:
-        notw_sentences = [line.strip() for line in i]
-
-    print('Creating fragments from NOTW data')
-    for sentence in tqdm(notw_sentences):
-        instance, label = create_instance(sentence, prompt)
-
-        if instance not in instance_set:
-            data.append((instance, label))
-            instance_set.add(instance)
-
-    return data
-
-
-def read_grammar_model_output(grammar_file):
-    data = []
-
-    instance_set = set()
-    print('Creating fragments from Quill data')
+    print('Fetching grammar data')
     with open(grammar_file) as i:
         reader = csv.reader(i, delimiter='\t')
         for line in tqdm(reader):
-            sentence, prompt, error, _, _ = line
+            sentence, error, _, _ = line
             if error == '':
-                instance, label = create_instance(sentence, prompt)
-                if instance not in instance_set:
-                    data.append((instance, label))
-                    instance_set.add(instance)
+                prompt = identify_prompt(sentence)
+                if prompt:
+                    raw_sentences.append((sentence, prompt))
 
-    return data
+    print(len(raw_sentences), 'sentences')
 
-
-def read_notw_data(notw_sentence_file):
-
-    data = []
-    instance_set = set()
     print('Fetching NOTW data')
     with open(notw_sentence_file) as i:
-        notw_sentences = [line.strip() for line in i]
+        # a double space is often an indication that the sentence is preceded by a title
+        # or a caption
+        raw_sentences.extend([(line.strip(), '') for line in i if '  ' not in sentence])
+    print(len(raw_sentences), 'sentences')
 
     label_counter = Counter()
 
     print('Creating fragments from NOTW data')
-    for sentence in tqdm(notw_sentences[:250000]):
+    for sentence, prompt in tqdm(raw_sentences[:250000]):
         if label_counter and min(label_counter.values()) >= MAX_FRAGMENT_COUNT:
             break
 
-        instance, label, label_counter = create_instance(sentence, '', label_counter)
+        instance, label, label_counter = create_instance(sentence, prompt, label_counter)
 
-        if instance is not None and instance not in instance_set:
+        if instance is not None and len(instance) > 3 and instance not in instance_set:
             data.append((add_random_noise(instance), label))
             label_counter.update([label])
             instance_set.add(instance)
 
-    random.shuffle(notw_sentences)
-    for sentence in notw_sentences[:NO_FRAGMENT_COUNT]:
+    random.shuffle(raw_sentences)
+    for (sentence, prompt) in raw_sentences[:NO_FRAGMENT_COUNT]:
         data.append((add_random_noise(sentence), NO_FRAGMENT))
 
     print('Instances:', len(data))
@@ -198,6 +187,23 @@ def read_notw_data(notw_sentence_file):
     return data
 
 
+def find_index_from_offsets(doc, start, end):
+
+    first_token_start = None
+    next_token_start = None
+
+    for token in doc:
+        if token.idx >= start and first_token_start is None:
+            first_token_start = token.i
+        if token.idx > end and next_token_start is None:
+            next_token_start = token.i
+
+    if next_token_start is None:
+        next_token_start = len(doc)
+
+    return first_token_start, next_token_start
+
+
 def write_output(data, output_path):
     db = DocBin()
     nlp = spacy.blank('en')
@@ -205,22 +211,45 @@ def write_output(data, output_path):
     random.shuffle(data)
     for sentence, label in tqdm(data):
         doc = nlp.make_doc(sentence)
-        doc.cats = {
-            NO_FRAGMENT: 0,
-            MISSING_VERB_FRAGMENT: 0,
-            MISSING_AUX_FRAGMENT: 0,
-            MISSING_SUBJECT_FRAGMENT: 0,
-            MISSING_OBJECT_FRAGMENT: 0,
-            PP_FRAGMENT: 0,
-            ADV_CL_FRAGMENT: 0,
-            REL_CL_FRAGMENT: 0,
-            INF_FRAGMENT: 0,
-            NP_FRAGMENT: 0,
-            VP_FRAGMENT: 0
-        }
 
-        doc.cats[label] = 1.0
-        db.add(doc)
+        # Fragment data
+        if isinstance(label, str):
+            doc.cats = {
+                NO_FRAGMENT: 0,
+                MISSING_VERB_FRAGMENT: 0,
+                MISSING_AUX_FRAGMENT: 0,
+                MISSING_SUBJECT_FRAGMENT: 0,
+                MISSING_OBJECT_FRAGMENT: 0,
+                PP_FRAGMENT: 0,
+                ADV_CL_FRAGMENT: 0,
+                REL_CL_FRAGMENT: 0,
+                INF_FRAGMENT: 0,
+                NP_FRAGMENT: 0,
+                VP_FRAGMENT: 0
+            }
+
+            doc.cats[label] = 1.0
+            db.add(doc)
+
+        # Grammar data
+        elif isinstance(label, dict):
+            entities = []
+            start_idx_returned_none = False
+            for ent in label['entities']:
+                start_idx, end_idx = find_index_from_offsets(doc, ent[0], ent[1])
+                if start_idx and end_idx:
+                    entities.append(Span(doc, start_idx, end_idx, ent[2]))
+                else:
+                    start_idx_returned_none = True
+            try:
+                if not start_idx_returned_none:
+                    doc.set_ents(entities)
+                    db.add(doc)
+            except:
+                continue
+        else:
+            raise ValueError('Unknown label type for', label)
+
     db.to_disk(output_path)
 
 
@@ -231,17 +260,44 @@ def write_output_binary(data, output_path):
     random.shuffle(data)
     for sentence, label in tqdm(data):
         doc = nlp.make_doc(sentence)
-        doc.cats = {
-            NO_FRAGMENT: 0,
-            FRAGMENT: 0
-        }
 
-        if label == NO_FRAGMENT:
-            doc.cats = {FRAGMENT: 0, NO_FRAGMENT: 1}
+        if isinstance(label, str):
+            doc.cats = {
+                NO_FRAGMENT: 0,
+                FRAGMENT: 0
+            }
+
+            if label == NO_FRAGMENT:
+                doc.cats = {FRAGMENT: 0, NO_FRAGMENT: 1}
+            else:
+                doc.cats = {FRAGMENT: 1, NO_FRAGMENT: 0}
+
+            db.add(doc)
+
+        # Grammar data
+        elif isinstance(label, dict):
+
+            if random.randint(1,5) == 5:
+                doc.cats = {FRAGMENT: 0, NO_FRAGMENT: 1}
+
+            entities = []
+            start_idx_returned_none = False
+            for ent in label['entities']:
+                start_idx, end_idx = find_index_from_offsets(doc, ent[0], ent[1])
+                if start_idx and end_idx:
+                    entities.append(Span(doc, start_idx, end_idx, ent[2]))
+                else:
+                    start_idx_returned_none = True
+            try:
+                if not start_idx_returned_none:
+                    doc.set_ents(entities)
+                    db.add(doc)
+            except:
+                continue
         else:
-            doc.cats = {FRAGMENT: 1, NO_FRAGMENT: 0}
+            raise ValueError('Unknown label type for', label)
 
-        db.add(doc)
+
     db.to_disk(output_path)
 
 
@@ -249,9 +305,10 @@ def write_output_binary(data, output_path):
 @click.argument('grammar_file')
 @click.argument('notw_file')
 def run(grammar_file, notw_file):
-    #data = read_grammar_model_output(grammar_file)
+
+    # Read fragment data
     data = []
-    data.extend(read_notw_data(notw_file))
+    data.extend(create_synthetic_data(grammar_file, notw_file))
     random.shuffle(data)
     test_size = int(len(data)/10)
 
@@ -260,9 +317,33 @@ def run(grammar_file, notw_file):
         for sentence, label in data[:10000]:
             writer.writerow([sentence, label])
 
-    write_output(data[:test_size], os.path.join(output_path, 'test.spacy'))
-    write_output(data[test_size:test_size*2], os.path.join(output_path, 'dev.spacy'))
-    write_output(data[test_size*2:], os.path.join(output_path, 'train.spacy'))
+    fragment_train = data[:test_size]
+    fragment_dev = data[test_size:test_size*2]
+    fragment_test = data[test_size*2:]
+
+    # Read grammar data    
+    grammar_train, grammar_dev, grammar_test = read_grammar_data()
+
+    print('Fragment test', len(fragment_test))
+    print('Grammar test', len(grammar_test))
+
+    write_output_binary(fragment_test + grammar_test, os.path.join(output_path, 'test.spacy'))
+    write_output_binary(fragment_dev + grammar_dev, os.path.join(output_path, 'dev.spacy'))
+
+    OUTPUT_DIR = 'grammar-fragment-train'
+    if not os.path.exists(OUTPUT_DIR):
+        os.mkdir(OUTPUT_DIR)
+
+    grammar_cutoff = 200000
+    train_data = grammar_train[:grammar_cutoff] + fragment_train * 5
+    random.shuffle(train_data)
+
+    print('Grammar train:', grammar_cutoff)
+    print('Fragment train:', len(fragment_train*5))
+    
+    chunk_size = 1000000
+    for i in range(0, len(train_data), chunk_size):
+        write_output_binary(train_data[i:i+chunk_size], os.path.join(OUTPUT_DIR, f"train{int(i/chunk_size)}.spacy"))
 
 
 if __name__ == '__main__':

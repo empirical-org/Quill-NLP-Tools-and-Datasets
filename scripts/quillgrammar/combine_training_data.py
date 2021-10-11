@@ -144,52 +144,6 @@ def filter_conll_file(file_in, file_out, max_sentences=2800000):
 @click.argument('output_file')
 def create_conll_corpus(output_file):
 
-    file_list = [("data/training/Passive_without_be.ndjson", 500000, 5000),
-                 ("data/training/Passive_with_incorrect_be.ndjson", 200000, 1000),
-                 ("data/training/Passive_perfect_without_have.ndjson", 200000, 1000),
-                 ("data/training/Perfect_progressive_with_incorrect_be_and_without_have.ndjson", 200000, 1000),
-                 ("data/training/Perfect_progressive_without_have.ndjson", 200000, 1000),
-                 ("data/training/Perfect_without_have.ndjson", 500000, 5000),
-                 ("data/training/Simple_past_instead_of_past_perfect.ndjson", 200000, 1000),
-                 ("data/training/Its_vs_it_s.ndjson", 50000, 1000),
-                 ("data/training/Plural_versus_possessive_nouns.ndjson", 200000, 1000),
-                 ("data/training/Subject_verb_agreement_with_inversion.ndjson", 500000, 5000),
-                 ("data/training/Subject_verb_agreement_with_personal_pronoun2.ndjson", 500000, 5000),
-                 ("data/training/Subject_verb_agreement_with_simple_noun2.ndjson", 500000, 5000),
-                 ("data/training/Subject_verb_agreement_with_indefinite_pronoun.ndjson", 500000, 5000),
-                 ("data/training/Past_instead_of_participle.ndjson", 200000, 1000),
-                 ("data/training/Passive_with_simple_past_instead_of_participle.ndjson", 200000, 1000),
-                 ("data/training/Passive_perfect_with_incorrect_participle.ndjson", 500000, 5000),
-                 ("data/training/VBN_VBD.ndjson", 100000, 1000),
-#                 ("data/training/Possessive_pronouns.ndjson", 100000),
-                 ("Subject_pronouns.ndjson", 100000, 1000),
-                 ("data/training/Object_pronouns.ndjson", 200000, 1000),
-                 ("data/training/Their_vs._there_vs._they're.ndjson", 100000, 1000),
-                 ("Incorrect_irregular_past_tense.ndjson", 500000, 5000),
-                 ("Incorrect_participle.ndjson", 500000, 5000),
-                 ("Irregular_plural_nouns.ndjson", 500000, 5000),
-                 ("data/training/Than_versus_then.ndjson", 50000, 500),
-                 ("data/training/Accept_vs_except.ndjson", 50000, 500),
-                 ("data/training/Affect_vs_effect.ndjson", 50000, 500),
-                 ("data/training/Passed_vs_past.ndjson", 50000, 500),
-                 ("data/training/Lead_vs_led.ndjson", 50000, 500),
-                 ("data/training/You're_vs_your.ndjson", 50000, 500),
-                 ("data/training/Who's_vs_whose.ndjson", 50000, 500),
-                 ("data/training/To_vs_too_vs_two.ndjson", 50000, 500),
-                 ("data/training/Loose_vs_lose.ndjson", 50000, 500),
-                 ("data/training/Further_vs_farther.ndjson", 50000, 500),
-                 ("data/training/Advise_vs_advice.ndjson", 50000, 500),
-                 ("data/training/Elicit_vs_illicit.ndjson", 50000, 500),
-                 ("data/training/Council_vs_counsel.ndjson", 50000, 500),
-                 ("data/training/Cite_vs_sight_vs_site.ndjson", 50000, 500),
-                 ("data/training/Through_vs_threw_vs_thru.ndjson", 50000, 500),
-                 ("data/training/Apart_vs_a_part.ndjson", 50000, 500),
-    ]
-
-    file_list = [
-        ("data/training/Subject_verb_agreement_with_indefinite_pronoun.ndjson", 500000, 5000),
-    ]
-
     for x in file_list:
         if not len(x) == 3:
             print(x)

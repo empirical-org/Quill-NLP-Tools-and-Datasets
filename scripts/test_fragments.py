@@ -1,10 +1,7 @@
 import csv
 import spacy
 import click
-from sklearn.metrics import classification_report
-
-model_path = '/tmp/fragment-model/model-best/'
-test_file = 'scripts/data/fragments.tsv'
+from sklearn.metrics import classification_report, confusion_matrix
 
 FRAGMENT_LABEL = 'fragment'
 NO_FRAGMENT_LABEL = 'no_fragment'
@@ -12,20 +9,25 @@ NO_FRAGMENT_LABEL = 'no_fragment'
 MISSING_SUBJECT_FRAGMENT = 'fragment_no_subject'
 MISSING_VERB_FRAGMENT = 'fragment_no_verb'
 MISSING_OBJECT_FRAGMENT = 'fragment_no_object'
+MISSING_AUX_FRAGMENT = 'fragment_no_aux'
 PP_FRAGMENT = 'fragment_prepositional_phrase'
 ADV_CL_FRAGMENT = 'fragment_adverbial_clause'
 REL_CL_FRAGMENT = 'fragment_relative_clause'
 INF_FRAGMENT = 'fragment_infinitive_phrase'
 NP_FRAGMENT = 'fragment_noun_phrase'
+VP_FRAGMENT = 'fragment_verb_phrase'
 
 known_fragments = set([
     MISSING_SUBJECT_FRAGMENT,
     MISSING_OBJECT_FRAGMENT,
+    MISSING_VERB_FRAGMENT,
+    MISSING_AUX_FRAGMENT,
     PP_FRAGMENT,
     ADV_CL_FRAGMENT,
     REL_CL_FRAGMENT,
     INF_FRAGMENT,
-    NP_FRAGMENT
+    NP_FRAGMENT,
+    VP_FRAGMENT
 ])
 
 
@@ -42,7 +44,11 @@ def evaluate(model_path, test_file, threshold_for_correct):
             if len(line) == 3:
                 data.append(line)
 
-    nlp = spacy.load(model_path)
+    nlp = spacy.load('/home/yves/projects/grammar-api/quillgrammar/models/current')
+    fragment_pipeline = spacy.load(model_path)
+    fragment_pipeline.get_pipe('textcat').model.get_ref('tok2vec').layers[0].upstream_name = 'fragment-transformer'
+    nlp.add_pipe('transformer', source=fragment_pipeline, name='fragment-transformer')
+    nlp.add_pipe('textcat', source=fragment_pipeline, last=True)
 
     predicted_labels = []
     gold_labels = []
@@ -64,8 +70,6 @@ def evaluate(model_path, test_file, threshold_for_correct):
             gold_labels_fine.append(gold_label_fine)
 
             # First the fragment
-            o.write(fragment + '\n')
-            o.write(str(fragment_doc.cats) + '\n')
             if fragment_doc.cats[NO_FRAGMENT_LABEL] < threshold_for_correct:
                 predicted_labels.append(FRAGMENT_LABEL)
                 del fragment_doc.cats[NO_FRAGMENT_LABEL]
@@ -82,8 +86,6 @@ def evaluate(model_path, test_file, threshold_for_correct):
             gold_labels.append(NO_FRAGMENT_LABEL)
             gold_labels_fine.append(NO_FRAGMENT_LABEL)
 
-            o.write(no_fragment + '\n')
-            o.write(str(no_fragment_doc.cats) + '\n')
             if no_fragment_doc.cats[NO_FRAGMENT_LABEL] > threshold_for_correct:
                 predicted_labels.append(NO_FRAGMENT_LABEL)
                 predicted_labels_fine.append(NO_FRAGMENT_LABEL)
@@ -107,6 +109,12 @@ def evaluate(model_path, test_file, threshold_for_correct):
     report = classification_report(gold_labels_fine, predicted_labels_fine)
     print(report)
 
+    label_list = sorted(list(set(gold_labels_fine)))
+    confmatrix = confusion_matrix(gold_labels_fine, predicted_labels_fine, labels=label_list)
+
+    print(",".join([""]+label_list))
+    for label, predictions in zip(label_list,confmatrix):
+        print(",".join([label]+[str(v) for v in predictions]))
 
 if __name__ == '__main__':
     evaluate()
