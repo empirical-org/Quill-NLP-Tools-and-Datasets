@@ -1,4 +1,5 @@
 import requests
+import time
 
 from private import BING_URL, BING_KEY
 
@@ -19,11 +20,15 @@ def correct_sentence_with_bing(sentence: str):
     response = requests.post(BING_URL, headers=headers, params=params, data=data).json()
 
     corrections = []
-    for error in response["flaggedTokens"]:
-        if len(error["suggestions"]) > 0:
-            corrections.append((error["offset"], error["token"],
-                                error["suggestions"][0]["suggestion"],
-                                error["type"]))
+    if "flaggedTokens" in response:
+        for error in response["flaggedTokens"]:
+            if len(error["suggestions"]) > 0:
+                corrections.append((error["offset"], error["token"],
+                                    error["suggestions"][0]["suggestion"],
+                                    error["type"]))
+    else:
+        print(response)
+        time.sleep(5)
 
     output = "; ".join([f"{error[3]} ({error[1]})" for error in corrections])
 

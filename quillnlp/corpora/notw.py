@@ -93,3 +93,45 @@ def read_sentences(corpus_dir, n=1000):
 
     return list(notw_sentences)
 
+
+def read_complex_sentences(corpus_dir, n=1000):
+
+    with open("notw_us_sources.json") as i:
+        id2source = json.load(i)
+
+    files = glob.glob(os.path.join(corpus_dir, "*.zip"))
+
+    notw_sentences = set()
+    with open('complex_sentences.txt', 'w') as o:
+        for f in files:
+            print(f)
+            with zipfile.ZipFile(f) as myzip:
+                zipped_files = myzip.namelist()
+                for zf in zipped_files:
+                    print("->", zf)
+
+                    # Read new zip file
+                    texts = []
+                    with myzip.open(zf) as i:
+                        for line in i:
+                            line = line.decode("latin-1").strip().split()
+                            if len(line) > 0 and len(line[0]) > 3:
+                                text_id = line[0][2:]
+                                # except:
+                                    # continue
+
+                                # print(text_id)
+                                if text_id in id2source:
+                                    text = " ".join(line[1:])
+                                    text = clean_text(text)
+
+                                    sentences = nltk.sent_tokenize(text)
+                                    for sentence in sentences:
+                                        if re.search(r' because .* and ', sentence) or re.search(r' but .* and ', sentence) or re.search(r' so .* and ', sentence):
+                                            if len(sentence.split()) > 3 and "@" not in sentence \
+                                                    and sentence[-1] in PUNCTUATION and sentence not in notw_sentences:
+                                                notw_sentences.add(sentence)
+                                                print(' => ', sentence)
+                                                o.write(sentence + '\n')
+
+    return list(notw_sentences)

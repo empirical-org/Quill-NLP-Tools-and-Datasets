@@ -227,7 +227,6 @@ class GrammarError(Enum):
     FUTURE_IN_SUBCLAUSE = "Future in subclause"
     INCORRECT_IRREGULAR_PAST_TENSE = "Incorrect irregular past tense"
     INCORRECT_PARTICIPLE = "Incorrect participle"
-    INCORRECT_NEGATIVE_VERB_WITH_A_SIMPLE_NOUN_SUBJECT = "Incorrect negative verb with a simple noun subject"
     SVA_SIMPLE_NOUN = "Subject verb agreement with simple noun"
     SVA_PRONOUN = "Subject verb agreement with personal pronoun"
     SVA_INVERSION = "Subject verb agreement with inversion"

@@ -17,7 +17,7 @@ from quillgrammar.grammar.constants import GrammarError
 from quillnlp.grammar.generation import TokenReplacementErrorGenerator, subject_pronoun_error_generator, \
     object_pronoun_error_generator, possessive_pronoun_error_generator, PluralPossessiveErrorGenerator, \
     their_error_generator, PronounReplacementErrorGenerator, IncorrectIrregularPastErrorGenerator, \
-    IncorrectParticipleErrorGenerator, IrregularPluralNounErrorGenerator
+    IncorrectParticipleErrorGenerator, IrregularPluralNounErrorGenerator, its_its_error_generator
 from quillnlp.grammar.verbs import perfect, agreement, passive, tense
 from quillnlp.grammar.verbs.passive import PassiveWithoutBeErrorGenerator, PassiveWithIncorrectBeErrorGenerator
 from quillnlp.models.spacy.train import train_spacy_ner
@@ -108,12 +108,12 @@ def get_data_from_files(files, id2source, seen_sentences, error_generator, train
                 for sentence in docs:
                     synthetic_sentence, entities, relevant = error_generator.generate_from_doc(sentence)
 
-                    if relevant:
+                    if relevant and synthetic_sentence != sentence.text:
                         if verbose:
                             print(sentence)
                             print(synthetic_sentence)
                             print(entities)
-                        if synthetic_sentence != sentence.text:
+                        if random.random() < 0.5:
                             train_data.append((synthetic_sentence, {"entities": entities,
                                                                     "original": sentence.text}))
                         else:
@@ -148,6 +148,28 @@ def create_corpus(corpus_dir):
     train_length = 1000000
     test_size = 1000
 
+    error_generators_todo = [
+#        tense.SimplePastInsteadOfPastPerfectErrorGenerator(),
+
+    ]
+
+    error_generators = [
+        # perfect.PassivePerfectWithoutHaveErrorGenerator(),
+        # perfect.PerfectTenseWithoutHaveErrorGenerator(),
+        # perfect.PerfectProgressiveWithIncorrectBeAndWithoutHaveErrorGenerator(),
+        # perfect.PerfectProgressiveWithoutHaveErrorGenerator(),
+        # passive.PassiveWithoutBeErrorGenerator(),
+        # passive.PassiveWithIncorrectBeErrorGenerator()
+        # agreement.SubjectVerbAgreementWithSimpleNounErrorGenerator(),
+        # agreement.SubjectVerbAgreementWithPronounErrorGenerator(),
+        # agreement.SubjectVerbAgreementWithIndefinitePronounErrorGenerator(),
+        # perfect.PassivePerfectWithIncorrectParticipleErrorGenerator()
+        # its_its_error_generator
+        subject_pronoun_error_generator,
+        object_pronoun_error_generator,
+        possessive_pronoun_error_generator
+    ]
+
     #error_generator = perfect.PerfectProgressiveWithIncorrectBeAndWithoutHaveErrorGenerator()
     #error_generator = perfect.PerfectTenseWithoutHaveErrorGenerator()
     #error_generator = tense.SimplePastInsteadOfPresentPerfectErrorGenerator()
@@ -159,11 +181,7 @@ def create_corpus(corpus_dir):
     #error_generator = agreement.SubjectVerbAgreementWithSimpleNounErrorGenerator()
     #error_generator = agreement.SubjectVerbAgreementWithPronounErrorGenerator()
     #error_generator = agreement.SubjectVerbAgreementWithIndefinitePronounErrorGenerator()
-    error_generator = IrregularPluralNounErrorGenerator()
-    error_generator = PassiveWithIncorrectBeErrorGenerator()
-    error_generator = agreement.SubjectVerbAgreementWithIndefinitePronounErrorGenerator()
     #error_generator = possessive_pronoun_error_generator
-    #error_generator = perfect.PerfectProgressiveWithoutHaveErrorGenerator()
     #error_generator = perfect.PassivePerfectWithIncorrectParticipleErrorGenerator()
     #error_generator = tense.SimplePastInsteadOfPastPerfectErrorGenerator()
     #error_generator = agreement.SubjectVerbAgreementWithEitherOrErrorGenerator()
@@ -183,14 +201,12 @@ def create_corpus(corpus_dir):
     #error_generator = PluralPossessiveErrorGenerator()
     #error_generator = subject_pronoun_error_generator
 
-    seen_sentences = set()
-
-    #output_file = error_generator.name.replace(" ", "_") + ".ndjson"
-    output_file = error_generator.name.replace(" ", "_") + ".ndjson"
-    get_data_from_files(files, id2source, seen_sentences, error_generator, train_length,
-                        nlp, output_file, from_us=True, verbose=True)
-
+    for error_generator in error_generators:
+        seen_sentences = set()
+        output_name = error_generator.name.replace(" ", "_").replace("-", "_").lower()
+        output_file = f"data/training2/{output_name}.ndjson"
+        get_data_from_files(files, id2source, seen_sentences, error_generator, train_length,
+                            nlp, output_file, from_us=True, verbose=True)
 
 if __name__ == "__main__":
     create_corpus()
-

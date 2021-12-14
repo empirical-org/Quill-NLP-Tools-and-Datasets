@@ -60,20 +60,19 @@ def evaluate(model_path, test_file):
     print(test_file)
     data = []
     with open(test_file) as i:
-        reader = csv.reader(i, delimiter=',')
+        reader = csv.reader(i, delimiter='\t')
         for line in reader:
-            if len(line) == 2:
-                data.append(line)
-            elif len(line) == 1:
-                data.append((line[0], identify_prompt(line[0])))
-            elif len(line[9]) > 0:
-                data.append((line[9], line[8]))
-
+            # data.append((line[0], identify_prompt(line[0])))
+        #     elif len(line) == 1:
+        #         data.append((line[0], identify_prompt(line[0])))
+            # if len(line[9]) > 0:
+                # data.append((line[9], line[8]))
+            data.append((line[0], ""))
 
     print(data[:3])
     print(len(data), 'sentences')
     nlp = spacy.load(model_path)
-    output_file = test_file.replace('.csv', '_fragments_fine_noise_cleaned.tsv')
+    output_file = test_file.replace('.csv', '_fragments_20211123.csv')
 
     with open(output_file, 'w') as o:
         writer = csv.writer(o, delimiter='\t')
