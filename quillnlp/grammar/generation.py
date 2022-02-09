@@ -5,7 +5,7 @@ import lemminflect
 
 from spacy.tokens.token import Token
 
-from quillgrammar.grammar.constants import GrammarError, Dependency, Tag
+from quillnlp.grammar.constants import GrammarError, Dependency, Tag
 from quillnlp.grammar.myspacy import nlp
 
 
@@ -102,7 +102,7 @@ class ErrorGenerator:
         replacement_token = replacement_token.upper() if target_tokens[0].text.isupper() and len(target_tokens[0]) > 1 else replacement_token
 
         # If the token is capitalized, the replacement token should be capitalized
-        if len(replacement_token) > 2:
+        if len(replacement_token) > 1:
             replacement_token = replacement_token[0].upper() + replacement_token[1:] if target_tokens[0].text.istitle() else replacement_token
         
         # If the token is "I" and it is not at the beginning of the sentence,

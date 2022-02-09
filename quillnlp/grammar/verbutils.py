@@ -5,7 +5,7 @@ from spacy.tokens.span import Span
 
 from spacy.tokens.token import Token
 
-from quillgrammar.grammar.constants import Dependency, Tag, POS, TokenSet, GrammarError
+from quillnlp.grammar.constants import Dependency, Tag, POS, TokenSet, GrammarError
 from quillnlp.grammar.myspacy import nlp
 
 # Auxiliary verb functions:

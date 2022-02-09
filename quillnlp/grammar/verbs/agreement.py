@@ -2,7 +2,7 @@ import random
 
 import lemminflect
 
-from quillgrammar.grammar.constants import Tag, GrammarError
+from quillnlp.grammar.constants import Tag, GrammarError
 from quillnlp.grammar.generation import ErrorGenerator
 from quillnlp.grammar.verbutils import has_noun_subject, \
     has_following_subject, subject_has_neither, subject_has_either, has_pronoun_subject, \

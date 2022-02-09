@@ -5,7 +5,7 @@ from nltk.corpus import wordnet as wn
 from difflib import get_close_matches as gcm
 from spacy.tokens import Doc
 
-from quillgrammar.grammar.constants import GrammarError
+from quillnlp.grammar.constants import GrammarError
 
 ADVERB_ADJECTIVE_MAP = {"well": "good"}
 

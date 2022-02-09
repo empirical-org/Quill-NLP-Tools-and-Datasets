@@ -1,4 +1,4 @@
-from quillgrammar.grammar.constants import GrammarError, Tag, POS
+from quillnlp.grammar.constants import GrammarError, Tag, POS
 from quillnlp.grammar.generation import ErrorGenerator
 
 

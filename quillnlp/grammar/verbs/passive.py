@@ -1,8 +1,8 @@
 import random
 import re
 
-from quillgrammar.grammar.constants import GrammarError, Dependency, TokenSet, Tag
-from quillgrammar.grammar.verbutils import is_passive
+from quillnlp.grammar.constants import GrammarError, Dependency, TokenSet, Tag
+from quillnlp.grammar.verbutils import is_passive
 from quillnlp.grammar.generation import ErrorGenerator
 
 

@@ -1,6 +1,6 @@
 import re
 
-from quillgrammar.grammar.constants import GrammarError, Tag, Dependency
+from quillnlp.grammar.constants import GrammarError, Tag, Dependency
 from quillnlp.grammar.generation import ErrorGenerator
 from quillnlp.grammar.verbutils import get_perfect_progressives, in_have_been_construction, is_passive
 

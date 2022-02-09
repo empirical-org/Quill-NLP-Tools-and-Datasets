@@ -1,7 +1,7 @@
 import re
 import difflib
 
-from quillgrammar.grammar.constants import GrammarError
+from quillnlp.grammar.constants import GrammarError
 from quillnlp.grammar.myspacy import nlp
 
 
