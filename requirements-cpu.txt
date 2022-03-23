@@ -67,7 +67,7 @@ pytest==6.1.1
 python-dateutil==2.8.1
 pytokenizations==0.6.0
 pytz==2020.5
-PyYAML==5.4.1
+PyYAML==5.4
 regex==2020.10.15
 requests==2.25.1
 requests-oauthlib==1.3.0
