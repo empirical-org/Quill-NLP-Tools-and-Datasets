@@ -5,4 +5,4 @@ pyyaml==5.4.1
 lemminflect==0.2.1
 en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.0.0/en_core_web_sm-3.0.0.tar.gz
 prometheus-client
-nltk==3.5
+nltk==3.6.6
