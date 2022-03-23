@@ -100,7 +100,7 @@ transformers==3.5.1
 typer==0.3.2
 typing-extensions
 uritemplate==3.0.1
-urllib3==1.26.3
+urllib3==1.26.5
 wandb==0.10.7
 wasabi==0.8.0
 watchdog==0.10.3
