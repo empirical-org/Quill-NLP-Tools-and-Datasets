@@ -1,0 +1,5 @@
+outs:
+- md5: 6ef82e68e38e57eaa4627f35e034a083.dir
+  size: 6211364
+  nfiles: 179
+  path: grammar_errors

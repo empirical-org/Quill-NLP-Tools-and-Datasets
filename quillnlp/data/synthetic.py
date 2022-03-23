@@ -1,8 +1,16 @@
 from typing import List, Dict
-from google.cloud import translate
+from google.cloud import translate_v2 as translate
 
 # Instantiates a client
 translate_client = translate.Client()
+
+
+def backtranslate(text, lang):
+
+    translation = translate_client.translate(text, target_language=lang)
+    back_translation = translate_client.translate(translation["translatedText"],
+                                                  target_language="en")
+    return back_translation["translatedText"]
 
 
 def generate_synthetic_data(items: List[Dict], lang: str) -> List[Dict]:
@@ -27,7 +35,8 @@ def generate_synthetic_data(items: List[Dict], lang: str) -> List[Dict]:
         back_translation = translate_client.translate(translation["translatedText"],
                                                       target_language="en")
 
-        translated_items.append({"text": back_translation["translatedText"],
+        translated_items.append({"source_text": item["text"],
+                                 "text": back_translation["translatedText"],
                                  "label": item["label"]})
 
     return translated_items
