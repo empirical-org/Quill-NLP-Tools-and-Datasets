@@ -4,7 +4,7 @@ boto3==1.15.17
 botocore==1.18.17
 cachetools==4.1.1
 catalogue==1.0.0
-certifi==2020.12.5
+certifi==2022.12.7
 chardet==4.0.0
 click==7.1.2
 configparser==5.0.1
