@@ -10,6 +10,7 @@ from spacy.tokens import DocBin, Span
 from quillnlp.grammar.myspacy import nlp
 from quillnlp.corpora.notw import read_sentences
 
+
 def find_index_from_offsets(doc, start, end):
 
     first_token_start = None
@@ -18,7 +19,7 @@ def find_index_from_offsets(doc, start, end):
     for token in doc:
         if token.idx >= start and first_token_start is None:
             first_token_start = token.i
-        if token.idx > end and next_token_start is None:
+        if token.idx >= end and next_token_start is None:
             next_token_start = token.i
 
     if next_token_start is None:
@@ -26,7 +27,12 @@ def find_index_from_offsets(doc, start, end):
 
     return first_token_start, next_token_start
 
-
+# nlp = spacy.load('en_core_web_sm')
+# doc = nlp("The younger the child, the smaller the group should is.")
+# start_idx, end_idx = find_index_from_offsets(doc, 52, 54)
+# x = Span(doc, start_idx, end_idx, 'TEST')
+# print(x.text)
+# assert x.text == 'is'
 
 def write_output(data, output_path):
     db = DocBin()
@@ -41,16 +47,18 @@ def write_output(data, output_path):
             start_idx_returned_none = False
             for ent in label['entities']:
                 start_idx, end_idx = find_index_from_offsets(doc, ent[0], ent[1])
+
                 if start_idx and end_idx:
                     entities.append(Span(doc, start_idx, end_idx, ent[2]))
                 else:
                     start_idx_returned_none = True
-            try:
-                if not start_idx_returned_none:
+            # try:
+            if not start_idx_returned_none:
+                if entities or random.randint(0, 3) != 3:
                     doc.set_ents(entities)
                     db.add(doc)
-            except:
-                continue
+            # except:
+            #     continue
         else:
             raise ValueError('Unknown label type for', label)
 
@@ -62,7 +70,7 @@ def write_output(data, output_path):
 @click.argument('output_path')
 def run(output_path):
 
-    # Read grammar data    
+    # Read grammar data
     grammar_train, grammar_dev, grammar_test = read_grammar_data()
 
     train_files_path = os.path.join(output_path, 'train')
@@ -71,7 +79,7 @@ def run(output_path):
         os.mkdir(output_path)
 
     if not os.path.exists(train_files_path):
-        os.mkdir(train_files_path)    
+        os.mkdir(train_files_path)
 
     write_output(grammar_test, os.path.join(output_path, 'test.spacy'))
     write_output(grammar_dev, os.path.join(output_path, 'dev.spacy'))

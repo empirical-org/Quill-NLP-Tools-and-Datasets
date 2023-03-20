@@ -6,7 +6,7 @@ import click
 import json
 import random
 
-from quillgrammar.grammar.constants import GrammarError
+from quillnlp.grammar.constants import GrammarError
 from quillnlp.models.spacy.train import train_spacy_ner
 from tqdm import tqdm
 import spacy

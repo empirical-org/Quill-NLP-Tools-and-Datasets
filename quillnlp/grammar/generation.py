@@ -70,10 +70,10 @@ def give_same_shape(reference_token, new_token):
 
 class ErrorGenerator:
 
-    def generate_from_doc(self, doc):
+    def generate_from_doc(self, doc, add_optimal=False):
         candidates = self.get_candidates(doc)
         if not candidates:
-            return doc.text, [], False 
+            return doc.text, [], False
         target = random.choice(candidates)
         replacement = self.get_replacement(target, doc)
 
@@ -81,10 +81,10 @@ class ErrorGenerator:
             return doc.text, [], True
 
         if type(target) == list:
-            new_sentence, entities = self.replace(doc, target, replacement)
+            new_sentence, entities = self.replace(doc, target, replacement, add_optimal)
         else:
-            new_sentence, entities = self.replace(doc, [target], replacement)
-    
+            new_sentence, entities = self.replace(doc, [target], replacement, add_optimal)
+
         return new_sentence, entities, True
 
     def generate_from_text(self, text: str):
@@ -96,7 +96,7 @@ class ErrorGenerator:
     def get_replacement(target):
         pass
 
-    def replace(self, doc, target_tokens, replacement_token):
+    def replace(self, doc, target_tokens, replacement_token, add_optimal):
 
         # If the token is uppercase, the replacement token should be uppercase as well
         replacement_token = replacement_token.upper() if target_tokens[0].text.isupper() and len(target_tokens[0]) > 1 else replacement_token
@@ -104,21 +104,37 @@ class ErrorGenerator:
         # If the token is capitalized, the replacement token should be capitalized
         if len(replacement_token) > 1:
             replacement_token = replacement_token[0].upper() + replacement_token[1:] if target_tokens[0].text.istitle() else replacement_token
-        
+
         # If the token is "I" and it is not at the beginning of the sentence,
         # the replacement token should be lowercased, unless it also starts with I
         if len(target_tokens) == 1 and target_tokens[0].i > 0 and target_tokens[0].text == "I" and not replacement_token.startswith("I"):
             replacement_token = replacement_token.lower()
 
+        target_string = doc[target_tokens[0].i:target_tokens[-1].i+1].text.replace("'", "_")
         if replacement_token.strip():
-            sentence = doc[:target_tokens[0].i].text_with_ws + replacement_token + target_tokens[-1].whitespace_ + doc[target_tokens[-1].i+1:].text
-            entities = [(target_tokens[0].idx, target_tokens[0].idx+len(replacement_token), self.name)]
+
+            # If the replacement is a contracted form, we remove the preceding whitespace.
+            # Otherwise, we keep it.
+            if replacement_token.startswith("'"):
+                sentence = doc[:target_tokens[0].i].text + replacement_token + target_tokens[-1].whitespace_ + doc[target_tokens[-1].i+1:].text
+                start_index = len(doc[:target_tokens[0].i].text)
+            else:
+                sentence = doc[:target_tokens[0].i].text_with_ws + replacement_token + target_tokens[-1].whitespace_ + doc[target_tokens[-1].i+1:].text
+                start_index = len(doc[:target_tokens[0].i].text_with_ws)
+
+            if add_optimal:
+                entities = [[start_index, start_index+len(replacement_token), f"{self.name}_{target_string.lower()}_optimal"]]
+            else:
+                entities = [[start_index, start_index+len(replacement_token), self.name]]
         # If the replacement_token == '' or ' , i.e. we remove a token
-        elif target_tokens[-1].i+1 < len(doc) and len(target_tokens) == 1: 
+        elif target_tokens[-1].i+1 < len(doc) and len(target_tokens) == 1:
             sentence = doc[:target_tokens[0].i].text_with_ws + replacement_token + doc[target_tokens[-1].i+1:].text
             token_to_highlight = doc[target_tokens[-1].i+1]
             start_index_highlight = token_to_highlight.idx - len(target_tokens[0].text_with_ws) + len(replacement_token)
-            entities = [(start_index_highlight, start_index_highlight+len(token_to_highlight), self.name)]
+            if add_optimal:
+                entities = [[start_index_highlight, start_index_highlight+len(token_to_highlight), f"{self.name}_{target_string.lower()}_optimal"]]
+            else:
+                entities = [[start_index_highlight, start_index_highlight+len(token_to_highlight), self.name]]
         else:
             sentence = doc.text
             entities = []
@@ -130,16 +146,21 @@ class ErrorGenerator:
 
 class TokenReplacementErrorGenerator(ErrorGenerator):
 
-    def __init__(self, replacement_map, error_name):
+    def __init__(self, replacement_map, error_name, probs=None):
         self.replacement_map = replacement_map
         self.name = error_name
+        self.probs = probs
 
     def get_candidates(self, doc):
         return [t for t in doc if t.text.lower() in self.replacement_map]
 
     def get_replacement(self, target, doc):
-        return random.choice(self.replacement_map[target.text.lower()])
-        
+
+        if self.probs is None:
+            return random.choice(self.replacement_map[target.text.lower()])
+        else:
+            return random.choices(self.replacement_map[target.text.lower()], weights=self.probs)[0]
+
 
 class PronounReplacementErrorGenerator(ErrorGenerator):
 
@@ -152,7 +173,7 @@ class PronounReplacementErrorGenerator(ErrorGenerator):
         self.bigram_replacement_map = bigram_replacement_map
         self.name = error_name
 
-    def generate_from_doc(self, doc, add_word_to_label=False):
+    def generate_from_doc(self, doc, add_optimal=False):
 
         candidates = []
         for i, token in enumerate(doc):
@@ -167,19 +188,17 @@ class PronounReplacementErrorGenerator(ErrorGenerator):
                 candidates.append([token])
 
         if not candidates:
-            return doc.text, [], False 
+            return doc.text, [], False
 
         target = random.choice(candidates)
         if len(target) == 2:
-            combined_token = target[0].text_with_ws.lower() + target[1].text.lower()
-            replacement_token = random.choice(self.bigram_replacement_map[combined_token])
+            target_string = target[0].text_with_ws.lower() + target[1].text.lower()
+            replacement_token = random.choice(self.bigram_replacement_map[target_string])
         elif len(target) == 1:
+            target_string = target[0]
             replacement_token = random.choice(self.unigram_replacement_map[target[0].text.lower()])
 
-        new_sentence, entities = self.replace(doc, target, replacement_token)
-
-        if add_word_to_label:
-            entities[0][2] = self.name + f"- {token.text[0].upper() + token.text[1:].lower()} optimal"
+        new_sentence, entities = self.replace(doc, target, replacement_token, add_optimal=True)
 
         return new_sentence, entities, True
 
@@ -232,7 +251,7 @@ class IncorrectIrregularPastErrorGenerator(ErrorGenerator):
     def get_candidates(self, doc):
 
         exclude_tokens = set(["was", "did", "were"])
-        candidates = [t for t in doc if t.tag_ == Tag.SIMPLE_PAST_VERB.value and not t.text.endswith("ed") 
+        candidates = [t for t in doc if t.tag_ == Tag.SIMPLE_PAST_VERB.value and not t.text.endswith("ed")
                         and t.text not in exclude_tokens]
         return candidates
 
@@ -273,25 +292,157 @@ class IrregularPluralNounErrorGenerator(ErrorGenerator):
         return self.get_regular_plural(target.lemma_)
 
 
-class PluralPossessiveErrorGenerator(ErrorGenerator):
+class PluralPossessivePossessiveOptimalErrorGenerator(ErrorGenerator):
 
-    name = GrammarError.PLURAL_VERSUS_POSSESSIVE_NOUNS.value
+    name = GrammarError.PLURAL_VERSUS_POSSESSIVE_NOUNS_POSSESSIVE_OPTIMAL.value
 
     def get_candidates(self, doc):
 
-        plurals, possessives = [], []
-        for token in doc: 
-            if token.tag_ == 'NNS':
-                plurals.append([token])
-            elif token.i < len(doc) - 1 and token.tag_.startswith("NN") and \
-                    doc[token.i + 1].tag_ == "POS":
+        possessives = []
+        for token in doc:
+            if token.i < len(doc) - 1 and token.tag_.startswith('NN') and \
+                    doc[token.i + 1].tag_ == "POS" and \
+                    (doc[token.i + 1].text == "'s" or doc[token.i + 1].text == "'"):
                 possessives.append([token, doc[token.i+1]])
 
-        return plurals + possessives
+        return possessives
 
     def get_replacement(self, target, doc):
-        replacement = target[0].lemma_ + "'s" if len(target) == 1 else target[0]._.inflect('NNS')
+        replacement = target[0]._.inflect('NNS')
+
         if not replacement:
             replacement = target[0].lemma + 's'  # cases like Ronaldo's, which are not known to pyinflect
+        elif not replacement.endswith('s'):
+            replacement = replacement + 's'  # cases like peoples
 
         return replacement
+
+
+class PluralPossessivePluralOptimalErrorGenerator(ErrorGenerator):
+
+    name = GrammarError.PLURAL_VERSUS_POSSESSIVE_NOUNS_PLURAL_OPTIMAL.value
+
+    def get_candidates(self, doc):
+        plurals = []
+        for token in doc:
+            if token.tag_ == 'NNS' or token.tag_ == 'NNPS':
+                plurals.append([token])
+
+        return plurals
+
+    def get_replacement(self, target, doc):
+
+        lemma = target[0].lemma_
+
+        if lemma == target[0].text and target[0].text[-1] == 's':
+            replacement = target[0].text[:-1] + "'s"
+        else:
+            replacement = target[0].lemma_ + "'s"
+        return replacement
+
+
+class SingularPluralErrorGenerator(ErrorGenerator):
+
+    name = GrammarError.SINGULAR_PLURAL.value
+
+    def get_candidates(self, doc):
+
+        candidates = []
+        for token in doc:
+            if token.tag_ == 'NN':
+                lefts = set([t.text.lower() for t in token.lefts])
+                if 'an' in lefts or 'a' in lefts:
+                    candidates.append([token])
+
+        return candidates
+
+    def get_replacement(self, target, doc):
+        replacement = target[0]._.inflect('NNS')
+        return replacement
+
+
+class SingularPluralErrorGeneratorDropDet(ErrorGenerator):
+
+    name = GrammarError.SINGULAR_PLURAL_NO_DETERMINER.value
+
+    def get_candidates(self, doc):
+
+        candidates = []
+        for token in doc:
+            if token.tag_ == "NNS":
+                if len(doc) > token.i+1 and doc[token.i+1].tag_ == 'POS':
+                    continue
+                if len(doc) > token.i+1 and doc[token.i+1].pos_ == 'NOUN':
+                    continue
+
+                left_pos = set([t.tag_ for t in token.lefts])
+                if not left_pos:
+                    candidates.append([token])
+                elif len(left_pos) == 1 and 'ADJ' in left_pos:
+                    candidates.append([token])
+                elif len(left_pos) == 1 and 'NOUN' in left_pos:
+                    candidates.append([token])
+
+        return candidates
+
+    def get_replacement(self, target, doc):
+        replacement = target[0]._.inflect('NN')
+        return replacement
+
+
+class SingularPluralPossessiveErrorGenerator(ErrorGenerator):
+
+    name = GrammarError.SINGULAR_PLURAL_POSSESSIVE.value
+
+    def get_candidates(self, doc):
+
+        candidates = []
+        for token in doc:
+            if token.i < len(doc) - 1 and token.tag_ == 'NNS' and doc[token.i+1].tag_ == 'POS':
+                lefts = set([t.text.lower() for t in token.lefts])
+                if 'the' not in lefts:
+                    candidates.append([token, doc[token.i+1]])
+
+        return candidates
+
+    def get_replacement(self, target, doc):
+        replacement = target[0]._.inflect('NN') + "'s"
+        return replacement
+
+
+class SingularPluralErrorGeneratorTheseThose(ErrorGenerator):
+
+    name = GrammarError.SINGULAR_PLURAL_THESE_THOSE.value
+
+    def get_candidates(self, doc):
+
+        candidates = []
+        for token in doc:
+            if token.tag_ == "NNS":
+                lefts = set([t.text.lower() for t in token.lefts])
+                if 'these' in lefts or 'those' in lefts:
+                    candidates.append([token])
+
+        return candidates
+
+    def get_replacement(self, target, doc):
+
+        replacement = target[0]._.inflect('NN')
+        return replacement
+
+
+class PrepositionDropGenerator(ErrorGenerator):
+
+    name = GrammarError.MISSING_PREPOSITION_AFTER_STAT.value
+
+    def get_candidates(self, doc):
+
+        candidates = []
+        for token in doc:
+            if token.i > 0 and token.text.lower() == 'of' and doc[token.i-1].ent_type_ == 'PERCENT':
+                candidates.append([token])
+
+        return candidates
+
+    def get_replacement(self, target, doc):
+        return ''

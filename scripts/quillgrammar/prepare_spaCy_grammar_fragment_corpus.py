@@ -319,9 +319,9 @@ def read_fragment_data(grammar_file, notw_file):
         for sentence, label in data[:10000]:
             writer.writerow([sentence, label])
 
-    fragment_train = data[:test_size]
+    fragment_test = data[:test_size]
     fragment_dev = data[test_size:test_size*2]
-    fragment_test = data[test_size*2:]
+    fragment_train = data[test_size*2:]
 
     return fragment_train, fragment_dev, fragment_test
 

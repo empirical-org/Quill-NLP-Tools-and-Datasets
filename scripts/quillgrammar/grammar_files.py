@@ -6,7 +6,7 @@ import yaml
 
 from collections import Counter
 
-from quillgrammar.grammar.constants import GrammarError
+from quillnlp.grammar.constants import GrammarError
 
 
 file_list = [

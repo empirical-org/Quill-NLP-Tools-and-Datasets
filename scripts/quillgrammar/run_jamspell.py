@@ -3,26 +3,28 @@ import difflib
 import random
 import spacy
 import re
+import csv
 import wordfreq
 
 from tqdm import tqdm
 
-import jamspell
-#import jamspellpro
+#import jamspell
+import jamspellpro
 
 nlp = spacy.load("en_core_web_sm")
 
-input_file = "quillgrammar/data/new_turk_data.txt"
+#input_file = "quillgrammar/data/new_turk_data.txt"
 #input_file = "test.txt"
+input_file = './validated_spelling_corpus.txt'
 
-corrector = jamspell.TSpellCorrector()
-corrector.LoadLangModel('quillgrammar/models/spelling/en.bin')
+#corrector = jamspell.TSpellCorrector()
+#corrector.LoadLangModel('quillgrammar/models/spelling/en.bin')
 
 #corrector = jamspellpro.TSpellCorrector()
 #corrector.LoadLangModel('quillgrammar/models/spelling/model_en_big')
 
-#corrector = jamspellpro.TSpellCorrector()
-#corrector.LoadLangModel('quillgrammar/models/spelling/model_en_med')
+corrector = jamspellpro.TSpellCorrector()
+corrector.LoadLangModel('quillgrammar/models/spelling/model_en_med')
 
 passages = {
     "Alison Bechdel’s memoir has been challenged in certain communities": "tests/data/passages/bechdel.txt",
@@ -75,16 +77,19 @@ def tokenize(sentence):
 
 
 start = time.time()
-with open("jamspell_standard.csv", "w") as o:
+with open("validated_spelling_corpus_jamspell_med.csv", "w") as o:
+
+    writer = csv.writer(o, delimiter='\t')
+
     for line in tqdm(lines):
         total += 1
 
-        whitelist = None
+        whitelist = []
         for passage in passage_tokens:
             if line.startswith(passage):
                 whitelist = passage_tokens[passage]
 
-        assert whitelist is not None
+        #assert whitelist is not None
 
         input_sentence = line.strip()
         output_sentence = corrector.FixFragment(input_sentence)
@@ -112,16 +117,18 @@ with open("jamspell_standard.csv", "w") as o:
         def add_correction(input_token, output_token, sentence, corrections):
             if input_token.strip().lower() not in whitelist:
                 sentence += output_token
-                corrections.append(f"{input_token.strip()} -> {output_token.strip()}")
+                corrections.extend([input_token.strip(), output_token.strip()])
             else:
                 sentence += input_token
             return sentence, corrections
 
 
         whitelisted = False
+        corrections = []
+
+
         if input_sentence != output_sentence:
 
-            corrections = []
             corrected_sentence = ""
 
             to_correct = True
@@ -148,10 +155,10 @@ with open("jamspell_standard.csv", "w") as o:
                 #print(corrected_sentence)
                 #print(corrections)
 
-            o.write(corrected_sentence + "\t" + "; ".join(corrections) + "\n")
-
+            writer.writerow([corrected_sentence] + corrections)
         else:
-            o.write(input_sentence + "\n")
+            writer.writerow([output_sentence] + corrections)
+
 
 
 end = time.time()
