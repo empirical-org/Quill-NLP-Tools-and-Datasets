@@ -389,16 +389,16 @@ A response is suboptimal when:
         },
         "files" : {
             "because": {
-                "train": "data/automl/quokkas_because_v7_train.jsonl",
-                "test": "data/automl/quokkas_because_v7_test_automl.jsonl"
+                "train": "quokkas_because_v7_train.jsonl",
+                "test": "quokkas_because_v7_test_automl.jsonl"
             },
             "but": {
-                "train": "data/automl/quokkas_but_v3_train.jsonl",
-                "test": "data/automl/quokkas_but_v3_test_automl.jsonl"
+                "train": "quokkas_but_v3_train.jsonl",
+                "test": "quokkas_but_v3_test_automl.jsonl"
             },
             "so": {
-                "train": "data/automl/quokkas_so_v6_train.jsonl",
-                "test": "data/automl/quokkas_so_v6_test_automl.jsonl"
+                "train": "quokkas_so_v6_train.jsonl",
+                "test": "quokkas_so_v6_test_automl.jsonl"
             }
         }
     },
@@ -474,16 +474,16 @@ After facing several hurdles making its way through the courts, a trial is set f
         },
         "files" : {
             "because": {
-                "train": "data/automl/athlete_salaries_because_v3_train.jsonl",
-                "test": "data/automl/athlete_salaries_because_v3_test_automl.jsonl"
+                "train": "athlete_salaries_because_v3_train.jsonl",
+                "test": "athlete_salaries_because_v3_test_automl.jsonl"
             },
             "but": {
-                "train": "data/automl/athlete_salaries_but_v3_train.jsonl",
-                "test": "data/automl/athlete_salaries_but_v3_test_automl.jsonl"
+                "train": "athlete_salaries_but_v3_train.jsonl",
+                "test": "athlete_salaries_but_v3_test_automl.jsonl"
             },
             "so": {
-                "train": "data/automl/athlete_salaries_so_v4_train.jsonl",
-                "test": "data/automl/athlete_salaries_so_v4_test_automl.jsonl"
+                "train": "athlete_salaries_so_v4_train.jsonl",
+                "test": "athlete_salaries_so_v4_test_automl.jsonl"
             }
         }
     }
