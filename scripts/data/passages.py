@@ -676,21 +676,32 @@ Feedback: Try clearing your response and starting again. Why do tourists enjoy t
 """,
            "but": """Their response must use information from the text to show a contrasting or surprising idea about the fact that many tourists enjoy taking quokka selfies.
 
-You have to give students useful feedback about their response. These are the general instructions for the feedback:
-- Be nice.
-DO NOT SAY: I'm sorry, but your response doesn't make sense in the context of the text.
-SAY: Try clearing your response and starting again.
-- Give only one piece of feedback at a time.
-- Use one sentence only.
-- *Important: Do not say "great job", but "nice work"*.
-- Don't give feedback about grammar and spelling.
-DO NOT SAY: Check your spelling and grammar
-- *Important: Do not give feedback about conciseness or clarity.*
-NEVER SAY: Try to make your response more clear and concise.
-NEVER SAY: Try to make your response more concise.
-- Don't tell students they are wrong, but focus on the correction they need to make.
-- Don't give an example of the right answer.
-DO NOT SAY: You could say something like "Tourists enjoy taking quokka selfies because they have cute, smiling faces."
+Your feedback should start with 'Nice work!' when:
+- the response says that quokkas bite dozens of tourists every year,
+- THE RESPONSE MUST INCLUDE THE WORD DOZENS IF IT IS ABOUT TOURISTS BEING BITTEN.
+- IF IT DOES NOT HAVE THE WORD DOZENS IN IT AND IT IS ABOUT TOURISTS BEING BITTEN, IT IS SUBOPTIMAL.
+- the response says that feeding them human food can lead to infections or death.
+
+Your feedback should start with 'You have the right idea! Now be more specific' when the response:
+- says there are risks, but doesn't mention specific risks,
+- says that quokkas bite, but doesn't mention the 'dozens' of victims,
+- says human food can be harmful to quokkas, but doesn't mention infections or death,
+- simply says people shouldn't get too close, without mentioning the risks,
+- simply says quokkas dislike people taking selfies,
+- says selfies can only be taken on Rottnest Island,
+- says quokkas can get infections or die, without mentioning how,
+- says quokka bites can cause infections, which is not in the text,
+- says quokkas are endangered.
+
+Your feedback should start with 'Try clearing your response and starting again' in all other cases.
+
+Here are some general rules for your feedback:
+- Make sure your response is *understandable and engaging for a fifth grade student*. Use simple language, clear explanations, and avoid complex vocabulary or concepts.
+- Try to keep you feedback short and friendly.
+- Focus on one issue only. You are not an annoying bot. It is annoying when a student gets an additional piece of feedback. Only tell the student one thing. When you are telling two things, you are being annoying.
+- Do NOT give feedback about conciseness.
+- Do NOT correct grammar and spelling errors.
+- Do not say "great job", but "nice work".
 
 Here are some example responses and their desired feedback:
 
@@ -725,52 +736,59 @@ Response: visitors to be careful as some have been bitten and human food can giv
 Feedback: Nice work! You used information from the text to show a contrasting or suprising idea about the fact that many tourists enjoy taking quokka selfies.
 
 Response: it can be dangerous sometimes.
-Feedback: That's true—taking quokka selfies can be risky. Now make your response even stronger by adding specific information from the text. What negative effects can quokka selfies lead to?
+Feedback: You have the right idea! Now be more specific. Taking quokka selfies can be risky. What negative effects can quokka selfies lead to?
 
 Response: zoologists have warned to not ruin their habitat with the photos.
-Feedback: That's true—taking quokka selfies can be risky. Now make your response even stronger by adding specific information from the text. What negative effects can quokka selfies lead to?
+Feedback: You have the right idea! Now be more specific. Taking quokka selfies can be risky. What negative effects can quokka selfies lead to?
 
 Response: it can be harmful to the quokkas and humans as they sometimes bite.
-Feedback: That's true—quokka selfies can sometimes lead to bites. Now make your response even stronger by adding a specific number from the text. How many people are bitten by quokkas each year?
+Feedback: You have the right idea! Now be more specific. Quokka selfies can sometimes lead to bites. How many people are bitten by quokkas each year?
 
 Response: the animals can be dangerous and some tourists feed them human food which can be harmful.
-Feedback: That's true—human food can be harmful to quokkas. Now make your response even stronger by adding specific information from the text. What can happen to quokkas if they eat human food?
+Feedback: You have the right idea! Now be more specific. Human food can be harmful to quokkas. What can happen to quokkas if they eat human food?
+
+Response: Quokkas are particularly vulnerable to infection and death.
+Feedback: You have the right idea! Now be more specific. Quokkas can get infections. What can cause quokkas to get infected and die?
 
 Response: tourists have avoid getting too close to quokkas.
-Feedback: That's true—tourists shouldn't get too close to the quokkas. Now make your response even stronger by adding specific information from the text. What can happen if a tourist gets too close?
+Feedback: You have the right idea! Now be more specific. Tourists shouldn't get too close to the quokkas. What can happen if a tourist gets too close?
 
 Response: there is only one place where anyone can take a picture with quokka and it is Rottnest Island just off the coast of Perth in Western Australia.
 Feedback: Try clearing your response and starting again. What is a contrast to the fact that many tourists enjoy taking selfies with quokkas? Check that your response only uses information from the text.
 
-Response: Quokkas are particularly vulnerable to infection and death.
-Feedback: That's true—quokka can get infections. Now make your response even stronger by adding specific information from the text. What can cause quokkas to get infected and die?
-
 Response: humans can be bitten and then get an infection.
-Feedback: Quokka bites could cause infections, but the text doesn't say that. Read the part again. How can tourists cause quokkas to get infected?
+Feedback: Try clearing your response and starting again. Quokka bites could cause infections, but the text doesn't say that. Read the part again. How can tourists cause quokkas to get infected?
 
 Response: they are an endangered species with only about 12,000 left.
-Feedback: Revise your response. Instead of talking about the fact that quokkas are endangered, focus on a contrast to the idea that tourists enjoy taking photos with them.
+Feedback: Try clearing your response and starting again. Instead of talking about the fact that quokkas are endangered, focus on a contrast to the idea that tourists enjoy taking photos with them.
 
 Response: they are also curious so they come up to humans.
 Feedback: Try clearing your response and starting again. What is a contrast to the fact that many tourists enjoy taking selfies with quokkas? Check that your response only uses information from the text.
 """,
            "so" : """Their response must use information from the text to show a consequence of the fact that many tourists enjoy taking quokka selfies.
 
-You have to give students useful feedback about their response. These are the general instructions for the feedback:
-- Be nice.
-DO NOT SAY: I'm sorry, but your response doesn't make sense in the context of the text.
-SAY: Try clearing your response and starting again.
-- Give only one piece of feedback at a time.
-- Use one sentence only.
-- *Important: Do not say "great job", but "nice work"*.
-- Don't give feedback about grammar and spelling.
-DO NOT SAY: Check your spelling and grammar
-- *Important: Do not give feedback about conciseness or clarity.*
-NEVER SAY: Try to make your response more clear and concise.
-NEVER SAY: Try to make your response more concise.
-- Don't tell students they are wrong, but focus on the correction they need to make.
-- Don't give an example of the right answer.
-DO NOT SAY: You could say something like "Tourists enjoy taking quokka selfies because they have cute, smiling faces."
+Your feedback should start with 'Nice work!' when the response says one of the following:
+- Rottnest tourism increased 30%, or Tourism Australia made Rottnest Island the star of a global campaign,
+- increased tourism is helping the quokkas, because it pays for research, conservation efforts, and to spread awareness,
+- quokka selfies became a social media trend, with 37,000 posts.
+
+Your feedback should start with 'You have the right idea! Now be more specific' when:
+- it merely says quokka selfies have a positive effect, without specifying what effect exactly,
+- it merely says that more tourists are visiting Rottnest Island, without mentioning the precise percentage,
+- it just says Rottnest is a good place to take quokka selfies,
+- it merely says quokka selfies became a social media trend, without mentioning numbers,
+- it says Rottnest Island was made the star of a global campaign, but not by who,
+- it misuses the conjunction,
+
+Your feedback should start with 'Try clearing your response and starting again' in all other cases.
+
+Here are some general rules for your feedback:
+- Make sure your response is *understandable and engaging for a fifth grade student*. Use simple language, clear explanations, and avoid complex vocabulary or concepts.
+- Try to keep you feedback short and friendly.
+- Focus on one issue only. You are not an annoying bot. It is annoying when a student gets an additional piece of feedback. Only tell the student one thing. When you are telling two things, you are being annoying.
+- Do NOT give feedback about conciseness.
+- Do NOT correct grammar and spelling errors.
+- Do not say "great job", but "nice work".
 
 Here are some example responses and their desired feedback:
 Response: the Island tourism increased 30% from 2017 to 2018.
@@ -804,31 +822,31 @@ Response: people started posting their quokka pictures online in 2010’s with o
 Feedback: Nice work! You used information from the text to show a consequence of the fact that many tourists enjoy taking quokka selfies.
 
 Response: It has a favorable influence on the quokkas, which in turn has a positive impact on the animals.
-Feedback: That's true—the selfie trend has helped Rottnest Island. Now make your response even stronger by adding specific details. What positive effects is Rottnest Island experiencing?
+Feedback: You have the right idea! Now be more specific. The selfie trend has helped Rottnest Island. What positive effects is Rottnest Island experiencing?
 
 Response: the reputation of Rottnest island and quokkas increased.
-Feedback: That's true—the selfie trend has helped Rottnest Island. Now make your response even stronger by adding specific details. What positive effects is Rottnest Island experiencing?
+Feedback: You have the right idea! Now be more specific. The selfie trend has helped Rottnest Island. What positive effects is Rottnest Island experiencing?
 
 Response: Rottnest Island's tourism went up significantly in just over a year.
-Feedback: That's true—more tourists are visiting Rottnest Island. Now make your response even stronger by adding a specific number from the text. How many more tourists are visiting Rottnest Island?
+Feedback: You have the right idea! Now be more specific. More tourists are visiting Rottnest Island. How many more tourists are visiting Rottnest Island?
 
 Response: it attracted so many people to visit Australia.
-Feedback: That's true—more tourists are visiting Rottnest Island. Now make your response even stronger by adding a specific number from the text. How many more tourists are visiting Rottnest Island?
+Feedback: You have the right idea! Now be more specific. More tourists are visiting Rottnest Island. How many more tourists are visiting Rottnest Island?
 
 Response: they have to be careful doing taking selfies as quokkas can be dangerous and bite some tourists.
 Feedback: Try clearing your response and starting again. So is used to explain a consequence or result. Go back to the text and look for a result of the fact that many tourists enjoy taking quokka selfies.
 
 Response: they travel to Rottnest Island in Western Australia just to go take the selfies.
-Feedback: Revise your response. Instead of talking about why Rottnest Island is a good place to take a quokka selfie, focus on an effect that the quokka selfie trend has had on the island.
+Feedback: Try clearing your response and starting again. Instead of talking about why Rottnest Island is a good place to take a quokka selfie, focus on an effect that the quokka selfie trend has had on the island.
 
 Response: It has become a big social media trend.
-Feedback: That's true—quokka selfies have become a social media trend. Now make your response even stronger by adding a specific number from the text. How many people does the text say have posted a quokka selfie?
+Feedback: You have the right idea! Now be more specific. Quokka selfies have become a social media trend. How many people does the text say have posted a quokka selfie?
 
 Response: they can post it on social media so other people can see the quokkas.
-Feedback: Revise your response. Instead of talking about why people want to take quokka selfies, focus on an effect that the quokka selfie trend has had on the island.
+Feedback: Try clearing your response and starting again. Instead of talking about why people want to take quokka selfies, focus on an effect that the quokka selfie trend has had on the island.
 
 Response: They made it the center of a worldwide campaign in 2019.
-Feedback: That's true—Rottnest Island is now the star of a global campaign thanks to quokkas. Now make your response even stronger by adding specific details. Who made Rottnest Island the star of its campaign?
+Feedback: You have the right idea! Now be more specific. Rottnest Island is now the star of a global campaign thanks to quokkas. Who made Rottnest Island the star of its campaign?
 
 Response: it's a very cool and fun thing to do but be aware when near to them.
 Feedback: Try clearing your response and starting again. What happened as a result of the fact that many tourists enjoy taking quokka selfies? Check that your response only uses information from the text.

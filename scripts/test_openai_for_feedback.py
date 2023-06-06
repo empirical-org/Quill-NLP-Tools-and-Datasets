@@ -1,6 +1,7 @@
 import os
 import openai
 import jsonlines
+import requests
 import random
 import tiktoken
 import csv
@@ -9,12 +10,15 @@ import time
 from scripts.data.passages import passages, feedback_instructions
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
+PALM_API_KEY = os.getenv("PALM_API_KEY")
+
 
 OPTIMAL_LABEL = 'Optimal'
 SUBOPTIMAL_LABEL = 'Suboptimal'
 
 MODEL = "text-davinci-003"
 MODEL = 'gpt-3.5-turbo'
+MODEL = 'palm'
 
 PASSAGE = 'quokkas'
 CONJUNCTION = 'because'
@@ -100,9 +104,22 @@ def create_conversation(prompt, passage, feedback_list, response):
     return conversation
 
 
+def evaluate_answer(answer, correct_label):
+    if 'nice work' in answer.lower() and correct_label.startswith('Optimal'):
+        return True
+    elif "try clearing" in answer.lower() and correct_label.startswith('Label_0'):
+        return True
+    elif "right idea!" in answer.lower() and correct_label.startswith('Label_'):
+        return True
+    return False
+
 
 train_items = read_file(passages[PASSAGE]['files'][CONJUNCTION]['train'], passages[PASSAGE]['prompts'][CONJUNCTION])
 test_items = read_file(passages[PASSAGE]['files'][CONJUNCTION]['test'], passages[PASSAGE]['prompts'][CONJUNCTION])
+
+# for item in test_items:
+#     print(item[0])
+# input()
 
 print('Train items:', len(train_items))
 print('Test items:', len(test_items))
@@ -118,7 +135,8 @@ for item in test_items:
     automl_label = item[2]
 
     full_prompt = create_openai_feedback_prompt(passages[PASSAGE]['prompts'][CONJUNCTION], passages[PASSAGE]['plagiarism'][CONJUNCTION], passages[PASSAGE]['feedback'][CONJUNCTION], sentence)
-    # print(full_prompt)
+    print(full_prompt)
+    input()
     # conversation = create_conversation(passages[PASSAGE]['prompts'][CONJUNCTION], passages[PASSAGE]['plagiarism'][CONJUNCTION], passages[PASSAGE]['feedback_list'][CONJUNCTION], sentence)
     # for item in conversation:
     #     print(item)
@@ -165,14 +183,21 @@ for item in test_items:
         cost = (num_tokens_prompt + num_tokens_answer) / 1000 * 0.002
         cost_per_prompt.append(cost)
 
-        evaluation = False
-        if 'nice work' in answer.lower() and correct_label.startswith('Optimal'):
-            evaluation = True
-        elif "try clearing" in answer.lower() and correct_label.startswith('Label_0'):
-            evaluation = True
-        elif "right idea!" in answer.lower() and correct_label.startswith('Label_'):
-            evaluation = True
+        evaluation = evaluate_answer(answer, correct_label)
 
+        final_output.append((sentence, correct_label, answer, evaluation))
+
+    elif MODEL.startswith('palm'):
+
+        data = {"prompt": {"text": full_prompt}}
+        url = f'https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key={PALM_API_KEY}'
+
+        r = requests.post(url, json=data)
+
+        answer = r.json()['candidates'][0]['output']
+        print(answer)
+
+        evaluation = evaluate_answer(answer, correct_label)
         final_output.append((sentence, correct_label, answer, evaluation))
 
     else:
