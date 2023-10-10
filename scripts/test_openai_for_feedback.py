@@ -1,10 +1,10 @@
 # Feedback script for OpenAI models.
 #
 # Usage:
-# > python scripts/test_openai_for_feedback2.py model tag_for_output_file
+# > python scripts/test_openai_for_feedback.py model tag_for_output_file
 #
 # Example:
-# > python scripts/test_openai_for_feedback2.py gpt-3.5-turbo gpt3-5-turbo
+# > python scripts/test_openai_for_feedback.py gpt-3.5-turbo gpt3-5-turbo
 
 
 import os
