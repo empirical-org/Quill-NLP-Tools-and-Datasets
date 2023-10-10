@@ -706,7 +706,7 @@ Here are some general rules for your feedback:
 Here are some example responses and their desired feedback:
 
 Response: these animals are known to bite dozens of visitors each year.
-Feedback: Nice work! You used information from the text to show a contrasting or suprising idea about the fact that many tourists enjoy taking quokka selfies.
+Feedback: Nice work! You used information from the text to show a contrasting or surprising idea about the fact that many tourists enjoy taking quokka selfies.
 
 Response: tourists shouldn't get too close to them because many tourists have been bitten by them; dozens of tourists are bitten by them each year.
 Feedback: Nice work! You used information from the text to show a contrasting or suprising idea about the fact that many tourists enjoy taking quokka selfies.
