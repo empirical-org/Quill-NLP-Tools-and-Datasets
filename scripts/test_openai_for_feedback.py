@@ -1,4 +1,4 @@
-# Feedback script for OpenAI models.
+# Feedback script for OpenAI models. Compares GPT 4 feedback with human Quill feedback (no training)
 #
 # Usage:
 # > python scripts/test_openai_for_feedback.py model tag_for_output_file
@@ -7,18 +7,19 @@
 # > python scripts/test_openai_for_feedback.py gpt-3.5-turbo gpt3-5-turbo
 
 
-import os
-import click
-import openai
-import jsonlines
-import re
-import tiktoken
 import csv
-import time
+import os
+import re
 import threading
-
-from tqdm import tqdm
+import time
 from pathlib import Path
+
+import click
+import jsonlines
+import openai
+import tiktoken
+from tqdm import tqdm
+
 from scripts.data.bereal import passage as passage_bereal
 from scripts.data.berlin import passage as passage_berlin
 from scripts.data.haiti import passage as passage_haiti
@@ -26,8 +27,6 @@ from scripts.data.pompeii import passage as passage_pompeii
 from scripts.data.quokkas import passage as passage_quokkas
 from scripts.data.surgebarriers import passage as passage_barriers
 from scripts.data.villages import passage as passage_villages
-
-
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
