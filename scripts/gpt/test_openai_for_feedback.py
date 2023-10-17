@@ -1,6 +1,7 @@
 # Feedback script for OpenAI models. Compares GPT 4 feedback with human Quill feedback (no training)
 #
-# Usage:
+# Usage: First set your OpenAI key, then run the script:
+# > export OPENAI_API_KEY=<YOUR_KEY>
 # > python scripts/test_openai_for_feedback.py model tag_for_output_file
 #
 # Example:
