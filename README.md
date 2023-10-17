@@ -17,7 +17,7 @@ First, this repo contains a script to finetune a GPT-3.5-turbo model with Quill'
 
 ### test script
 
-Second, it is possible to evaluate GOT-3.5, GPT-4 or a finetuned model by comparing their feedback to Quill's human feedback, using `test_openai_for_feedback.py`:
+Second, it is possible to evaluate GPT-3.5, GPT-4 or a finetuned model by comparing their feedback to Quill's human feedback, using `test_openai_for_feedback.py`:
 
 ```
 > pip install -r requirements-gpt.txt
