@@ -12,16 +12,21 @@ First, this repo contains a script to finetune a GPT-3.5-turbo model with Quill'
 ```
 > pip install -r requirements-gpt.txt
 > export OPENAI_API_KEY=<YOUR_KEY>
-> python scripts/gpt/finetune.py output_file.json
+> python scripts/gpt/finetune.py <output_file>.json
 ```
 
 ### test script
 
-Second, it is possible to evaluate GOT-3.5, GPT-4 or a finetuned model by comparing their feedback to Quill's human feedback, using `test_openai_for_feedback.py`:
+Second, it is possible to evaluate GPT-3.5, GPT-4 or a finetuned model by comparing their feedback to Quill's human feedback, using `test_openai_for_feedback.py`:
 
 ```
 > pip install -r requirements-gpt.txt
 > export OPENAI_API_KEY=<YOUR_KEY>
-> python scripts/gpt/test_openai_for_feedback.py model tag_for_output_file
+> python scripts/gpt/test_openai_for_feedback.py <model> <tag_for_output_file>
 ```
 
+For example:
+
+```
+> python scripts/test_openai_for_feedback.py gpt-3.5-turbo gpt3-5-turbo
+```
