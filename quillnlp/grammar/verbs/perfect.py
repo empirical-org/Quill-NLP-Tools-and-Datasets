@@ -74,7 +74,7 @@ class PassivePerfectWithoutHaveErrorGenerator(ErrorGenerator):
 
 class PerfectTenseWithSimplePastErrorGenerator(ErrorGenerator):
 
-    name = GrammarError.PERFECT_TENSE_WITH_INCORRECT_PARTICIPLE.value
+    name = GrammarError.PERFECT_WITH_INCORRECT_PARTICIPLE.value
 
     def get_candidates(self, doc):
         candidates = []

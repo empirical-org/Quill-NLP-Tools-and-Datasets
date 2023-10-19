@@ -1,7 +1,6 @@
 from os import replace
 import re
 import random
-import lemminflect
 
 from spacy.tokens.token import Token
 
@@ -73,7 +72,7 @@ class ErrorGenerator:
     def generate_from_doc(self, doc):
         candidates = self.get_candidates(doc)
         if not candidates:
-            return doc.text, [], False 
+            return doc.text, [], False
         target = random.choice(candidates)
         replacement = self.get_replacement(target, doc)
 
@@ -84,7 +83,7 @@ class ErrorGenerator:
             new_sentence, entities = self.replace(doc, target, replacement)
         else:
             new_sentence, entities = self.replace(doc, [target], replacement)
-    
+
         return new_sentence, entities, True
 
     def generate_from_text(self, text: str):
@@ -104,7 +103,7 @@ class ErrorGenerator:
         # If the token is capitalized, the replacement token should be capitalized
         if len(replacement_token) > 1:
             replacement_token = replacement_token[0].upper() + replacement_token[1:] if target_tokens[0].text.istitle() else replacement_token
-        
+
         # If the token is "I" and it is not at the beginning of the sentence,
         # the replacement token should be lowercased, unless it also starts with I
         if len(target_tokens) == 1 and target_tokens[0].i > 0 and target_tokens[0].text == "I" and not replacement_token.startswith("I"):
@@ -114,7 +113,7 @@ class ErrorGenerator:
             sentence = doc[:target_tokens[0].i].text_with_ws + replacement_token + target_tokens[-1].whitespace_ + doc[target_tokens[-1].i+1:].text
             entities = [(target_tokens[0].idx, target_tokens[0].idx+len(replacement_token), self.name)]
         # If the replacement_token == '' or ' , i.e. we remove a token
-        elif target_tokens[-1].i+1 < len(doc) and len(target_tokens) == 1: 
+        elif target_tokens[-1].i+1 < len(doc) and len(target_tokens) == 1:
             sentence = doc[:target_tokens[0].i].text_with_ws + replacement_token + doc[target_tokens[-1].i+1:].text
             token_to_highlight = doc[target_tokens[-1].i+1]
             start_index_highlight = token_to_highlight.idx - len(target_tokens[0].text_with_ws) + len(replacement_token)
@@ -139,7 +138,7 @@ class TokenReplacementErrorGenerator(ErrorGenerator):
 
     def get_replacement(self, target, doc):
         return random.choice(self.replacement_map[target.text.lower()])
-        
+
 
 class PronounReplacementErrorGenerator(ErrorGenerator):
 
@@ -167,7 +166,7 @@ class PronounReplacementErrorGenerator(ErrorGenerator):
                 candidates.append([token])
 
         if not candidates:
-            return doc.text, [], False 
+            return doc.text, [], False
 
         target = random.choice(candidates)
         if len(target) == 2:
@@ -232,7 +231,7 @@ class IncorrectIrregularPastErrorGenerator(ErrorGenerator):
     def get_candidates(self, doc):
 
         exclude_tokens = set(["was", "did", "were"])
-        candidates = [t for t in doc if t.tag_ == Tag.SIMPLE_PAST_VERB.value and not t.text.endswith("ed") 
+        candidates = [t for t in doc if t.tag_ == Tag.SIMPLE_PAST_VERB.value and not t.text.endswith("ed")
                         and t.text not in exclude_tokens]
         return candidates
 
@@ -280,7 +279,7 @@ class PluralPossessiveErrorGenerator(ErrorGenerator):
     def get_candidates(self, doc):
 
         plurals, possessives = [], []
-        for token in doc: 
+        for token in doc:
             if token.tag_ == 'NNS':
                 plurals.append([token])
             elif token.i < len(doc) - 1 and token.tag_.startswith("NN") and \

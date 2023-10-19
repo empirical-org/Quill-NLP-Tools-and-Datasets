@@ -10,17 +10,14 @@ import re
 import glob
 import zipfile
 
-from nltk import sent_tokenize
 from tqdm import tqdm
 
-from quillgrammar.grammar.constants import GrammarError
 from quillnlp.grammar.generation import TokenReplacementErrorGenerator, subject_pronoun_error_generator, \
     object_pronoun_error_generator, possessive_pronoun_error_generator, PluralPossessiveErrorGenerator, \
     their_error_generator, PronounReplacementErrorGenerator, IncorrectIrregularPastErrorGenerator, \
     IncorrectParticipleErrorGenerator, IrregularPluralNounErrorGenerator, its_its_error_generator
 from quillnlp.grammar.verbs import perfect, agreement, passive, tense
 from quillnlp.grammar.verbs.passive import PassiveWithoutBeErrorGenerator, PassiveWithIncorrectBeErrorGenerator
-from quillnlp.models.spacy.train import train_spacy_ner
 
 PUNCTUATION = set([".", "?", "!"])
 
@@ -72,7 +69,7 @@ def get_data_from_files(files, id2source, seen_sentences, error_generator, train
     total_items = 0
 
     # Add more data
-    for f in files:
+    for f in files[:10]:
         print(f)
         with zipfile.ZipFile(f) as myzip:
             zipped_files = myzip.namelist()
