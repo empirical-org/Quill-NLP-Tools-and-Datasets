@@ -1,3 +1,8 @@
+# Contains data augmentation methods that can be used to distill
+# a large NLP model into a smaller one. Data augmentation techniques
+# include sampling random ngrams from a text and randomly masking
+# a certain percentage of tokens in a text.
+
 import random
 
 from collections import defaultdict, Counter
