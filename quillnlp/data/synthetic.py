@@ -5,7 +5,17 @@ from google.cloud import translate_v2 as translate
 translate_client = translate.Client()
 
 
-def backtranslate(text, lang):
+def backtranslate(text:str, lang:str) -> str:
+    """Translates a text to a given language and then translates it back.
+    We do this to paraphrase the text and injuect variation into datasets.
+
+    Args:
+        text (str): the text to backtranslate
+        lang (str): the language for backtranslation
+
+    Returns:
+        str: the backtranslated text
+    """
 
     translation = translate_client.translate(text, target_language=lang)
     back_translation = translate_client.translate(translation["translatedText"],
