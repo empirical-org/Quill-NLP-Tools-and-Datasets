@@ -4,6 +4,7 @@ This is the respository for Quill's NLP experiments. Most importantly, it contai
 ## Grammar
 
 Quill has developed a grammar pipeline that labels sentences with frequent grammar errors, such as subject-verb agreement errors and plural-possessive errors.
+The goal is to give students feedback on their writing, so that they can correct grammatical errors.
 This pipeline is a combination of simple rules and a machine-learning model. The machine-learning model is trained on a mix of real data from students and data with
 synthetic grammar errors. This repository has the code for creating such synthetic grammar errors and preparing a training corpus for spaCy.
 
@@ -67,8 +68,8 @@ spacy train config_distilbert.cfg --output output_path \
 ## Large Language Models for student feedback
 
 Second, this corpus contains all data and scripts for our experiments with Large Language Models for student feedback.
-The data are in `data/automl`, organized by passage and prompt. The scripts are in `scripts/gpt`.
-
+The goal of this task is to provide automatic feedback on the content of student responses.
+The files with examples of human feedback are in `data/automl`, organized by passage and prompt. The scripts are in `scripts/gpt`.
 
 ## GPT scripts
 
