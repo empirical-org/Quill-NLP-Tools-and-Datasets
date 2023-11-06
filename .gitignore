@@ -21,4 +21,5 @@ data/fragments
 db
 nohup.out
 env/*
+env*
 .idea/*

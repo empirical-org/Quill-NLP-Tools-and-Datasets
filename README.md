@@ -1,5 +1,25 @@
 # Quill NLP Tools and Datasets
+
 This is the respository for Quill's NLP experiments. Most importantly, it contains the code for creating data with synthetic grammar errors, and our investigation of large language models for student feedback.
+
+## Setup
+
+Different scripts in this repo rely on different pip packages. We currently use python's `virtualenv` standard library to manage dependencies.
+
+Here's how to set up the (currently) two virtual envs:
+
+```shell
+python -m venv env-grammar
+python -m venv env-gpt
+```
+
+Here's how to use a virtualenv in the context of running a script:
+
+```shell
+source env-myEnvName/bin/activate
+python myScript
+deactivate
+```
 
 ## Grammar
 
@@ -55,7 +75,6 @@ This takes as its only argument the directory to which the corpus files will be 
 
 The list of synthetic error files that will be used for the corpus can be adapted in `scripts/quillgrammar/grammar_files.csv`.
 
-
 ### Training
 
 Now the grammar model can be trained with spaCy's standard training command:
@@ -76,6 +95,7 @@ The files with examples of human feedback are in `data/automl`, organized by pas
 There is a script for finetuning a GPT model with Quill's feedback, and another one for evaluating the output of a large language model:
 
 ### finetuning script
+
 First, this repo contains a script to finetune a GPT-3.5-turbo model with Quill's human feedback. This can be done with the script `finetune.py`:
 
 ```
