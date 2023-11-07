@@ -13,13 +13,18 @@ import zipfile
 from tqdm import tqdm
 
 from quillnlp.grammar.generation import TokenReplacementErrorGenerator, subject_pronoun_error_generator, \
-    object_pronoun_error_generator, possessive_pronoun_error_generator, PluralPossessiveErrorGenerator, \
+    object_pronoun_error_generator, possessive_pronoun_error_generator, PluralPossessivePossessiveOptimalErrorGenerator, \
+    PluralPossessivePluralOptimalErrorGenerator, SingularPluralErrorGenerator, PrepositionDropGenerator, \
     their_error_generator, PronounReplacementErrorGenerator, IncorrectIrregularPastErrorGenerator, \
-    IncorrectParticipleErrorGenerator, IrregularPluralNounErrorGenerator, its_its_error_generator
+    IncorrectParticipleErrorGenerator, IrregularPluralNounErrorGenerator, its_its_error_generator, \
+    SingularPluralPossessiveErrorGenerator, SingularPluralErrorGeneratorDropDet
+from quillnlp.grammar.fragments import FragmentWithoutSubjectGenerator, FragmentWithoutVerbGenerator, FragmentWithoutVerbOrAuxGenerator
 from quillnlp.grammar.verbs import perfect, agreement, passive, tense
 from quillnlp.grammar.verbs.passive import PassiveWithoutBeErrorGenerator, PassiveWithIncorrectBeErrorGenerator
 
 PUNCTUATION = set([".", "?", "!"])
+
+detokenizer = TreebankWordDetokenizer()
 
 
 def read_sources(corpus_dir):
@@ -53,20 +58,15 @@ def clean_text(text):
     text = re.sub("<h>.*<h>", "", text)
     text = re.sub("<.*?>", "", text)
     text = re.sub(" ([\.\,\!\?\)\;\:])", "\\1", text)
-    text = text.replace(" n't", "n't")
-    text = text.replace(" 's", "'s")
-    text = text.replace(" 'll", "'ll")
-    text = text.replace(" 'd", "'d")
-    text = text.replace(" 're", "'re")
-    text = text.replace(" 've", "'ve")
     text = re.sub("([\(]) ", "\\1", text)
     return text
 
 
 def get_data_from_files(files, id2source, seen_sentences, error_generator, train_length, nlp,
-                        output_file, from_us=True, verbose=False):
+                        output_file, from_us=True, verbose=False, probability=0.5):
 
     total_items = 0
+    ignored_sentences = 0
 
     # Add more data
     for f in files[:10]:
@@ -86,31 +86,38 @@ def get_data_from_files(files, id2source, seen_sentences, error_generator, train
                         except:
                             continue
                         if (from_us and text_id in id2source) or (not from_us and text_id not in id2source):
-                            text = " ".join(line[1:])
-                            text = clean_text(text)
+                            text = line[1:]
+                            text = detokenizer.detokenize(text)
+                            paragraphs = re.split("<p>", text)
 
-                            sentences = nltk.sent_tokenize(text)
-                            for sentence in sentences:
-                                if len(sentence.split()) > 3 and "@" not in sentence \
-                                        and sentence[-1] in PUNCTUATION and sentence not in seen_sentences:
-                                    seen_sentences.add(sentence)
-                                    texts.append(sentence)
+                            for paragraph in paragraphs:
+                                sentences = nltk.sent_tokenize(paragraph)
+                                for sentence in sentences:
+                                    if len(re.findall("' ", sentence)) < 2:
+                                        sentence = clean_text(sentence.strip())
+                                        if len(sentence.split()) > 3 and "@" not in sentence \
+                                                and sentence[-1] in PUNCTUATION and sentence not in seen_sentences:
 
-                print("Texts collected")
+                                            seen_sentences.add(sentence)
+                                            texts.append(sentence)
+                                    else:
+                                        # print("Ignored:", sentence)
+                                        ignored_sentences += 1
+
                 docs = list(nlp.pipe(texts))
-                print("Texts processed")
 
                 # Process texts
                 train_data = []
                 for sentence in docs:
-                    synthetic_sentence, entities, relevant = error_generator.generate_from_doc(sentence)
+                    synthetic_sentence, entities, relevant = error_generator.generate_from_doc(sentence, add_optimal=False)
 
                     if relevant and synthetic_sentence != sentence.text:
                         if verbose:
                             print(sentence)
                             print(synthetic_sentence)
                             print(entities)
-                        if random.random() < 0.5:
+
+                        if random.random() < probability:
                             train_data.append((synthetic_sentence, {"entities": entities,
                                                                     "original": sentence.text}))
                         else:
@@ -125,6 +132,8 @@ def get_data_from_files(files, id2source, seen_sentences, error_generator, train
                         ndjson.dump(train_data, o)
 
                 total_items += len(train_data)
+                print(f"Collected: {total_items} - Ignored: {ignored_sentences}")
+
                 if total_items > train_length:
                     break
 
@@ -145,11 +154,6 @@ def create_corpus(corpus_dir):
     train_length = 1000000
     test_size = 1000
 
-    error_generators_todo = [
-#        tense.SimplePastInsteadOfPastPerfectErrorGenerator(),
-
-    ]
-
     error_generators = [
         # perfect.PassivePerfectWithoutHaveErrorGenerator(),
         # perfect.PerfectTenseWithoutHaveErrorGenerator(),
@@ -161,47 +165,49 @@ def create_corpus(corpus_dir):
         # agreement.SubjectVerbAgreementWithPronounErrorGenerator(),
         # agreement.SubjectVerbAgreementWithIndefinitePronounErrorGenerator(),
         # perfect.PassivePerfectWithIncorrectParticipleErrorGenerator()
+        # SubjectVerbAgreementWithInversionErrorGenerator(),
         # its_its_error_generator
-        subject_pronoun_error_generator,
-        object_pronoun_error_generator,
-        possessive_pronoun_error_generator
-    ]
+        # subject_pronoun_error_generator,
+        # object_pronoun_error_generator,
+        # possessive_pronoun_error_generator,
+        # their_error_generator
+        # TokenReplacementErrorGenerator({"then": ["than"],
+        #                                 "than": ["then"]},
+        #                                GrammarError.THAN_THEN.value)
+        # TokenReplacementErrorGenerator({"loose": ["lose"],
+        #                                 "looses": ["loses"],
+        #                                 "looser": ["loser"],
+        #                                 "loosers": ["losers"],
+        #                                 "lose": ["loose"],
+        #                                 "loses": ["looses"],
+        #                                 "loser": ["looser"],
+        #                                 "losers": ["loosers"]
+        #                                 },
+        #                                GrammarError.LOOSE_LOSE.value)
+        # agreement.SubjectVerbAgreementWithPronounErrorGenerator(),
+        # agreement.IncorrectInfinitivePastGenerator(),
+        # FragmentWithoutVerbOrAuxGenerator(),
+        # TokenReplacementErrorGenerator({'too': ['two', 'to']},
+        #                                GrammarError.TO_TWO_TOO_TOO_OPTIMAL.value,
+        #                                probs=[0.1, 0.9])
+        TokenReplacementErrorGenerator({'an': ['a']},
+                                       GrammarError.ARTICLE.value)
 
-    #error_generator = perfect.PerfectProgressiveWithIncorrectBeAndWithoutHaveErrorGenerator()
-    #error_generator = perfect.PerfectTenseWithoutHaveErrorGenerator()
-    #error_generator = tense.SimplePastInsteadOfPresentPerfectErrorGenerator()
-    #error_generator = passive.PassivePastTenseAsParticipleErrorGenerator()
-    #error_generator = passive.PassiveWithoutBeErrorGenerator()
-    #error_generator = agreement.IncorrectThirdPersonErrorGenerator()
-    #error_generator = agreement.SubjectVerbAgreementErrorGenerator()
-    #error_generator = agreement.SubjectVerbAgreement()
-    #error_generator = agreement.SubjectVerbAgreementWithSimpleNounErrorGenerator()
-    #error_generator = agreement.SubjectVerbAgreementWithPronounErrorGenerator()
-    #error_generator = agreement.SubjectVerbAgreementWithIndefinitePronounErrorGenerator()
-    #error_generator = possessive_pronoun_error_generator
-    #error_generator = perfect.PassivePerfectWithIncorrectParticipleErrorGenerator()
-    #error_generator = tense.SimplePastInsteadOfPastPerfectErrorGenerator()
-    #error_generator = agreement.SubjectVerbAgreementWithEitherOrErrorGenerator()
-    #error_generator = perfect.PassivePerfectWithoutHaveErrorGenerator()
-    #error_generator = perfect.PassivePerfectWithIncorrectParticipleErrorGenerator()
-    #error_generator = TokenReplacementErrorGenerator({"through": ["threw", "thru"],
-    #                                                  "threw": ["through", "thru"],
-    #                                                  "thru": ["threw", "through"]},
-    #                                                 GrammarError.THROUGH_THREW_THRU.value)
-    #error_generator = PronounReplacementErrorGenerator({"apart": ["a part"]},
-    #    {"a part": ["apart"]},
-    #    lambda x: True,
-    #    {},
-    #    GrammarError.APART_A_PART.value
-    #)
-
-    #error_generator = PluralPossessiveErrorGenerator()
-    #error_generator = subject_pronoun_error_generator
+        # TokenReplacementErrorGenerator({'the': ['he']},
+        #                                GrammarError.HE_THE.value)
+        # TokenReplacementErrorGenerator({"advise": ["advice"],
+        #                                 "advises": ["advices"],
+        #                                 "advised": ["adviced"],
+        #                                 "advising": ["advicing"],
+        #                                 "advice": ["advise"],
+        #                                 "advices": ["advises"]},
+        #                                GrammarError.ADVISE_ADVICE.value)
+        ]
 
     for error_generator in error_generators:
         seen_sentences = set()
         output_name = error_generator.name.replace(" ", "_").replace("-", "_").lower()
-        output_file = f"data/training2/{output_name}.ndjson"
+        output_file = f"{output_name}.ndjson"
         get_data_from_files(files, id2source, seen_sentences, error_generator, train_length,
                             nlp, output_file, from_us=True, verbose=True)
 

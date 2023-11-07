@@ -78,12 +78,12 @@ def postprocess(text):
         text += '.'
 
     # Introduce some questions in the set
-    if text[-1] == '.' and random.random() < 0.05:
-        text = text[:-1] + '?'
+    # if text[-1] == '.' and random.random() < 0.05:
+    #     text = text[:-1] + '?'
 
     # Introduce some lowercased instances in the set
-    if text[0].isupper() and random.random() < 0.1:
-        text = text[0].lower() + text[1:]
+    # if text[0].isupper() and random.random() < 0.1:
+    #     text = text[0].lower() + text[1:]
 
     return text
 
@@ -99,10 +99,12 @@ def is_unique_past_participle(token):
 
 class FragmentWithoutVerbGenerator(ErrorGenerator):
 
+    name = GrammarError.FRAGMENT_NO_VERB.value
+
     def __init__(self):
         pass
 
-    def generate_from_doc(self, doc, prompt=None):
+    def generate_from_doc(self, doc, prompt=None, add_optimal=False):
 
         text = ""
         entities = []
@@ -112,7 +114,7 @@ class FragmentWithoutVerbGenerator(ErrorGenerator):
             if prompt is not None and token.idx < len(prompt):
                 continue
 
-            if token.pos_ == POS.VERB.value \
+            if token.tag_ in [Tag.PRESENT_OTHER_VERB.value, Tag.PRESENT_SING3_VERB.value, Tag.SIMPLE_PAST_VERB.value] \
                     and token.head.dep_ == Dependency.ROOT.value and \
                     len(list(token.lefts)) > 0 and \
                     Dependency.SUBJECT.value in set([t.dep_ for t in token.lefts]) and \
@@ -130,10 +132,11 @@ class FragmentWithoutVerbGenerator(ErrorGenerator):
         for token in doc:
             if prompt is not None and token.idx < len(prompt):
                 text += previous_whitespace + token.text
-            elif token == target_token or \
-                    (token.pos_ in [POS.VERB.value, POS.AUX.value] and token.head == target_token):
+            elif token == target_token:
+                # or \
+                #     (token.pos_ in [POS.VERB.value, POS.AUX.value] and token.head == target_token):
                 previous_whitespace = token.whitespace_
-                entity = (subject.idx, subject.idx+len(subject), 'FRAGMENT_NO_VERB')
+                entity = (subject.idx, subject.idx+len(subject), self.name)
                 if entity not in entities:
                     entities.append(entity)
                 continue
@@ -146,10 +149,12 @@ class FragmentWithoutVerbGenerator(ErrorGenerator):
 
 class FragmentWithoutAuxiliaryGenerator(ErrorGenerator):
 
+    name = GrammarError.FRAGMENT_NO_VERB.value
+
     def __init__(self):
         pass
 
-    def generate_from_doc(self, doc, prompt=None):
+    def generate_from_doc(self, doc, prompt=None, add_optimal=False):
 
         text = ""
         entities = []
@@ -167,10 +172,10 @@ class FragmentWithoutAuxiliaryGenerator(ErrorGenerator):
                     and not relevant:
 
                 if token.head.idx < token.idx:
-                    entity = (token.head.idx, token.head.idx+len(token.head), 'FRAGMENT_NO_AUX')
-                else:   
+                    entity = (token.head.idx, token.head.idx+len(token.head), self.name)
+                else:
                     removed_characters = len(token.text) + len(previous_whitespace)
-                    entity = (token.head.idx-removed_characters, token.head.idx+len(token.head)-removed_characters, 'FRAGMENT_NO_AUX')
+                    entity = (token.head.idx-removed_characters, token.head.idx+len(token.head)-removed_characters, self.name)
 
                 previous_whitespace = token.whitespace_
                 relevant = True
@@ -186,12 +191,62 @@ class FragmentWithoutAuxiliaryGenerator(ErrorGenerator):
         return postprocess(text), entities, relevant
 
 
-class FragmentWithoutSubjectGenerator(ErrorGenerator):
+class FragmentWithoutVerbOrAuxGenerator(ErrorGenerator):
+
+    name = GrammarError.FRAGMENT_NO_VERB.value
 
     def __init__(self):
         pass
 
-    def generate_from_doc(self, doc, prompt=None):
+    def generate_from_doc(self, doc, prompt=None, add_optimal=False):
+
+        text = ""
+        entities = []
+        target_tokens = []
+
+        for token in doc:
+            if token.i == 0:
+                continue
+
+            if prompt is not None and token.idx < len(prompt):
+                continue
+
+            if token.tag_ in [Tag.PRESENT_OTHER_VERB.value, Tag.PRESENT_SING3_VERB.value, Tag.SIMPLE_PAST_VERB.value] \
+                    and token.lemma_ != 'have':
+                target_tokens.append(token)
+                break
+
+        # If there is no target token, we cannot make a relevant fragment
+        relevant = len(target_tokens) > 0
+        if not relevant:
+            return doc.text, [], relevant
+
+        target_token = random.choice(target_tokens)
+        previous_whitespace = ''
+        for token in doc:
+            if prompt is not None and token.idx < len(prompt):
+                text += previous_whitespace + token.text
+            elif token == target_token:
+                previous_whitespace = token.whitespace_
+                entity = (doc[token.i-1].idx, doc[token.i-1].idx+len(doc[token.i-1]), self.name)
+                if entity not in entities:
+                    entities.append(entity)
+                continue
+            else:
+                text += previous_whitespace + token.text
+            previous_whitespace = token.whitespace_
+
+        return postprocess(text), entities, relevant
+
+
+class FragmentWithoutSubjectGenerator(ErrorGenerator):
+
+    name = GrammarError.FRAGMENT_NO_SUBJ.value
+
+    def __init__(self):
+        pass
+
+    def generate_from_doc(self, doc, prompt=None, add_optimal=False):
 
         text = ""
         entities = []
@@ -200,6 +255,8 @@ class FragmentWithoutSubjectGenerator(ErrorGenerator):
         subjects_in_doc = []
         for token in doc:
             if prompt is not None and token.idx < len(prompt):
+                continue
+            if token.text.startswith("'"):
                 continue
             if token.pos_ == POS.VERB.value or token.pos_ == POS.AUX.value:
                 subject = get_subject(token, full=True)
@@ -226,10 +283,10 @@ class FragmentWithoutSubjectGenerator(ErrorGenerator):
         text = text.strip()
 
         if verb.idx < subject_to_remove[0].idx:
-            entity = (verb.idx, verb.idx+len(verb), 'FRAGMENT_NO_SUBJ')
-        else: 
+            entity = (verb.idx, verb.idx+len(verb), self.name)
+        else:
             removed_characters = len(doc.text) - len(text)
-            entity = (verb.idx-removed_characters, verb.idx+len(verb)-removed_characters, 'FRAGMENT_NO_SUBJ')
+            entity = (verb.idx-removed_characters, verb.idx+len(verb)-removed_characters, self.name)
         entities.append(entity)
 
         return postprocess(text), entities, relevant
@@ -342,7 +399,7 @@ class KeeperFragmentFragmentGenerator(ErrorGenerator):
                 previous_whitespace = token.whitespace_
             elif len(text) > 0:
                 previous_whitespace = token.whitespace_
-            
+
         return postprocess(text), entities, relevant
 
 
@@ -583,7 +640,7 @@ class MissingObjectFragmentGenerator(ErrorGenerator):
         if target_token.head.lemma_ in self.transitive_verbs and random_number < 0.5:
             text, entities = self.remove_full_object(prompt, doc, target_token)
         else:
-            text, entities = self.remove_part_of_object(prompt, doc, target_token)         
+            text, entities = self.remove_part_of_object(prompt, doc, target_token)
 
         text = postprocess(text)
 

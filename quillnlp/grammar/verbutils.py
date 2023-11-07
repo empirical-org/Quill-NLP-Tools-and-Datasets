@@ -5,11 +5,10 @@ from spacy.tokens.span import Span
 
 from spacy.tokens.token import Token
 
-from quillnlp.grammar.constants import Dependency, Tag, POS, TokenSet, GrammarError
+from quillnlp.grammar.constants import Dependency, Tag, POS, TokenSet, GrammarError, RELATIVE_PRONOUN_TAGS
 from quillnlp.grammar.myspacy import nlp
 
 # Auxiliary verb functions:
-
 
 def is_negated_with_contraction(token, sentence):
     if len(sentence) > token.i+1 and sentence[token.i+1].text == "n't":
@@ -37,6 +36,23 @@ def has_pronoun_subject(token: Token):
                     and t.pos_ == POS.PRONOUN.value:
                 return True
     return False
+
+
+def is_relative_pronoun_subject(subject: List[Token]) -> bool:
+    """ Determines if the list of tokens is a subject that contains a pronoun. """
+    
+    if subject is not None:
+        for t in subject:
+            if (t.dep_ == Dependency.PASS_SUBJECT.value or t.dep_ == Dependency.SUBJECT.value) \
+                    and t.tag_ in RELATIVE_PRONOUN_TAGS:
+                return True
+    return False
+
+
+def has_relative_pronoun_subject(token: Token) -> bool:
+    """ Determines if the token has a pronoun subject """
+    subject = get_subject(token, full=True)
+    return is_relative_pronoun_subject(subject)
 
 
 def has_indefinite_subject(token: Token):
