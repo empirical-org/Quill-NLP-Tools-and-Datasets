@@ -50,6 +50,7 @@ takes a sentence and replaces the present verb by another verb form if the subje
 The error generators can be run with the script `create_grammar_training_corpus.py`:
 
 ```bash
+> export PYTHONPATH=.
 > python scripts/quillgrammar/create_grammar_training_corpus.py \
 path_to_newsoftheworld_corpus
 ```
@@ -70,6 +71,7 @@ that spaCy can work with. This is done in the script `prepare_spacy_grammar_corp
 This takes as its only argument the directory to which the corpus files will be written:
 
 ```bash
+> export PYTHONPATH=.
 > python scripts/quillgrammar/prepare_spaCy_grammar_corpus.py output_path
 ```
 
