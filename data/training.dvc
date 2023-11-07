@@ -1,6 +1,6 @@
 outs:
-- md5: 68ef308c516798fd2562f8853ba2414d.dir
-  size: 2347619491
-  nfiles: 52
-  hash: md5
+- md5: a7c17e2177c6856cdd1ec85d6584eb7c.dir
+  size: 2347663124
+  nfiles: 53
   path: training
+  hash: md5
