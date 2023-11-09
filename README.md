@@ -78,6 +78,9 @@ This takes as its only argument the directory to which the corpus files will be 
 ```
 
 The list of synthetic error files that will be used for the corpus can be adapted in `scripts/quillgrammar/grammar_files.csv`.
+This csv file contains a list of the error files that will be used, together with the number of training items and the number
+of dev/test items that will be taken from the file. The more difficult the error, the more training (and dev/test) files we
+collect.
 
 This script has the following output:
 - `<output_path>/dev.spacy`: a development file on which the grammar model will be tested repeatedly during training
