@@ -4,6 +4,8 @@ This is the respository for Quill's NLP experiments. Most importantly, it contai
 
 ## Setup
 
+All scripts have been tested with Python 3.11.6 and pip 23.2.1.
+
 Different scripts in this repo rely on different pip packages. We currently use python's `virtualenv` standard library to manage dependencies.
 
 Here's how to set up the (currently) two virtual envs:
@@ -77,13 +79,20 @@ This takes as its only argument the directory to which the corpus files will be 
 
 The list of synthetic error files that will be used for the corpus can be adapted in `scripts/quillgrammar/grammar_files.csv`.
 
+This script has the following output:
+- `<output_path>/dev.spacy`: a development file on which the grammar model will be tested repeatedly during training
+- `<output_path>/test.spacy`: a test file that can be used for testing the grammar model after training
+- `<outputpath>/train/*.spacy`: one or more training files on which the grammar model will train
+
 ### Training
 
 Now the grammar model can be trained with spaCy's standard training command:
 
 ```
 spacy train config_distilbert.cfg --output output_path \
---paths.train path_to_training_files --paths.dev dev_file --gpu-id 0
+--paths.train <prepare_spacy_grammar_corpus.py's output.path>/train \
+--paths.dev <prepare_spacy_grammar_corpus.py's output.path>/dev.spacy \
+--gpu-id 0
 ```
 
 ## Large Language Models for student feedback
