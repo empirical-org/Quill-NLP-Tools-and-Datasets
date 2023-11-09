@@ -3,12 +3,14 @@
 import re
 import os
 import glob
-import tqdm
 import nltk
 import json
 import zipfile
 
+from tqdm import tqdm
 from typing import List
+
+from nltk.tokenize.treebank import TreebankWordDetokenizer
 
 PUNCTUATION = set([".", "?", "!"])
 
@@ -18,10 +20,8 @@ US_SOURCES = set(["Yahoo News", "Huffington Post", "ABC News", "NPR", "Los Angel
                   "Washington Post", "New York Times", "USA TODAY", "Chicago Tribune",
                   "CNN", "New York Post", "Fox News", "CNBC", "CBS News"])
 
-NOTW_SOURCE_FILE = 'notw_sources.json'
 
-
-def read_sources(corpus_dir):
+def read_sources(corpus_dir, notw_source_file: str='notw_sources.json'):
     """
     Create a file that maps every text id in the NOTW corpus to
     its source. This json file will be used to determine the source
@@ -40,7 +40,7 @@ def read_sources(corpus_dir):
                     text_id = line[0]
                     id2source[text_id] = source
 
-    with open(NOTW_SOURCE_FILE, "w") as o:
+    with open(notw_source_file, "w") as o:
         json.dump(id2source, o)
 
     return id2source
@@ -93,7 +93,8 @@ def is_a_complex_sentence(sentence: str) -> bool:
         or re.search(r' so .* and ', sentence)
 
 
-def read_sentences(corpus_dir: str, max_sentences: int=1000, is_complex: bool=False) -> List[str]:
+def read_sentences(corpus_dir: str, max_sentences: int=None, is_complex: bool=False,
+                   notw_source_file: str='notw_sources.json') -> List[str]:
     """ Reads the News of the World corpus and splits it into sentences.
 
     Args:
@@ -107,20 +108,21 @@ def read_sentences(corpus_dir: str, max_sentences: int=1000, is_complex: bool=Fa
         _type_: _description_
     """
 
-    with open(NOTW_SOURCE_FILE) as i:
+    with open(notw_source_file) as i:
         id2source = json.load(i)
 
+    detokenizer = TreebankWordDetokenizer()
     files = glob.glob(os.path.join(corpus_dir, "*.zip"))
 
     notw_sentences = set()
-    for f in tqdm(files):
+    for f in files:
         with zipfile.ZipFile(f) as myzip:
             zipped_files = myzip.namelist()
             for zf in zipped_files:
-
                 # Read every zipped file
                 with myzip.open(zf) as i:
-                    for line in i:
+                    lines = i.readlines()
+                    for line in tqdm(lines, desc=zf):
                         line = line.decode("latin-1").strip().split()
 
                         # Locate the text id. If it is not found,
@@ -133,26 +135,32 @@ def read_sentences(corpus_dir: str, max_sentences: int=1000, is_complex: bool=Fa
                         # If we know the source of the text id, analyze
                         # the text and split it into sentences
                         if text_id in id2source:
+                            # text = detokenizer.detokenize(text)
                             text = " ".join(line[1:])
                             text = clean_text(text)
-                            sentences = nltk.sent_tokenize(text)
-                            for sentence in sentences:
-                                # If we only want complex sentences, and the sentence is not complex,
-                                # ignore it.
-                                if complex and not is_a_complex_sentence(sentence):
-                                    continue
+                            paragraphs = re.split("<p>", text)
 
-                                # If the sentence is good, and we don't have it yet, keep it.
-                                if is_a_good_sentence(sentence) and sentence not in notw_sentences:
-                                    notw_sentences.add(sentence)
+                            for paragraph in paragraphs:
+                                sentences = nltk.sent_tokenize(paragraph)
+                                for sentence in sentences:
+                                    # If we only want complex sentences, and the sentence is not complex,
+                                    # ignore it.
+                                    if complex and not is_a_complex_sentence(sentence):
+                                        continue
 
-                                    if len(notw_sentences) > max_sentences:
-                                        break
+                                    # If the sentence is good, and we don't have it yet, keep it.
+                                    if is_a_good_sentence(sentence) and sentence not in notw_sentences:
+                                        notw_sentences.add(sentence)
 
-                if len(notw_sentences) > max_sentences:
+                                        if max_sentences is not None and len(notw_sentences) > max_sentences:
+                                            break
+
+                print(len(notw_sentences))
+
+                if max_sentences is not None and len(notw_sentences) > max_sentences:
                     break
 
-        if len(notw_sentences) > max_sentences:
+        if max_sentences is not None and len(notw_sentences) > max_sentences:
             break
 
     return list(notw_sentences)

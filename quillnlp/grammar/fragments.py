@@ -114,6 +114,11 @@ class FragmentWithoutVerbGenerator(ErrorGenerator):
             if prompt is not None and token.idx < len(prompt):
                 continue
 
+            # A target token has to be a present or simple past verb
+            # which is the root of the sentence,
+            # has one or more tokens in its left dependency tree,
+            # has a subject in its left dependency tree,
+            # and has one or more tokens in its right dependency tree.
             if token.tag_ in [Tag.PRESENT_OTHER_VERB.value, Tag.PRESENT_SING3_VERB.value, Tag.SIMPLE_PAST_VERB.value] \
                     and token.head.dep_ == Dependency.ROOT.value and \
                     len(list(token.lefts)) > 0 and \
@@ -133,8 +138,6 @@ class FragmentWithoutVerbGenerator(ErrorGenerator):
             if prompt is not None and token.idx < len(prompt):
                 text += previous_whitespace + token.text
             elif token == target_token:
-                # or \
-                #     (token.pos_ in [POS.VERB.value, POS.AUX.value] and token.head == target_token):
                 previous_whitespace = token.whitespace_
                 entity = (subject.idx, subject.idx+len(subject), self.name)
                 if entity not in entities:
@@ -164,6 +167,14 @@ class FragmentWithoutAuxiliaryGenerator(ErrorGenerator):
         for token in doc:
             if prompt is not None and token.idx < len(prompt):
                 text += previous_whitespace + token.text
+
+            # The target token must be an auxiliary
+            # of the verb 'be',
+            # whose head is the root of the sentence.
+            # If its head is a past participle, this past participle form may not be
+            # identical to the simple past form of the same verb. Otherwise deleting
+            # the auxiliary 'be' will simply result in a simple past sentence
+            # rather than a fragment.
             elif token.dep_.startswith('aux') \
                     and token.lemma_ == 'be' \
                     and token.head.dep_ == Dependency.ROOT.value \
@@ -211,6 +222,7 @@ class FragmentWithoutVerbOrAuxGenerator(ErrorGenerator):
             if prompt is not None and token.idx < len(prompt):
                 continue
 
+            # A token is a target if it is a present or simple past form of a verb (except to be).
             if token.tag_ in [Tag.PRESENT_OTHER_VERB.value, Tag.PRESENT_SING3_VERB.value, Tag.SIMPLE_PAST_VERB.value] \
                     and token.lemma_ != 'have':
                 target_tokens.append(token)
@@ -221,6 +233,7 @@ class FragmentWithoutVerbOrAuxGenerator(ErrorGenerator):
         if not relevant:
             return doc.text, [], relevant
 
+        # Select a random target token and remove it
         target_token = random.choice(target_tokens)
         previous_whitespace = ''
         for token in doc:
@@ -258,6 +271,8 @@ class FragmentWithoutSubjectGenerator(ErrorGenerator):
                 continue
             if token.text.startswith("'"):
                 continue
+
+            # If the token is a verb, its subject is a candidate for removal.
             if token.pos_ == POS.VERB.value or token.pos_ == POS.AUX.value:
                 subject = get_subject(token, full=True)
                 if subject is not None:
@@ -266,8 +281,10 @@ class FragmentWithoutSubjectGenerator(ErrorGenerator):
         if len(subjects_in_doc) == 0:
             return doc.text, [], relevant
 
+        # Choose a random subject to remove
         verb, subject_to_remove = random.choice(subjects_in_doc)
 
+        # Remove the subject.
         previous_whitespace = ''
         for token in doc:
             if prompt is not None and token.idx < len(prompt):
@@ -290,364 +307,3 @@ class FragmentWithoutSubjectGenerator(ErrorGenerator):
         entities.append(entity)
 
         return postprocess(text), entities, relevant
-
-
-class VerbPhraseFragmentGenerator(ErrorGenerator):
-
-    def is_target_token(self, token):
-        return token.tag_ == Tag.PRESENT_PARTICIPLE_VERB.value or \
-               is_unique_past_participle(token)
-
-    def generate_from_doc(self, doc, prompt=None):
-
-        text = ""
-        entities = []
-
-        # Identify a target outside of the prompt
-        target_token = None
-        for token in doc:
-            if (prompt is None or token.idx >= len(prompt)) and self.is_target_token(token):
-                target_token = token
-                break
-
-        # If there is no target token, we cannot make a relevant fragment
-        relevant = target_token is not None
-        if not relevant:
-            return doc.text, [], relevant
-
-        # token in target_token.rights: catches 'trees' in 'we are growing trees'
-        # target_token in token.lefts: catches 'robbed' in 'we have been robbed'
-        # set(get_all_heads(doc, token)).intersection(target_token.rights): catches 'the' in 'we have cleaned the car'
-
-        previous_whitespace = ''
-        for token in doc:
-            if prompt is not None and token.idx < len(prompt):
-                text += previous_whitespace + token.text
-                previous_whitespace = token.whitespace_
-            elif token == target_token or \
-                    token in target_token.rights or \
-                    target_token in token.lefts or \
-                    set(get_all_heads(doc, token)).intersection(target_token.rights):
-
-                if token == target_token:
-                    start_idx = len(text + previous_whitespace)
-                    entities.append((start_idx, start_idx + len(token), 'FRAGMENT_VERB_PHRASE'))
-
-                text += previous_whitespace + token.text
-                previous_whitespace = token.whitespace_
-            elif len(text) > 0:
-                previous_whitespace = token.whitespace_
-
-        text = postprocess(text.strip())
-
-
-        if entities[0][0] < 0:
-            print()
-            print('DT', doc.text)
-            print('T',text)
-            print(target_token)
-            print(target_token.idx)
-            print(entities)
-            input()
-
-        return text, entities, relevant
-
-
-class KeeperFragmentFragmentGenerator(ErrorGenerator):
-
-    def __init__(self, dependency_to_keep, label, tag=None, exclude_tags=[]):
-        self.dependency_to_keep = dependency_to_keep
-        self.tag = tag
-        self.label = label
-        self.exclude_tags = exclude_tags
-
-    def is_target_token(self, token):
-        return token.dep_ == self.dependency_to_keep and \
-               (self.tag is None or self.tag == token.tag_) and \
-               token.tag_ not in self.exclude_tags
-
-    def generate_from_doc(self, doc, prompt=None):
-
-        text = ""
-        entities = []
-
-        # Identify a target word outside of the prompt
-        target_token = None
-        for token in doc:
-            if (prompt is None or token.idx >= len(prompt)) and self.is_target_token(token):
-                target_token = token
-                break
-
-        # If there is no target word, we cannot make a relevant fragment
-        relevant = target_token is not None
-        if not relevant:
-            return doc.text, [], relevant
-
-        # If there is a target word, we only keep the words in that have it as one of their heads
-        previous_whitespace = ''
-        target_token_start_idx = None
-        for token in doc:
-            if prompt is not None and token.idx < len(prompt):
-                text += previous_whitespace + token.text
-                previous_whitespace = token.whitespace_
-            elif token == target_token or target_token in get_all_heads(doc, token):
-                if token == target_token:
-                    target_token_start_idx = len(text+previous_whitespace)
-                    entities.append((target_token_start_idx, target_token_start_idx+len(token), self.label))
-
-                text += previous_whitespace + token.text
-                previous_whitespace = token.whitespace_
-            elif len(text) > 0:
-                previous_whitespace = token.whitespace_
-
-        return postprocess(text), entities, relevant
-
-
-prepositionalPhraseFragmentGenerator = KeeperFragmentFragmentGenerator('prep', 'FRAGMENT_PREPOSITIONAL_PHRASE')
-
-
-class InfinitiveFragmentGenerator(ErrorGenerator):
-
-    def is_target_token(self, token):
-        return token.dep_ == 'xcomp' and \
-               token.tag_ == 'VB'
-
-    def generate_from_doc(self, doc, prompt=None):
-
-        text = ""
-        entities = []
-
-        # Identify a target word outside of the prompt
-        target_token = None
-        for token in doc:
-            previous_token = doc[token.i - 1] if token.i > 0 else None
-            if (prompt is None or token.idx >= len(prompt)) and self.is_target_token(token) and \
-                    previous_token is not None and previous_token.text.lower() == 'to':
-                target_token = token
-                break
-
-        # If there is no target word, we cannot make a relevant fragment
-        relevant = target_token is not None
-        if not relevant:
-            return doc.text, [], relevant
-
-        # If there is a target word, we only keep the words in that have it as one of their heads
-        previous_whitespace = ''
-        for token in doc:
-
-            if prompt is not None and token.idx < len(prompt):
-                text += previous_whitespace + token.text
-                previous_whitespace = token.whitespace_
-            elif token == target_token or target_token in get_all_heads(doc, token):
-                if token == target_token:
-                    target_token_start_idx = len(text+previous_whitespace)
-                    entities.append((target_token_start_idx, target_token_start_idx+len(token), 'FRAGMENT_INFINITIVE_PHRASE'))
-
-                text += previous_whitespace + token.text
-                previous_whitespace = token.whitespace_
-            elif len(text) > 0:
-                previous_whitespace = token.whitespace_
-
-        return postprocess(text), entities, relevant
-
-
-class NounPhraseFragmentGenerator(ErrorGenerator):
-
-    def is_target_token(self, token):
-        return token.dep_ == Dependency.DIRECT_OBJECT.value
-
-    def generate_from_doc(self, doc, prompt=None):
-
-        text = ""
-        entities = []
-
-        # Identify a target word outside of the prompt
-        target_token = None
-        for token in doc:
-            if (prompt is None or token.idx >= len(prompt)) and self.is_target_token(token):
-                target_token = token
-                break
-
-        # If there is no target word, we cannot make a relevant fragment
-        relevant = target_token is not None
-        if not relevant:
-            return doc.text, [], relevant
-
-        # If there is a target word, we only keep the words in that have it as one of their heads
-        previous_whitespace = ''
-        for token in doc:
-
-            if prompt is not None and token.idx < len(prompt):
-                text += previous_whitespace + token.text
-                previous_whitespace = token.whitespace_
-            elif token == target_token or target_token in get_all_heads(doc, token):
-                if token == target_token:
-                    target_token_start_idx = len(text+previous_whitespace)
-                    entities.append((target_token_start_idx, target_token_start_idx+len(token), 'FRAGMENT_NOUN_PHRASE'))
-
-                text += previous_whitespace + token.text
-                previous_whitespace = token.whitespace_
-            elif len(text) > 0:
-                previous_whitespace = token.whitespace_
-
-        return postprocess(text), entities, relevant
-
-
-class RelativeClauseFragmentGenerator(ErrorGenerator):
-
-    def is_target_token(self, token):
-        return token.dep_ == 'relcl' and \
-               token.tag_ not in ['VB']
-
-    def generate_from_doc(self, doc, prompt=None):
-
-        text = ""
-        entities = []
-
-        # Identify a target word outside of the prompt
-        target_token = None
-        for token in doc:
-            if (prompt is None or token.idx >= len(prompt)) and self.is_target_token(token):
-                target_token = token
-                break
-
-        # If there is no target word, we cannot make a relevant fragment
-        relevant = target_token is not None
-        if not relevant:
-            return doc.text, [], relevant
-
-        # If there is a target word, we only keep the words in that have it as one of their heads
-        previous_whitespace = ''
-        for token in doc:
-
-            if prompt is not None and token.idx < len(prompt):
-                text += previous_whitespace + token.text
-                previous_whitespace = token.whitespace_
-            elif token == target_token or target_token in get_all_heads(doc, token):
-                if token == target_token:
-                    target_token_start_idx = len(text+previous_whitespace)
-                    entities.append((target_token_start_idx, target_token_start_idx+len(token), 'FRAGMENT_RELATIVE_CLAUSE'))
-                text += previous_whitespace + token.text
-                previous_whitespace = token.whitespace_
-            elif len(text) > 0:
-                previous_whitespace = token.whitespace_
-
-        if text.split()[0].lower() not in RELATIVE_PRONOUNS:
-            return doc.text, [], False
-
-        return postprocess(text), entities, relevant
-
-
-class DependentClauseFragmentGenerator(ErrorGenerator):
-
-    def generate_from_doc(self, doc, prompt=None):
-
-        text = ""
-        entities = []
-
-        # Identify a target word outside of the prompt
-        target_token = None
-        for token in doc:
-            if (prompt is None or token.idx >= len(prompt)) and \
-                (token.dep_ == 'advmod' or token.dep_ == 'mark') and \
-                not token.pos_ == POS.ADVERB.value and \
-                token.head.pos_ == POS.VERB.value and \
-                token.head.i > token.i and \
-                token.text.lower() != 'that' and token.text.lower() != 'to' and \
-                not token.head.tag_ == Tag.INFINITIVE.value:
-                    target_token = token.head
-                    break
-
-        # If there is no target word, we cannot make a relevant fragment
-        relevant = target_token is not None
-        if not relevant:
-            return doc.text, [], relevant
-
-        # If there is a target word, we only keep the words in that have it as one of their heads
-        previous_whitespace = ''
-        for token in doc:
-
-            if prompt is not None and token.idx < len(prompt):
-                text += previous_whitespace + token.text
-                previous_whitespace = token.whitespace_
-            elif token == target_token or target_token in get_all_heads(doc, token):
-                if token == target_token:
-                    target_token_start_idx = len(text+previous_whitespace)
-                    entities.append((target_token_start_idx, target_token_start_idx+len(token), 'FRAGMENT_DEPENDENT_CLAUSE'))
-                text += previous_whitespace + token.text
-                previous_whitespace = token.whitespace_
-            elif len(text) > 0:
-                previous_whitespace = token.whitespace_
-
-        return postprocess(text), entities, relevant
-
-class MissingObjectFragmentGenerator(ErrorGenerator):
-
-    def __init__(self, transitives):
-        self.transitive_verbs = transitives
-        pass
-
-    def remove_full_object(self, prompt, doc, target_token):
-        text = ""
-        entities = []
-        previous_whitespace = ''
-        for token in doc:
-            if prompt is not None and token.idx < len(prompt):
-                text += previous_whitespace + token.text
-            elif token == target_token or target_token in get_all_heads(doc, token):
-                previous_whitespace = token.whitespace_
-                continue
-            else:
-                text += previous_whitespace + token.text
-            previous_whitespace = token.whitespace_
-        return text, entities
-
-    def remove_part_of_object(self, prompt, doc, target_token):
-        text = ""
-        entities = []
-        previous_whitespace = ''
-        for token in doc:
-            if prompt is not None and token.idx < len(prompt):
-                text += previous_whitespace + token.text
-            elif token == target_token:
-                previous_whitespace = token.whitespace_
-                continue
-            else:
-                text += previous_whitespace + token.text
-            previous_whitespace = token.whitespace_
-        return text, entities
-
-    def generate_from_doc(self, doc, prompt=None):
-
-        # Identify a direct object outside of the prompt
-        target_token = None
-        for token in doc:
-            if (prompt is None or token.idx >= len(prompt)) and token.dep_ == 'dobj':
-                target_token = token
-                break
-
-        # If there is no direct object, we cannot make a relevant fragment
-        relevant = target_token is not None
-        if not relevant:
-            return doc.text, [], relevant
-
-        heads = [t for t in doc if target_token.head == t]
-        if len(heads) == 0:
-            return doc.text, [], False
-        head = heads[0]
-
-        random_number = random.random()
-        if target_token.head.lemma_ in self.transitive_verbs and random_number < 0.5:
-            text, entities = self.remove_full_object(prompt, doc, target_token)
-        else:
-            text, entities = self.remove_part_of_object(prompt, doc, target_token)
-
-        text = postprocess(text)
-
-        if head.idx < target_token.idx:
-            entities.append((head.idx, head.idx+len(head), 'FRAGMENT_NO_OBJ'))
-        else:
-            removed_characters = len(doc.text) - len(text)
-            entities.append((head.idx-removed_characters, head.idx+len(head)-removed_characters, 'FRAGMENT_NO_OBJ'))
-
-        return text, entities, relevant
