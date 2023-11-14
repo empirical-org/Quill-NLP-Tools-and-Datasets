@@ -24,7 +24,7 @@ def find_index_from_offsets(doc, start, end):
     for token in doc:
         if token.idx >= start and first_token_start is None:
             first_token_start = token.i
-        if token.idx >= end and next_token_start is None:
+        if token.idx > end and next_token_start is None:
             next_token_start = token.i
 
     if next_token_start is None:
@@ -32,12 +32,7 @@ def find_index_from_offsets(doc, start, end):
 
     return first_token_start, next_token_start
 
-# nlp = spacy.load('en_core_web_sm')
-# doc = nlp("The younger the child, the smaller the group should is.")
-# start_idx, end_idx = find_index_from_offsets(doc, 52, 54)
-# x = Span(doc, start_idx, end_idx, 'TEST')
-# print(x.text)
-# assert x.text == 'is'
+
 
 def write_output(data, output_path):
     """ Writes error data to an output_path in spaCy's DocBin format. """
@@ -53,18 +48,16 @@ def write_output(data, output_path):
             start_idx_returned_none = False
             for ent in label['entities']:
                 start_idx, end_idx = find_index_from_offsets(doc, ent[0], ent[1])
-
                 if start_idx and end_idx:
                     entities.append(Span(doc, start_idx, end_idx, ent[2]))
                 else:
                     start_idx_returned_none = True
-            # try:
-            if not start_idx_returned_none:
-                if entities or random.randint(0, 3) != 3:
+            try:
+                if not start_idx_returned_none:
                     doc.set_ents(entities)
                     db.add(doc)
-            # except:
-            #     continue
+            except:
+                continue
         else:
             raise ValueError('Unknown label type for', label)
 
