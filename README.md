@@ -106,9 +106,12 @@ The files with examples of human feedback are in `data/automl`, organized by pas
 
 ## GPT scripts
 
-There is a script for finetuning a GPT model with Quill's feedback, and another one for evaluating the output of a large language model:
+There are several scripts for our experiments with GPT:
+- `finetune.py`: finetune a GPT model with Quill's feedback
+- `test_openai_for_feedback.py`: evaluate the output of a large language model against Quill's feedback
+- `moderate_feedbac.py`: moderate GPT feedback by an additional GPT step that removes undesired elements
 
-### finetuning script
+### Finetuning script
 
 First, this repo contains a script to finetune a GPT-3.5-turbo model with Quill's human feedback. This can be done with the script `finetune.py`:
 
@@ -118,9 +121,9 @@ First, this repo contains a script to finetune a GPT-3.5-turbo model with Quill'
 > python scripts/gpt/finetune.py <output_file>.json
 ```
 
-### test script
+### Evaluation script
 
-Second, it is possible to evaluate GPT-3.5, GPT-4 or a finetuned model by comparing their feedback to Quill's human feedback, using `test_openai_for_feedback.py`:
+Second, it is possible to evaluate GPT-3.5, GPT-4 or a finetuned GPT model by comparing their feedback to Quill's human feedback, using `test_openai_for_feedback.py`:
 
 ```
 > pip install -r requirements-gpt.txt
@@ -132,4 +135,19 @@ For example:
 
 ```
 > python scripts/test_openai_for_feedback.py gpt-3.5-turbo gpt3-5-turbo
+```
+
+### Moderation script
+
+The moderation script is a basic script that calls a GPT model to moderate automatic feedback. It takes Quill feedback as input, asks the
+GPT model to remove any undesired elements, and writes the output to a file. It is used in the following way:
+
+```
+> python scripts/moderate_feedback.py <gpt_model> <output_file> --verbose <True/False>
+```
+
+For example:
+
+```
+> python scripts/moderate_feedback.py gpt-4 feedback_output.csv --verbose False
 ```
