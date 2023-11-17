@@ -1,6 +1,7 @@
 import os
 import random
 import click
+from pathlib import Path
 from tqdm import tqdm
 from grammar_corpus import read_grammar_data
 
@@ -10,7 +11,12 @@ from spacy.tokens import DocBin, Span
 from quillnlp.grammar.myspacy import nlp
 from quillnlp.corpora.notw import read_sentences
 
+TRAINING_INDEX_FILE = 'scripts/quillgrammar/grammar_files.csv'
+
+
 def find_index_from_offsets(doc, start, end):
+    """ Finds the start and end index of a spaCy token,
+    based on its entity information """
 
     first_token_start = None
     next_token_start = None
@@ -29,6 +35,7 @@ def find_index_from_offsets(doc, start, end):
 
 
 def write_output(data, output_path):
+    """ Writes error data to an output_path in spaCy's DocBin format. """
     db = DocBin()
     nlp = spacy.blank('en')
 
@@ -62,20 +69,21 @@ def write_output(data, output_path):
 @click.argument('output_path')
 def run(output_path):
 
-    # Read grammar data    
-    grammar_train, grammar_dev, grammar_test = read_grammar_data()
+    # Read grammar data
+    grammar_train, grammar_dev, grammar_test = read_grammar_data(TRAINING_INDEX_FILE)
 
+    # The training data will be saved in <output_path>/train.
+    # If this path doesn't exist, we create it.
     train_files_path = os.path.join(output_path, 'train')
 
-    if not os.path.exists(output_path):
-        os.mkdir(output_path)
-
-    if not os.path.exists(train_files_path):
-        os.mkdir(train_files_path)    
+    path = Path(train_files_path)
+    path.mkdir(parents=True)
 
     write_output(grammar_test, os.path.join(output_path, 'test.spacy'))
     write_output(grammar_dev, os.path.join(output_path, 'dev.spacy'))
 
+    # Write the training data in chunks. Otherwise the files are too big
+    # to read for spaCy.
     chunk_size = 1000000
     for i in range(0, len(grammar_train), chunk_size):
         write_output(grammar_train[i:i+chunk_size], os.path.join(train_files_path, f"train{int(i/chunk_size)}.spacy"))

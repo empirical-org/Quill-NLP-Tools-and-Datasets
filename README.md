@@ -1,142 +1,153 @@
 # Quill NLP Tools and Datasets
-Notebooks, scrapers, corpora, and utilities built and maintained Quill.org.
 
-## About the Repo
-This repo contains all of our data for Quill.org's machine learning models. This includes both grammar models that will be used across multiple products, and the algorthims for Quill Comprehension, a product that builds critical thinking skills. Quill Comprehension uses a topic classification algorthim to identify the main pieces of evidence in a student's writing in order to serve feedback that pushes the student to use more precise evidence.
+This is the respository for Quill's NLP experiments. Most importantly, it contains the code for creating data with synthetic grammar errors, and our investigation of large language models for student feedback.
 
+## Setup
 
-## Quill Comprehension's Grading Logic
-To understand the grading process for Quill Comprehension, please click on the link below to see a document that explains the steps of the grading process. To process this data, Quill first uses a script that helps us extract features from the student's writing for both the data labelling process and the machine learning models. This script incorporates AllenNLP. You can find an explanation of what the script does, and why each step is necessary. [Find the document here.](https://www.notion.so/Quill-Comprehension-Grading-Logic-395e3ba566484790a9187ddeb7cdfc6a#e34312ec6830435ba5e1c5b70737898e)
+All scripts have been tested with Python 3.11.6 and pip 23.2.1.
 
+Different scripts in this repo rely on different pip packages. We currently use python's `virtualenv` standard library to manage dependencies.
 
-## Structure
+Here's how to set up the (currently) two virtual envs:
 
-```bash
-.
-├── data            # data we use for our experiments
-    ├── interim     # preprocessed data
-    ├── raw         # original, unprocessed data
-    └── validated   # validated gold standard data for evaluation
-│
-├── demo            # D3 visualization that demonstrates NLP capabilities
-├── experiments     # the json configuration files for our experiments
-├── genmodel
-├── models          # saved models for classification and other NLP tasks
-├── notebooks       # Jupyter notebooks for data exploration & simple experiments
-├── quillnlp        # the main package with the NLP code, including the dataset readers,
-│                   # models and predictors for AllenNLP
-├── scrapers        # data collection tools
-├── scripts         # scripts for data processing, etc.
-├── tests           # unit and more high-level tests
-├── utils           # useful tools and scripts including document parsing
-├── LICENSE
-├── README.md       # this file
-└── __init__.py
+```shell
+python -m venv env-grammar
+python -m venv env-gpt
 ```
 
-## Show version control how to deal with ipynb files
+Here's how to use a virtualenv in the context of running a script:
 
-```bash
-$ # ensure you are in the top level of the project before running these commands
-$
-$ source activate <YOUR CONDA ENV>
-$ conda install -c conda-forge nbstripout
-$ nbstripout --install
-$ nbstripout --install --attributes .gitattributes
-```
-
-Running the above commands will ensure generated output from the notebooks is
-not versioned, but that regular code changes will still be reflected.
-
-Note: this means that switching branches could mean changes to notebook state.
-Be aware of this and don't be alarmed.
-
-## Experiments how-to
-
-### Set up
-
-#### Run the install script
-```
-sh bootstrap.sh
-```
-This will install python and all of the required dependencies, mostly within a virtual environment. This script should be idempotent and can be run multiple times without messing up your environment (It will update your dependencies though).
-
-### Experiments
-
-Experiments follow the general pattern:
-
-1. Start Virtual Environment.
-2. **Run Experiments/Training.**
-3. Close Virtual Environment.
-
-Start a virtual environment with:
-
-```
-source env/bin/activate
-```
-
-Close it with:
-
-```
+```shell
+source env-myEnvName/bin/activate
+python myScript
 deactivate
 ```
 
-**Note, if you are doing multiple experiments, you can open the environment, do a bunch of stuff, and then close the environment.**
+## Grammar
 
-#### Preparing Data
+Quill has developed a grammar pipeline that labels sentences with frequent grammar errors, such as subject-verb agreement errors and plural-possessive errors.
+The goal is to give students feedback on their writing, so that they can correct grammatical errors.
+This pipeline is a combination of simple rules and a machine-learning model. The machine-learning model is trained on a mix of real data from students and data with
+synthetic grammar errors. This repository has the code for creating such synthetic grammar errors and preparing a training corpus for spaCy.
 
-1. Put all labelled data in a file. This should be a tab-separated file
-with two columns. The first column contains the sentence (prompt and response),
-the second column contains the label. Save this file in the directory `data/raw`
+### Data
 
-2. Process the file with the script `create_train_and_test_data`:
+#### Option 1: Get existing training data
 
-From the directory root:
-```
-source env/bin/activate
-```
-```
-python3 scripts/create_train_and_test_data.py --input_file data/raw/example.tsv
+All grammar errors in the grammar model that are identified with a machine-learning model already have synthetically generated data.
+This data is stored in a Google Cloud bucket and can be pulled with our DVC account:
 
 ```
+> dvc pull
+```
 
-This will create three ndjson files in the `data/interim` directory: a train file
-with the training data, a dev file with the development data and a test file with
-the test data.
+The training data will be downloaded to the `data/training` directory of this repository.
 
-#### Run the baseline experiments:
+#### Option 2: Generate synthetic data
 
-```python3 scripts/train_baseline.py --train data/interim/example_train.ndjson --test data/interim/example_test.ndjson```
+Alternatively, it is possible to create new synthetic training data. Every grammar error has an `ErrorGenerator`
+that takes an input sentence and inserts a synthetic error in that sentence (if possible). For example, the `SubjectVerbAgreementWithSimpleNounErrorGenerator`
+takes a sentence and replaces the present verb by another verb form if the subject contains a simple noun.
 
-This will train a simple classifier. After evaluation, it prints out an
-accuracy and performance per label.
+The error generators can be run with the script `create_grammar_training_corpus.py`:
 
-#### Run the AllenNLP experiments.
+```bash
+> export PYTHONPATH=.
+> python scripts/quillgrammar/create_grammar_training_corpus.py \
+path_to_newsoftheworld_corpus
+```
 
-Download the Glove 6B 300 data set **(800MB)** from this [website](https://nlp.stanford.edu/projects/glove/)
+It will generate a synthetic training file for each of the error generators that is called in the script.
 
-Here is the direct [800 MB download link](http://nlp.stanford.edu/data/glove.6B.zip)
+Add this training data to the directory `data/training` and upload it to the Google Cloud with
 
-Create a configuration file in the `experiments` directory. Start from
-`example.json`, where you fill in the paths to your train, dev (validation)
-and test files. If your machine does not have a GPU, set `cuda_device` (towards
-the bottom) to `-1`. Otherwise, set it to 0. Since our experiments are small,
-they can be run without a GPU. Also, update the `example.json` to point to the glove data set on your laptop.
+```
+> dvc commit
+> dvc push
+```
 
-#### Train an AllenNLP model:
+### SpaCy training corpus
 
-```allennlp train experiments/example.json -s /tmp/example --include-package quillnlp```
+We train our grammar model as a spaCy pipeline. As a result, we need to prepare a training and development corpus
+that spaCy can work with. This is done in the script `prepare_spacy_grammar_corpus`.
+This takes as its only argument the directory to which the corpus files will be written:
 
-Evaluate the AllenNLP model. We have our own script for this,
-`evaluate_topic_classification`, which takes as first argument the test file,
-and as second argument the directory where the model was saved:
+```bash
+> export PYTHONPATH=.
+> python scripts/quillgrammar/prepare_spaCy_grammar_corpus.py output_path
+```
 
-```python3 -m scripts.evaluate_topic_classification data/interim/example_test.ndjson /tmp/example/```
+The list of synthetic error files that will be used for the corpus can be adapted in `scripts/quillgrammar/grammar_files.csv`.
+This csv file contains a list of the error files that will be used, together with the number of training items and the number
+of dev/test items that will be taken from the file. The more difficult the error, the more training (and dev/test) files we
+collect.
 
-#### Run the Google Sentence Encoder scripts:
+This script has the following output:
+- `<output_path>/dev.spacy`: a development file on which the grammar model will be tested repeatedly during training
+- `<output_path>/test.spacy`: a test file that can be used for testing the grammar model after training
+- `<outputpath>/train/*.spacy`: one or more training files on which the grammar model will train
 
-```python3 scripts/sentence_encoder_tests.py --train data/interim/example_train.ndjson --dev data/interim/example_dev.ndjson --test data/interim/example_test.ndjson --out /tmp/classifier```
+### Training
 
-#### Deactivate the virtual environment:
+Now the grammar model can be trained with spaCy's standard training command:
 
-```deactivate```
+```
+spacy train config_distilbert.cfg --output output_path \
+--paths.train <prepare_spacy_grammar_corpus.py's output.path>/train \
+--paths.dev <prepare_spacy_grammar_corpus.py's output.path>/dev.spacy \
+--gpu-id 0
+```
+
+## Large Language Models for student feedback
+
+Second, this corpus contains all data and scripts for our experiments with Large Language Models for student feedback.
+The goal of this task is to provide automatic feedback on the content of student responses.
+The files with examples of human feedback are in `data/automl`, organized by passage and prompt. The scripts are in `scripts/gpt`.
+
+## GPT scripts
+
+There are several scripts for our experiments with GPT:
+- `finetune.py`: finetune a GPT model with Quill's feedback
+- `test_openai_for_feedback.py`: evaluate the output of a large language model against Quill's feedback
+- `moderate_feedbac.py`: moderate GPT feedback by an additional GPT step that removes undesired elements
+
+### Finetuning script
+
+First, this repo contains a script to finetune a GPT-3.5-turbo model with Quill's human feedback. This can be done with the script `finetune.py`:
+
+```
+> pip install -r requirements-gpt.txt
+> export OPENAI_API_KEY=<YOUR_KEY>
+> python scripts/gpt/finetune.py <output_file>.json
+```
+
+### Evaluation script
+
+Second, it is possible to evaluate GPT-3.5, GPT-4 or a finetuned GPT model by comparing their feedback to Quill's human feedback, using `test_openai_for_feedback.py`:
+
+```
+> pip install -r requirements-gpt.txt
+> export OPENAI_API_KEY=<YOUR_KEY>
+> python scripts/gpt/test_openai_for_feedback.py <model> <tag_for_output_file>
+```
+
+For example:
+
+```
+> python scripts/test_openai_for_feedback.py gpt-3.5-turbo gpt3-5-turbo
+```
+
+### Moderation script
+
+The moderation script is a basic script that calls a GPT model to moderate automatic feedback. It takes Quill feedback as input, asks the
+GPT model to remove any undesired elements, and writes the output to a file. It is used in the following way:
+
+```
+> python scripts/moderate_feedback.py <gpt_model> <output_file> --verbose <True/False>
+```
+
+For example:
+
+```
+> python scripts/moderate_feedback.py gpt-4 feedback_output.csv --verbose False
+```

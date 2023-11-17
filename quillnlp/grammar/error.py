@@ -1,6 +1,5 @@
 from spacy.tokens import Doc
 
-
 class Error:
 
     def __init__(self, text: str, index: int, error_type: str,
