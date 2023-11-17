@@ -105,5 +105,5 @@ wandb==0.10.7
 wasabi==0.8.0
 watchdog==0.10.3
 wcwidth==0.2.5
-Werkzeug==1.0.1
+Werkzeug==2.3.8
 word2number==1.1
