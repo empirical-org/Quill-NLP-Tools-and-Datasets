@@ -13,8 +13,6 @@ from quillnlp.corpora import notw
 from quillnlp.grammar.constants import GrammarError
 
 
-
-
 def inject_errors(sentences, error_generator, verbose=False, probability=0.5):
     """Inject errors into a list of sentences
 
@@ -29,7 +27,7 @@ def inject_errors(sentences, error_generator, verbose=False, probability=0.5):
     docs = list(nlp.pipe(sentences))
 
     train_data = []
-    for sentence in docs:
+    for sentence in tqdm(docs):
         synthetic_sentence, entities, relevant = error_generator.generate_from_doc(sentence, add_optimal=False)
 
         if relevant and synthetic_sentence != sentence.text:
