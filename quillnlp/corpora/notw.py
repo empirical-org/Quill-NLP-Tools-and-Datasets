@@ -155,8 +155,6 @@ def read_sentences(corpus_dir: str, max_sentences: int=None, is_complex: bool=Fa
                                         if max_sentences is not None and len(notw_sentences) > max_sentences:
                                             break
 
-                print(len(notw_sentences))
-
                 if max_sentences is not None and len(notw_sentences) > max_sentences:
                     break
 
