@@ -1,6 +1,4 @@
-# Quill NLP Tools and Datasets
-
-## Background: NLP at Quill
+# Background: NLP at Quill
 
 At Quill, our mission is to enhance students' writing skills. Our focus is on two key areas: firstly, creating automated tools to analyze and identify the reasoning and argumentation in students' writing; secondly, developing systems to assess and correct grammar in student sentences. To achieve these objectives, we use Natural Language Processing (NLP), a specialized branch of Artificial Intelligence dedicated to the automated analysis and understanding of written language.
 
@@ -20,7 +18,7 @@ This repository contains our code for generating synthetic data with the types o
 
 We are investigating generative AI models to help students develop strong argumentation skills. These models should give custom, targeted feedback to the arguments in students' responses, so that students strengthen their reading comprehension and hone their writing skills. This repository contains the code for our experiments with OpenAI's GPT models in particular. These experiments are focused on both prompt engineering, where we feed GPT a custom prompt with elaborate instructions and examples, and model finetuning, where we finetune a custom GPT model to give relevant feedback to students.
 
-## Setup
+# Setup
 
 All scripts have been tested with Python 3.11.6 and pip 23.2.1.
 
@@ -41,7 +39,7 @@ python myScript
 deactivate
 ```
 
-## Grammar Correction: Technical Details
+# Grammar Correction: Technical Details
 
 This repository contains the scripts for creating synthetic data and training a grammar model with spaCy.
 
@@ -52,9 +50,9 @@ The goal is to give students feedback on their writing, so that they can correct
 This pipeline is a combination of simple rules and a statistical machine learning model. The machine learning model is trained on a mix of real data from students and data with
 synthetic grammar errors. This repository has the code for creating such synthetic grammar errors and preparing a training corpus for spaCy.
 
-#### Data
+1. Data
 
-##### Option 1: Get existing training data
+Option 1: Get existing training data
 
 All grammar errors in the grammar model that are identified with a machine learning model already have synthetically generated data.
 This data is stored in a Google Cloud bucket and can be pulled with our DVC account:
@@ -65,7 +63,7 @@ This data is stored in a Google Cloud bucket and can be pulled with our DVC acco
 
 The training data will be downloaded to the `data/training` directory of this repository.
 
-##### Option 2: Generate synthetic data
+Option 2: Generate synthetic data
 
 Alternatively, it is possible to create new synthetic training data. Every grammar error has an `ErrorGenerator`
 that takes an input sentence and inserts a synthetic error in that sentence (if possible). For example, the `SubjectVerbAgreementWithSimpleNounErrorGenerator`
@@ -88,7 +86,7 @@ Add this training data to the directory `data/training` and upload it to the Goo
 > dvc push
 ```
 
-#### SpaCy training corpus
+2. SpaCy training corpus
 
 We train our grammar model as a spaCy pipeline. As a result, we need to prepare a training and development corpus
 that spaCy can work with. This is done in the script `prepare_spacy_grammar_corpus`.
@@ -110,7 +108,7 @@ This script has the following output:
 - `<output_path>/test.spacy`: a test file that can be used for testing the grammar model after training
 - `<outputpath>/train/*.spacy`: one or more training files on which the grammar model will train
 
-#### Training
+3. Training
 
 Now the grammar model can be trained with spaCy's standard training command:
 
@@ -126,7 +124,7 @@ existing model needs to be updated with some additional (e.g. manually labelled 
 with new Quill data, format the data like the other training files (see for example `data/training/quill_labels_20231101_train.ndjson`), and rerun the previous step (`prepare_spacy_training_corpus.py`) with only the new
 files in `grammar_files.csv`.
 
-## Large Language Models for Student Feedback: Technical Details
+# Large Language Models for Student Feedback: Technical Details
 
 Second, this repository contains all data and scripts for our experiments with Large Language Models for student feedback.
 The goal of this task is to provide automatic feedback on the content of student responses.
@@ -140,7 +138,7 @@ There are several scripts for our experiments with GPT:
 - `test_openai_for_feedback.py`: evaluate the output of a large language model against Quill's feedback
 - `moderate_feedbac.py`: moderate GPT feedback by an additional GPT step that removes undesired elements
 
-#### Finetuning script
+1. Finetuning script
 
 First, this repo contains a script to finetune a GPT-3.5-turbo model with Quill's human feedback. This can be done with the script `finetune.py`:
 
@@ -150,7 +148,7 @@ First, this repo contains a script to finetune a GPT-3.5-turbo model with Quill'
 > python scripts/gpt/finetune.py <output_file>.json
 ```
 
-#### Evaluation script
+2. Evaluation script
 
 Second, it is possible to evaluate GPT-3.5, GPT-4 or a finetuned GPT model by comparing their feedback to Quill's human feedback, using `test_openai_for_feedback.py`:
 
@@ -166,7 +164,7 @@ For example:
 > python scripts/test_openai_for_feedback.py gpt-3.5-turbo gpt3-5-turbo
 ```
 
-#### Moderation script
+3. Moderation script
 
 Finally, the moderation script is a basic script that calls a GPT model to moderate automatic feedback. This moderation step can be necessary when GPT gives feedback that does not focus on argumentation: comments on spelling or grammar, clarity or conciceness, or when GPT gives away the correct answer. The moderation script takes one or more pieces of feedback as input, asks the GPT model to remove any undesired elements, and writes the output to a file. It is used in the following way:
 
