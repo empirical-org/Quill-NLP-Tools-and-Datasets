@@ -2,23 +2,23 @@
 
 ## Background: NLP at Quill
 
-At Quill, we want to help students become better writers. More specifically, we are developing automatic methods for identifying the argumentation students use in their texts, and for checking the grammatical correctness of sentences. To this goal, we are using Natural Language Processing (NLP), the subfield of Artificial Intelligence that deals with the automatic processing of text.
+At Quill, our mission is to enhance students' writing skills. Our focus is on two key areas: firstly, creating automated tools to analyze and identify the reasoning and argumentation in students' writing; secondly, developing systems to assess and correct grammar in student sentences. To achieve these objectives, we use Natural Language Processing (NLP), a specialized branch of Artificial Intelligence dedicated to the automated analysis and understanding of written language.
 
 ### Grammar Correction
 
-In Quill's [Reading for evidence](https://www.quill.org/tools/evidence), students read a nonfiction text and are asked to support a series of claims with evidence sourced form the text. First we want to check their responses for grammatical correctness. We're focusing in particular on a range of grammar errors that we frequently see in students’ writings, such as confusion between *it’s* and *its*, between *than* and *then*, between a possessive form (*year’s*) and a plural form of the same word (*years*), and subject-verb agreement errors. Our goal is to automatically spot these errors, so that we can inform students about them and ask them to correct the error.
+In Quill's [Reading for evidence](https://www.quill.org/tools/evidence) tool, students read a nonfiction text and are asked to support a series of claims with evidence sourced from the text. First we want to check their responses for grammatical correctness. We're focusing in particular on a range of grammar errors that we frequently see in students’ writings, such as confusion between _it’s_ and _its_, between _than_ and _then_, between a possessive form (_year’s_) and a plural form of the same word (_years_), and subject-verb agreement errors. Our goal is to automatically spot these errors, so that we can inform students about them and ask them to correct the errors.
 
-To to this, we’re training machine learning models that automatically assign particular labels to words in a text. Training such a machine learning model for grammar correction is done by showing the computer thousands of example sentences where the grammar errors have already been labeled, and then evaluating to what degree the model is able to identify in sentences that have not been labeled yet.
+We develop machine learning models capable of automatically tagging words in a text with specific labels. For grammar correction, we train these models by exposing them to thousands of sentences where grammatical errors are pre-identified. The effectiveness of these models is then assessed based on their ability to detect errors in new, unlabeled sentences.
 
-Unfortunately, we don’t have thousands of example sentences at hand where the errors have already been identified. To deal with this challenge, we mainly work with so-called synthetic data &mdash; sentences from sources like Wikipedia where we’ve automatically replaced a word by an incorrect alternative. For example, by replacing _it’s_ by _its_ in the sentence _it’s a sunny day_, we’ve automatically created a grammar error and we can tell our model what word in the sentence is incorrect.
+Machine learning models tend to perform better with more data, but the number of human-evaluated training sentences is limited. To deal with this challenge, we work with so-called synthetic data &mdash; sentences from sources like Wikipedia, where we’ve programmatically replaced a word with an incorrect alternative. For example, by replacing _it’s_ by _its_ in the sentence _it’s a sunny day_, we’ve automatically created a grammar error and we can teach our model what word in the sentence is incorrect.
 
-Since around 2012, neural networks are the standard model type for solving this type of task in NLP. In the last few years transformer models have emerged as the most popular type of neural network for language tasks. To train such models, we use spaCy, one of the most popular open-source NLP libraries.
+Since around 2012, neural networks are the standard machine learning technique for solving this type of task. In the last few years, transformer models have emerged as the most popular type of neural network for language tasks. To train such models, we use spaCy, one of the most popular open-source NLP libraries.
 
-This repository contains our code for generating synthetic data with the types of grammatical errors that we're interested in, and for creating a spaCy transformer model to find these errors automatically.
+This repository contains our code for generating synthetic data with the types of grammatical errors that we care about, and for creating a spaCy transformer model to find these errors automatically.
 
 ### Feedback
 
-Second, we are investigating generative AI models to help students develop strong argumentation skills. These models should give custom, targeted feedback to the arguments in students' responses, so that students strengthen their reading comprehension and hone their writing skills. This repository contains the code for our experiments with OpenAI's GPT models in particular. These experiments are focused on both prompt engineering, where we feed GPT a custom prompt with elaborate instructions and examples, and model finetuning, where we finetune a custom GPT model to give relevant feedback to students.
+We are investigating generative AI models to help students develop strong argumentation skills. These models should give custom, targeted feedback to the arguments in students' responses, so that students strengthen their reading comprehension and hone their writing skills. This repository contains the code for our experiments with OpenAI's GPT models in particular. These experiments are focused on both prompt engineering, where we feed GPT a custom prompt with elaborate instructions and examples, and model finetuning, where we finetune a custom GPT model to give relevant feedback to students.
 
 ## Setup
 
@@ -41,7 +41,6 @@ python myScript
 deactivate
 ```
 
-
 ## Grammar Correction: Technical Details
 
 This repository contains the scripts for creating synthetic data and training a grammar model with spaCy.
@@ -50,14 +49,14 @@ This repository contains the scripts for creating synthetic data and training a 
 
 Quill has developed a grammar pipeline that labels sentences with frequent grammar errors, such as subject-verb agreement errors and plural-possessive errors.
 The goal is to give students feedback on their writing, so that they can correct grammatical errors.
-This pipeline is a combination of simple rules and a machine-learning model. The machine-learning model is trained on a mix of real data from students and data with
+This pipeline is a combination of simple rules and a statistical machine learning model. The machine learning model is trained on a mix of real data from students and data with
 synthetic grammar errors. This repository has the code for creating such synthetic grammar errors and preparing a training corpus for spaCy.
 
 #### Data
 
 ##### Option 1: Get existing training data
 
-All grammar errors in the grammar model that are identified with a machine-learning model already have synthetically generated data.
+All grammar errors in the grammar model that are identified with a machine learning model already have synthetically generated data.
 This data is stored in a Google Cloud bucket and can be pulled with our DVC account:
 
 ```
@@ -106,6 +105,7 @@ of dev/test items that will be taken from the file. The more difficult the error
 collect.
 
 This script has the following output:
+
 - `<output_path>/dev.spacy`: a development file on which the grammar model will be tested repeatedly during training
 - `<output_path>/test.spacy`: a test file that can be used for testing the grammar model after training
 - `<outputpath>/train/*.spacy`: one or more training files on which the grammar model will train
@@ -135,6 +135,7 @@ The files with examples of human feedback are in `data/automl`, organized by pas
 ### GPT scripts
 
 There are several scripts for our experiments with GPT:
+
 - `finetune.py`: finetune a GPT model with Quill's feedback
 - `test_openai_for_feedback.py`: evaluate the output of a large language model against Quill's feedback
 - `moderate_feedbac.py`: moderate GPT feedback by an additional GPT step that removes undesired elements
