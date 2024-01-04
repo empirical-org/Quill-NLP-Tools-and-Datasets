@@ -47,10 +47,9 @@ This repository contains the scripts for creating synthetic data and training a 
 
 Quill has developed a grammar pipeline that labels sentences with frequent grammar errors, such as subject-verb agreement errors and plural-possessive errors.
 The goal is to give students feedback on their writing, so that they can correct grammatical errors.
-This pipeline is a combination of simple rules and a statistical machine learning model. The machine learning model is trained on a mix of real data from students and data with
-synthetic grammar errors. This repository has the code for creating such synthetic grammar errors and preparing a training corpus for spaCy.
+This pipeline is a combination of simple rules and a statistical machine learning modeling model that is trained on a mix real student data along with synthetic data generated from grammar errors. This repository has the code for creating such synthetic grammar errors and preparing a training corpus for spaCy.
 
-1. Data
+#### 1. Data
 
 Option 1: Get existing training data
 
@@ -86,7 +85,7 @@ Add this training data to the directory `data/training` and upload it to the Goo
 > dvc push
 ```
 
-2. SpaCy training corpus
+#### 2. SpaCy training corpus
 
 We train our grammar model as a spaCy pipeline. As a result, we need to prepare a training and development corpus
 that spaCy can work with. This is done in the script `prepare_spacy_grammar_corpus`.
@@ -108,7 +107,7 @@ This script has the following output:
 - `<output_path>/test.spacy`: a test file that can be used for testing the grammar model after training
 - `<outputpath>/train/*.spacy`: one or more training files on which the grammar model will train
 
-3. Training
+#### 3. Training
 
 Now the grammar model can be trained with spaCy's standard training command:
 
@@ -138,7 +137,7 @@ There are several scripts for our experiments with GPT:
 - `test_openai_for_feedback.py`: evaluate the output of a large language model against Quill's feedback
 - `moderate_feedbac.py`: moderate GPT feedback by an additional GPT step that removes undesired elements
 
-1. Finetuning script
+#### 1. Finetuning script
 
 First, this repo contains a script to finetune a GPT-3.5-turbo model with Quill's human feedback. This can be done with the script `finetune.py`:
 
@@ -148,7 +147,7 @@ First, this repo contains a script to finetune a GPT-3.5-turbo model with Quill'
 > python scripts/gpt/finetune.py <output_file>.json
 ```
 
-2. Evaluation script
+#### 2. Evaluation script
 
 Second, it is possible to evaluate GPT-3.5, GPT-4 or a finetuned GPT model by comparing their feedback to Quill's human feedback, using `test_openai_for_feedback.py`:
 
@@ -164,7 +163,7 @@ For example:
 > python scripts/test_openai_for_feedback.py gpt-3.5-turbo gpt3-5-turbo
 ```
 
-3. Moderation script
+#### 3. Moderation script
 
 Finally, the moderation script is a basic script that calls a GPT model to moderate automatic feedback. This moderation step can be necessary when GPT gives feedback that does not focus on argumentation: comments on spelling or grammar, clarity or conciceness, or when GPT gives away the correct answer. The moderation script takes one or more pieces of feedback as input, asks the GPT model to remove any undesired elements, and writes the output to a file. It is used in the following way:
 
