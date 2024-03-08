@@ -1,0 +1,38 @@
+                    GenerateContentResponse(
+                        done=True,
+                        iterator=None,
+                        result=glm.GenerateContentResponse(
+                            {
+                                'candidates': [
+                                    {
+                                        'content': {
+                                            'parts': [
+                                                {
+                                                    'text': 'Nice work! You used information from the text to explain...'
+                                                }
+                                            ],
+                                            'role': 'model'
+                                        },
+                                        'finish_reason': 1,
+                                        'index': 0,
+                                        'safety_ratings': [
+                                            { 'category': 9, 'probability': 1, 'blocked': False },
+                                            { 'category': 8, 'probability': 1, 'blocked': False },
+                                            { 'category': 7, 'probability': 1, 'blocked': False },
+                                            { 'category': 10, 'probability': 1, 'blocked': False }
+                                        ],
+                                        'token_count': 0,
+                                        'grounding_attributions': []
+                                    }
+                                ],
+                                'prompt_feedback': {
+                                    'safety_ratings': [
+                                        {'category': 9, 'probability': 1, 'blocked': False},
+                                        {'category': 8, 'probability': 1, 'blocked': False},
+                                        {'category': 7, 'probability': 2, 'blocked': False},
+                                        {'category': 10, 'probability': 1, 'blocked': False}
+                                    ],
+                                    'block_reason': 0
+                                }
+                            }
+                        ),

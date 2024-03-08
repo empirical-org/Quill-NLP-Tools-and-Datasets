@@ -1,0 +1,7 @@
+click==8.1.7
+jsonlines==4.0.0
+openai==0.28.1
+tqdm==4.66.1
+tiktoken==0.5.1
+numpy==1.26.1
+google-generativeai==0.4.0
