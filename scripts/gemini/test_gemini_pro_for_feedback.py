@@ -231,25 +231,6 @@ def run(tag):
         for conjunction in conjunctions:
             passage_group = passage["files"]["but"]["train"].split("/")[2].split("_")[0]
 
-            # completed successfully already
-            if (
-                (conjunction == "because" and passage_group == "surgebarriers")
-                or (conjunction == "so" and passage_group == "surgebarriers")
-                or (passage_group == "bereal")
-                or (conjunction == "so" and passage_group == "haiti")
-                or (conjunction == "because" and passage_group == "quokkas")
-                or (conjunction == "so" and passage_group == "quokkas")
-                or (passage_group == "pompeii")
-                or (passage_group == "villages")
-            ):
-                continue
-
-            # # blocked for safety
-            # if (conjunction == "but" and passage_group == "surgebarriers") or (
-            #     passage_group == "berlin"
-            # ):
-            #     continue
-
             print(passage_group, conjunction)
 
             # Read the passage data
