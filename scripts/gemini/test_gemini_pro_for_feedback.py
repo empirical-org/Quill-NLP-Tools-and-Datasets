@@ -332,7 +332,14 @@ def run(tag):
                     num_tokens_answer = len(encoding.encode(feedback))
 
                     tokens_per_prompt.append((num_tokens_prompt + num_tokens_answer))
-                    cost = (num_tokens_prompt + num_tokens_answer) / 1000 * 0.000125
+                    input_cost_per_1k_tokens = 0.000125
+                    output_cost_per_1k_tokens = 0.000375
+
+                    cost = (
+                        num_tokens_prompt * input_cost_per_1k_tokens
+                        + num_tokens_answer * output_cost_per_1k_tokens
+                    ) / 1000
+
                     cost_per_prompt.append(cost)
 
                     writer.writerow((sentence, correct_label, feedback))
@@ -368,10 +375,9 @@ def run(tag):
                 results_file.write(
                     f"Mean cost per prompt: {sum(cost_per_prompt)/len(cost_per_prompt)}\n"
                 )
-                # Will have to look up cost per prompt
-                # results_file.write(
-                #     f"Cost for 50,000 requests: {sum(cost_per_prompt)/len(cost_per_prompt)*50000}\n"
-                # )
+                results_file.write(
+                    f"Cost for 50,000 requests: {sum(cost_per_prompt)/len(cost_per_prompt)*50000}\n"
+                )
                 results_file.write(f"Unique feedback items: {len(set(all_feedback))}\n")
                 results_file.write(
                     f"Regex hits: {regex_hits} = {regex_hits/len(all_feedback)*100}%\n"
