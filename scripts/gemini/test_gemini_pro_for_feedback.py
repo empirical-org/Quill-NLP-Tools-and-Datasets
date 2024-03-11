@@ -186,6 +186,7 @@ def fetch_with_timeout(api_call_func, messages, model, timeout_duration=10):
 def api_call_gemini(prompt, model):
 
     response = model.generate_content(prompt)
+
     return response
 
 
@@ -193,7 +194,32 @@ def api_call_gemini(prompt, model):
 @click.argument("tag")
 def run(tag):
     model_name = "gemini-pro"
-    model = genai.GenerativeModel(model_name)
+    safety_settings = [
+        {
+            "category": "HARM_CATEGORY_DANGEROUS",
+            "threshold": "BLOCK_NONE",
+        },
+        {
+            "category": "HARM_CATEGORY_HARASSMENT",
+            "threshold": "BLOCK_NONE",
+        },
+        {
+            "category": "HARM_CATEGORY_HATE_SPEECH",
+            "threshold": "BLOCK_NONE",
+        },
+        {
+            "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+            "threshold": "BLOCK_NONE",
+        },
+        {
+            "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+            "threshold": "BLOCK_NONE",
+        },
+    ]
+
+    model = genai.GenerativeModel(
+        model_name=model_name, safety_settings=safety_settings
+    )
 
     print("Running evaluation with model:", model_name)
 
@@ -205,28 +231,24 @@ def run(tag):
         for conjunction in conjunctions:
             passage_group = passage["files"]["but"]["train"].split("/")[2].split("_")[0]
 
-            # # preliminary check
-            # if (
-            #     (passage_group == "haiti")
-            #     or (passage_group == "pompeii")
-            #     or (passage_group == "quokkas")
-            #     or (passage_group == "villages")
-            # ):
-            #     continue
-
-            # # completed successfully already
-            # if (
-            #     (conjunction == "because" and passage_group == "surgebarriers")
-            #     or (conjunction == "so" and passage_group == "surgebarriers")
-            #     or (passage_group == "bereal")
-            # ):
-            #     continue
-
-            # blocked for safety
-            if (conjunction == "but" and passage_group == "surgebarriers") or (
-                passage_group == "berlin"
+            # completed successfully already
+            if (
+                (conjunction == "because" and passage_group == "surgebarriers")
+                or (conjunction == "so" and passage_group == "surgebarriers")
+                or (passage_group == "bereal")
+                or (conjunction == "so" and passage_group == "haiti")
+                or (conjunction == "because" and passage_group == "quokkas")
+                or (conjunction == "so" and passage_group == "quokkas")
+                or (passage_group == "pompeii")
+                or (passage_group == "villages")
             ):
                 continue
+
+            # # blocked for safety
+            # if (conjunction == "but" and passage_group == "surgebarriers") or (
+            #     passage_group == "berlin"
+            # ):
+            #     continue
 
             print(passage_group, conjunction)
 
@@ -277,7 +299,7 @@ def run(tag):
 
                     for _ in range(MAX_RETRIES):
                         # Rate limit 60 requests per minute https://ai.google.dev/models/gemini#model-variations
-                        # time.sleep(1)
+                        time.sleep(1)
                         response = fetch_with_timeout(
                             api_call_gemini,
                             full_prompt,
@@ -288,8 +310,11 @@ def run(tag):
                         if response:
                             break
 
-                    if len(response.candidates) == 0:
-                        print("Sentence", sentence)
+                    if (
+                        len(response.candidates) == 0
+                        or len(response.candidates[0].content.parts) == 0
+                    ):
+                        print("Sentence:", sentence)
                         print(response)
                         print("\n")
                         continue
@@ -305,8 +330,9 @@ def run(tag):
                         [len(encoding.encode(m)) for m in full_prompt]
                     )
                     num_tokens_answer = len(encoding.encode(feedback))
+
                     tokens_per_prompt.append((num_tokens_prompt + num_tokens_answer))
-                    cost = (num_tokens_prompt + num_tokens_answer) / 1000 * 0.002
+                    cost = (num_tokens_prompt + num_tokens_answer) / 1000 * 0.000125
                     cost_per_prompt.append(cost)
 
                     writer.writerow((sentence, correct_label, feedback))
