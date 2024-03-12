@@ -183,11 +183,19 @@ def fetch_with_timeout(api_call_func, messages, model, timeout_duration=10):
         return None
 
 
-def api_call_gemini(prompt, model):
-
-    response = model.generate_content(prompt)
-
-    return response
+def api_call_gemini(prompt, model, max_retries=MAX_RETRIES):
+    attempt = 0
+    while attempt < max_retries:
+        try:
+            response = model.generate_content(prompt)
+            return response
+        except google.api_core.exceptions.InternalServerError as e:
+            print(f"Attempt {attempt+1} failed with InternalServerError. Retrying...")
+            attempt += 1
+            time.sleep(
+                1
+            )  # Adding a short delay between retries to avoid hammering the API
+    raise Exception("Max retries reached. API call failed.")
 
 
 @click.command()
